@@ -1,0 +1,72 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "bytes": 530,
+      "path": "records/m2/ACCEPTED_STATE.json",
+      "sha256": "cccf06d0837c3db2a7c2b50bf808b1494808a8531b9eef178d3334b71a0df41d"
+    },
+    {
+      "bytes": 1653,
+      "path": "records/m2/ADVERSARIAL_REVIEW.json",
+      "sha256": "f5217ccdd3c418de5e26c19f63278bd383c55ddddaa3b9e7e0e0dc8778f58b50"
+    },
+    {
+      "bytes": 1774,
+      "path": "records/m2/DEPENDENCY_CHECK.json",
+      "sha256": "6d379e48f1e9f4c929022c90bc7198eae6bcacc4ae16eba183706ac0d9ca5a5c"
+    },
+    {
+      "bytes": 1818,
+      "path": "records/m2/FIXTURE_MANIFEST.json",
+      "sha256": "c991d708b9287c4cee1a08f606c727c7570bc45aafb06b513c3487963191d751"
+    },
+    {
+      "bytes": 258782,
+      "path": "records/m2/PARAMETER_IDENTITY.json",
+      "sha256": "a141110f781287d8845d1bcd8368cb19abf782b46741739d55799a8574f998c1"
+    },
+    {
+      "bytes": 3976,
+      "path": "records/m2/PROSPECTIVE_CRITERIA.json",
+      "sha256": "3b412ec21c652f0d160e9d85768aa7694159e359ed7ae16c4249fd6876902c23"
+    },
+    {
+      "bytes": 14581,
+      "path": "records/m2/STRUCTURAL_PROOF.json",
+      "sha256": "1c5466e47c2c9aa2ae24ead9ba1af07379e95b9ea6652d69ff7aea8bff101591"
+    },
+    {
+      "bytes": 40432,
+      "path": "records/m2/VALIDATION_MATRIX.json",
+      "sha256": "b363270eac66efc5db634d9204d8ec20304b80b8e75830bebb16d5fcdb09c7ca"
+    }
+  ],
+  "implementation": [
+    {
+      "bytes": 35455,
+      "path": "scripts/h1_model.py",
+      "sha256": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752"
+    },
+    {
+      "bytes": 4234,
+      "path": "scripts/construct_h1.py",
+      "sha256": "f5ab313572e0f269e436e931d5e3e28ceba21780f658fd3c02c1bcec40538b91"
+    },
+    {
+      "bytes": 20349,
+      "path": "scripts/validate_h1.py",
+      "sha256": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1"
+    },
+    {
+      "bytes": 3976,
+      "path": "records/m2/PROSPECTIVE_CRITERIA.json",
+      "sha256": "3b412ec21c652f0d160e9d85768aa7694159e359ed7ae16c4249fd6876902c23"
+    }
+  ],
+  "root": "records/m2",
+  "schema": "birdnet-clean-evidence-manifest",
+  "state": "VALIDATED",
+  "total_bytes": 323546,
+  "version": 1
+}

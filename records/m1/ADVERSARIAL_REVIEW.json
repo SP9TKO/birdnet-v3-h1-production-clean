@@ -1,0 +1,54 @@
+{
+  "issues": [
+    {
+      "classification": "PROVEN",
+      "disposition": "object-graph list order, concrete capture identity, and all 806 StableHLO argument types align mechanically",
+      "issue": "variable-index assumption"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "explicit NHWC-to-NCHW transpose and reduction dimensions [3,2] over 7x9 are present",
+      "issue": "StableHLO axis interpretation"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "backward slice excludes arguments 453..469 and all unreachable H2/H3 operations",
+      "issue": "hidden H2/H3 dependency"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "stored [11560,1280] tensor is explicitly transposed to [1280,11560] before each matrix multiply",
+      "issue": "classifier layout assumption"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "arg450 feeds both powers through reciprocal; exact chain returns the public embedding operand",
+      "issue": "GeM identification"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "five live classifier paths share exact weight/bias, contain no stochastic op, are ordered-summed and divided by five",
+      "issue": "five-contribution evaluation behavior"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "the only released final sigmoid follows 0.4/0.35/0.25 fusion; clean H1 applies that exact sigmoid helper to unweighted H1 logits",
+      "issue": "H1 score versus fused prediction semantics"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "exact official CSV identity, stable row ordering and 11560-row/output-width agreement define the release's positional contract",
+      "issue": "label-position assumption"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "no producer implementation is required; all accepted semantics come from the released TensorFlow object",
+      "issue": "producer-source inference"
+    }
+  ],
+  "question": "Could an index, axis, dependency, layout, GeM, label, evaluation, or producer-source assumption make the H1 contract wrong?",
+  "schema": "birdnet-clean-m1-adversarial-review",
+  "state": "VALIDATED",
+  "unresolved": [],
+  "version": 1
+}

@@ -1,0 +1,74 @@
+{
+  "duration_seconds": 3.0,
+  "fixtures": {
+    "canonical": {
+      "dtype": "float32",
+      "elements": 96000,
+      "finite": true,
+      "max": 0.25482600927352905,
+      "mean": 4.055374806006197e-06,
+      "min": -0.2545056939125061,
+      "raw_sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+      "shape": [
+        1,
+        96000
+      ]
+    },
+    "high_valid_two_tone": {
+      "dtype": "float32",
+      "elements": 96000,
+      "finite": true,
+      "max": 0.949666440486908,
+      "mean": 5.755766233998353e-16,
+      "min": -0.949666440486908,
+      "raw_sha256": "1af7db58ba98f1850049411d6221673d9c3396fffe3a87de93dfd19d22f2a506",
+      "shape": [
+        1,
+        96000
+      ]
+    },
+    "low_amplitude_sine": {
+      "dtype": "float32",
+      "elements": 96000,
+      "finite": true,
+      "max": 9.999999747378752e-05,
+      "mean": -3.9537239223304725e-20,
+      "min": -9.999999747378752e-05,
+      "raw_sha256": "0cc3df62eea9ab1a3f5e67c3b4a08bcb4cddc6557a8dbda332b7470fa0472e4e",
+      "shape": [
+        1,
+        96000
+      ]
+    },
+    "silence": {
+      "dtype": "float32",
+      "elements": 96000,
+      "finite": true,
+      "max": 0.0,
+      "mean": 0.0,
+      "min": 0.0,
+      "raw_sha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+      "shape": [
+        1,
+        96000
+      ]
+    },
+    "structured_impulse": {
+      "dtype": "float32",
+      "elements": 96000,
+      "finite": true,
+      "max": 1.0,
+      "mean": 2.6041666666666666e-06,
+      "min": -1.0,
+      "raw_sha256": "94a56ab616a013aef6ca6dab022323fb9c8fa74e8a0235b7ce1079fe7c5d5296",
+      "shape": [
+        1,
+        96000
+      ]
+    }
+  },
+  "sample_rate_hz": 32000,
+  "schema": "birdnet-clean-m2-fixtures",
+  "state": "VALIDATED",
+  "version": 1
+}

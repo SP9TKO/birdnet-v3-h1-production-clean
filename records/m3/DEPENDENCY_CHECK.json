@@ -1,0 +1,82 @@
+{
+  "conclusion": "no PyTorch or ONNX package is imported or executed by accepted M1-M3",
+  "files": [
+    {
+      "forbidden_import_roots": [],
+      "import_roots": [
+        "__future__",
+        "hashlib",
+        "jaxlib",
+        "json",
+        "numpy",
+        "os",
+        "pathlib",
+        "sys",
+        "tensorflow",
+        "typing"
+      ],
+      "path": "scripts/h1_model.py",
+      "sha256": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752"
+    },
+    {
+      "forbidden_import_roots": [],
+      "import_roots": [
+        "__future__",
+        "argparse",
+        "h1_model",
+        "hashlib",
+        "pathlib",
+        "tensorflow"
+      ],
+      "path": "scripts/construct_h1.py",
+      "sha256": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742"
+    },
+    {
+      "forbidden_import_roots": [],
+      "import_roots": [
+        "__future__",
+        "argparse",
+        "ast",
+        "csv",
+        "h1_model",
+        "hashlib",
+        "json",
+        "numpy",
+        "pathlib",
+        "sys",
+        "typing"
+      ],
+      "path": "scripts/validate_h1.py",
+      "sha256": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1"
+    },
+    {
+      "forbidden_import_roots": [],
+      "import_roots": [
+        "__future__",
+        "argparse",
+        "h1_model",
+        "hashlib",
+        "json",
+        "numpy",
+        "pathlib",
+        "re",
+        "sys",
+        "typing",
+        "validate_h1"
+      ],
+      "path": "scripts/validate_serialized_h1.py",
+      "sha256": "6f32a9f41775b10b6bbdbf765c392cb5aa1bd25030c5547a621712169eb9cfa3"
+    }
+  ],
+  "forbidden_modules": [
+    "onnx",
+    "onnxruntime",
+    "torch",
+    "torchaudio",
+    "torchvision"
+  ],
+  "runtime_loaded_forbidden_modules": [],
+  "schema": "birdnet-clean-m3-dependency-check",
+  "state": "VALIDATED",
+  "version": 1
+}

@@ -1,0 +1,13 @@
+/*
+ * Enable the pinned Alif PDM/DMIC peripheral for the DevKit microphone pair.
+ * Channel selection remains an application-level contract.
+ */
+/ {
+	aliases {
+		pdm-audio = &pdm;
+	};
+};
+
+&pdm {
+	status = "okay";
+};

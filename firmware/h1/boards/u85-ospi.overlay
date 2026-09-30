@@ -1,0 +1,18 @@
+/* Enable the on-board U85 and the OSPI devices required by the H1 image. */
+&ethosu1 {
+	status = "okay";
+};
+
+&ospi0 {
+	status = "okay";
+	aps512xxn {
+		status = "okay";
+	};
+};
+
+&ospi1 {
+	status = "okay";
+	ospi_flash {
+		status = "okay";
+	};
+};

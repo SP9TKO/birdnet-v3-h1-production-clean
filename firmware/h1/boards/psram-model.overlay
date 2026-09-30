@@ -1,0 +1,11 @@
+#include <zephyr/dt-bindings/memory-attr/memory-attr-arm.h>
+
+/ {
+	psram_model_memory: memory@a0000000 {
+		compatible = "zephyr,memory-region";
+		reg = <0xa0000000 0x04000000>;
+		zephyr,memory-region = "PSRAM_MODEL";
+		zephyr,memory-region-flags = "rw";
+		zephyr,memory-attr = <DT_MEM_ARM_MPU_RAM_NOCACHE>;
+	};
+};

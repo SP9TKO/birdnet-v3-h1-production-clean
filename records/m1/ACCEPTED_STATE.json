@@ -1,0 +1,15 @@
+{
+  "authority": "OFFICIAL_TENSORFLOW_FP32_SAVEDMODEL",
+  "disposition": "ACCEPTED",
+  "evidence_classification": "PROVEN",
+  "h1_boundary_mechanically_established": true,
+  "labels_sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+  "m2_entry_authorized": true,
+  "production_slice_sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+  "saved_model_pb_sha256": "4700fa91766af07e4923b549727afad9cd94310b01871ac17f717ae00d42631e",
+  "schema": "birdnet-clean-m1-accepted-state",
+  "source_archive_sha256": "ead54e1c3c0cbf6032def4a5aa6e583b63263440f6975e2dbade7d925e775eeb",
+  "stablehlo_sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac",
+  "unresolved": [],
+  "version": 1
+}

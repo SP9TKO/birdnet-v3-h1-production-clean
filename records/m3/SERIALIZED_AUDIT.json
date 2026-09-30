@@ -1,0 +1,113 @@
+{
+  "checkpoint": {
+    "checkpoint_entry_count": 674,
+    "checkpoint_object_graph_entries": 1,
+    "dead_serialized_learned_state_count": 0,
+    "h2_h3_serialized_learned_state_count": 0,
+    "learned_state_tensor_count": 673,
+    "state": "PROVEN",
+    "tensor_namespace": "h1_variables/0..672 only"
+  },
+  "constructor_process_released_before_reload": true,
+  "full_predictor_module_present": false,
+  "h2_h3_live_computation_present": false,
+  "h2_h3_serialized_learned_state_present": false,
+  "independent_reload": true,
+  "labels": {
+    "data_rows": 11560,
+    "identity": {
+      "bytes": 809172,
+      "md5": "21ccf9e984a955bfc2d5c52faab6a6ea",
+      "path": ".m1-work/official/BirdNET+_V3.0-preview3.1_Global_11K_Labels.csv",
+      "sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0"
+    },
+    "mapping": "output column i maps to official CSV data row i",
+    "state": "VALIDATED"
+  },
+  "parameter_audit": {
+    "checked_tensor_count": 673,
+    "exact_official_canonical_rebuild_value_matches": 673,
+    "mismatch_count": 0,
+    "ordered_parameter_contract_sha256": "dc4932f98d167a6c9c60d99e14963f41a32153662826fe862dce30bd5b32c73b",
+    "source_manifest": {
+      "bytes": 258782,
+      "path": "records/m2/PARAMETER_IDENTITY.json",
+      "sha256": "a141110f781287d8845d1bcd8368cb19abf782b46741739d55799a8574f998c1",
+      "tensor_count": 673
+    },
+    "state": "VALIDATED"
+  },
+  "production_stablehlo_sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+  "rebuild_checkpoint": {
+    "checkpoint_entry_count": 674,
+    "checkpoint_object_graph_entries": 1,
+    "dead_serialized_learned_state_count": 0,
+    "h2_h3_serialized_learned_state_count": 0,
+    "learned_state_tensor_count": 673,
+    "state": "PROVEN",
+    "tensor_namespace": "h1_variables/0..672 only"
+  },
+  "schema": "birdnet-clean-m3-serialized-audit",
+  "signatures": {
+    "input": {
+      "dtype": "float32",
+      "name": "waveform",
+      "shape": [
+        1,
+        96000
+      ]
+    },
+    "outputs": {
+      "embedding": {
+        "dtype": "float32",
+        "shape": [
+          1,
+          1280
+        ]
+      },
+      "scores": {
+        "dtype": "float32",
+        "shape": [
+          1,
+          11560
+        ]
+      }
+    },
+    "state": "VALIDATED",
+    "structured_signature_summary": {
+      "keyword_input_names": [
+        "waveform"
+      ],
+      "output_names": [
+        "embedding",
+        "scores"
+      ],
+      "positional_input_count": 0
+    }
+  },
+  "state": "PROVEN",
+  "trackable_children": [
+    "_self_saveable_object_factories",
+    "frontend",
+    "h1_variables",
+    "serve",
+    "signatures"
+  ],
+  "version": 1,
+  "xla_modules": [
+    {
+      "bytes": 249046,
+      "function": "__inference__serve_30217",
+      "node": "XlaCallModule",
+      "sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+      "version": 5
+    },
+    {
+      "bytes": 249046,
+      "function": "__inference__serve_26823",
+      "node": "XlaCallModule",
+      "sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+      "version": 5
+    }
+  ]
+}

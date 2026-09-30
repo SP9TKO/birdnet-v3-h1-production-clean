@@ -1,0 +1,109 @@
+{
+  "schema": "birdnet-clean-m2-prospective-criteria",
+  "version": 1,
+  "state": "VALIDATED",
+  "frozen_before_results": true,
+  "authority": {
+    "saved_model_pb_sha256": "4700fa91766af07e4923b549727afad9cd94310b01871ac17f717ae00d42631e",
+    "stablehlo_sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac",
+    "labels_sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0"
+  },
+  "implementation_sha256": {
+    "scripts/h1_model.py": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752",
+    "scripts/inspect_source.py": "27205596b4cb98ea9307f80b08a0be4637384d195e2bdfb64cc44b625f1a6737",
+    "scripts/construct_h1.py": "f5ab313572e0f269e436e931d5e3e28ceba21780f658fd3c02c1bcec40538b91",
+    "scripts/validate_h1.py": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1"
+  },
+  "fixture_raw_sha256": {
+    "canonical": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+    "silence": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+    "low_amplitude_sine": "0cc3df62eea9ab1a3f5e67c3b4a08bcb4cddc6557a8dbda332b7470fa0472e4e",
+    "high_valid_two_tone": "1af7db58ba98f1850049411d6221673d9c3396fffe3a87de93dfd19d22f2a506",
+    "structured_impulse": "94a56ab616a013aef6ca6dab022323fb9c8fa74e8a0235b7ce1079fe7c5d5296"
+  },
+  "structural_requirements": {
+    "retained_variable_count": 673,
+    "h1_specific_indices": [450, 451, 452],
+    "forbidden_live_h2_h3_indices": [453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 468, 469],
+    "scores_shape": [1, 11560],
+    "embedding_shape": [1, 1280],
+    "all_parameter_values_raw_byte_equal": true,
+    "full_predictor_module_forbidden": true,
+    "forbidden_dependency_imports": ["torch", "torchvision", "torchaudio", "onnx", "onnxruntime"]
+  },
+  "comparisons": {
+    "official_probe_vs_clean_probe": {
+      "require_raw_byte_equal": true,
+      "maximum": {
+        "max_absolute_error": 0.0,
+        "mean_absolute_error": 0.0,
+        "rmse": 0.0
+      }
+    },
+    "official_probe_vs_clean_production": {
+      "scores": {
+        "maximum": {
+          "max_absolute_error": 0.00002,
+          "mean_absolute_error": 0.000001,
+          "rmse": 0.000002
+        }
+      },
+      "embedding": {
+        "maximum": {
+          "max_absolute_error": 0.00005,
+          "mean_absolute_error": 0.000005,
+          "rmse": 0.00001
+        }
+      }
+    },
+    "clean_probe_vs_clean_production": {
+      "scores": {
+        "maximum": {
+          "max_absolute_error": 0.00002,
+          "mean_absolute_error": 0.000001,
+          "rmse": 0.000002
+        }
+      },
+      "embedding": {
+        "maximum": {
+          "max_absolute_error": 0.00005,
+          "mean_absolute_error": 0.000005,
+          "rmse": 0.00001
+        }
+      }
+    },
+    "official_public_embedding_vs_probe": {
+      "maximum": {
+        "max_absolute_error": 0.00005,
+        "mean_absolute_error": 0.000005,
+        "rmse": 0.00001
+      }
+    },
+    "independent_arithmetic_oracle": {
+      "embedding": {
+        "maximum": {
+          "max_absolute_error": 0.00005,
+          "mean_absolute_error": 0.000005,
+          "rmse": 0.00001
+        }
+      },
+      "h1_logits": {
+        "maximum": {
+          "max_absolute_error": 0.0005,
+          "mean_absolute_error": 0.00002,
+          "rmse": 0.00005
+        }
+      },
+      "scores": {
+        "maximum": {
+          "max_absolute_error": 0.00002,
+          "mean_absolute_error": 0.000002,
+          "rmse": 0.000005
+        }
+      }
+    }
+  },
+  "nonfinite_policy": "NaN and signed-infinity masks must match exactly; source undefined behavior must be preserved, never repaired.",
+  "relative_metric_policy": "Record a symmetric relative metric with floor 1e-12, but do not gate on it because valid scores approach zero.",
+  "scope_note": "All reported maxima will be finite observations over these five frozen fixtures, not universal error bounds."
+}

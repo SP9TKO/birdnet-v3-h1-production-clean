@@ -1,0 +1,326 @@
+{
+  "schema": "birdnet-v3-pre-m5-biological-audio-window-freeze",
+  "version": 1,
+  "date": "2026-09-28",
+  "state": "PROSPECTIVE_WINDOWS_FROZEN_NO_MODEL_OUTPUT_CONSULTED",
+  "scope": "H1_ENGINEERING_DEVELOPMENT",
+  "status_boundary": [
+    "THIS IS PRE-M5 HARDWARE POC WORK",
+    "THE CURRENT MODEL IS A DEVELOPMENT CANDIDATE",
+    "M4 REMAINS BLOCKED",
+    "NO CANONICAL M5 INPUT EXISTS",
+    "PRELIMINARY HARDWARE RESULTS ARE NOT FORMAL M5 ACCEPTANCE EVIDENCE"
+  ],
+  "source_manifest": "records/development/BIOLOGICAL_AUDIO_SOURCES.json",
+  "source_selection_package_sha256": "ac33f4f312ae1db3063eb4a7a04fb7aa0b7fe6fbd02d1e6b7236fe09919dd94f",
+  "selection_protocol": {
+    "exactly_one_window_per_species": true,
+    "window_count": 7,
+    "selection_completed_before_resampling_or_final_waveform_measurement": true,
+    "selection_completed_before_any_birdnet_inference": true,
+    "model_output_consulted": false,
+    "selection_evidence": [
+      "source recording metadata",
+      "source-only full-recording and candidate-window spectrograms",
+      "decoded finite, amplitude and clipping checks"
+    ],
+    "forbidden_evidence_not_used": [
+      "BirdNET embeddings",
+      "BirdNET logits",
+      "BirdNET labels",
+      "BirdNET scores",
+      "host-board comparison",
+      "expected-species agreement"
+    ],
+    "post_freeze_rule": "Do not move or resize a window after final-waveform generation or later BirdNET inference."
+  },
+  "media_toolchain": {
+    "inspection": "gst-discoverer-1.0",
+    "decode_pipeline": "filesrc ! oggdemux ! vorbisdec ! audio/x-raw,format=F32LE,layout=interleaved,rate={source_rate},channels={source_channels} ! filesink",
+    "gstreamer_version": "1.28.2",
+    "gst_launch_sha256": "f5509cd51b3398b141417914d1317cb495fd0a6a393bf818db1f0146fcca4ac1",
+    "gst_discoverer_sha256": "da035d5dde8efd903a779144126d97c4a511673cfb00be8da6c7ae549d81c7fe",
+    "ogg_plugin_sha256": "bef6163b86ce3399553771e15ca2ae10d3bb4652bc2e10b4587dcefdfab1c1f4",
+    "vorbis_plugin_sha256": "dd5055d577a46b63d017de9ad326e85e9208b765645a6fe32f395d8edfb6cb86",
+    "rawparse_plugin_sha256": "871f55c197b2de8b3f75e2334ca2100a4b9b3cb3b774c49f0be6235ca42363c0",
+    "audioresample_plugin_sha256": "3ab3e6f37d24ea21e6e775fd7c5ab50988dd04799c68ff67cb388223283cd353",
+    "python": "3.12.14",
+    "python_executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "numpy": "2.3.5"
+  },
+  "transform_contract": {
+    "decode": "Decode the complete selected Ogg/Vorbis stream to interleaved little-endian float32 at its native sample rate and channel count. Verify the exact decoded frame count and raw decoded SHA-256 below before slicing.",
+    "window_index_basis": "Zero-based decoded source sample frames; start inclusive and end exclusive.",
+    "channel_rule": "For one channel, preserve its float32 samples bit-for-bit. For multiple channels, convert each channel sample to float64, take the arithmetic mean across channels per frame, then cast once to little-endian float32.",
+    "resample_input": "Exactly 3.0 seconds of native-rate mono little-endian float32 selected by the frozen source-frame interval.",
+    "resample_pipeline": "filesrc ! rawaudioparse pcm-format=f32le sample-rate={source_rate} num-channels=1 ! audioresample resample-method=kaiser quality=10 sinc-filter-mode=full sinc-filter-interpolation=none ! audio/x-raw,format=F32LE,layout=interleaved,rate=32000,channels=1 ! filesink",
+    "resampling_method": "GStreamer audioresample 1.28.2, Kaiser sinc, quality 10, full sinc table, no interpolation",
+    "amplitude_rule": "Preserve decoded amplitude. Apply no peak/RMS normalization, gain, AGC, denoising, EQ, compression, limiting or dither.",
+    "final_dtype": "float32 little-endian",
+    "final_shape": [
+      1,
+      96000
+    ],
+    "final_elements": 96000,
+    "final_bytes": 384000,
+    "synthetic_zero_harness": {
+      "input_rates_hz": [
+        44100,
+        48000
+      ],
+      "output_rate_hz": 32000,
+      "output_bytes_each": 384000,
+      "output_raw_sha256_each": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+      "status": "PASSED_BEFORE_WINDOW_FREEZE"
+    }
+  },
+  "entries": [
+    {
+      "id": "troglodytes_troglodytes_01",
+      "scientific_name": "Troglodytes troglodytes",
+      "common_name": "Eurasian Wren",
+      "role": "BIOLOGICAL_SMOKE_TEST_DEVELOPMENT_ONLY_NON_ACCEPTANCE",
+      "original_file": "Troglodytes troglodytes song.ogg",
+      "original_sha256": "2f9f82dba87c7c8a6e4207c641e2b7ebabf69a537baa68d52d7121452dbb8cbd",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 1,
+        "inspector_duration_seconds": 19.64,
+        "decoded_sample_frames": 866124,
+        "decoded_duration_seconds": 19.64,
+        "decoded_bytes": 3464496,
+        "decoded_f32le_sha256": "aff37bde9fd348717df3976ce5513939f2e33485e48c1ef5767d03629bd72021"
+      },
+      "window": {
+        "start_sample_frame": 132300,
+        "end_sample_frame_exclusive": 264600,
+        "source_sample_frames": 132300,
+        "start_seconds": 3.0,
+        "end_seconds": 6.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram shows a dense, clear Wren song phrase throughout this interval; the decoded candidate is finite and has no sample with absolute value at least 1.0.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.8865184783935547,
+        "candidate_maximum_after_mono": 0.8561971187591553,
+        "candidate_rms_after_mono": 0.11444340120865053,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "erithacus_rubecula_01",
+      "scientific_name": "Erithacus rubecula",
+      "common_name": "European Robin",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "Erithacus rubecula.ogg",
+      "original_sha256": "fcd93245d2c4091bfb3f80ac5fa310e32d565d5c494bb32c3cf7fe65ee0cb43c",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 2,
+        "inspector_duration_seconds": 16.291405895,
+        "decoded_sample_frames": 718451,
+        "decoded_duration_seconds": 16.29140589569161,
+        "decoded_bytes": 5747608,
+        "decoded_f32le_sha256": "ff896c08c6d27a3e690f51e5f58c427c7f72f1abb85d13036a1719daa430fee3"
+      },
+      "window": {
+        "start_sample_frame": 44100,
+        "end_sample_frame_exclusive": 176400,
+        "source_sample_frames": 132300,
+        "start_seconds": 1.0,
+        "end_seconds": 4.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram shows continuous clear Robin song contours across the interval; the mono candidate is finite and unclipped.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.37802931666374207,
+        "candidate_maximum_after_mono": 0.3744184970855713,
+        "candidate_rms_after_mono": 0.05991800254452108,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "parus_major_01",
+      "scientific_name": "Parus major",
+      "common_name": "Great Tit",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "Parus major song.ogg",
+      "original_sha256": "03de84be4011e2378f90478e6d5e4670a5b4f2f72f7a08f6f447a3adc3115d50",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 48000,
+        "channels": 2,
+        "inspector_duration_seconds": 18.919041666,
+        "decoded_sample_frames": 908114,
+        "decoded_duration_seconds": 18.919041666666665,
+        "decoded_bytes": 7264912,
+        "decoded_f32le_sha256": "be4f504977c4bf154de2d8133aa57469e6af0dd9558f7eaf7276c573f3397a3b"
+      },
+      "window": {
+        "start_sample_frame": 48000,
+        "end_sample_frame_exclusive": 192000,
+        "source_sample_frames": 144000,
+        "start_seconds": 1.0,
+        "end_seconds": 4.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram shows repeated clear Great Tit tonal phrases through the interval; the mono candidate is finite and unclipped.",
+        "candidate_finite_count_after_mono": 144000,
+        "candidate_minimum_after_mono": -0.519737958908081,
+        "candidate_maximum_after_mono": 0.5229006409645081,
+        "candidate_rms_after_mono": 0.10342989483658126,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "cyanistes_caeruleus_01",
+      "scientific_name": "Cyanistes caeruleus",
+      "common_name": "Eurasian Blue Tit",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "CyanistesCaeruleusSongSlovakiaOlympusDM550.ogg",
+      "original_sha256": "dbfe51991c4ec58bc79ddaf46c37c96d81c5b468ce404a626a203d058c03cef1",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 2,
+        "inspector_duration_seconds": 3.735510204,
+        "decoded_sample_frames": 164737,
+        "decoded_duration_seconds": 3.735532879818594,
+        "decoded_bytes": 1317896,
+        "decoded_f32le_sha256": "e6e83696b5502ec77f3c229a712381a401196128b4c9bbd7087d715d5188fc6a"
+      },
+      "window": {
+        "start_sample_frame": 0,
+        "end_sample_frame_exclusive": 132300,
+        "source_sample_frames": 132300,
+        "start_seconds": 0.0,
+        "end_seconds": 3.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The recording is only 3.736 seconds; its first 3.0 seconds contain the complete prominent source-only song contour while leaving the trailing tail out. The mono candidate is finite and unclipped.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.05914178863167763,
+        "candidate_maximum_after_mono": 0.05323099344968796,
+        "candidate_rms_after_mono": 0.009511584565133884,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "fringilla_coelebs_01",
+      "scientific_name": "Fringilla coelebs",
+      "common_name": "Common Chaffinch",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "Fringilla coelebs short.ogg",
+      "original_sha256": "8fa1fcfabb37d1e19b4868fdd24642433b89e7f984f43ab2a48613d320944d6b",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 2,
+        "inspector_duration_seconds": 5.478843537,
+        "decoded_sample_frames": 241618,
+        "decoded_duration_seconds": 5.478866213151927,
+        "decoded_bytes": 1932944,
+        "decoded_f32le_sha256": "2fe73c8060eeb15df1f4ac1d19fcc7db27fdcae8a630e4143f37b1a3fd4ce579"
+      },
+      "window": {
+        "start_sample_frame": 44100,
+        "end_sample_frame_exclusive": 176400,
+        "source_sample_frames": 132300,
+        "start_seconds": 1.0,
+        "end_seconds": 4.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram contains the Chaffinch accelerating trill and terminal flourish over this interval; the mono candidate is finite and unclipped.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.8357303142547607,
+        "candidate_maximum_after_mono": 0.8339741230010986,
+        "candidate_rms_after_mono": 0.08952279161376425,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "turdus_merula_01",
+      "scientific_name": "Turdus merula",
+      "common_name": "Common Blackbird",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "2020-06-22 Amsel 4 Uhr früh Wien.ogg",
+      "original_sha256": "c938788635c1717b0b5cce1a208fc214db03e867876e6eb4242f79fa13a925e7",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 1,
+        "inspector_duration_seconds": 134.895714285,
+        "decoded_sample_frames": 5948901,
+        "decoded_duration_seconds": 134.8957142857143,
+        "decoded_bytes": 23795604,
+        "decoded_f32le_sha256": "ced52f05d1804828ece045dfd8c9bea3b00c03dfacb6892d14e6506e9ce0a6ee"
+      },
+      "window": {
+        "start_sample_frame": 88200,
+        "end_sample_frame_exclusive": 220500,
+        "source_sample_frames": 132300,
+        "start_seconds": 2.0,
+        "end_seconds": 5.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram shows a clear Blackbird whistle phrase in this interval. The full recording has 18 decoded samples with absolute value at least 1.0 elsewhere; this prospectively chosen interval contains none.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.23248550295829773,
+        "candidate_maximum_after_mono": 0.2413964420557022,
+        "candidate_rms_after_mono": 0.0373535671402754,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    },
+    {
+      "id": "turdus_philomelos_01",
+      "scientific_name": "Turdus philomelos",
+      "common_name": "Song Thrush",
+      "role": "CORE_CENTRAL_EUROPEAN_SET",
+      "original_file": "Turdus philomelos Bytom Poland.ogg",
+      "original_sha256": "7dfa4214f7a54bec3a94d514c3324790ac23a949ef3ab6c7caa94271e74b7b31",
+      "media": {
+        "container": "Ogg",
+        "codec": "Vorbis",
+        "encoded_sample_format": "lossy Vorbis; decoded output F32LE",
+        "sample_rate_hz": 44100,
+        "channels": 1,
+        "inspector_duration_seconds": 34.805918367,
+        "decoded_sample_frames": 1534976,
+        "decoded_duration_seconds": 34.80671201814059,
+        "decoded_bytes": 6139904,
+        "decoded_f32le_sha256": "44e8c895508e8948b8e2ec94e0f421bc4ad5ed905b85c03617f3bbb1a717f45c"
+      },
+      "window": {
+        "start_sample_frame": 44100,
+        "end_sample_frame_exclusive": 176400,
+        "source_sample_frames": 132300,
+        "start_seconds": 1.0,
+        "end_seconds": 4.0,
+        "duration_seconds": 3.0,
+        "selection_reason": "The source-only spectrogram shows several distinct Song Thrush motifs across this interval; the decoded candidate is finite and unclipped.",
+        "candidate_finite_count_after_mono": 132300,
+        "candidate_minimum_after_mono": -0.039274539798498154,
+        "candidate_maximum_after_mono": 0.03594276309013367,
+        "candidate_rms_after_mono": 0.003523119396004368,
+        "candidate_samples_abs_ge_1_after_mono": 0
+      }
+    }
+  ],
+  "use_classification": {
+    "seven_window_pool": "DEVELOPMENT_REAL_ACOUSTIC_FIXTURES",
+    "calibration_data": false,
+    "formal_qualification_data": false,
+    "biological_benchmark": false,
+    "biological_accuracy_evidence": false,
+    "phase_b_replacement": false,
+    "later_phase_b_target": "Approximately 10-30 windows including additional recordings/conditions, background or no-bird material, and mixed-species cases where useful."
+  }
+}

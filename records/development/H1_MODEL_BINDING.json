@@ -1,0 +1,12 @@
+{
+  "schema": "birdnet-v3-h1-development-model-binding",
+  "scope": "DEVELOPMENT_IDENTITY_ONLY",
+  "redistributed": false,
+  "components": {
+    "frontend": {"bytes": 545776, "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0"},
+    "compiled_backbone": {"bytes": 20465840, "sha256": "72b80de6c7cf91ae4eb40036d399b4f792ce183d5f629b974f347edec01556c1"},
+    "compiled_h1_classifier": {"bytes": 13008016, "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"}
+  },
+  "shared_feature": {"shape": [1, 7, 9, 1280], "dtype": "int16", "bytes": 161280},
+  "policy": "Acquire official upstream model inputs and reconstruct locally. Do not redistribute official or derived model/Vela binaries while the Preview 3.1 terms discrepancy remains open."
+}

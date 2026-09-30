@@ -1,0 +1,368 @@
+{
+  "authority": "official TensorFlow FP32 SavedModel embedded StableHLO",
+  "canonical_input_argument_index": 806,
+  "canonical_input_type": "tensor<1x3x224x281xf32>",
+  "canonical_main_argument_count": 807,
+  "classifier": {
+    "aggregation": "ordered sum from zero then divide by integer 5",
+    "bias_argument": 452,
+    "contribution_helpers": [
+      "_aten_mm_0ec9d647",
+      "_aten_mm_1bb30d50",
+      "_aten_mm_2944ed73",
+      "_aten_mm_76ab401f",
+      "_aten_mm_a29296c5"
+    ],
+    "live_ordered_contributions": 5,
+    "mathematical_weight_layout": "transpose to [1280,11560] before matrix multiply",
+    "stochastic_operations_in_inference_slice": 0,
+    "weight_argument": 451,
+    "weight_storage_shape": [
+      11560,
+      1280
+    ]
+  },
+  "clean_h1_interface": {
+    "production_outputs": {
+      "embedding": {
+        "semantics": "H1 GeM embedding",
+        "shape": [
+          1,
+          1280
+        ]
+      },
+      "scores": {
+        "semantics": "sigmoid(unweighted H1 logits)",
+        "shape": [
+          1,
+          11560
+        ]
+      }
+    },
+    "reason_logits_are_internal": "deployment output preserves score-plus-embedding form without carrying redundant logits",
+    "validation_only_stages": [
+      "shared_feature",
+      "h1_logits"
+    ]
+  },
+  "embedding": {
+    "is_full_model_second_return_operand": true,
+    "semantics": "exact H1 GeM output before classifier",
+    "shape": [
+      1,
+      1280
+    ]
+  },
+  "forward_compatible_boundary": {
+    "layout": "NHWC",
+    "ownership": "output of shared encoder; input to H1 GeM and separate H2/H3 paths",
+    "production_interface_note": "not exported by the current deployment signature; retained as a mechanically addressable construction/probe boundary",
+    "shared_feature_shape": [
+      1,
+      7,
+      9,
+      1280
+    ],
+    "state": "PROVEN"
+  },
+  "full_predictor": {
+    "fusion_weights": [
+      0.4,
+      0.35,
+      0.25
+    ],
+    "order": "sigmoid(0.4 * H1_logits + 0.35 * H2_logits + 0.25 * H3_logits)",
+    "public_predictions_are_h1_scores": false
+  },
+  "gem": {
+    "chain_from_embedding_backwards": [
+      "_aten_unsafe_view_a3dfae78",
+      "_aten_pow_5f058cbf",
+      "_aten_mean_abe74551",
+      "_aten_pow_9f8f1ed6",
+      "_aten_clamp_8ecb06ea",
+      "_aten_clone_568b95fc",
+      "permute_65f95971"
+    ],
+    "clamp_epsilon": 1e-06,
+    "input_permute": "NHWC [1,7,9,1280] to NCHW [1,1280,7,9]",
+    "order": "maximum -> power(p) -> mean -> reciprocal(p) -> power -> reshape",
+    "parameter_argument": 450,
+    "parameter_shape": [
+      1
+    ],
+    "spatial_axes_nchw": [
+      3,
+      2
+    ],
+    "spatial_element_count": 63
+  },
+  "head_specific_argument_ranges": {
+    "H1": [
+      450,
+      451,
+      452
+    ],
+    "H2_H3_only": [
+      453,
+      454,
+      455,
+      456,
+      457,
+      458,
+      459,
+      460,
+      461,
+      462,
+      463,
+      464,
+      465,
+      466,
+      467,
+      468,
+      469
+    ]
+  },
+  "labels": {
+    "data_rows": 11560,
+    "first_data_row": [
+      "0;3;Abeillia abeillei;Emerald-chinned Hummingbird;Aves;Apodiformes"
+    ],
+    "header": [
+      "idx;id;sci_name;com_name;class;order"
+    ],
+    "header_present": true,
+    "last_data_row": [
+      "11559;17934;Zosterornis whiteheadi;Chestnut-faced Babbler;Aves;Passeriformes"
+    ],
+    "ordered_rows_sha256": "1110b9ab3b3b5183767512446e04c29fa4d789ed5f2abfcaf5528e1e9b14a507",
+    "ordering_authority": "row order in exact official release CSV",
+    "positional_mapping": "classifier output column i maps to official CSV data row i",
+    "state": "VALIDATED"
+  },
+  "learned_parameter_identity": {
+    "classifier_bias": {
+      "dtype": "float32",
+      "elements": 11560,
+      "finite": true,
+      "max": 3.3684117794036865,
+      "mean": -6.409727997910104,
+      "min": -10.761619567871094,
+      "object_path": "root/main/_static_model/_variables/452",
+      "raw_sha256": "cd447183b8edf96a8dafd5cb4ea4f527d19428945709852964856f858135443c",
+      "shape": [
+        11560
+      ],
+      "stablehlo_argument": 452
+    },
+    "classifier_weight": {
+      "dtype": "float32",
+      "elements": 14796800,
+      "finite": true,
+      "max": 8.233372688293457,
+      "mean": -0.2998254667151273,
+      "min": -4.950831890106201,
+      "object_path": "root/main/_static_model/_variables/451",
+      "raw_sha256": "e92b87741b6b615cc27608f1d08180b20c0ed38158b790cb8560f7a6345e5055",
+      "shape": [
+        11560,
+        1280
+      ],
+      "stablehlo_argument": 451
+    },
+    "gem_exponent": {
+      "dtype": "float32",
+      "elements": 1,
+      "finite": true,
+      "max": 7.408084869384766,
+      "mean": 7.408084869384766,
+      "min": 7.408084869384766,
+      "object_path": "root/main/_static_model/_variables/450",
+      "raw_sha256": "2976b3315e69981d6555327b7b28557d2b9e358e93781cc6c14a8bceb42f155c",
+      "shape": [
+        1
+      ],
+      "stablehlo_argument": 450,
+      "value": [
+        7.408084869384766
+      ]
+    }
+  },
+  "schema": "birdnet-clean-tensorflow-h1-contract",
+  "shared_feature": {
+    "common_dependency_of": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "layout": "NHWC",
+    "shape": [
+      1,
+      7,
+      9,
+      1280
+    ]
+  },
+  "stablehlo_input_after_transpose": "NCHW float32 [1,3,224,281]",
+  "state": "PROVEN",
+  "state_partition": {
+    "clean_h1_retained_variable_count": 673,
+    "h1_specific_variable_indices": [
+      450,
+      451,
+      452
+    ],
+    "h2_h3_only_variable_indices": [
+      453,
+      454,
+      455,
+      456,
+      457,
+      458,
+      459,
+      460,
+      461,
+      462,
+      463,
+      464,
+      465,
+      466,
+      467,
+      468,
+      469
+    ],
+    "inference_dead_variable_indices": [
+      472,
+      475,
+      478,
+      481,
+      484,
+      487,
+      490,
+      493,
+      496,
+      499,
+      502,
+      505,
+      508,
+      511,
+      514,
+      517,
+      520,
+      523,
+      526,
+      529,
+      532,
+      535,
+      538,
+      541,
+      544,
+      547,
+      550,
+      553,
+      556,
+      559,
+      562,
+      565,
+      568,
+      571,
+      574,
+      577,
+      580,
+      583,
+      586,
+      589,
+      592,
+      595,
+      598,
+      601,
+      604,
+      607,
+      610,
+      613,
+      616,
+      619,
+      622,
+      625,
+      628,
+      631,
+      634,
+      637,
+      640,
+      643,
+      646,
+      649,
+      652,
+      655,
+      658,
+      661,
+      664,
+      667,
+      670,
+      673,
+      676,
+      679,
+      682,
+      685,
+      688,
+      691,
+      694,
+      697,
+      700,
+      703,
+      706,
+      709,
+      712,
+      715,
+      718,
+      721,
+      724,
+      727,
+      730,
+      733,
+      736,
+      739,
+      742,
+      745,
+      748,
+      751,
+      754,
+      757,
+      760,
+      763,
+      766,
+      769,
+      772,
+      775,
+      778,
+      781,
+      784,
+      787,
+      790,
+      793,
+      796,
+      799,
+      800,
+      801,
+      802,
+      803,
+      804,
+      805
+    ],
+    "shared_inference_variable_count": 670
+  },
+  "tensorflow_object_graph_binding": {
+    "capture_identity_check": "capture[i].ref() == _variables[i].handle.ref() for all 806",
+    "conclusion": "StableHLO arguments 450, 451 and 452 mechanically bind to TensorFlow variables 450, 451 and 452",
+    "object_graph_root_main_node": 2,
+    "object_graph_static_model_node": 13,
+    "object_graph_variable_list_node": 24,
+    "shape_dtype_alignment_check": "StableHLO arg[i] == TensorFlow _variables[i] for all 806",
+    "state": "PROVEN",
+    "static_function_capture_count": 806,
+    "variable_list_entries": 806,
+    "variable_list_local_names": "exact decimal sequence 0..805"
+  },
+  "version": 1,
+  "waveform_frontend_output": "NHWC float32 [1,224,281,3]"
+}

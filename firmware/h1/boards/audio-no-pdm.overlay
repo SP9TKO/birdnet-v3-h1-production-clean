@@ -1,0 +1,4 @@
+/* Build-only audio NONE personality: do not initialize the board PDM device. */
+&pdm {
+	status = "disabled";
+};

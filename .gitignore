@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / local state
+*.log
+*.tmp
+
+# Generated local test artifacts
+.coverage
+.pytest_cache/
+htmlcov/
+
+
+# Gate scratch / downloaded upstream payloads
+.m1-work/
+.m2-work/
+.m3-work/
+.m4-work/
+.m5-work/
+.development-work/
+work/
+tmp/
+cache/
+downloads/
+wheels/
+*.whl
+
+# Large/intermediate model artifacts are not ordinary Git payloads
+*.pt
+*.pth
+*.pth.tar
+*.onnx
+*.tflite
+*.bin
+*.elf
+
+# Intermediate numerical/debug dumps
+**/run2/
+**/intermediate/
+**/scratch/
+**/module_code/
+**/*graph*.txt
+**/*graph*.txt.gz

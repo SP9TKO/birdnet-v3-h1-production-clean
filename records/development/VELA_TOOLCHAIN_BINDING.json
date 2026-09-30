@@ -1,0 +1,28 @@
+{
+  "schema": "birdnet-v3-h1-development-toolchain-binding",
+  "scope": "DEVELOPMENT_IDENTITY_ONLY",
+  "vela": {
+    "version": "5.0.0",
+    "official_source_tag_commit": "0f8edf7d00bf471845c4b44a16f8d2bac53c2dff",
+    "python": "3.12.14",
+    "target": "ethos-u85-256",
+    "system_config": "Ethos_U85_SRAM_OSPI",
+    "memory_mode": "Dedicated_Sram",
+    "arena_cache_size_bytes": 524288,
+    "configuration_sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb"
+  },
+  "firmware_environment": {
+    "sdk_alif": {"version": "v2.3.0", "commit": "a524855a8b470fff0e3edb2c902a034d45ddf2a4"},
+    "zephyr": {"version": "4.1.0", "commit": "3a2b84d96961b53431a78685c6ec0f0df4ddf347"},
+    "tflite_micro_commit": "8d404de73acf7687831e16d88e86e4f73cfddf8e",
+    "cmsis_ethos_u_commit": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+    "zephyr_sdk": "0.17.0",
+    "gcc": "12.2.0",
+    "ethos_u_driver": "0.16.0"
+  },
+  "compiled_components": {
+    "backbone": {"bytes": 20465840, "sha256": "72b80de6c7cf91ae4eb40036d399b4f792ce183d5f629b974f347edec01556c1"},
+    "classifier": {"bytes": 13008016, "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"}
+  },
+  "qualification": "Historical development binding. Sanitized firmware paths require fresh build revalidation."
+}

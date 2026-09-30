@@ -1,0 +1,51 @@
+{
+  "byte_deterministic_independent_rebuild": true,
+  "canonical_tree": {
+    "aggregate_algorithm": "sha256 of sorted '<file_sha256>  <bytes>  <relative_path>\\n' rows",
+    "file_count": 4,
+    "files": [
+      {
+        "bytes": 97,
+        "relative_path": "fingerprint.pb",
+        "sha256": "ce0efa1ec1ac4312d389d8bf785494bb07c200c85a47e40040a34d91e0b21ec5"
+      },
+      {
+        "bytes": 3100807,
+        "relative_path": "saved_model.pb",
+        "sha256": "d9b844205a70cd9f59b000f3afed287e10d186c4fb7bd4806ef78a969cae82b6"
+      },
+      {
+        "bytes": 140627678,
+        "relative_path": "variables/variables.data-00000-of-00001",
+        "sha256": "9c32a8d788d2893d38dcdda32de4b261ee8e7ec04514500550700260fd40a99f"
+      },
+      {
+        "bytes": 38755,
+        "relative_path": "variables/variables.index",
+        "sha256": "54ac43bab03edbe554075011c10bf6564c082a18e817eb800ddec0961a3105ae"
+      }
+    ],
+    "format": "TensorFlow SavedModel directory",
+    "root": ".m3-work/canonical-h1-savedmodel",
+    "total_bytes": 143767337,
+    "tree_sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a"
+  },
+  "construction_script": {
+    "bytes": 5883,
+    "path": "scripts/construct_h1.py",
+    "sha256": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742"
+  },
+  "format": "TensorFlow SavedModel",
+  "independent_rebuild_path": ".m3-work/rebuild-h1-savedmodel",
+  "independent_rebuild_tree_sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a",
+  "labels_sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+  "official_source": {
+    "saved_model_pb_sha256": "4700fa91766af07e4923b549727afad9cd94310b01871ac17f717ae00d42631e",
+    "stablehlo_sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac"
+  },
+  "path": ".m3-work/canonical-h1-savedmodel",
+  "schema": "birdnet-clean-m3-artifact-identity",
+  "state": "VALIDATED",
+  "tensorflow": "2.21.0",
+  "version": 1
+}

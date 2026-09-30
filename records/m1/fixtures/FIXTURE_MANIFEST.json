@@ -1,0 +1,41 @@
+{
+  "canonical_domain": {
+    "batch": 1,
+    "dtype": "float32",
+    "samples": 96000
+  },
+  "canonical_waveform": {
+    "bytes": 384000,
+    "dtype": "float32",
+    "elements": 96000,
+    "finite": true,
+    "max": 0.25482600927352905,
+    "mean": 4.055393219459802e-06,
+    "min": -0.2545056939125061,
+    "raw_sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+    "shape": [
+      1,
+      96000
+    ]
+  },
+  "duration_seconds": 3.0,
+  "generation": "deterministic analytic sinusoids/chirp; no random generator",
+  "sample_rate_hz": 32000,
+  "schema": "birdnet-clean-m1-fixtures",
+  "silence": {
+    "bytes": 384000,
+    "dtype": "float32",
+    "elements": 96000,
+    "finite": true,
+    "max": 0.0,
+    "mean": 0.0,
+    "min": 0.0,
+    "raw_sha256": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+    "shape": [
+      1,
+      96000
+    ]
+  },
+  "state": "VALIDATED",
+  "version": 1
+}

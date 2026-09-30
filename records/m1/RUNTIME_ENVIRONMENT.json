@@ -1,0 +1,32 @@
+{
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "0",
+    "TF_DETERMINISTIC_OPS": "1",
+    "TF_ENABLE_ONEDNN_OPTS": "0",
+    "TF_NUM_INTEROP_THREADS": "1",
+    "TF_NUM_INTRAOP_THREADS": "1"
+  },
+  "numpy": "2.2.6",
+  "optimizer_experimental_options": {
+    "constant_folding": false,
+    "disable_meta_optimizer": true,
+    "disable_model_pruning": false
+  },
+  "python": "3.12.14 (main, Sep 19 2026, 01:05:48) [GCC 12.2.0]",
+  "python_executable": {
+    "bytes": 14480,
+    "path": "/workspace/.m2-work/venv/bin/python",
+    "sha256": "4dbf3143240288fb2170257ffaa7bd030cdda5d2703d1f5f30b627042267e2e3"
+  },
+  "state": "VALIDATED",
+  "tensorflow": "2.21.0",
+  "threading": {
+    "inter_op": 1,
+    "intra_op": 1
+  }
+}

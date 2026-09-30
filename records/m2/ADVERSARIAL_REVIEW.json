@@ -1,0 +1,54 @@
+{
+  "failures": [],
+  "issues": [
+    {
+      "classification": "VALIDATED",
+      "disposition": "all 673 tensors are raw-byte equal",
+      "issue": "retained parameter identity"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "direct StableHLO slice plus independent arithmetic oracle",
+      "issue": "axes/layout/GeM order"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "five live paths remain; no algebraic collapse",
+      "issue": "five-contribution behavior"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "separate probe stages and final sigmoid comparisons",
+      "issue": "H1 score/logit semantics"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "H2/H3 args 453..469 and unreachable functions are removed",
+      "issue": "live cross-head dependency"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "exact official CSV identity and 11560 positional rows",
+      "issue": "label order"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "only the pruned StableHLO payload is present in the clean graph",
+      "issue": "hidden full-predictor wrapper"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "static AST and runtime module checks find none",
+      "issue": "PyTorch/ONNX dependency"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "criteria and implementation hashes were committed before this run",
+      "issue": "prospective criteria"
+    }
+  ],
+  "schema": "birdnet-clean-m2-adversarial-review",
+  "state": "VALIDATED",
+  "unresolved": [],
+  "version": 1
+}

@@ -1,0 +1,14 @@
+{
+  "clean_tensorflow_h1_in_memory": true,
+  "disposition": "ACCEPTED",
+  "evidence_classification": "VALIDATED",
+  "m1_entry_verified": true,
+  "m3_entry_authorized": true,
+  "probe_stablehlo_sha256": "b522c9e76099ca0321d30541eb585f57ea1fe3b7eed176a2ad48e3044a8ea765",
+  "production_stablehlo_sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+  "pytorch_or_onnx_participated": false,
+  "retained_variable_count": 673,
+  "schema": "birdnet-clean-m2-accepted-state",
+  "unresolved": [],
+  "version": 1
+}

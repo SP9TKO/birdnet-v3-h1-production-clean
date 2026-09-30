@@ -1,0 +1,124 @@
+{
+  "schema": "birdnet-clean-m3-prospective-criteria",
+  "version": 5,
+  "state": "VALIDATED",
+  "frozen_before_results": true,
+  "m2_accepted_state_sha256": "cccf06d0837c3db2a7c2b50bf808b1494808a8531b9eef178d3334b71a0df41d",
+  "production_stablehlo_sha256": "3cff5699feedb7cde9c877f88ecaefc9c73da44fb735875411f5fdd10f78ecda",
+  "implementation_sha256": {
+    "scripts/h1_model.py": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752",
+    "scripts/construct_h1.py": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742",
+    "scripts/validate_h1.py": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1",
+    "scripts/validate_serialized_h1.py": "6f32a9f41775b10b6bbdbf765c392cb5aa1bd25030c5547a621712169eb9cfa3"
+  },
+  "fixture_raw_sha256": {
+    "canonical": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+    "silence": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+    "low_amplitude_sine": "0cc3df62eea9ab1a3f5e67c3b4a08bcb4cddc6557a8dbda332b7470fa0472e4e",
+    "high_valid_two_tone": "1af7db58ba98f1850049411d6221673d9c3396fffe3a87de93dfd19d22f2a506",
+    "structured_impulse": "94a56ab616a013aef6ca6dab022323fb9c8fa74e8a0235b7ce1079fe7c5d5296"
+  },
+  "artifact_requirements": {
+    "format": "TensorFlow SavedModel",
+    "signature_names": ["serving_default"],
+    "input": {"name": "waveform", "shape": [1, 96000], "dtype": "float32"},
+    "outputs": {
+      "scores": {"shape": [1, 11560], "dtype": "float32"},
+      "embedding": {"shape": [1, 1280], "dtype": "float32"}
+    },
+    "learned_state_tensor_count": 673,
+    "all_serialized_parameter_values_exact": true,
+    "full_predictor_module_forbidden": true,
+    "h2_h3_live_computation_forbidden": true,
+    "h2_h3_serialized_state_forbidden": true,
+    "independent_rebuild_tree_byte_identity_required": true,
+    "normal_public_tensorflow_reload_required": true
+  },
+  "comparisons": {
+    "A_official_vs_B_clean_probe": {
+      "require_raw_byte_equal": true,
+      "maximum": {
+        "max_absolute_error": 0.0,
+        "mean_absolute_error": 0.0,
+        "rmse": 0.0
+      }
+    },
+    "A_official_vs_B_clean_production": {
+      "scores": {
+        "require_raw_byte_equal": true,
+        "maximum": {"max_absolute_error": 0.0, "mean_absolute_error": 0.0, "rmse": 0.0}
+      },
+      "embedding": {
+        "require_raw_byte_equal": true,
+        "maximum": {"max_absolute_error": 0.0, "mean_absolute_error": 0.0, "rmse": 0.0}
+      }
+    },
+    "A_official_vs_C_reloaded": {
+      "scores": {
+        "maximum": {"max_absolute_error": 0.00002, "mean_absolute_error": 0.000001, "rmse": 0.000002}
+      },
+      "embedding": {
+        "maximum": {"max_absolute_error": 0.00005, "mean_absolute_error": 0.000005, "rmse": 0.00001}
+      }
+    },
+    "B_clean_vs_C_reloaded": {
+      "scores": {
+        "maximum": {"max_absolute_error": 0.00002, "mean_absolute_error": 0.000001, "rmse": 0.000002}
+      },
+      "embedding": {
+        "maximum": {"max_absolute_error": 0.00005, "mean_absolute_error": 0.000005, "rmse": 0.00001}
+      }
+    },
+    "C_canonical_vs_independent_rebuild": {
+      "scores": {
+        "require_raw_byte_equal": true,
+        "maximum": {"max_absolute_error": 0.0, "mean_absolute_error": 0.0, "rmse": 0.0}
+      },
+      "embedding": {
+        "require_raw_byte_equal": true,
+        "maximum": {"max_absolute_error": 0.0, "mean_absolute_error": 0.0, "rmse": 0.0}
+      }
+    }
+  },
+  "nonfinite_policy": "NaN and signed-infinity masks must match exactly; source undefined behavior must be preserved.",
+  "harness_amendment": {
+    "state": "VALIDATED",
+    "reason": "The first two constructor runs exposed TensorFlow 2.21 fingerprint UUID randomness. saved_model.pb and both checkpoint files were byte-identical; all five semantic FingerprintDef hashes were identical; only the UUID field and therefore fingerprint.pb/tree hashes differed.",
+    "controlled_diagnostic": {
+      "first_tree_sha256": "d4edf540df9a74b760a7f22daac7bc4c6a4a43fc4a7c59ce0f132caf6020a01f",
+      "second_tree_sha256": "d4ac5ee6dce91d290e5048307f1b50c1d80c32df0ecc1860005332c211619e95",
+      "saved_model_pb_sha256_both": "d9b844205a70cd9f59b000f3afed287e10d186c4fb7bd4806ef78a969cae82b6",
+      "variables_index_sha256_both": "54ac43bab03edbe554075011c10bf6564c082a18e817eb800ddec0961a3105ae",
+      "variables_data_sha256_both": "9c32a8d788d2893d38dcdda32de4b261ee8e7ec04514500550700260fd40a99f",
+      "semantic_fingerprint_fields_equal": true,
+      "uuid_equal": false
+    },
+    "fix": "Normalize only FingerprintDef.uuid to a deterministic content-derived 128-bit decimal value after tf.saved_model.save.",
+    "criteria_changes": "No fixture, threshold, structural requirement, parameter requirement, or byte-identity requirement changed. Only the frozen construction-script hash changed before rerun."
+  },
+  "evidence_harness_amendment": {
+    "state": "VALIDATED",
+    "reason": "Two passing validation processes serialized TensorFlow's structured output mapping in different display orders. All model results and every other evidence file were identical; only the human-readable structured_outputs string in SERIALIZED_AUDIT.json differed.",
+    "controlled_diagnostic": {
+      "first_serialized_audit_sha256": "112714f809f0d7321bf8c46657a71c7d59d49c393e744ae77cbc08baac5fcbee",
+      "second_serialized_audit_sha256": "52775063ad1bff8e95c68a94550940a2eaa69376e958c6d36d9cb083ef93f6c0",
+      "all_other_validation_evidence_equal": true,
+      "differing_field": "signatures.structured_outputs display order only"
+    },
+    "fix": "Replace TensorFlow object string representations with a stable structured summary using sorted input and output names.",
+    "criteria_changes": "No fixture, threshold, structural requirement, parameter requirement, artifact byte-identity requirement, or acceptance result changed. Only the frozen validation-script hash changed before the retained rerun."
+  },
+  "dependency_evidence_amendment": {
+    "state": "VALIDATED",
+    "reason": "The reused M2 dependency-check helper inspected all four M1-M3 implementation scripts but retained its M1-M2 schema and conclusion labels in the M3 report.",
+    "fix": "Relabel only the M3 dependency record schema and conclusion to match its actual M1-M3 inspection scope.",
+    "criteria_changes": "No inspected file, forbidden module set, runtime result, fixture, threshold, structural requirement, parameter requirement, artifact byte-identity requirement, or acceptance result changed. Only the frozen validation-script hash changed before the final retained rerun."
+  },
+  "deterministic_rebuild_wording_amendment": {
+    "state": "VALIDATED",
+    "reason": "The retained determinism disposition used 'independent constructor processes', which was accurate at the process level but could be misread as two independently implemented constructors.",
+    "fix": "State explicitly that two independent reconstruction runs used the same deterministic constructor implementation in separate fresh processes.",
+    "criteria_changes": "No executable validation logic, fixture, threshold, structural requirement, parameter requirement, artifact byte-identity requirement, or acceptance result changed. Only two explanatory strings and the frozen validation-script hash changed before rerun."
+  },
+  "scope_note": "A/B/C maxima are fixture observations only. M3 makes no TFLite, Vela, M55, firmware or hardware claim."
+}

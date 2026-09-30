@@ -1,0 +1,22 @@
+{
+  "frontend_serve": {
+    "captured_input_count": 1,
+    "graph_input_count": 2,
+    "input": "((TensorSpec(shape=(None, None), dtype=tf.float32, name='inputs'),), {})",
+    "output": "TensorSpec(shape=(None, 224, None, 3), dtype=tf.float32, name='unknown')"
+  },
+  "public_serving_default": {
+    "input": "((), {'x': TensorSpec(shape=(1, None), dtype=tf.float32, name='x')})",
+    "note": "public predictions are fused H1/H2/H3 scores, not H1-only scores",
+    "output": "{'predictions': TensorSpec(shape=(1, 11560), dtype=tf.float32, name='predictions'), 'embeddings': TensorSpec(shape=(1, 1280), dtype=tf.float32, name='embeddings')}"
+  },
+  "schema": "birdnet-clean-m1-tensorflow-signatures",
+  "state": "PROVEN",
+  "static_main_serve": {
+    "captured_input_count": 806,
+    "graph_input_count": 807,
+    "input": "((TensorSpec(shape=(1, 3, 224, None), dtype=tf.float32, name='x'),), {})",
+    "output": "{'predictions': TensorSpec(shape=(1, 11560), dtype=tf.float32, name='predictions'), 'embeddings': TensorSpec(shape=(1, 1280), dtype=tf.float32, name='embeddings')}"
+  },
+  "version": 1
+}

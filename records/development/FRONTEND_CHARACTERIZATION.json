@@ -1,0 +1,15 @@
+{
+  "schema": "birdnet-v3-h1-frontend-characterization",
+  "classification": "CHARACTERIZATION_ONLY",
+  "promotion": "FORBIDDEN",
+  "acceptance_tolerance": null,
+  "reason": "No justified complete-frontend reference-versus-current-production numerical tolerance has been frozen.",
+  "current_route": {"runOnce": "h1RunFrontend", "reference_frontend": true},
+  "diagnostic_tooling": "Compares reference output with two repeated production M55 outputs, checks output ranges and guard bytes, and reports numerical metrics.",
+  "earlier_native_m55_vs_tflite_host_observations": {
+    "synthetic": {"maximum_absolute_error": 0.000629425048828125, "relative_rms_error": 3.7124729534423126e-6, "cosine_similarity": 0.9999999999931118},
+    "frozen_wren": {"maximum_absolute_error": 0.0007762908935546875, "relative_rms_error": 0.0008890160072862032, "cosine_similarity": 0.9999999946821697}
+  },
+  "spectral_prepare": "The diagnostic preparation route initializes the CMSIS real FFT and complex FFT before frame processing. Prior command-hang observations do not qualify runtime execution or define a numerical tolerance.",
+  "physical_qualification_claim": false
+}

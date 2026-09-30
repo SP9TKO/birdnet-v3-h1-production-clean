@@ -1,0 +1,77 @@
+{
+  "file_count": 9,
+  "files": [
+    {
+      "bytes": 751,
+      "path": "records/m1/ACCEPTED_STATE.json",
+      "sha256": "2828fa212ba18c532580ea74246a9d12f037f1dbe2265e38972195f4f21abe9d"
+    },
+    {
+      "bytes": 2271,
+      "path": "records/m1/ADVERSARIAL_REVIEW.json",
+      "sha256": "26ba398709a7866377eecc23c0793e7729db4b8eb6a43b24a53066d5acd638ba"
+    },
+    {
+      "bytes": 7778,
+      "path": "records/m1/H1_CONTRACT.json",
+      "sha256": "0ed429c171eabdc52fc2b0b54179aecfb2b8e8f4085a36d58648092b6852dc20"
+    },
+    {
+      "bytes": 865,
+      "path": "records/m1/RUNTIME_ENVIRONMENT.json",
+      "sha256": "aa9aacb3477d8ddfdb726c2fbc3df27e43882a9336d7ffd5d90da60b95598f1d"
+    },
+    {
+      "bytes": 3084,
+      "path": "records/m1/SOURCE_IDENTITY.json",
+      "sha256": "c45818fe7d7030af679ed06aa9ec8214bffadf69f0c112bf69fb73257d7a31cd"
+    },
+    {
+      "bytes": 1100,
+      "path": "records/m1/TENSORFLOW_SIGNATURES.json",
+      "sha256": "ad6f4b4d2b391973642baca12b1d6001aaa8e812ef49585b06b5011742cdb580"
+    },
+    {
+      "bytes": 938,
+      "path": "records/m1/fixtures/FIXTURE_MANIFEST.json",
+      "sha256": "51e13a1cc71735e8feb34df56b95dce1d1e23882918b02b0b5b9c754a57cdf87"
+    },
+    {
+      "bytes": 384128,
+      "path": "records/m1/fixtures/canonical_waveform.npy",
+      "sha256": "ab4dd2fc09bbba10d1dd64532d6d37ab79ab3d76d76999bddb9dd2e744db87e9"
+    },
+    {
+      "bytes": 384128,
+      "path": "records/m1/fixtures/silence.npy",
+      "sha256": "73f5df2b34d20c8568803e23f40db97d2817d14d39f668c383a098351f544ca1"
+    }
+  ],
+  "implementation": [
+    {
+      "bytes": 35149,
+      "path": "scripts/h1_model.py",
+      "sha256": "39a4a73e16da9bb4cde8fced78be98807d87358c8eacb01960d9cd2b73449e35"
+    },
+    {
+      "bytes": 12039,
+      "path": "scripts/inspect_source.py",
+      "sha256": "27205596b4cb98ea9307f80b08a0be4637384d195e2bdfb64cc44b625f1a6737"
+    },
+    {
+      "bytes": 569,
+      "path": "requirements/requirements-frozen.txt",
+      "sha256": "7c0efb4d34f200bc74874d7d6030f5d6e2e7c579c1e379cbca36ef9cec289d06"
+    },
+    {
+      "bytes": 3912,
+      "path": "requirements/WHEEL_SHA256SUMS.txt",
+      "sha256": "11bb15b87f970e2abd752449fd55aa2704902045da65003b8829ed322be55cc5"
+    }
+  ],
+  "root": "records/m1",
+  "schema": "birdnet-clean-evidence-manifest",
+  "state": "VALIDATED",
+  "total_bytes": 785043,
+  "version": 1
+}

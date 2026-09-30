@@ -1,0 +1,12 @@
+*.bin binary
+*.elf binary
+*.tflite binary
+*.onnx binary
+*.pt binary
+*.npy binary
+*.npz binary
+*.pdf binary
+*.raw binary
+*.csv text
+*.json text
+*.md text

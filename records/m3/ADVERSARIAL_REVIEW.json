@@ -1,0 +1,49 @@
+{
+  "failures": [],
+  "issues": [
+    {
+      "classification": "VALIDATED",
+      "disposition": "signature, checkpoint, graph payload and all output fixtures reload",
+      "issue": "serialization completeness"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "673 official/canonical/rebuild raw value hashes match",
+      "issue": "loss or change of variables"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "checkpoint namespace is only h1_variables/0..672 and the full module hash is absent",
+      "issue": "hidden full-model state"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "independent public-API reload passes the frozen A/B/C matrix",
+      "issue": "reload behavior"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "named scores/embedding signatures have exact dtype and shape",
+      "issue": "output ordering and semantics"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "exact M1 authority and labels identities are bound",
+      "issue": "label ordering and source identity"
+    },
+    {
+      "classification": "PROVEN",
+      "disposition": "two independent reconstruction runs using the same deterministic constructor emitted byte-identical four-file SavedModel trees",
+      "issue": "reconstruction determinism"
+    },
+    {
+      "classification": "VALIDATED",
+      "disposition": "static and runtime checks find none",
+      "issue": "PyTorch/ONNX dependency"
+    }
+  ],
+  "schema": "birdnet-clean-m3-adversarial-review",
+  "state": "VALIDATED",
+  "unresolved": [],
+  "version": 1
+}

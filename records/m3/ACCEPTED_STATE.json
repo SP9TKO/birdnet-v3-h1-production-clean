@@ -1,0 +1,14 @@
+{
+  "canonical_m4_binding_written": true,
+  "canonical_saved_model_tree_sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a",
+  "disposition": "ACCEPTED",
+  "evidence_classification": "VALIDATED",
+  "independent_rebuild_tree_sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a",
+  "m2_entry_verified": true,
+  "m4_entry_authorized": true,
+  "m4_started": false,
+  "pytorch_or_onnx_participated": false,
+  "schema": "birdnet-clean-m3-accepted-state",
+  "unresolved": [],
+  "version": 1
+}

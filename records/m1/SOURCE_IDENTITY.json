@@ -1,0 +1,86 @@
+{
+  "archive": {
+    "bytes": 499609919,
+    "md5": "f0409a35ac3e1605cbe6190e0c81bba9",
+    "path": ".m1-work/official/BirdNET+_V3.0-preview3.1_Global_11K_FP32_Protobuf.zip",
+    "sha256": "ead54e1c3c0cbf6032def4a5aa6e583b63263440f6975e2dbade7d925e775eeb",
+    "state": "VALIDATED"
+  },
+  "doi": "10.5281/zenodo.20703646",
+  "full_fp32_tflite": {
+    "expected_identity": {
+      "bytes": 540471440,
+      "md5": "d7fe09a7d7ffd786e470e655c55b95f6",
+      "sha256": "a932aea50ec90984467e4c6da3d4d7bcc6a650a40e8bf35cf084219fef69fcd7"
+    },
+    "role": "corroboration only; not acquired and not read by this rework",
+    "state": "OBSERVED"
+  },
+  "full_fp32_tflite_participated": false,
+  "labels": {
+    "bytes": 809172,
+    "contract": {
+      "data_rows": 11560,
+      "first_data_row": [
+        "0;3;Abeillia abeillei;Emerald-chinned Hummingbird;Aves;Apodiformes"
+      ],
+      "header": [
+        "idx;id;sci_name;com_name;class;order"
+      ],
+      "header_present": true,
+      "last_data_row": [
+        "11559;17934;Zosterornis whiteheadi;Chestnut-faced Babbler;Aves;Passeriformes"
+      ],
+      "ordered_rows_sha256": "1110b9ab3b3b5183767512446e04c29fa4d789ed5f2abfcaf5528e1e9b14a507",
+      "ordering_authority": "row order in exact official release CSV",
+      "positional_mapping": "classifier output column i maps to official CSV data row i",
+      "state": "VALIDATED"
+    },
+    "md5": "21ccf9e984a955bfc2d5c52faab6a6ea",
+    "path": ".m1-work/official/BirdNET+_V3.0-preview3.1_Global_11K_Labels.csv",
+    "sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+    "state": "VALIDATED"
+  },
+  "production_authority": "official TensorFlow FP32 Protobuf SavedModel",
+  "pytorch_or_onnx_participated": false,
+  "saved_model_pb": {
+    "bytes": 3870764,
+    "path": ".m1-work/extracted/saved_model.pb",
+    "sha256": "4700fa91766af07e4923b549727afad9cd94310b01871ac17f717ae00d42631e",
+    "state": "VALIDATED"
+  },
+  "schema": "birdnet-clean-m1-authoritative-source",
+  "stablehlo": {
+    "bytes": 313747,
+    "occurrences": [
+      {
+        "bytes": 313747,
+        "function": "__inference_inner_214163",
+        "node": "XlaCallModule",
+        "sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac",
+        "version": 5
+      },
+      {
+        "bytes": 313747,
+        "function": "__inference_inner_221462",
+        "node": "XlaCallModule",
+        "sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac",
+        "version": 5
+      }
+    ],
+    "sha256": "f8f5968213692c2a4b17e5b504736a601fc60b4b3203bab51bc1c5cc8b8c2dac"
+  },
+  "state": "VALIDATED",
+  "variables_data": {
+    "bytes": 541001886,
+    "path": ".m1-work/extracted/variables/variables.data-00000-of-00001",
+    "sha256": "f0f76dec6c8d0b0d4c6b6b135cdaf69a957b1c73ba8a90d9dcbd7321f9360b37"
+  },
+  "variables_index": {
+    "bytes": 46579,
+    "path": ".m1-work/extracted/variables/variables.index",
+    "sha256": "5b4ab314f53a90fc716cce8000b2fabab76afaa4d2ad3c8e88dd3f11106d7da8"
+  },
+  "version": 1,
+  "zenodo_record": "20703646"
+}

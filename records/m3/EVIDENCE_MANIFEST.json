@@ -1,0 +1,77 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "bytes": 533,
+      "path": "records/m3/ACCEPTED_STATE.json",
+      "sha256": "98ffa29b0f5ac54c9e00cc4c7452fae52aef4ef2676c5c316a5572f17fe4fb72"
+    },
+    {
+      "bytes": 1625,
+      "path": "records/m3/ADVERSARIAL_REVIEW.json",
+      "sha256": "98c1d26a785164bfdda32639c9ac4a6e98e982fb5824ad73a71c463e1c4399fd"
+    },
+    {
+      "bytes": 1989,
+      "path": "records/m3/ARTIFACT_IDENTITY.json",
+      "sha256": "cff9ecd87c0efc41560de39fa161fbda7a0f3081f2e55f844c849d7cbdf66a8a"
+    },
+    {
+      "bytes": 818,
+      "path": "records/m3/CANONICAL_M4_FP32_INPUT.json",
+      "sha256": "9bc58333ca598676399ffe27a38a34a3fb651b19adf41710cb76d25f1c924780"
+    },
+    {
+      "bytes": 1875,
+      "path": "records/m3/DEPENDENCY_CHECK.json",
+      "sha256": "4014cae0c826c1f5af23dab63fa072fb7417112f01acbcdc20da3911340500c1"
+    },
+    {
+      "bytes": 7464,
+      "path": "records/m3/PROSPECTIVE_CRITERIA.json",
+      "sha256": "2505d5803669f55104918cadae69f43be2124adeca68b2e86fb2c39ae292cf49"
+    },
+    {
+      "bytes": 36215,
+      "path": "records/m3/RELOAD_VALIDATION.json",
+      "sha256": "1928cdc74e435534d0b13f7fc22dab156798454ffa6753353f4a9dedd66d9a27"
+    },
+    {
+      "bytes": 3145,
+      "path": "records/m3/SERIALIZED_AUDIT.json",
+      "sha256": "3db35f5a07c7ba224c37418973a20f866b97f3cbebc6d47fedd0b58c7ef6ac83"
+    }
+  ],
+  "implementation": [
+    {
+      "bytes": 35455,
+      "path": "scripts/h1_model.py",
+      "sha256": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752"
+    },
+    {
+      "bytes": 5883,
+      "path": "scripts/construct_h1.py",
+      "sha256": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742"
+    },
+    {
+      "bytes": 20349,
+      "path": "scripts/validate_h1.py",
+      "sha256": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1"
+    },
+    {
+      "bytes": 20912,
+      "path": "scripts/validate_serialized_h1.py",
+      "sha256": "6f32a9f41775b10b6bbdbf765c392cb5aa1bd25030c5547a621712169eb9cfa3"
+    },
+    {
+      "bytes": 7464,
+      "path": "records/m3/PROSPECTIVE_CRITERIA.json",
+      "sha256": "2505d5803669f55104918cadae69f43be2124adeca68b2e86fb2c39ae292cf49"
+    }
+  ],
+  "root": "records/m3",
+  "schema": "birdnet-clean-evidence-manifest",
+  "state": "VALIDATED",
+  "total_bytes": 53664,
+  "version": 1
+}

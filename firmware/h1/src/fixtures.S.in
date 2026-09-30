@@ -1,0 +1,24 @@
+/* Identified development frontend and the two authorized raw waveform fixtures. */
+.section .rodata.h1_fixture,"a",%progbits
+.balign 16
+.global h1FrontendModelData
+.type h1FrontendModelData,%object
+h1FrontendModelData:
+.incbin "@H1_FRONTEND_MODEL_BIN_NORMALIZED@"
+.size h1FrontendModelData, .-h1FrontendModelData
+
+.balign 16
+.global h1SyntheticWaveformData
+.type h1SyntheticWaveformData,%object
+h1SyntheticWaveformData:
+.incbin "@H1_SYNTHETIC_BIN_NORMALIZED@"
+.size h1SyntheticWaveformData, .-h1SyntheticWaveformData
+
+.balign 16
+.global h1WrenWaveformData
+.type h1WrenWaveformData,%object
+h1WrenWaveformData:
+.incbin "@H1_WREN_BIN_NORMALIZED@"
+.size h1WrenWaveformData, .-h1WrenWaveformData
+
+.section .note.GNU-stack,"",%progbits

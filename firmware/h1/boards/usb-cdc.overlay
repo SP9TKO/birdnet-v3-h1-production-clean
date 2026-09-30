@@ -1,0 +1,27 @@
+/*
+ * Native E8 USB-C application channel. This is the pinned sdk-alif CDC ACM
+ * sample mechanism, with larger lossless application FIFOs.
+ */
+#include <dt-bindings/misc/alif_aipm_common.h>
+
+&aipm_run_default {
+	phy-pwr-gating = <ALIF_PHY_GATE_USB_MASK>;
+};
+
+ns: &ns {
+	status = "okay";
+};
+
+zephyr_udc0: &usb {
+	status = "okay";
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+		label = "BirdNET H1 application channel";
+		rx-fifo-size = <8192>;
+		tx-fifo-size = <8192>;
+		hw-flow-control;
+	};
+};
