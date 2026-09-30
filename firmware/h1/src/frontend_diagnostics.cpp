@@ -1,6 +1,5 @@
 #include "frontend_diagnostics.hpp"
 
-#include "frontend_storage.hpp"
 #include "h1_contract.h"
 #include "model_storage.hpp"
 
