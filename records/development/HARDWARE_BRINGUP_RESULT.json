@@ -1,0 +1,168 @@
+{
+  "schema": "birdnet-v3-h1-hardware-bringup-result",
+  "date": "2026-09-30",
+  "entry": {
+    "origin_master_sha": "f2293668e657c0659fad075e4f69fdfd063f7432",
+    "branch": "bringup/h1-hardware-baseline",
+    "initial_working_tree": "clean",
+    "source_layout": "firmware/h1",
+    "formal_state": {
+      "M1": "ACCEPTED",
+      "M2": "ACCEPTED",
+      "M3": "ACCEPTED",
+      "M4": "NOT_ACCEPTED",
+      "M5": "NOT_ACCEPTED"
+    }
+  },
+  "source_change": {
+    "file": "firmware/h1/src/frontend_diagnostics.cpp",
+    "change": "Removed the redundant frontend_storage.hpp include; frontend_diagnostics.hpp already includes model_storage.hpp, which declares the required storage accessors.",
+    "scope": "Diagnostics translation unit only; no production routing or numerical semantics changed.",
+    "git_diff_check": "passed"
+  },
+  "build_inputs": {
+    "frontend": {
+      "bytes": 545776,
+      "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0",
+      "source_classification": "RETAINED_LOCAL_EXACT_PAYLOAD"
+    },
+    "backbone": {
+      "bytes": 20465840,
+      "sha256": "72b80de6c7cf91ae4eb40036d399b4f792ce183d5f629b974f347edec01556c1",
+      "source_classification": "RETAINED_LOCAL_EXACT_PAYLOAD"
+    },
+    "classifier": {
+      "bytes": 13008016,
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93",
+      "source_classification": "RETAINED_LOCAL_EXACT_PAYLOAD"
+    },
+    "synthetic": {
+      "bytes": 384000,
+      "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+      "source_classification": "PUBLIC_FIXTURE_EXACT_EXPORT"
+    },
+    "wren": {
+      "bytes": 384000,
+      "sha256": "46be8bff9ee1fbbb90d66952cc5efb1cde3582ae21862f6744721a1be5183556",
+      "source_classification": "PUBLICLY_RECONSTRUCTED_FIXTURE_EXACT_EXPORT"
+    }
+  },
+  "toolchain": {
+    "sdk_alif": {
+      "version": "v2.3.0",
+      "commit": "a524855a8b470fff0e3edb2c902a034d45ddf2a4"
+    },
+    "zephyr": {
+      "version": "4.1.0",
+      "commit": "3a2b84d96961b53431a78685c6ec0f0df4ddf347"
+    },
+    "zephyr_sdk": "0.17.0",
+    "gcc": "12.2.0",
+    "tflite_micro_commit": "8d404de73acf7687831e16d88e86e4f73cfddf8e",
+    "cmsis_ethos_u_commit": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+    "ethos_u_driver": "0.16.0",
+    "vela": "5.0.0",
+    "target": "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+    "npu": "ethos-u85-256"
+  },
+  "builds": {
+    "personality": {
+      "audio_backend": "NONE",
+      "diagnostics_off": "OFF",
+      "diagnostics_on": "ON"
+    },
+    "config_fragments": [
+      "u85-256.conf",
+      "external-flash.conf",
+      "psram.conf"
+    ],
+    "configure_command_template": "west build --pristine=always --cmake-only -b alif_e8_dk/ae822fa0e5597xx0/rtss_hp -d \"$BUILD\" \"$FW\" -- -DEXTRA_CONF_FILE=\"$FW/u85-256.conf;$FW/external-flash.conf;$FW/psram.conf\" -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256 -DH1_AUDIO_BACKEND=NONE -DH1_FRONTEND_DIAGNOSTICS=$DIAGNOSTICS -DH1_FRONTEND_MODEL_BIN=$FRONTEND -DH1_BACKBONE_MODEL_BIN=$BACKBONE -DH1_CLASSIFIER_MODEL_BIN=$CLASSIFIER -DH1_SYNTHETIC_BIN=$SYNTHETIC -DH1_WREN_BIN=$WREN",
+    "build_command_template": "ninja -C $BUILD",
+    "production": {
+      "result": "BUILD_SUCCEEDED",
+      "source_bundle_sha256": "a5ae26df3eb5c9979a6b2545a0158730299afaf0286f8979a1df6601ffe952a3",
+      "elf_bytes": 9910872,
+      "elf_sha256": "3dc8e766bae1a7c9742d8b3782e43a6e1546c839ac2cc09543790465d1367113",
+      "bin_bytes": 1673068,
+      "bin_sha256": "d5d0758a0f3167dd9bbe310970e324d14e823176a7572912afbe45cc86b9648f"
+    },
+    "diagnostic": {
+      "result": "BUILD_SUCCEEDED_AFTER_INCLUDE_FIX",
+      "source_bundle_sha256": "e43e969867e46bf11fcf6f22522f8527311b1e3356b999bc2d418fb7ef80cd0e",
+      "elf_bytes": 9910856,
+      "elf_sha256": "7079ce575686b3c32905b20470cb3a099c0bc7c8458933e5eb204f9633d58af6",
+      "bin_bytes": 1673068,
+      "bin_sha256": "4ad6c0b2366c2311770b3ee58ff9bb9d5771d96b49494bf2a03601efc9a6924a"
+    },
+    "warnings": [
+      "Devicetree reports unknown vendor prefix verisilicon.",
+      "ALIF_OSPI_FLASH_XIP was assigned y but its OSPI_FLASH dependency resolved n.",
+      "Deprecated TINYCRYPT symbol is enabled.",
+      "Alif SVD debug metadata file is absent from the pinned checkout.",
+      "Disabled audio personality leaves Zephyr drivers__audio with no sources; target is excluded as expected.",
+      "Compiler reports unused skipPdmInit local in main.cpp for audio NONE."
+    ]
+  },
+  "source_audit": {
+    "runOnce_frontend": "h1RunFrontend",
+    "M55_frontend": "h1RunFrontendM55 remains diagnostic/characterization only; promotion FORBIDDEN",
+    "mel_projection": "arm_dot_prod_f32",
+    "cmsis_fft_initialization": "explicit; h1M55SpectralPrepare initializes FFT state",
+    "noload_readiness": "NOLOAD bytes are invalidated/rebuilt before readiness is published",
+    "timing": "uint64_t",
+    "audio_none": "PDM application sources excluded; production frontend core has no USB/PDM include dependency"
+  },
+  "board_preflight": {
+    "usb": "SEGGER J-Link OB-E1-AlifSemi at 1.800 V; expected E8 M55-HP target selected and Cortex-M55 r1p0 identified; current H1 CDC descriptor enumerated.",
+    "part_revision": "AE822 M55-HP target designation expected; mounted part/silicon stepping not independently decoded.",
+    "lifecycle": "UNKNOWN; read-only SEUART getbanner/getrevision/gettoc/getcpustatus/getfirewall query on the USB Single Serial interface received no target response.",
+    "current_application": "USB advertises BirdNET H1 Dev CDC; public PING write timed out, so firmware identity was not returned.",
+    "current_application_mram_readback": {
+      "bytes": 5767168,
+      "sha256": "44b93efa2f548fbf9ad72ec7e56355952930350dca99d03e4129822eeb7de86e",
+      "captured_read_only": true
+    },
+    "initial_cpu_state": "J-Link reported M55 not halted during initial MRAM capture."
+  },
+  "ospi": {
+    "expected_backbone": {
+      "address": "0xC0000000",
+      "bytes": 20465840,
+      "crc32": "44f2a9cb",
+      "sha256": "72b80de6c7cf91ae4eb40036d399b4f792ce183d5f629b974f347edec01556c1"
+    },
+    "expected_classifier": {
+      "address": "0xC2000000",
+      "bytes": 13008016,
+      "crc32": "fdc532c6",
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+    },
+    "before_identity": "UNVERIFIED",
+    "readback_attempt": "Existing SEGGER J-Flash 9.78 OSPI1 readback path connected to the expected target but failed RAMCode Prepare before returning flash bytes.",
+    "history": {
+      "first_attempt": "SEGGER_OSPI_RAMCODE_PREPARE_BLOCKED",
+      "attempt_2": "Exact previously successful 32 MiB range reproduced TARGET_RAMCODE_PREPARATION_FAILURE; no bytes returned and no persistent writes occurred."
+    },
+    "programmed": false,
+    "after_identity": "UNVERIFIED",
+    "disposition": "TARGET_OSPI_READ_BLOCKED; application firmware verification route not yet implemented."
+  },
+  "execution": {
+    "production_programmed": false,
+    "production_boot": "NOT_RUN",
+    "synthetic": "NOT_RUN",
+    "wren": "NOT_RUN",
+    "diagnostic_programmed": false,
+    "spectral_diagnostic": "NOT_RUN",
+    "frontend_characterization": "NOT_RUN",
+    "final_board_state": "M55 running after readback probe cleanup; no firmware or OSPI writes performed."
+  },
+  "claims": {
+    "M4": "NOT_ACCEPTED",
+    "M5": "NOT_ACCEPTED",
+    "M55_promotion": "CHARACTERIZATION_ONLY; FORBIDDEN",
+    "new_physical_classification": "PUBLIC_H1_HARDWARE_BRINGUP_BLOCKED"
+  },
+  "disposition": "PUBLIC_H1_HARDWARE_BRINGUP_BLOCKED",
+  "blocker": "TARGET_OSPI_READ_BLOCKED: SEGGER RAMCode preparation did not return bytes; target-side firmware verification remains pending."
+}
