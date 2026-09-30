@@ -35,6 +35,7 @@ RUN_CANONICAL = 6
 GET_TOPK = 7
 GET_PROFILE = 8
 GET_RESULT_SUMMARY = 9
+VERIFY_MODEL_STORAGE = 41
 
 USB_VID = 0x2FE3
 USB_PID = 0x0001
@@ -859,7 +860,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout", type=float, default=10.0, help="Per-command timeout in seconds")
     parser.add_argument("--output", type=Path, help="Write JSON response/evidence to this path")
     subparsers = parser.add_subparsers(dest="action", required=True)
-    for action in ("ping", "status", "identity", "run-uploaded", "run-canonical", "topk", "profile", "summary"):
+    for action in ("ping", "status", "identity", "verify-model-storage", "run-uploaded", "run-canonical", "topk", "profile", "summary"):
         subparsers.add_parser(action)
     upload_parser = subparsers.add_parser("upload")
     upload_parser.add_argument("fixture", type=Path, nargs="?", default=DEFAULT_FIXTURE)
@@ -886,13 +887,14 @@ def main() -> int:
                 "ping": PING,
                 "status": STATUS,
                 "identity": GET_IDENTITY,
+                "verify-model-storage": VERIFY_MODEL_STORAGE,
                 "run-uploaded": RUN_UPLOADED_WAVEFORM,
                 "run-canonical": RUN_CANONICAL,
                 "topk": GET_TOPK,
                 "profile": GET_PROFILE,
                 "summary": GET_RESULT_SUMMARY,
             }[args.action]
-            command_timeout = 180.0 if args.action.startswith("run-") else None
+            command_timeout = 180.0 if args.action.startswith("run-") or args.action == "verify-model-storage" else None
             value = request_json(client, command, timeout=command_timeout)
     print_json(value, args.output)
     return 0

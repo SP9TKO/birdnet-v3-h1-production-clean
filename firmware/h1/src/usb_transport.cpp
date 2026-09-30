@@ -227,6 +227,7 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::Ping:
 	case H1MessageType::Status:
 	case H1MessageType::GetIdentity:
+	case H1MessageType::VerifyModelStorage:
 	case H1MessageType::RunUploadedWaveform:
 	case H1MessageType::RunCanonical:
 	case H1MessageType::GetTopK:

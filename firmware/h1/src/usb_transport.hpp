@@ -49,6 +49,7 @@ enum class H1MessageType : uint16_t {
 	RunM55SpectralBoundedLoop = 38,
 	GetM55FrontendData = 39,
 	GetM55FrontendExecution = 40,
+	VerifyModelStorage = 41,
 };
 
 enum class H1UsbPollResult : uint8_t {

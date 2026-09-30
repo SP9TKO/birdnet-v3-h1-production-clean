@@ -12,6 +12,7 @@
 #include "h1_contract.h"
 #include "model_storage.hpp"
 #include "run_state.hpp"
+#include "sha256.hpp"
 #include "h1_memory_contract.h"
 #include "h1_memory.hpp"
 #include "runtime_profile.h"
@@ -73,6 +74,7 @@ enum class RunStatus : uint32_t {
 	Classifier = 6,
 	Postprocess = 7,
 	Profile = 8,
+	NotReady = 9,
 };
 
 struct H1TopEntry {
@@ -160,6 +162,7 @@ volatile uint32_t gRawReadCompletionMarker;
 H1UploadState gUpload;
 uint32_t gRunSequence;
 bool gComputeReady;
+bool gModelStorageVerified;
 
 uint32_t crc32(const uint8_t *data, size_t bytes)
 {
@@ -230,6 +233,8 @@ const char *runStatusName(RunStatus status)
 		return "postprocess";
 	case RunStatus::Profile:
 		return "profile";
+	case RunStatus::NotReady:
+		return "not_ready";
 	}
 	return "unknown";
 }
@@ -578,6 +583,10 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	result.fixture = fixture;
 	result.status = RunStatus::NotRun;
 	result.canonicalSynthetic = canonicalSynthetic;
+	if (!gComputeReady || !gModelStorageVerified) {
+		result.status = RunStatus::NotReady;
+		return false;
+	}
 	result.inputCrc32 = crc32(reinterpret_cast<const uint8_t *>(waveform),
 				  H1_WAVEFORM_BYTES);
 	strncpy(result.inputSha256, inputSha256, sizeof(result.inputSha256) - 1);
@@ -1374,13 +1383,15 @@ void sendStatus(const H1UsbFrame &request)
 	const int length = snprintf(
 		response, H1_PROTOCOL_RESPONSE_BYTES,
 		"{\"ok\":true,\"scope\":\"H1_ENGINEERING_DEVELOPMENT\","
-		"\"compute_ready\":%s,\"usb_initialized\":%s,\"usb_enabled\":%s,"
+		"\"compute_ready\":%s,\"model_storage_verified\":%s,\"usb_initialized\":%s,\"usb_enabled\":%s,"
 		"\"vbus_present\":%s,\"configured\":%s,\"dtr\":%s,"
 		"\"bus_speed\":\"%s\",\"controller_maximum_speed\":\"%s\","
 		"\"connection_generation\":%u,\"received_bytes\":%u,"
 		"\"transmitted_bytes\":%u,\"last_stack_error\":%d,"
 		"\"upload_valid\":%s,\"result_valid\":%s,\"profile_valid\":%s}",
-		gComputeReady ? "true" : "false", usb.initialized ? "true" : "false",
+		gComputeReady ? "true" : "false",
+		gModelStorageVerified ? "true" : "false",
+		usb.initialized ? "true" : "false",
 		usb.enabled ? "true" : "false", usb.vbusPresent ? "true" : "false",
 		usb.configured ? "true" : "false", usb.dtr ? "true" : "false",
 		h1UsbSpeedName(usb.busSpeed), h1UsbSpeedName(usb.controllerMaximumSpeed),
@@ -1392,6 +1403,70 @@ void sendStatus(const H1UsbFrame &request)
 		sendJson(request, response, size_t(length));
 	} else {
 		sendError(request, "FORMAT_OVERFLOW", "STATUS response did not fit");
+	}
+}
+
+void verifyModelStorage(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0) {
+		sendError(request, "INVALID_ARGUMENT", "VerifyModelStorage takes no payload");
+		return;
+	}
+	gModelStorageVerified = false;
+	struct ModelIdentity {
+		uint32_t address;
+		uint32_t bytes;
+		uint32_t expectedCrc;
+		const char *expectedSha;
+		uint32_t observedCrc;
+		char observedSha[65];
+		bool crcMatch;
+		bool shaMatch;
+	};
+	ModelIdentity models[] = {
+		{H1_BACKBONE_FLASH_ADDRESS, H1_BACKBONE_MODEL_BYTES,
+		 H1_BACKBONE_MODEL_CRC32, H1_BACKBONE_MODEL_SHA256, 0, {}, false, false},
+		{H1_CLASSIFIER_FLASH_ADDRESS, H1_CLASSIFIER_MODEL_BYTES,
+		 H1_CLASSIFIER_MODEL_CRC32, H1_CLASSIFIER_MODEL_SHA256, 0, {}, false, false},
+	};
+	for (ModelIdentity &model : models) {
+		printk("H1_OSPI_IDENTITY_BEGIN address=0x%08x bytes=%u read_only=1\n",
+		       model.address, model.bytes);
+		const auto *data = reinterpret_cast<const uint8_t *>(model.address);
+		model.observedCrc = crc32(data, model.bytes);
+		h1Sha256Hex(data, model.bytes, model.observedSha);
+		model.crcMatch = model.observedCrc == model.expectedCrc;
+		model.shaMatch = model.observedSha[0] != '\0' &&
+			strcmp(model.observedSha, model.expectedSha) == 0;
+		printk("H1_OSPI_IDENTITY_DONE address=0x%08x crc32=%08x sha256=%s "
+		       "crc_match=%u sha_match=%u\n",
+		       model.address, model.observedCrc, model.observedSha,
+		       unsigned(model.crcMatch), unsigned(model.shaMatch));
+	}
+	gModelStorageVerified = models[0].crcMatch && models[0].shaMatch &&
+		models[1].crcMatch && models[1].shaMatch;
+	char *response = h1ProtocolResponse();
+	const int length = snprintf(
+		response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":true,\"backbone\":{\"address\":\"0x%08x\","
+		"\"bytes\":%u,\"crc32\":\"%08x\",\"sha256\":\"%s\","
+		"\"crc_match\":%s,\"sha_match\":%s},"
+		"\"classifier\":{\"address\":\"0x%08x\",\"bytes\":%u,"
+		"\"crc32\":\"%08x\",\"sha256\":\"%s\","
+		"\"crc_match\":%s,\"sha_match\":%s},"
+		"\"all_models_verified\":%s}",
+		models[0].address, models[0].bytes, models[0].observedCrc,
+		models[0].observedSha, models[0].crcMatch ? "true" : "false",
+		models[0].shaMatch ? "true" : "false", models[1].address,
+		models[1].bytes, models[1].observedCrc, models[1].observedSha,
+		models[1].crcMatch ? "true" : "false",
+		models[1].shaMatch ? "true" : "false",
+		gModelStorageVerified ? "true" : "false");
+	if (length > 0 && length < int(H1_PROTOCOL_RESPONSE_BYTES)) {
+		sendJson(request, response, size_t(length));
+	} else {
+		gModelStorageVerified = false;
+		sendError(request, "FORMAT_OVERFLOW", "model identity response did not fit");
 	}
 }
 
@@ -1813,6 +1888,9 @@ void handleFrame(const H1UsbFrame &request)
 		break;
 	case H1MessageType::GetIdentity:
 		sendIdentity(request);
+		break;
+	case H1MessageType::VerifyModelStorage:
+		verifyModelStorage(request);
 		break;
 	case H1MessageType::UploadWaveform:
 		if (validateUpload(request)) {
