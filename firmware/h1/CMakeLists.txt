@@ -347,6 +347,8 @@ set(H1_IDENTITY_FILES
   src/frontend_m55_spectral.hpp
   src/frontend_diagnostics.cpp
   src/frontend_diagnostics.hpp
+  src/numeric_error_metrics.cpp
+  src/numeric_error_metrics.hpp
   boards/audio-no-pdm.overlay
   boards/u85-ospi.overlay
   src/h1_contract.h
@@ -396,9 +398,11 @@ get_filename_component(ALIF_HAL_DIR "${ZEPHYR_BASE}/../modules/hal/alif" ABSOLUT
 if(TARGET drivers__memc)
   target_include_directories(drivers__memc PRIVATE
     "${ALIF_HAL_DIR}/drivers/ospi/include")
-  target_sources(drivers__memc PRIVATE
-    "${ALIF_HAL_DIR}/drivers/ospi/src/ospi.c"
-    "${ALIF_HAL_DIR}/drivers/ospi/src/ospi_hal.c")
+  if(NOT CONFIG_USE_ALIF_HAL_OSPI)
+    target_sources(drivers__memc PRIVATE
+      "${ALIF_HAL_DIR}/drivers/ospi/src/ospi.c"
+      "${ALIF_HAL_DIR}/drivers/ospi/src/ospi_hal.c")
+  endif()
 endif()
 
 target_sources(app PRIVATE
@@ -408,6 +412,7 @@ target_sources(app PRIVATE
   src/sliding_window.cpp
   src/frontend.cpp
   src/frontend_m55_spectral.cpp
+  src/numeric_error_metrics.cpp
   src/main.cpp
   src/model_storage.cpp
   src/runtime_profile.c

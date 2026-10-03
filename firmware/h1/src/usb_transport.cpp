@@ -222,12 +222,18 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 		return length == 2 * sizeof(uint32_t);
 	case H1MessageType::GetM55SpectralData:
 		return length == 3 * sizeof(uint32_t);
+	case H1MessageType::GetInferenceData:
 	case H1MessageType::GetM55FrontendData:
 		return length == 3 * sizeof(uint32_t);
 	case H1MessageType::Ping:
 	case H1MessageType::Status:
 	case H1MessageType::GetIdentity:
 	case H1MessageType::VerifyModelStorage:
+	case H1MessageType::CompareNumericErrorSelfTest:
+	case H1MessageType::CompareNativeSpectral:
+	case H1MessageType::CompareCompactScalarMel:
+	case H1MessageType::CompareMveCompactMel:
+	case H1MessageType::RunLegacyUploadedWaveform:
 	case H1MessageType::RunUploadedWaveform:
 	case H1MessageType::RunCanonical:
 	case H1MessageType::GetTopK:

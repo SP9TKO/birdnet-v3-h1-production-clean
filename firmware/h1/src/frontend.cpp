@@ -17,11 +17,19 @@
 #include <zephyr/kernel.h>
 #include <arm_math.h>
 
+#if defined(__ARM_FEATURE_MVE) && ((__ARM_FEATURE_MVE & 2) != 0)
+#include <arm_mve.h>
+#define H1_M55_HAS_MVE_FLOAT 1
+#else
+#define H1_M55_HAS_MVE_FLOAT 0
+#endif
+
 namespace {
 constexpr int kFftLength = 2048;
 constexpr int kSpectrumBins = 1025;
 constexpr int kFrames = 188;
 constexpr int kMelBins = 128;
+constexpr uint32_t kMelFramesPerMveGroup = 4;
 constexpr int kImageRows = 125;
 constexpr int kInputWidth = 188;
 constexpr int kOutputHeight = 224;
@@ -268,7 +276,7 @@ void resizeHalfPixel(const float *input, float *output)
 }
 } // namespace
 
-H1FrontendStatus h1RunFrontend(const float *waveform, size_t waveformElements,
+H1FrontendStatus h1RunFrontendLegacy(const float *waveform, size_t waveformElements,
 			       H1FrontendScratch &scratch, float *output,
 			       size_t outputElements)
 {
@@ -346,6 +354,42 @@ H1FrontendStatus h1RunFrontend(const float *waveform, size_t waveformElements,
 	return H1FrontendStatus::Ok;
 }
 
+H1FrontendStatus h1InitializeReferenceSpectral(H1FrontendScratch &scratch)
+{
+	const size_t needed = tflm_signal::RfftFloatGetNeededMemory(kFftLength);
+	if (needed > sizeof(scratch.fftState) ||
+	    !tflm_signal::RfftFloatInit(kFftLength, scratch.fftState, needed)) {
+		return H1FrontendStatus::FftInitializationFailed;
+	}
+	return H1FrontendStatus::Ok;
+}
+
+H1FrontendStatus h1RunReferenceSpectralFrame(
+	const float *waveform, size_t waveformElements,
+	H1FrontendScratch &scratch, int frameIndex)
+{
+	if (!waveform || waveformElements != H1_WAVEFORM_ELEMENTS ||
+	    frameIndex < 0 || frameIndex >= kFrames) {
+		return H1FrontendStatus::InvalidInput;
+	}
+	const FrontendConstants *constants = nullptr;
+	if (!frontendConstants(&constants)) {
+		return H1FrontendStatus::InvalidConstants;
+	}
+	auto *const spectrum = reinterpret_cast<Complex<float> *>(scratch.spectrum);
+	const int paddedStart = (frameIndex + 1) * 512;
+	for (int sample = 0; sample < kFftLength; ++sample) {
+		scratch.frame[sample] =
+			reflectedSample(waveform, paddedStart + sample) * constants->hann[sample];
+	}
+	tflm_signal::RfftFloatApply(scratch.fftState, scratch.frame, spectrum);
+	for (int bin = 0; bin < kSpectrumBins; ++bin) {
+		const float magnitude = ::hypotf(spectrum[bin].real, spectrum[bin].imag);
+		scratch.power[bin] = magnitude * magnitude;
+	}
+	return H1FrontendStatus::Ok;
+}
+
 bool h1GetFrontendMel(const float **mel)
 {
 	if (!mel) return false;
@@ -390,6 +434,58 @@ bool h1FrontendM55Ready(const H1M55FrontendRuntime &runtime)
 	       runtime.spectral.cfftReady;
 }
 
+bool h1M55CompactMelFourFrames(const float *powerGroup,
+			       const H1M55CompactMel &compactMel,
+			       float *output, uint32_t firstFrame,
+			       bool &usedMve)
+{
+	if (!powerGroup || !output || compactMel.ready != 1 ||
+	    compactMel.weightCount == 0 ||
+	    compactMel.weightCount > H1_M55_MEL_MAX_NONZERO_WEIGHTS ||
+	    firstFrame + kMelFramesPerMveGroup > kFrames) {
+		return false;
+	}
+
+#if H1_M55_HAS_MVE_FLOAT
+	static constexpr uint32_t frameOffsets[kMelFramesPerMveGroup] = {
+		0u, kSpectrumBins, 2u * kSpectrumBins, 3u * kSpectrumBins};
+	const uint32x4_t laneOffsets = vld1q_u32(frameOffsets);
+	for (int band = 0; band < kMelBins; ++band) {
+		const H1M55MelSpan &span = compactMel.spans[band];
+		const uint32x4_t offsets = vaddq_n_u32(laneOffsets, span.startBin);
+		float32x4_t sum = vdupq_n_f32(0.0f);
+		for (uint32_t i = 0; i < span.length; ++i) {
+			const float32x4_t power =
+				vldrwq_gather_shifted_offset_f32(powerGroup + i, offsets);
+			const float32x4_t weight = vdupq_n_f32(
+				compactMel.weights[span.weightOffset + i]);
+			const float32x4_t product = vmulq_f32(power, weight);
+			sum = vaddq_f32(sum, product);
+		}
+		output[(firstFrame + 0u) * kMelBins + band] = vgetq_lane_f32(sum, 0);
+		output[(firstFrame + 1u) * kMelBins + band] = vgetq_lane_f32(sum, 1);
+		output[(firstFrame + 2u) * kMelBins + band] = vgetq_lane_f32(sum, 2);
+		output[(firstFrame + 3u) * kMelBins + band] = vgetq_lane_f32(sum, 3);
+	}
+	usedMve = true;
+#else
+	for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
+		const float *const framePower = powerGroup + lane * kSpectrumBins;
+		for (int band = 0; band < kMelBins; ++band) {
+			const H1M55MelSpan &span = compactMel.spans[band];
+			float sum = 0.0f;
+			for (uint32_t i = 0; i < span.length; ++i) {
+				sum += framePower[span.startBin + i] *
+				       compactMel.weights[span.weightOffset + i];
+			}
+			output[(firstFrame + lane) * kMelBins + band] = sum;
+		}
+	}
+	usedMve = false;
+#endif
+	return true;
+}
+
 H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements,
 				   H1FrontendScratch &scratch,
 				   H1M55FrontendRuntime &runtime,
@@ -424,48 +520,55 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 	timing.clockHz = sys_clock_hw_cycles_per_sec();
 	const uint64_t totalStart = k_cycle_get_64();
 
-	for (int frame = 0; frame < kFrames; ++frame) {
+	static_assert(kFrames % kMelFramesPerMveGroup == 0);
+	static_assert(kMelFramesPerMveGroup * kSpectrumBins <= 224 * 281);
+	float *const groupPower = scratch.gray;
+	for (int firstFrame = 0; firstFrame < kFrames;
+	     firstFrame += kMelFramesPerMveGroup) {
 		mark(H1M55FrontendStage::SpectralEnter);
-		H1M55SpectralTiming frameTiming{};
-		H1M55SpectralCapture capture{nullptr, nullptr, nullptr, scratch.power,
+		for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
+			const uint32_t frame = firstFrame + lane;
+			H1M55SpectralTiming frameTiming{};
+			float *const framePower = groupPower + lane * kSpectrumBins;
+			H1M55SpectralCapture capture{nullptr, nullptr, nullptr, framePower,
 					     &frameTiming, nullptr};
-		const uint32_t powerStage = useCmsisPower
-			? H1_M55_STAGE_POWER_CMSIS_MAG_SQUARED
-			: H1_M55_STAGE_POWER_SQUARES;
-		if (!h1M55SpectralProcessFrame(&runtime.spectral, waveform,
-					       waveformElements, hann, frame, &capture,
-					       powerStage, !useCmsisPower))
-			return fail(H1FrontendStatus::InvalidInput);
-		timing.frameCycles += frameTiming.framePreparationCycles;
-		timing.hannCycles += frameTiming.hannCycles;
-		timing.cfftCycles += frameTiming.cfftCycles;
-		timing.realSplitCycles += frameTiming.realSplitCycles;
-		timing.powerCycles += useCmsisPower ? frameTiming.powerCmsisMagSquaredCycles
-							 : frameTiming.powerSquaresCycles;
+			const uint32_t powerStage = useCmsisPower
+				? H1_M55_STAGE_POWER_CMSIS_MAG_SQUARED
+				: H1_M55_STAGE_POWER_SQUARES;
+			if (!h1M55SpectralProcessFrame(&runtime.spectral, waveform,
+						       waveformElements, hann, frame, &capture,
+						       powerStage, !useCmsisPower))
+				return fail(H1FrontendStatus::InvalidInput);
+			timing.frameCycles += frameTiming.framePreparationCycles;
+			timing.hannCycles += frameTiming.hannCycles;
+			timing.cfftCycles += frameTiming.cfftCycles;
+			timing.realSplitCycles += frameTiming.realSplitCycles;
+			timing.powerCycles += useCmsisPower
+				? frameTiming.powerCmsisMagSquaredCycles
+				: frameTiming.powerSquaresCycles;
+		}
 		mark(H1M55FrontendStage::SpectralDone);
 		mark(H1M55FrontendStage::MelEnter);
 		const uint64_t melStart = k_cycle_get_64();
-		for (int band = 0; band < kMelBins; ++band) {
-			const H1M55MelSpan &span = compactMel.spans[band];
-			if (span.length == 0 || span.startBin >= kSpectrumBins ||
-			    static_cast<uint32_t>(span.startBin) + span.length > kSpectrumBins ||
-			    static_cast<uint32_t>(span.weightOffset) + span.length > compactMel.weightCount) {
-				return fail(H1FrontendStatus::InvalidConstants);
+		bool usedMve = false;
+		if (!h1M55CompactMelFourFrames(groupPower, compactMel,
+					       scratch.melDb, firstFrame, usedMve))
+			return fail(H1FrontendStatus::InvalidConstants);
+		(void)usedMve;
+		for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
+			const size_t offset =
+				(firstFrame + lane) * kMelBins;
+			for (int band = 0; band < kMelBins; ++band) {
+				if (!std::isfinite(scratch.melDb[offset + band]))
+					return fail(H1FrontendStatus::NonFinite);
 			}
-
-			const float *weights = compactMel.weights + span.weightOffset;
-			float sum = 0.0f;
-			arm_dot_prod_f32(scratch.power + span.startBin, weights, span.length, &sum);
-			if (!std::isfinite(sum))
-				return fail(H1FrontendStatus::NonFinite);
-			scratch.melDb[frame * kMelBins + band] = sum;
+			if (captureStages) {
+				std::memcpy(scratch.melRaw + offset,
+					    scratch.melDb + offset,
+					    kMelBins * sizeof(float));
+			}
 		}
-
 		timing.melCycles += k_cycle_get_64() - melStart;
-		if (captureStages)
-			std::memcpy(scratch.melRaw + frame * kMelBins,
-				    scratch.melDb + frame * kMelBins,
-				    kMelBins * sizeof(float));
 		mark(H1M55FrontendStage::MelDone);
 	}
 	mark(H1M55FrontendStage::SpectralDone);
@@ -548,4 +651,16 @@ bool h1GetFrontendHann(const float **hann)
 	}
 	*hann = constants->hann;
 	return true;
+}
+
+H1FrontendStatus h1RunFrontend(const float *waveform, size_t waveformElements,
+			     H1FrontendScratch &scratch,
+			     H1M55FrontendRuntime &runtime,
+			     float *output, size_t outputElements)
+{
+	H1M55FrontendTiming timing{};
+	H1M55FrontendExecution execution{};
+	// Production uses the promoted native spectral / compact MVE mel route.
+	return h1RunFrontendM55(waveform, waveformElements, scratch, runtime,
+		output, outputElements, timing, execution, false, false);
 }
