@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "entry_head": "bea3bd9b6f7858dd8a249e92a74f0cdb76d433c3",
+  "criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+  "evidence_scope": "CURRENT_SOURCE_AND_EXACT_LOCAL_PAYLOAD_METADATA; NO_CURRENT_TARGET_TIMING_OR_PMU_OBSERVATION",
+  "source_modified": false,
+  "schema": "birdnet-h1-baseline-pmu-plan-v1",
+  "status": "PROSPECTIVE_PMU_PLAN_FROZEN_BEFORE_CURRENT_TIMING_OR_PMU_OBSERVATION",
+  "driver_version": "0.16.0",
+  "NPU": "Ethos-U85-256",
+  "event_counters": 8,
+  "cycle_counter_bits": 48,
+  "event_counter_bits": 32,
+  "groups": [
+    {
+      "id": 1,
+      "warmups": 5,
+      "measured_runs": 20,
+      "stages_separate": [
+        "backbone",
+        "classifier"
+      ],
+      "events": [
+        {
+          "counter": 0,
+          "symbol": "ETHOSU_PMU_NPU_ACTIVE",
+          "hardware_event_id": 35,
+          "source": "ethosu85_interface.h PMU_EVENT_NPU_ACTIVE"
+        },
+        {
+          "counter": 1,
+          "symbol": "ETHOSU_PMU_MAC_ACTIVE",
+          "hardware_event_id": 48,
+          "source": "ethosu85_interface.h PMU_EVENT_MAC_ACTIVE"
+        },
+        {
+          "counter": 2,
+          "symbol": "ETHOSU_PMU_WD_ACTIVE",
+          "hardware_event_id": 80,
+          "source": "ethosu85_interface.h PMU_EVENT_WD_ACTIVE"
+        },
+        {
+          "counter": 3,
+          "symbol": "ETHOSU_PMU_WD_STALLED",
+          "hardware_event_id": 81,
+          "source": "ethosu85_interface.h PMU_EVENT_WD_STALLED"
+        },
+        {
+          "counter": 4,
+          "symbol": "ETHOSU_PMU_EXT_RD_TRAN_REQ_STALLED",
+          "hardware_event_id": 387,
+          "source": "ethosu85_interface.h PMU_EVENT_EXT_RD_TRAN_REQ_STALLED"
+        },
+        {
+          "counter": 5,
+          "symbol": "ETHOSU_PMU_SRAM_RD_TRAN_REQ_STALLED",
+          "hardware_event_id": 131,
+          "source": "ethosu85_interface.h PMU_EVENT_SRAM_RD_TRAN_REQ_STALLED"
+        },
+        {
+          "counter": 6,
+          "symbol": "ETHOSU_PMU_SRAM_WR_TRAN_REQ_STALLED",
+          "hardware_event_id": 136,
+          "source": "ethosu85_interface.h PMU_EVENT_SRAM_WR_TRAN_REQ_STALLED"
+        }
+      ],
+      "cycle_counter": "ETHOSU_PMU_Get_CCNTR separately for each U85 stage",
+      "extra_event_justification": "SRAM read and write request stalls are separate hardware events; retain both for complete SRAM contention characterization."
+    }
+  ],
+  "no_groups_added_after_observation": true,
+  "preflight_stop": "compiled ETHOSU85/API reports not eight event counters or unsupported mappings",
+  "overflow_stop": "nonzero counter overflow flags, incoherent 48-bit cycle snapshot, or missing stage records",
+  "ratio_policy": "per-stage event/cycle ratios only; never sum stages or translate stall counts to hypothetical milliseconds saved",
+  "snapshot_interval": "Configure/reset frozen events in diagnostic-only inference-begin callback after existing power request. Baseline counter reads at command B; stop/snapshot at earliest IRQ C, before driver completion. Preserve raw before/after values and overflow flags. No PMU calls in acceptance timing.",
+  "dependency_manifest": [
+    {
+      "workspace_relative_path": "modules/hal/ethos_u/src/ethosu_driver.c",
+      "bytes": 24511,
+      "sha256": "227f7f247c163427f0531e43f42436eeccb202d2e5545f83af1626db10f5c5a0"
+    },
+    {
+      "workspace_relative_path": "modules/hal/ethos_u/src/ethosu_device_u85.c",
+      "bytes": 12774,
+      "sha256": "5e1e0142785b1ddac83e60ee7f51136ede539b917625c9d53916bbaaa5e23ca0"
+    },
+    {
+      "workspace_relative_path": "modules/hal/ethos_u/src/ethosu_pmu.c",
+      "bytes": 9223,
+      "sha256": "accb691102fae0dd59c3398524191dc50ad12db1a0fdd34825d5408179fff32b"
+    },
+    {
+      "workspace_relative_path": "modules/hal/ethos_u/src/ethosu85_interface.h",
+      "bytes": 763535,
+      "sha256": "8a5cbe762158db15651d65b278d71495e27b174ecacc1c7f988413f5dd665f41"
+    },
+    {
+      "workspace_relative_path": "modules/hal/ethos_u/include/pmu_ethosu.h",
+      "bytes": 17952,
+      "sha256": "417a0251baebd54d19c600231cd7063851657419eb51f1da2ed1854883dce1a1"
+    },
+    {
+      "workspace_relative_path": "modules/hal/alif/drivers/ethos_u/src/ethosu_callback.c",
+      "bytes": 2954,
+      "sha256": "f47577a6c6b1276d54b1f427ed134d79a96390e20a0d33074c17b93fdccd45a7"
+    },
+    {
+      "workspace_relative_path": "optional/modules/lib/tflite-micro/tensorflow/lite/micro/kernels/ethos_u/ethosu.cc",
+      "bytes": 6323,
+      "sha256": "d4df23ddab651ea3f653a75d296d03f98a63eda1d0261d2edca5891499f47e67"
+    }
+  ],
+  "created_date": "2026-10-06",
+  "disabled_event_counters": [
+    7
+  ]
+}

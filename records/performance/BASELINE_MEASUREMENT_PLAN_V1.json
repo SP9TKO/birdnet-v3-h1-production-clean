@@ -1,0 +1,353 @@
+{
+  "entry_head": "bea3bd9b6f7858dd8a249e92a74f0cdb76d433c3",
+  "criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+  "current_performance_data_observed": false,
+  "production_source_modified": false,
+  "schema": "birdnet-h1-baseline-measurement-plan-v1",
+  "status": "PROSPECTIVE_BASELINE_PLAN_FROZEN_BEFORE_CURRENT_TIMING_OR_PMU_OBSERVATION",
+  "branch": "performance/h1-sub700ms",
+  "published_master": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "canonical_waveform": {
+    "authority": "Canonical valid 3-second waveform already used by the accepted uploaded-waveform route.",
+    "resident_before_start": true,
+    "duration_seconds": 3,
+    "channels": 1,
+    "sample_rate_hz": 32000,
+    "element_type": "Little-endian float32",
+    "element_count": 96000,
+    "bytes": 384000,
+    "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8"
+  },
+  "hardware": {
+    "board": "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+    "cpu": "M55-HP",
+    "npu": "Ethos-U85-256"
+  },
+  "models": {
+    "backbone": {
+      "storage": "0xc0000000",
+      "bytes": 20465840,
+      "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+    },
+    "classifier": {
+      "storage": "0xc2000000",
+      "bytes": 13008016,
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+    },
+    "regeneration_and_persistent_writes_forbidden": true
+  },
+  "interval": {
+    "start": "Canonical valid waveform resident in h1UploadedWaveform, request ready, before ordinary run-state setup and runOnce waveform CRC.",
+    "end": "Ordinary result saved in gLastResult and ResultReady recorded; before USB/UART serialization/output.",
+    "include_existing_source_work": true,
+    "excluded": [
+      "USB upload/host transport",
+      "Live audio acquisition time",
+      "Cold boot",
+      "Firmware startup",
+      "One-time model loading/copy",
+      "Model hash verification performed only at initialization",
+      "One-time interpreter construction",
+      "One-time NPU initialization",
+      "Debug export/capture not part of ordinary production execution"
+    ],
+    "existing_profile_total_is_not_primary_latency": true
+  },
+  "acceptance": {
+    "mode": "ACCEPTANCE_TIMING",
+    "warmups": 5,
+    "measured_runs": 100,
+    "consecutive": true,
+    "raw_format": "uint64 cycle delta plus bound uint32 frequency; retain unrounded rational values",
+    "outliers": "NONE",
+    "logging_or_host_interaction_within_interval": false,
+    "retention": "preallocated RAM; all samples emitted after campaign",
+    "comparison": "cycles * 1000 < 700 * clock_hz using exact integer/rational comparison; never rounded microseconds",
+    "statistics": {
+      "count": "100 measured latency samples; warmups excluded from measured statistics.",
+      "minimum_ms": "Minimum of all measured samples.",
+      "mean_ms": "Arithmetic mean of all measured samples.",
+      "median_ms": "Mean of the 50th and 51st samples in ascending order.",
+      "p95_ms": "Nearest-rank percentile: ceil(0.95 * count), the 95th ascending sample for count 100.",
+      "maximum_ms": "Maximum of all measured samples.",
+      "population_standard_deviation_ms": "Square root of sum((sample - mean)^2) / count; denominator 100."
+    },
+    "disposition_scope": "baseline observation only; never future final acceptance pass"
+  },
+  "diagnostic": {
+    "mode": "DIAGNOSTIC_PROFILE",
+    "warmups": 5,
+    "measured_runs": 20,
+    "outliers": "NONE",
+    "stages": [
+      {
+        "id": 1,
+        "name": "Frontend spectral/STFT/power",
+        "processor": "CPU"
+      },
+      {
+        "id": 2,
+        "name": "Compact mel",
+        "processor": "CPU"
+      },
+      {
+        "id": 3,
+        "name": "Remaining frontend normalization/resize/quantization",
+        "processor": "CPU"
+      },
+      {
+        "id": 4,
+        "name": "Frontend -> backbone handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 5,
+        "name": "U85 backbone submit -> completion",
+        "processor": "U85"
+      },
+      {
+        "id": 6,
+        "name": "Backbone -> GeM ownership/handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 7,
+        "name": "M55 GeM",
+        "processor": "CPU"
+      },
+      {
+        "id": 8,
+        "name": "GeM/classifier bridge",
+        "processor": "CPU"
+      },
+      {
+        "id": 9,
+        "name": "Classifier-input handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 10,
+        "name": "U85 classifier submit -> completion",
+        "processor": "U85"
+      },
+      {
+        "id": 11,
+        "name": "Logits/result postprocessing",
+        "processor": "CPU"
+      },
+      {
+        "id": 12,
+        "name": "Total waveform-ready -> result-ready",
+        "processor": "End-to-end"
+      }
+    ],
+    "total_cannot_replace_acceptance": true,
+    "source_model_lifecycle_subtimings_must_be_retained": true,
+    "unassigned_overhead": "retain explicit reconciliation/residual; do not attribute unmeasured overhead to arithmetic",
+    "stage_formulas": {
+      "1": "sum of complete four-frame spectral group elapsed cycles, excluding mel",
+      "2": "existing compact mel group elapsed sum, including ordinary finite checks",
+      "3": "frontend elapsed - stage1 - stage2 + backbone quantization elapsed; existing frontend output CRC included",
+      "4": "backbone command B - backbone quantization end; includes per-run model lifecycle, tensor allocation/copy and pre-submit cache",
+      "5": "backbone earliest IRQ C - command B",
+      "6": "GeM start - backbone IRQ C; completion, guards, output copy and lease",
+      "7": "GeM end - GeM start",
+      "8": "exact bridge end - exact bridge start",
+      "9": "classifier command B - bridge end; lifecycle/input copy/pre-submit cache",
+      "10": "classifier IRQ C - command B",
+      "11": "primary end - classifier IRQ C; completion/guards/output copy/postprocess/ordinary CRC/report publication",
+      "12": "primary end - primary start"
+    },
+    "auxiliary_residual": "Retain total - sum(stages1..11), including waveform CRC/setup and unassigned bookkeeping; report separately in stage-contribution/ranking table. Do not hide or attribute it to arithmetic."
+  },
+  "pmu": {
+    "event_groups": 1,
+    "warmups_per_group": 5,
+    "measured_runs_per_group": 20,
+    "stages_separate": true,
+    "counters": 8,
+    "events": [
+      "NPU_ACTIVE:35",
+      "MAC_ACTIVE:48",
+      "WD_ACTIVE:80",
+      "WD_STALLED:81",
+      "EXT_RD_TRAN_REQ_STALLED:387",
+      "SRAM_RD_TRAN_REQ_STALLED:131",
+      "SRAM_WR_TRAN_REQ_STALLED:136"
+    ],
+    "new_groups_after_observation_forbidden": true,
+    "public_file": "records/performance/BASELINE_PMU_PLAN_V1.json",
+    "sha256": "3a1f8e5e20d22410ea5527cb818d38a08eb2454eec533245a8328ff28558b218"
+  },
+  "timing_source_strategy": {
+    "source": "k_cycle_get_64 -> sys_clock_cycle_get_64 -> uint64 SysTick extension under spinlock",
+    "frequency_basis": "current generated config and matching pinned board/timer source; fresh build and physical preflight must confirm, not historical timing",
+    "expected_configuration_only_hz": 400000000,
+    "counter_bits": 64,
+    "hardware_counter_bits": 24,
+    "resolution_if_confirmed_ns": "2.5",
+    "wrap": {
+      "software64_seconds_if_400MHz": "46116860184.27387904",
+      "hardware24_seconds_if_400MHz": "0.04194304",
+      "software_extension_assumption": "no multiple unobserved SysTick wraps while interrupts and readers are prevented; retain normal interrupts; do not disable IRQs across inference"
+    },
+    "monotonic_validation": "prospectively validate preflight timestamp ordering, matching frequency and enabled clock source outside H1 performance measurement; stop on invalid source",
+    "required_config": {
+      "CONFIG_TIMER_HAS_64BIT_CYCLE_COUNTER": "y",
+      "CONFIG_CORTEX_M_SYSTICK_64BIT_CYCLE_COUNTER": "y",
+      "CONFIG_CORTEX_M_SYSTICK": "y",
+      "CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC": 400000000,
+      "CONFIG_SYS_CLOCK_TICKS_PER_SEC": 10000
+    }
+  },
+  "transfer_ledger": {
+    "combine": [
+      "current source inventory",
+      "exact new ELF/map",
+      "actual runtime pointer/size/lifetime map",
+      "diagnostic timestamps",
+      "actual driver cache callbacks and guard operations"
+    ],
+    "whole_cache_bytes": "actual target D-cache capacity from CCSIDR; never call requested scratch tensor size the amount of a whole-cache maintenance",
+    "range_bytes": "both raw request and cache-line-rounded address/span",
+    "cpu_copies": "model/container copies + tensor copies + ordinary result metadata, separated from numerical writes and bitcasts",
+    "u85_internal_traffic": "not CPU copy",
+    "frontend_traffic": "source-level logical tensor passes; distinguish complete buffer publications and explicit reads/writes from internal FFT reuse/physical bus traffic; preserve any unresolved component",
+    "cache_ordering": "Observe actual timestamps around unchanged callbacks; pinned invalidation loop precedes semaphore wait and its order relative to IRQ must be measured."
+  },
+  "integrity": {
+    "all_run_records_complete": true,
+    "expected_submissions_per_completed_run": {
+      "backbone": 1,
+      "classifier": 1
+    },
+    "require_no_fault_reset_guard_violation_or_fallback": true,
+    "existing_ordinary_checks_remain_inside_actual_ordinary_route": true,
+    "added_expensive_checks_outside_interval": true,
+    "model_lifecycle_expected_per_run": {
+      "model_container_staging_bytes": 33473856,
+      "model_preparations": 2,
+      "interpreter_constructions": 2,
+      "tensor_allocations": 2,
+      "copy_count_each_stage": 1,
+      "persistent_model_storage_writes": 0
+    },
+    "structural_disposition": "FAIL: existing per-inference staging and reconstruction. User authorizes unchanged-baseline characterization; frozen criteria are not weakened."
+  },
+  "instrumentation_classification": "INSTRUMENTATION_ONLY required; exact noninterference and memory audit before build",
+  "public_freeze": {
+    "intended_plan_path": "records/performance/BASELINE_MEASUREMENT_PLAN_V1.json",
+    "intended_companion_path": "docs/PERFORMANCE_BASELINE_PLAN.md",
+    "intended_public_pmu_path": "records/performance/BASELINE_PMU_PLAN_V1.json",
+    "commit_subject": "Freeze H1 baseline measurement plan",
+    "signing_fingerprint": "SHA256:vwwTKHP0Mce4nGalzVyoddmZWIHHdlQW2crs5hx05gs",
+    "branch_push_only": "performance/h1-sub700ms",
+    "github_verified_required_before_measurement": true,
+    "freeze_started": true
+  },
+  "build_route": {
+    "authority": "records/release/PRODUCTION_SETUP.json",
+    "manifest": "firmware/h1/workspace/west.yml",
+    "repository_pins_verified": 25,
+    "Matter": "ABSENT",
+    "H1_AUDIO_BACKEND": "NONE",
+    "H1_FRONTEND_DIAGNOSTICS": "ON",
+    "Zephyr_SDK": "0.17.0",
+    "compiler": "GCC 12.2.0",
+    "west": "1.5.0",
+    "fresh_private_build_directory": true,
+    "unchanged_models_and_optimization_flags": true,
+    "qualified_manifest_sha256": "6ded24c5aff6efc30e2fc7840d3335f0be4942eb5de25bcacc64274efd405302",
+    "flags_preserved": [
+      "existing optimization settings",
+      "-fno-fast-math",
+      "-ffp-contract=off"
+    ],
+    "Vela_execution": false
+  },
+  "programming_route": {
+    "generator": {
+      "argv": [
+        "./app-gen-toc",
+        "-f",
+        "build/config/app-cfg.json",
+        "-v"
+      ],
+      "bytes": 11121504,
+      "sha256": "ba7abded62ffb13d8c7e1b7e33412a54978792f942d297be6b83eb6ea35effe7"
+    },
+    "writer": {
+      "argv": [
+        "./app-write-mram",
+        "-p",
+        "-nr",
+        "-c",
+        "<CONFIRMED_SE_UART>"
+      ],
+      "bytes": 11433888,
+      "sha256": "16d5986dcdfdb00622f8e0ca6f41aab99cc7b21543b9aa1c1297ed543c6ada9b"
+    },
+    "qualified_config_sha256": "1cbd6c5a791edea0c472d041bc0f104a40663dc2386265b319771b0f4ff475f3",
+    "application_address": "0x80200000",
+    "padding": "qualified zero padding to 16-byte boundary",
+    "ATOC_end": "0x80580000; actual start/map/readback bound after generation",
+    "scope": "H1-HP application plus required DEVICE/certificate/ATOC only; no OSPI/model/OTP/provisioning/lifecycle writes",
+    "model_hashes_before_after": true,
+    "live_state_capture_before_destructive_action": true,
+    "physical_preconditions": "confirm SW4 SE before SETOOLS; later confirm U4, prepare continuous raw UART and Device USB monitoring, then separately request full power cycle; do not infer physical state",
+    "tool_reset": "-nr; no tool reset requested"
+  },
+  "stop_conditions": [
+    "entry/remote/criteria mismatch",
+    "prospective plan not locally good SSH-signed and GitHub Verified",
+    "model mismatch or persistent model write",
+    "arithmetic/cache/ownership/layout/flag/clock changes in instrumentation",
+    "memory-contract regression",
+    "invalid timer/PMU source or overflows",
+    "new PMU groups needed after first observation",
+    "missing/corrupt samples",
+    "reset/fault/guard violation/fallback",
+    "defective instrumentation after first observation"
+  ],
+  "latency_above_threshold_is_not_stop": true,
+  "optimization_selection": "only after valid current diagnostic/PMU/transfer and acceptance-format data; at most one future candidate; implementation forbidden",
+  "public_measurement_results": "no public result commit in this session",
+  "PR_merge_master_tag_changes": "forbidden",
+  "created_date": "2026-10-06",
+  "user_clarification": {
+    "recorded_before_current_performance_observation": true,
+    "user_answer": "Measure the unchanged baseline and report the structural gate failure (Recommended)",
+    "effect": "Keep existing per-inference PSRAM model staging and interpreter construction inside baseline timing; record frozen structural gates as failed. No criteria relaxation, persistent model write, identity change or final performance acceptance."
+  },
+  "instrumentation_RAM": {
+    "section": ".h1_baseline",
+    "address": "0x02500000",
+    "maximum_bytes": 65536,
+    "region": "SRAM1",
+    "NOLOAD": true,
+    "initialized_outside_intervals": true,
+    "production_addresses_unchanged": true,
+    "proof": "new ELF/map, nonoverlap/alignment and original DTCM/SRAM1/PSRAM/arena/fast/stack/heap comparison"
+  },
+  "campaign_control": {
+    "protocol_version": 1,
+    "commands": {
+      "144": "RunBaselineAcceptance, payload 0, fixed 5+100",
+      "145": "RunBaselineDiagnostic, payload 0, fixed 5+20",
+      "146": "RunBaselinePmu, payload 0, group1 fixed 5+20",
+      "147": "GetBaselineSample, uint32 little-endian index, export after campaign",
+      "148": "GetBaselineStatus, payload 0",
+      "149": "GetBaselineMap, payload 0"
+    },
+    "order": [
+      "preflight and optional one non-measured functional smoke",
+      "diagnostic 5+20, export afterward",
+      "PMU group1 5+20, export afterward",
+      "acceptance 5+100, export afterward"
+    ],
+    "same_exact_ELF_BIN_all_modes": true,
+    "one_prior_canonical_upload": true,
+    "no_per_run_host_commands_or_output": true,
+    "ordinary_result_published_each_run": true
+  }
+}
