@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "frontend.hpp"
+#include "baseline_profile.h"
 #include "frontend_m55_spectral.hpp"
 
 #include "h1_contract.h"
@@ -528,6 +529,7 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 	for (int firstFrame = 0; firstFrame < kFrames;
 	     firstFrame += kMelFramesPerMveGroup) {
 		mark(H1M55FrontendStage::SpectralEnter);
+		h1BaselineSpectralGroupBegin();
 		for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
 			const uint32_t frame = firstFrame + lane;
 			H1M55SpectralTiming frameTiming{};
@@ -549,6 +551,7 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 				? frameTiming.powerCmsisMagSquaredCycles
 				: frameTiming.powerSquaresCycles;
 		}
+		h1BaselineSpectralGroupEnd();
 		mark(H1M55FrontendStage::SpectralDone);
 		mark(H1M55FrontendStage::MelEnter);
 		const uint64_t melStart = k_cycle_get_64();
@@ -575,6 +578,7 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 	}
 	mark(H1M55FrontendStage::SpectralDone);
 
+	h1BaselineMelCycles(timing.melCycles);
 	mark(H1M55FrontendStage::DbEnter);
 	float globalMaximum = -INFINITY;
 	const uint64_t dbStart = k_cycle_get_64();

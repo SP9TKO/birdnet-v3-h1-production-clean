@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "runtime_profile.h"
+#include "baseline_profile.h"
 
 #include <stddef.h>
 #include <string.h>
@@ -128,6 +129,7 @@ void h1ProfileInvokeEnd(struct H1NpuProfile *profile, int32_t invoke_status)
 
 void h1ProfileCommandStart(void)
 {
+	h1BaselineCommandSnapshot();
 	const uint64_t now = k_cycle_get_64();
 	volatile struct H1NpuProfile *profile = active_npu_profile;
 	if (profile != NULL) {
@@ -143,6 +145,7 @@ void h1ProfileCommandStart(void)
 void h1ProfileIrqEntry(void)
 {
 	const uint64_t now = k_cycle_get_64();
+	h1BaselineIrqSnapshot();
 	volatile struct H1NpuProfile *profile = active_npu_profile;
 	if (profile != NULL) {
 		if (profile->irq_count == 0) {

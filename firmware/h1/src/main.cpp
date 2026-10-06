@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "build_identity.h"
+#include "baseline_profile.h"
 #if !defined(H1_DIAG_SKIP_PDM_INIT) || H1_DIAG_SKIP_PDM_INIT == 0
 #include "audio_pdm.hpp"
 #include "mic_usb.hpp"
@@ -341,9 +342,11 @@ uint8_t fastGuardPattern(unsigned index)
 
 bool fastGuardCheckQuiet()
 {
+	h1BaselineGuardInvalidate(H1_FAST_ADDRESS + H1_FAST_GUARD_OFFSET, kFastGuardBytes);
 	SCB_InvalidateDCache_by_Addr(
 		reinterpret_cast<uint32_t *>(h1FastMemory + H1_FAST_GUARD_OFFSET),
 		kFastGuardBytes);
+	h1BaselineGuardInvalidateDone();
 	for (unsigned index = 0; index < kFastGuardBytes; ++index) {
 		if (h1FastMemory[H1_FAST_GUARD_OFFSET + index] != fastGuardPattern(index)) {
 			return false;
@@ -436,6 +439,10 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 		return false;
 	}
 
+	h1BaselineTensorBind(stage == H1NpuStage::Backbone ? 0u : 1u,
+		uint32_t(reinterpret_cast<uintptr_t>(inputTensor->data.uint8)), uint32_t(inputBytes),
+		uint32_t(reinterpret_cast<uintptr_t>(outputTensor->data.uint8)), uint32_t(outputBytes),
+		uint32_t(arenaUsed));
 	const uint64_t inputCopyStart = h1ProfileNow();
 	memcpy(inputTensor->data.uint8, inputData, inputBytes);
 	const uint64_t inputCopyEnd = h1ProfileNow();
@@ -596,6 +603,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	const uint64_t totalStart = h1ProfileNow();
 
 	const uint64_t frontendStart = h1ProfileNow();
+	h1BaselineMark(0u, frontendStart);
 	h1RunStateMark(H1RunState::FrontendBegin);
 	result.profile.pre_frontend_overhead_cycles =
 		frontendStart - totalStart;
@@ -605,6 +613,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		: h1RunFrontend(waveform, H1_WAVEFORM_ELEMENTS, scratch,
 			gM55FrontendRuntime, boundaries.frontend, H1_FRONTEND_ELEMENTS);
 	const uint64_t frontendEnd = h1ProfileNow();
+	h1BaselineMark(1u, frontendEnd);
 	result.profile.frontend_cycles = frontendEnd - frontendStart;
 	if (frontendStatus != H1FrontendStatus::Ok || frontendEnd <= frontendStart) {
 		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
@@ -616,9 +625,11 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	size_t saturatedLow = 0;
 	size_t saturatedHigh = 0;
 	const uint64_t backboneQuantizeStart = h1ProfileNow();
+	h1BaselineMark(2u, backboneQuantizeStart);
 	quantizeBackboneInput(boundaries.frontend, boundaries.backboneInput,
 			      H1_BACKBONE_INPUT_ELEMENTS, saturatedLow, saturatedHigh);
 	const uint64_t backboneQuantizeEnd = h1ProfileNow();
+	h1BaselineMark(3u, backboneQuantizeEnd);
 	result.profile.frontend_to_backbone_quantize_cycles =
 		backboneQuantizeEnd - backboneQuantizeStart;
 	result.backboneSaturatedLow = uint32_t(saturatedLow);
@@ -645,12 +656,14 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		0,
 	};
 	const uint64_t gemStart = h1ProfileNow();
+	h1BaselineMark(4u, gemStart);
 	h1RunStateMark(H1RunState::GemBegin);
 	result.profile.backbone_to_gem_handoff_cycles =
 		gemStart - result.profile.backbone.invoke_end_cycles;
 	const GemStatus gemStatus = birdnet::h1::runGem(
 		lease.feature, boundaries.embedding, H1_EMBEDDING_ELEMENTS);
 	const uint64_t gemEnd = h1ProfileNow();
+	h1BaselineMark(5u, gemEnd);
 	result.profile.gem_cycles = gemEnd - gemStart;
 	if (gemStatus != GemStatus::Ok ||
 	    !birdnet::h1::completeConsumer(lease, H1_GEM_CONSUMER) ||
@@ -662,6 +675,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1RunStateMark(H1RunState::GemDone);
 
 	const uint64_t classifierQuantizeStart = h1ProfileNow();
+	h1BaselineMark(6u, classifierQuantizeStart);
 	if (!birdnet::h1::quantizeClassifierInput(
 		    boundaries.embedding, boundaries.classifierInput,
 		    H1_CLASSIFIER_INPUT_ELEMENTS, saturatedLow, saturatedHigh)) {
@@ -670,6 +684,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		return false;
 	}
 	const uint64_t classifierQuantizeEnd = h1ProfileNow();
+	h1BaselineMark(7u, classifierQuantizeEnd);
 	result.profile.embedding_to_classifier_quantize_cycles =
 		classifierQuantizeEnd - classifierQuantizeStart;
 	result.classifierSaturatedLow = uint32_t(saturatedLow);
@@ -2186,6 +2201,172 @@ void sendResultSummary(const H1UsbFrame &request)
 	}
 }
 
+
+void sendBaselineStatus(const H1UsbFrame &request)
+{
+ const uint64_t a = h1ProfileNow(), b = h1ProfileNow();
+ char *response = h1ProtocolResponse();
+ const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
+  "{\"ok\":true,\"baseline_version\":1,\"running\":%u,\"mode\":%u,\"last_mode\":%u,"
+  "\"error\":%u,\"warmups\":%u,\"measured\":%u,\"requested\":%u,\"clock_hz\":%u,"
+  "\"counter_bits\":64,\"pmu_counters\":%u,\"monotonic_probe\":[%llu,%llu],\"systick_load\":%u,"
+  "\"cache_selector\":%u,\"cache_capacity\":%u,\"diagnostic_address\":%u,"
+  "\"diagnostic_bytes\":%u,\"profile_bytes\":%u,\"irq_before\":%u,\"irq_after\":%u,"
+  "\"first_run\":%u,\"last_run\":%u,\"cfsr\":%u,\"hfsr\":%u,"
+  "\"model_storage_verified\":%s,\"compute_ready\":%s}",
+  unsigned(h1BaselineState.running), unsigned(h1BaselineState.mode), unsigned(h1BaselineState.last_mode),
+  unsigned(h1BaselineState.error), h1BaselineState.warmups_completed,
+  h1BaselineState.measured_completed, h1BaselineState.requested_samples,
+  unsigned(sys_clock_hw_cycles_per_sec()), unsigned(h1BaselinePmuCounters()), (unsigned long long)a, (unsigned long long)b,
+  unsigned(SysTick->LOAD), h1BaselineState.cache_selector, h1BaselineState.cache_capacity_bytes,
+  unsigned(reinterpret_cast<uintptr_t>(&h1BaselineState)), unsigned(sizeof(h1BaselineState)),
+  unsigned(sizeof(H1RuntimeProfile)), h1BaselineState.irq_before, h1BaselineState.irq_after,
+  h1BaselineState.first_run_sequence, h1BaselineState.last_run_sequence,
+  unsigned(SCB->CFSR), unsigned(SCB->HFSR), gModelStorageVerified ? "true" : "false",
+  gComputeReady ? "true" : "false");
+ if (n > 0 && size_t(n) < H1_PROTOCOL_RESPONSE_BYTES) sendJson(request, response, size_t(n));
+ else sendError(request, "FORMAT_OVERFLOW", "Baseline status did not fit");
+}
+void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
+{
+ if (!gComputeReady || !gModelStorageVerified || !gUpload.valid ||
+     !gUpload.canonicalByteMatch || strcmp(gUpload.declaredSha256, H1_SYNTHETIC_RAW_SHA256)) {
+  sendError(request, "BASELINE_PREFLIGHT", "Verified canonical resident waveform and models required"); return;
+ }
+ h1BaselineBeginCampaign(mode, request.sequence);
+ h1BaselineState.irq_before = h1IrqCount;
+ const unsigned measured = mode == H1_BASELINE_ACCEPTANCE ? 100u : 20u;
+ for (unsigned run = 0; run < 5u + measured && !h1BaselineState.error; ++run) {
+  const int32_t index = run < 5 ? -1 : int32_t(run - 5);
+  H1RunResult result;
+  h1BaselineBeginRun(index);
+  const uint64_t start = h1ProfileNow();
+  h1RunStateBegin(request.sequence + run, gUpload.rawCrc32);
+  h1RunStateMark(H1RunState::RunCommandReceived);
+  const bool success = runOnce(FixtureId::Uploaded, h1UploadedWaveform(),
+   gUpload.rawCrc32, gUpload.declaredSha256, gUpload.canonicalByteMatch, result);
+  if (success) { saveResult(result); h1RunStateMark(H1RunState::ResultReady); }
+  const uint64_t end = h1ProfileNow();
+  const bool integrity = success && result.valid && (!result.repeatComparable || result.repeatEqual);
+  h1BaselineEndRun(index, start, end, &result.profile, result.runSequence,
+   uint32_t(result.status), result.boundaryCrc32, integrity);
+ }
+ h1BaselineState.irq_after = h1IrqCount;
+ if (h1BaselineState.warmups_completed != 5 || h1BaselineState.measured_completed != measured ||
+     h1BaselineState.irq_after - h1BaselineState.irq_before != 2u * (5u + measured) ||
+     SCB->CFSR || SCB->HFSR) h1BaselineState.error = 9;
+ h1BaselineEndCampaign();
+ sendBaselineStatus(request);
+}
+void sendBaselineSample(const H1UsbFrame &request)
+{
+ const uint32_t index = readLe32(request.payload);
+ if (h1BaselineState.running || index >= h1BaselineState.measured_completed) {
+  sendError(request, "BASELINE_SAMPLE_RANGE", "Completed campaign and valid sample index required"); return;
+ }
+ char *response = h1ProtocolResponse(); size_t used = 0;
+ bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+  "{\"ok\":true,\"index\":%u,\"mode\":%u,\"clock_hz\":%u,\"cycles\":%llu,\"boundary_crc\":[",
+  index, h1BaselineState.last_mode, h1BaselineState.clock_hz,
+  (unsigned long long)h1BaselineState.samples[index]);
+ for (unsigned i = 0; ok && i < 7; ++i) ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+  "%s%u", i ? "," : "", h1BaselineState.boundary_crc[index][i]);
+ ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]");
+ if (h1BaselineState.last_mode != H1_BASELINE_ACCEPTANCE) {
+  const H1BaselineDiagnostic &d = h1BaselineState.diagnostic[index];
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+   ",\"run\":%u,\"status\":%u,\"start\":%llu,\"end\":%llu,\"residual\":%llu,\"stages\":[",
+   d.run_sequence, d.status, (unsigned long long)d.primary_start,
+   (unsigned long long)d.primary_end, (unsigned long long)d.residual_cycles);
+  for (unsigned i = 0; ok && i < 12; ++i) ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+   "%s%llu", i ? "," : "", (unsigned long long)d.stages[i]);
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"pmu\":[");
+  for (unsigned stage = 0; ok && stage < 2; ++stage) {
+   const H1BaselinePmu &p = d.pmu[stage];
+   ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+    "%s{\"before_cycles\":%llu,\"after_cycles\":%llu,\"overflow\":%u,\"configured\":%u,\"snapshots\":%u,\"before\":[",
+    stage ? "," : "", (unsigned long long)p.before_cycles, (unsigned long long)p.after_cycles,
+    p.overflow, p.configured, p.snapshots);
+   for (unsigned i = 0; ok && i < H1_BASELINE_EVENTS; ++i) ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+    "%s%u", i ? "," : "", p.before[i]);
+   ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"after\":[");
+   for (unsigned i = 0; ok && i < H1_BASELINE_EVENTS; ++i) ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+    "%s%u", i ? "," : "", p.after[i]);
+   ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]}");
+  }
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"cache\":[");
+  for (unsigned i = 0; ok && i < d.cache_count; ++i) {
+   const H1BaselineCache &c = d.cache[i];
+   ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+    "%s{\"stage\":%u,\"address\":%u,\"requested\":%u,\"rounded_address\":%u,\"rounded_bytes\":%u,"
+    "\"maintained\":%u,\"flags\":%u,\"start\":%llu,\"end\":%llu}",
+    i ? "," : "", c.stage, c.address, c.requested_bytes, c.rounded_address,
+    c.rounded_bytes, c.maintained_bytes, c.flags,
+    (unsigned long long)c.start_cycles, (unsigned long long)c.end_cycles);
+  }
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"profile_le_hex\":\"");
+  const auto *raw = reinterpret_cast<const uint8_t *>(&d.profile);
+  for (size_t i = 0; ok && i < sizeof(d.profile); ++i)
+   ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "%02x", raw[i]);
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "\"");
+ }
+ ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "}");
+ if (ok) sendJson(request, response, used);
+ else sendError(request, "FORMAT_OVERFLOW", "Baseline sample did not fit");
+}
+void sendBaselineMap(const H1UsbFrame &request)
+{
+ H1Boundaries &b = h1CurrentBoundaries(); H1FrontendScratch &s = h1FrontendScratch();
+ struct Entry { const char *name; const void *pointer; uint32_t bytes; const char *region; const char *lifetime; };
+ const Entry entries[] = {
+  {"waveform", h1UploadedWaveform(), H1_WAVEFORM_BYTES, "PSRAM_MODEL", "upload_to_campaign_end"},
+  {"spectral_workspace", &h1M55SpectralWorkspace(), sizeof(H1M55SpectralWorkspace), "SRAM1", "one_frame"},
+  {"power_group", s.gray, 4u * 1025u * 4u, "PSRAM_MODEL", "four_frames_until_compact_mel"},
+  {"mel_db", s.melDb, sizeof(s.melDb), "PSRAM_MODEL", "compact_mel_to_crop"},
+  {"image", s.image, sizeof(s.image), "PSRAM_MODEL", "crop_to_resize"},
+  {"gray", s.gray, sizeof(s.gray), "PSRAM_MODEL", "resize_to_channel_layout"},
+  {"frontend", b.frontend, sizeof(b.frontend), "PSRAM_MODEL", "frontend_to_quantization_and_ordinary_CRC"},
+  {"backbone_boundary_input", b.backboneInput, sizeof(b.backboneInput), "PSRAM_MODEL", "quantization_to_copy_and_ordinary_CRC"},
+  {"shared_feature", b.sharedFeature, sizeof(b.sharedFeature), "PSRAM_MODEL", "backbone_copy_to_GeM_and_ordinary_CRC"},
+  {"gem_embedding_bridge_source", b.embedding, sizeof(b.embedding), "PSRAM_MODEL", "GeM_to_bridge_and_ordinary_CRC"},
+  {"classifier_boundary_input", b.classifierInput, sizeof(b.classifierInput), "PSRAM_MODEL", "bridge_to_copy_and_ordinary_CRC"},
+  {"logits", b.logits, sizeof(b.logits), "PSRAM_MODEL", "classifier_copy_to_postprocess_and_ordinary_CRC"},
+  {"scores", b.scores, sizeof(b.scores), "PSRAM_MODEL", "sigmoid_to_reporting_and_ordinary_CRC"},
+  {"ordinary_result", &gLastResult, sizeof(gLastResult), "DTCM", "saveResult_to_next_publication"},
+  {"frontend_model", h1FrontendModelData, H1_FRONTEND_MODEL_BYTES, "MRAM", "image_lifetime"},
+  {"hann", gM55FrontendRuntime.hann, 2048u * 4u, "MRAM", "boot_to_shutdown"},
+  {"compact_mel_weights", &h1M55CompactMel(), sizeof(H1M55CompactMel), "SRAM1", "boot_to_shutdown"},
+  {"backbone_model_origin", reinterpret_cast<const void *>(H1_BACKBONE_FLASH_ADDRESS), H1_BACKBONE_MODEL_BYTES, "OSPI1", "persistent"},
+  {"classifier_model_origin", reinterpret_cast<const void *>(H1_CLASSIFIER_FLASH_ADDRESS), H1_CLASSIFIER_MODEL_BYTES, "OSPI1", "persistent"},
+  {"shared_model_slot", reinterpret_cast<const void *>(H1_PSRAM_BASE), H1_MODEL_SLOT_BYTES, "PSRAM_MODEL", "stage_prepare_to_interpreter_destruction_then_overwrite"},
+  {"tensor_arena", h1TensorArena, H1_ARENA_RESERVATION_BYTES, "SRAM0", "stage_allocation_to_output_copy_then_reuse"},
+  {"fast_memory", h1FastMemory, H1_FAST_RESERVATION_BYTES, "SRAM0", "NPU_stage"},
+  {"diagnostic_RAM", &h1BaselineState, sizeof(h1BaselineState), "SRAM1", "campaign_to_next_campaign"},
+  {"inactive_mel_raw", s.melRaw, sizeof(s.melRaw), "PSRAM_MODEL", "inactive_captureStages_false"},
+  {"inactive_reference_frame", s.frame, sizeof(s.frame), "PSRAM_MODEL", "inactive_legacy_route"},
+  {"inactive_reference_spectrum", s.spectrum, sizeof(s.spectrum), "PSRAM_MODEL", "inactive_legacy_route"},
+  {"inactive_reference_power", s.power, sizeof(s.power), "PSRAM_MODEL", "inactive_legacy_route"},
+  {"inactive_reference_fft", s.fftState, sizeof(s.fftState), "PSRAM_MODEL", "inactive_legacy_route"}
+ };
+ char *response = h1ProtocolResponse(); size_t used = 0;
+ bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "{\"ok\":true,\"buffers\":[");
+ for (size_t i = 0; ok && i < sizeof(entries)/sizeof(entries[0]); ++i) {
+  const Entry &e = entries[i]; const uint32_t address = uint32_t(reinterpret_cast<uintptr_t>(e.pointer));
+  ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+   "%s{\"name\":\"%s\",\"address\":%u,\"bytes\":%u,\"address_alignment\":%u,\"region\":\"%s\",\"lifetime\":\"%s\"}",
+   i ? "," : "", e.name, address, e.bytes, address & (0u - address), e.region, e.lifetime);
+ }
+ ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"npu_tensors\":[");
+ for (unsigned i = 0; ok && i < 2; ++i) {
+  const H1BaselineTensorMap &m = h1BaselineState.tensors[i];
+  ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+   "%s{\"stage\":%u,\"input\":%u,\"input_bytes\":%u,\"output\":%u,\"output_bytes\":%u,\"arena_used\":%u}",
+   i ? "," : "", i, m.input, m.input_bytes, m.output, m.output_bytes, m.arena_used_bytes);
+ }
+ ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"mel_weight_count\":%u}", h1M55CompactMel().weightCount);
+ if (ok) sendJson(request, response, used); else sendError(request, "FORMAT_OVERFLOW", "Baseline map did not fit");
+}
+
 void runUsbCommand(const H1UsbFrame &request, bool uploaded,
 		   bool legacyReference = false)
 {
@@ -2325,6 +2506,18 @@ void handleFrame(const H1UsbFrame &request)
 		break;
 	}
 	switch (H1MessageType(request.type)) {
+	case H1MessageType::RunBaselineAcceptance:
+		runBaselineCampaign(request, H1_BASELINE_ACCEPTANCE); break;
+	case H1MessageType::RunBaselineDiagnostic:
+		runBaselineCampaign(request, H1_BASELINE_DIAGNOSTIC); break;
+	case H1MessageType::RunBaselinePmu:
+		runBaselineCampaign(request, H1_BASELINE_PMU); break;
+	case H1MessageType::GetBaselineSample:
+		sendBaselineSample(request); break;
+	case H1MessageType::GetBaselineStatus:
+		sendBaselineStatus(request); break;
+	case H1MessageType::GetBaselineMap:
+		sendBaselineMap(request); break;
 	case H1MessageType::Ping:
 		sendPing(request);
 		break;
@@ -2759,6 +2952,7 @@ int main()
 	       unsigned(H1_MIC_WINDOW_SAMPLES), unsigned(H1_MIC_STRIDE_SAMPLES),
 	       h1PcmRingStorage(), h1SelectedPcmWindow());
 	gComputeReady = frontendRuntimeReady && reportNpuIdentity() && h1FastGuardPrepare();
+	h1BaselineInit();
 	printk("H1_READY compute_ready=%u mic_ready=%u usb_optional=1 uart4_fallback=1 "
 	       "uart_commands=C_compact,G_legacy_full sw4_normal=SE\n",
 	       unsigned(gComputeReady), unsigned(micInitStatus == 0));

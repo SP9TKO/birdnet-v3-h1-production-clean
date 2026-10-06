@@ -56,6 +56,12 @@ enum class H1MessageType : uint16_t {
 	CompareMveCompactMel = 48,
 	RunLegacyUploadedWaveform = 49,
 	GetInferenceData = 50,
+	RunBaselineAcceptance = 144,
+	RunBaselineDiagnostic = 145,
+	RunBaselinePmu = 146,
+	GetBaselineSample = 147,
+	GetBaselineStatus = 148,
+	GetBaselineMap = 149,
 };
 
 enum class H1UsbPollResult : uint8_t {

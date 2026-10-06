@@ -361,6 +361,9 @@ set(H1_IDENTITY_FILES
   src/model_storage.hpp
   src/runtime_profile.c
   src/runtime_profile.h
+  src/baseline_profile.c
+  src/baseline_profile.h
+  src/baseline_profile.ld
   src/usb_transport.cpp
   src/usb_transport.hpp
   src/build_identity.h.in
@@ -422,6 +425,7 @@ target_sources(app PRIVATE
   src/main.cpp
   src/model_storage.cpp
   src/runtime_profile.c
+  src/baseline_profile.c
   src/usb_transport.cpp
   "${H1_SOURCE_DIR}/h1_memory.cpp"
   "${H1_SOURCE_DIR}/h1_gem.cpp"
@@ -438,6 +442,8 @@ endif()
 target_compile_options(app PRIVATE -fno-fast-math -ffp-contract=off)
 
 zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/h1_memory.ld")
+zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/baseline_profile.ld")
+zephyr_link_libraries(-Wl,--wrap=ethosu_flush_dcache -Wl,--wrap=ethosu_invalidate_dcache)
 zephyr_link_libraries(-Wl,--fatal-warnings -Wl,--check-sections)
 
 # Exact cache/fast-memory reuse plus the qualified earliest-IRQ timestamp hook.

@@ -207,6 +207,7 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::ArmRead:
 	case H1MessageType::RunM55CompleteFrontend:
 		return length == sizeof(uint32_t) || length == 2 * sizeof(uint32_t);
+	case H1MessageType::GetBaselineSample:
 	case H1MessageType::RunM55SpectralLoop:
 	case H1MessageType::RunM55SpectralBoundedLoop:
 		return length == sizeof(uint32_t);
@@ -225,6 +226,11 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::GetInferenceData:
 	case H1MessageType::GetM55FrontendData:
 		return length == 3 * sizeof(uint32_t);
+	case H1MessageType::RunBaselineAcceptance:
+	case H1MessageType::RunBaselineDiagnostic:
+	case H1MessageType::RunBaselinePmu:
+	case H1MessageType::GetBaselineStatus:
+	case H1MessageType::GetBaselineMap:
 	case H1MessageType::Ping:
 	case H1MessageType::Status:
 	case H1MessageType::GetIdentity:
