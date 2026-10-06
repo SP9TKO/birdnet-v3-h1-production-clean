@@ -1,0 +1,1475 @@
+{
+  "accepted_identity_chain": "records/m5/ACCEPTED_IDENTITY_CHAIN.json",
+  "actions_performed_in_closure": [
+    "read-only hash/byte/Git/source/document audits",
+    "new compact evidence/guidance/document candidates"
+  ],
+  "complete_V3_preflight_authority_map": [
+    {
+      "relative_role": "m4-shared-feature-closure/SHARED_FEATURE_WITNESS_REPLAY.json",
+      "sha256": "14d432cc7010e082a6ed47f901a123dc32f83f6411a60ff51ee55a14666bacdc",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/SHARED_FEATURE_REQUIRED_DOMAIN.json",
+      "sha256": "8677dbddc4e0b23010fcbde13b7b292f810b03d21c96915e555b5f39e0a2ebee",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/SHARED_FEATURE_GRAPH_REVIEW.json",
+      "sha256": "f30cc1818290b83ea738d9490d87157b6683b5e5b70ed18a569cadc3667b4854",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/SHARED_FEATURE_QUANTIZER_ORIGIN.json",
+      "sha256": "54bb39e4cd65f78e383c85d652f02f71ce8a4f5599c45e6fc49f70e6f4a65fda",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/SHARED_FEATURE_SCALE_DERIVATION.json",
+      "sha256": "05474904c20663f88447c6051d1a92cbee132e5ab630ad0937cfe1b30ea72c4c",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/DEPENDENCY_MAP.md",
+      "sha256": "17954b583db07acb54bf4cb6a97405c65a1a0c1af3cb4b5d952c4361e47ac47e",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/M4_CANDIDATE_FREEZE.json",
+      "sha256": "127734cc835eec457e564153309f83ac3a4eabe8a69886e56c696b8a4c210a3c",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/M4_RANGE_GATE_RESULT.json",
+      "sha256": "911acdcbe7182753d7fb6c72056a5ecb9d876fc4c5882223044e9f7637205efc",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/authority/QUALIFICATION_FREEZE.json",
+      "sha256": "de41c8101d68c1385569d83da60a6197feb1ed2ebde2f84da4856559c4253e77",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/authority/CALIBRATION_FREEZE.json",
+      "sha256": "a58ad4385be27a477944cba91b0dc934e3971aee3bb115dd0935340a4847170f",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/authority/STRUCTURAL_DELTA.json",
+      "sha256": "9d171aeac54bc1081a5d4cd73f3b24544353224496b311d5f3339839d64cacf2",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/authority/CURRENT_SE_MEAN_CONTRACT.json",
+      "sha256": "6af68ee58ed3efcf3f723c5b4db393e01f94b4db2467834a3896c429ec0e3f38",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/authority/SE_MEAN_TOPOLOGY_INVENTORY.json",
+      "sha256": "48b6baac31b6beb60af51d2a1b281e5cac9092b663800093a9855a9ef8a244be",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "complete-frontend-qualification/formal/HISTORICAL_M4_DEFINITION.md",
+      "sha256": "f915654dc538a61e97e6bf7914a9df5b0d6116258e99a0fd3a3f03d1182ea235",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "complete-frontend-qualification/formal/HISTORICAL_m4_n1_qualify.py",
+      "sha256": "842f02b99382519d84774a2974408fc6de5294e5e323910dd9fd5851a5bc79d8",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "complete-frontend-qualification/formal/PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+      "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/SOURCE_IDENTITIES.json",
+      "sha256": "8bb465af710909d1dad2346fadbaa7cd8513e6e20092f27cfd2f6fd74895398d",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/common.cc",
+      "sha256": "ba5308bf76383d600d033c948fe0659710939e6f1f15a800b5413e5fc822ddfa",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/quantization_utils.cc",
+      "sha256": "0d72ece0b777ab575daa91f032633585737dff2142f087367dd45615825494f8",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/mul.h",
+      "sha256": "eb47e9375383e79b2cb79ca333cb86a2856b6444042b6ad91afa7feaa2ca660f",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/mul.cc",
+      "sha256": "94719f01f3eda397a50f18557effa229674e7f50798ac1a083ddb423e1ee4090",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/quantization_util.cc",
+      "sha256": "22e46f15663437c407298f5230545600faa2f6b2f1b46488e20c97ff3a5c96f9",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/common.h",
+      "sha256": "d6c5a9492bdc6c50d5f0997c411ad99e82b8e03898c6ebbe3daa138ef0106701",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/runtime-source/common.identity.json",
+      "sha256": "0ec23fd65aa3d82fd1ac8097e14cc9166b12851cc5632630e90317548df0e006",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    }
+  ],
+  "complete_V3_preflight_source_map": [
+    {
+      "relative_role": "m4-shared-feature-closure/construct_v3.py",
+      "sha256": "d0695e65c3632c1a20d62002245a33c9f18a0b2a018787957ecde85879e3e673",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/v3_common.py",
+      "sha256": "4d40256da132ca518cf8f4c1f7ad2d8ccbd67c8bfc8bf4537f557133df605e63",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/bind_construction.py",
+      "sha256": "4b163c70675b5f05673997e6e745bf95458b1b14feab6afeede96561371ce249",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/verify_range_v3.py",
+      "sha256": "fb12df4dc47eb2d1bf984059c6d6a05457d018851dbaeae62b5ceeef520e3088",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/verify_structure_v3.py",
+      "sha256": "81de2fc4f7b25ee0e9b52bd643901bef97bee8e70ca86de6da2dd25b421605ad",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/qualify_numerical_v3.py",
+      "sha256": "825413766050f8dfe30e06aadeaba6c1c08a7896b2eecb8269f627841575a663",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-shared-feature-closure/derive_v3.py",
+      "sha256": "be3526667b1def1914c1940c2128afb0b8e051a60f63565341ca3b48d4e3076e",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/construct_h1.py",
+      "sha256": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/evidence_manifest.py",
+      "sha256": "8dcd1bc07b2a6ef7fb975727e22cc747edbd59dc90063186341b4c7d3235f858",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/h1_model.py",
+      "sha256": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/inspect_source.py",
+      "sha256": "27205596b4cb98ea9307f80b08a0be4637384d195e2bdfb64cc44b625f1a6737",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_backbone_root_cause_diagnostic.py",
+      "sha256": "63beac8a1a6266c2944394a54c78cefda3b7365a482631ee086666fc50f884a1",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_candidate_audit.py",
+      "sha256": "a9dbd94ddff793c1eecacc7e44f9604fe904784f1d97211e9296b1de77bc5038",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_candidate_common.py",
+      "sha256": "20417aac1f961d6952481d25275ef0df5df42981abeae73910c40bd6dca3e037",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_candidate_gate.py",
+      "sha256": "7cf8dc149ca6350ea9b8fcac5450e8d574a88a0bc3f51cde67f7b5b6533e609f",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_common.py",
+      "sha256": "b3ff54bc52e0a9d79002279f7e8ed4bf883d6129d3b31dc0bdc1b3a6aac01299",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_official_trace.py",
+      "sha256": "b07701e2cdce6d99db157222e4a0cfaf5a460de5a52ee49638eb2f7b39ad2d58",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_componentized_prepare.py",
+      "sha256": "bda28c85e7e81c7baa9edcbc61cc15383e2532461e9159e02caa910df23d390b",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_gem_cross_runtime_study.py",
+      "sha256": "979884d8117fb77bf4c99644a4e83cbe43b081f685d2fc2b57f3089fb6fb50d0",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_gem_root_cause_diagnostic.py",
+      "sha256": "e4fb44e8666a68f8941591180d6b89af6b74cfbc78e7b88994dff2a9af8b3f38",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_candidate_audit.py",
+      "sha256": "c0a156962c2c97b28027f1d444fc7997482f108a0ad334a170dfc95d9390ac8a",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_compose.py",
+      "sha256": "ba4677e03f749458d4270fca8fbbe7d62a3ed0d3ad33bcb9a7c8aa5396b54e80",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_corpus.py",
+      "sha256": "dc26aca88ab07fa1f4636d3ae34b3a26bb0c1a22d163705848aba8d73c3ab0d3",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_execution_harness.py",
+      "sha256": "18eeea0869db417faf964b2147f1510eda79b536e9b6e26cac7f34f138ec64da",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_flatbuffer.py",
+      "sha256": "ea56dc267218d3dc3e958a3675c5382d4a2f8f4b39c8615988e064d14082fd22",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_freeze_common.py",
+      "sha256": "75833dc5a285dcfa2807ecb2233b6150bab2717f6e9e869cf65f1e470fad52c3",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_git.py",
+      "sha256": "a0a9d1ae934074215d1fddc9d9f052de1e6729f916357ba1c8199bff957415cb",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_interval_reachable.py",
+      "sha256": "fed567ae14ecf2bc3e5e64ae08d1b18bffe8f7fe3ce5a2cf5fd0d828063b1114",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_numerical.py",
+      "sha256": "f94884b0f7413d605bda76090a3b3c3887ab86f76e399980b2be259ae7a02058",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_qualify.py",
+      "sha256": "842f02b99382519d84774a2974408fc6de5294e5e323910dd9fd5851a5bc79d8",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_consequences.py",
+      "sha256": "6d7faf50d15e0aba6a345fed768d6e7b024d81521c855b341460ec134a787693",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_corpus.py",
+      "sha256": "b5076da3ed23fcaa1657e91fa367026ca1702374df182f481e92bde35947a81e",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_design.py",
+      "sha256": "c516d44e5d2fe78b35861f84cff4b6d86fd73d1442b5b59ce5bb90ba62977c30",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_finalize.py",
+      "sha256": "039df8b87946fe730232f98cf5a6b4b31d5c8d11ce92ee869c3571936b080778",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_prepare_freeze.py",
+      "sha256": "65d121327a12a8c58ad545d4eeb74a8a6b4a3864c2d9da5c2a43100b322044b6",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_qualification.py",
+      "sha256": "f249dc9aa2f63e6b14e5c10025ef853665f1ea840c92f86858a244fca9efaae5",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_range_validate_freeze.py",
+      "sha256": "e630a75053d1369271e6a42bbf9d91b8a0eaee1485c08dfdfa5c3cdb7e7247e7",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_reference_inputs.py",
+      "sha256": "02e7f2a84a01ec1026a4ab80218bc8f97438f09f2cc0cb1e32e0997bd5f8f7db",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_se_mean_emit.py",
+      "sha256": "1deee29823b76ebb9e96531cb8bab7e0f26cdf06f603267bf7c0bce9c02b5234",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_se_mean_mutation_controls.py",
+      "sha256": "f2222624b998a3b3f8f3b3ddf1d578a743da0b333b96525062b572507e48e4f9",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_se_mean_topology_audit.py",
+      "sha256": "4078d38701420b41e40855325d61118b5b467e41152da08e9be2fde6f52453f7",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_se_mean_validate_freeze.py",
+      "sha256": "ba1b5d72b0ed9f7f6452cb0ca8684447fcd59c031685517b1cfea08e59ef97bd",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_n1_validate_freeze.py",
+      "sha256": "f5f635a36b0ca4c4b9f67a2ef14c9022babd7d3b81accfc45e5ebdfe07707cb2",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_r2_audit.py",
+      "sha256": "407310d49c190eff98b5816f34b2066af5a08e2f0ca43dbc97dd432c0e8269a8",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_r2_common.py",
+      "sha256": "982bf1d7c502c12cba2a6b229d24b797dccf97d70aa0c63793ef4aa22d859ae8",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_r2_gate.py",
+      "sha256": "caf4d4eeb04041a6457a2d2b20e31c03d57b122ca1e2b58cc04a6ce9b5d7beb7",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_se_mean_converter_probe.py",
+      "sha256": "84844e16a6a15590f4304fe4f65f057442201c13d890aff3fbbbab0b6dfffc94",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_se_mean_flatbuffer_probe.py",
+      "sha256": "c01ed03bbe2c5abd5ad1950dfec858bce282a114d2d144d0704eb692c1e57f9e",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/m4_se_mean_implementation_study.py",
+      "sha256": "5d8865c634532356f7d6084be66f28863692c7db49213dd6f1c4d60c903fd140",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/validate_h1.py",
+      "sha256": "f690dbea0a9ec996e5e4da098a9caa919adcf7105718ca490f3fc71a001240c1",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "relative_role": "m4-range-closure/construction/validate_serialized_h1.py",
+      "sha256": "6f32a9f41775b10b6bbdbf765c392cb5aa1bd25030c5547a621712169eb9cfa3",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    }
+  ],
+  "date": "2026-10-05",
+  "exact_production_west_argv_template": [
+    "<WEST_PYTHON>",
+    "-m",
+    "west",
+    "build",
+    "-S",
+    "ospi-flash",
+    "--build-dir",
+    "<WORK>/m5-firmware-v3/build-v1",
+    "-s",
+    "<REPO>/firmware/h1",
+    "-b",
+    "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+    "--",
+    "-DH1_AUDIO_BACKEND=NONE",
+    "-DH1_FRONTEND_DIAGNOSTICS=ON",
+    "-DH1_FRONTEND_MODEL_BIN=<WORK>/m4-shared-feature-closure/candidate-v3-A/frontend.tflite",
+    "-DH1_BACKBONE_MODEL_BIN=<WORK>/m5-v3-deployment/compile-A/backbone/backbone_vela.tflite",
+    "-DH1_CLASSIFIER_MODEL_BIN=<WORK>/m5-v3-deployment/compile-A/classifier/classifier_vela.tflite",
+    "-DH1_SYNTHETIC_BIN=<WORK>/firmware-inputs/synthetic.f32le",
+    "-DH1_WREN_BIN=<WREN_F32LE>",
+    "-DEXTRA_CONF_FILE=<REPO>/firmware/h1/u85-256.conf;<REPO>/firmware/h1/external-flash.conf;<REPO>/firmware/h1/psram.conf",
+    "-DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256",
+    "-DZEPHYR_SDK_INSTALL_DIR=<ZEPHYR_SDK>",
+    "-DUSER_CACHE_DIR=<WORK>/m5-firmware-v3/zephyr-user-cache",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+  ],
+  "explicit_locally_retained_inputs": [
+    {
+      "identity": {
+        "artifact_id": "recipe_M4_V3_CANDIDATE_FREEZE.json",
+        "bytes": 25276,
+        "sha256": "d1e03985b58d676850113defcbf6bbec6bcb5a1563c167e18797586fb39b4ef2"
+      },
+      "purpose": "Complete prospective V3 preflight/source/authority identity map",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_CALIBRATION_FREEZE.json",
+        "bytes": 2000,
+        "sha256": "a58ad4385be27a477944cba91b0dc934e3971aee3bb115dd0935340a4847170f"
+      },
+      "purpose": "Deterministic seed/count and three canonical calibration aggregate identities",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_CURRENT_SE_MEAN_CONTRACT.json",
+        "bytes": 71393,
+        "sha256": "6af68ee58ed3efcf3f723c5b4db393e01f94b4db2467834a3896c429ec0e3f38"
+      },
+      "purpose": "Accepted SE-MEAN emission rules",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_SE_MEAN_TOPOLOGY_INVENTORY.json",
+        "bytes": 270927,
+        "sha256": "48b6baac31b6beb60af51d2a1b281e5cac9092b663800093a9855a9ef8a244be"
+      },
+      "purpose": "Accepted topology and exact emission allowlist",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_FULL_U85_INTEGER_ARITHMETIC_CONTRACT_V1.json",
+        "bytes": 49527683,
+        "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+      },
+      "purpose": "Sole sealed full integer contract; includes normative coefficient/LUT authority",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_PRIMITIVE_CORPUS_V1.json",
+        "bytes": 1458185,
+        "sha256": "bc90f90172922d6bfd2fe6ae34afd2c927fe7e8a9093dd19fba5108cda878134"
+      },
+      "purpose": "Sole frozen primitive expectations",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_END_TO_END_CORPUS_V1.json",
+        "bytes": 26640,
+        "sha256": "eae2311e70548a01610096687420385998f1769ddbc4ae37ac99ffefe50a3bf0"
+      },
+      "purpose": "38 exact waveform and component-input fixture identities",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_BRIDGE_CONFORMANCE_CORPUS_V1.json",
+        "bytes": 73156094,
+        "sha256": "637b29377da846a1de0ad75abaff2b0414064ea0f21ee47fb31d69ef97121097"
+      },
+      "purpose": "Frozen exact-rational bridge primitive/vector corpus",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+        "bytes": 17965,
+        "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+      },
+      "purpose": "Qualified variable-input route, target/driver/memory/payload/negative-test authority",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_M5_2_FORMAL_CAMPAIGN_MANIFEST_V1_ROUTE_EXTENDED.prepared.json",
+        "bytes": 79490,
+        "sha256": "b9021a721e47457426ab16c105177a69fa986fa71986ad8608dea37e54b1383a"
+      },
+      "purpose": "Exact 38-fixture formal campaign plan",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_M5_4_V2_CRITERIA_FREEZE.json",
+        "bytes": 60735,
+        "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+      },
+      "purpose": "Prospective physical V2 exact boundary and scope contract",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_M5_4_V2_EXECUTION_MANIFEST.prepared.json",
+        "bytes": 70527,
+        "sha256": "a507600b5ce388932d4c3d79b34cafc7fd570244e3f7e8d3c8ef0e61692a020f"
+      },
+      "purpose": "Exact five physical fixtures and two named repeats",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_M5_3_FIRMWARE_CANDIDATE_FREEZE.json",
+        "bytes": 35101,
+        "sha256": "863e21f616a3b3226442cc9bc71d56261970829f60efa18afe1fccda57d96a76"
+      },
+      "purpose": "Exact qualified source/build/package/payload identities",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_RETAINED_PHYSICAL_PROGRAMMING_ROUTE.json",
+        "bytes": 5552,
+        "sha256": "20019f708aab1da18301f10a3436f8098b1a0b19005fb9c4fe81a3a8b768ebef"
+      },
+      "purpose": "Accepted MRAM/ATOC and OSPI route",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    },
+    {
+      "identity": {
+        "artifact_id": "recipe_OSPI1_PREPARATION_AUTHORITY.json",
+        "bytes": 13003,
+        "sha256": "6b8979812104b1e291c9aad0f2372d00c5b15a168a5de22828487b5b1dfbd4d8"
+      },
+      "purpose": "Exact volatile loader preparation sequence; preserve physical preconditions",
+      "status": "LOCALLY_RETAINED_REQUIRED"
+    }
+  ],
+  "fresh_checkout_scope": "M1-M3 has a supported fresh-checkout bootstrap. M4/M5 recreation requires the explicitly identified retained authority/recipe/license inputs and complete original preflight maps. No turnkey fresh-checkout M5 or fresh byte-identical firmware promise.",
+  "input_contract": {
+    "bytes": 384000,
+    "dtype": "little-endian finite float32",
+    "duration_seconds": 3,
+    "normalization": "[-1,+1] project domain; do not substitute preprocessing",
+    "sample_rate_hz": 32000,
+    "shape": [
+      1,
+      96000
+    ]
+  },
+  "limitations": [
+    "Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.",
+    "M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.",
+    "GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary.",
+    "M5-2 qualifies the sealed integer deployment arithmetic on 38 fixtures through the independently qualified Corstone U85 route. M5-4 V2 qualifies actual physical integer inputs and their downstream outputs on five synthetic fixtures and two repeats.",
+    "Physical acceptance is limited to the observed Alif E8 DK M55-HP / Ethos-U85-256, exact firmware, compiled components, configuration and retained runtime. It does not generalize to arbitrary boards or settings.",
+    "Five physical synthetic fixtures do not establish biological accuracy or new V3 biological semantics. Older seven-window B/C evidence stays at its original model/build/runtime/scale.",
+    "No live microphone, acoustic accuracy, whole-domain equivalence, global TensorFlow/deployment equivalence, universal memory safety, final performance/resource proof, H2/H3, regional head, shared-backbone multi-head execution or multi-U85 acceptance is claimed.",
+    "M5-4 V2 used the existing runtime and does not create a new cold-boot proof. Cold boot is optional in the retained contract.",
+    "The waveform SHA-256 was computed/declared by the host and echoed by the board; the board independently checked CRC32. Packet sequence/kind/offset/length/CRC was validated; an original raw packet transcript was not retained.",
+    "Queue registers were observed after the classifier. Backbone completion is bound to stage-specific submission/IRQ hooks and successful queue-wait return, without an intermediate queue-register snapshot claim.",
+    "New firmware byte-identical rebuilds and byte-identical timestamped receipt regeneration have not been established. Retained artifact identities are comparison targets; prospective recreation must keep immutable numerical and payload checks."
+  ],
+  "output_contract": {
+    "H1_scores_shape": [
+      1,
+      11560
+    ],
+    "embedding_shape": [
+      1,
+      1280
+    ],
+    "semantics": "H1-only logits/sigmoid with exact official label order; not released fused full-predictor predictions",
+    "shared_feature_shape": [
+      1,
+      7,
+      9,
+      1280
+    ]
+  },
+  "path_symbols": {
+    "HOST_PYTHON": "identity-checked host orchestration interpreter",
+    "PROBE_SELECTION": "new current user-confirmed programmer selection; never a retained serial number",
+    "REPO": "isolated recreation checkout root",
+    "TF_PYTHON": "pinned TensorFlow interpreter inside the documented container namespace",
+    "VELA_PYTHON": "exact pinned Vela CPython/wheel environment",
+    "WEST_PYTHON": "identity-checked west Python environment",
+    "WEST_WORKSPACE": "exact pinned west source/dependency workspace",
+    "WORK": "REPO/.development-work restored retained layout",
+    "ZEPHYR_SDK": "exact pinned SDK installation"
+  },
+  "portable_replay_rule": "Immutable model, arithmetic, primitive expectations, numerical criteria and source identities cannot be relaxed. New location/Git/inode/timestamp/receipt metadata requires a prospective entry/execution freeze, not alteration of accepted receipts.",
+  "recreation_source_snapshots": "records/m5/RECREATION_SOURCE_INDEX.json",
+  "required_retained_payloads": [
+    {
+      "artifact_id": "v3_source_gem",
+      "bytes": 1780,
+      "sha256": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353"
+    },
+    {
+      "artifact_id": "firmware_elf",
+      "bytes": 10079924,
+      "sha256": "4891d93b96b50fc35db142b53f0d5a667f9f73a0f3ed0bcf4cb61afcf90a3216"
+    },
+    {
+      "artifact_id": "firmware_bin",
+      "bytes": 1693988,
+      "sha256": "2a85a6772a8fb0a681457cc940a049a0f5a1da9e093f5a2e4b0c8cd491826753"
+    },
+    {
+      "artifact_id": "programmed_application",
+      "bytes": 1694000,
+      "sha256": "d85d1c055d7d6567122b214ee18a4da71953839c68151560920f52649ab687f6"
+    },
+    {
+      "artifact_id": "programmed_atoc",
+      "bytes": 3888,
+      "sha256": "c9ad887b6c25ec439ff971367e611978cc828f1fc503a84d6b4f8c7f36757024"
+    }
+  ],
+  "requires_physical_hardware": [
+    {
+      "acceptance_checks": [
+        "Explicit SW4=SE confirmation; preserve live state before destructive action; app 1,694,000 bytes and ATOC 3,888 bytes exactly equal to frozen sources; programming alone is not boot or inference proof."
+      ],
+      "command_templates": [
+        "From the exact isolated package directory: ./app-write-mram -p -nr -c <CONFIRMED_SE_PORT>",
+        "Use the retained complete application/ATOC readback command recipes; rehash exact-length results."
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "readback_application",
+          "bytes": 1694000,
+          "sha256": "d85d1c055d7d6567122b214ee18a4da71953839c68151560920f52649ab687f6"
+        },
+        {
+          "artifact_id": "readback_atoc",
+          "bytes": 3888,
+          "sha256": "c9ad887b6c25ec439ff971367e611978cc828f1fc503a84d6b4f8c7f36757024"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "programmed_application",
+          "bytes": 1694000,
+          "sha256": "d85d1c055d7d6567122b214ee18a4da71953839c68151560920f52649ab687f6"
+        },
+        {
+          "artifact_id": "programmed_atoc",
+          "bytes": 3888,
+          "sha256": "c9ad887b6c25ec439ff971367e611978cc828f1fc503a84d6b4f8c7f36757024"
+        },
+        {
+          "artifact_id": "app_write_mram",
+          "bytes": 11433888,
+          "sha256": "16d5986dcdfdb00622f8e0ca6f41aab99cc7b21543b9aa1c1297ed543c6ada9b"
+        },
+        {
+          "artifact_id": "recipe_RETAINED_PHYSICAL_PROGRAMMING_ROUTE.json",
+          "bytes": 5552,
+          "sha256": "20019f708aab1da18301f10a3436f8098b1a0b19005fb9c4fe81a3a8b768ebef"
+        }
+      ],
+      "name": "Application/ATOC programming and complete readback",
+      "notes": "No physical action is authorized by this closure document. Separate execution authorization and current physical confirmation are required.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_program-application-atoc-command.json",
+          "bytes": 1479,
+          "sha256": "d21e4b6d2511430b9f8234a2c94fb498d577d117f4279645960b93ef39b20c14"
+        },
+        {
+          "artifact_id": "recipe_post-program-mram-command.json",
+          "bytes": 1072,
+          "sha256": "e206badb83bee5bdb71d1f230da93e8f6b84d31fa9cdb0b6cc437ecc3187564e"
+        }
+      ],
+      "status_labels": [
+        "PHYSICAL_ACTION_REQUIRED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "H01",
+      "tool_identities": [
+        "packaging"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Exact qualified volatile FIFO-start/flash-reset preparation; never rely on a tool exit code as proof of no write; complete model byte equality; preserve classifier at 0xc2000000 and application/ATOC; no automatic retry or unrelated-bank writes."
+      ],
+      "command_templates": [
+        "Apply the exact retained OSPI1_PREPARATION_AUTHORITY sequence under separate hardware authorization; first prove nonwriting loader readiness and complete current storage identity.",
+        "<JFlashExe> -jflashlog<PRIVATE_LOG> -jlinklog<PRIVATE_LOG> -openprj<EXACT_OSPI1_PROJECT> -usb<CONFIRMED_PROBE_SELECTION> -open<V3_BACKBONE_PAYLOAD>,0xC0000000 -auto -exit",
+        "Use retained complete loader readback command recipes for backbone and classifier sector envelopes; compare payload prefix and preserved suffix; then repeat application/ATOC collateral readback."
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "readback_backbone",
+          "bytes": 20465840,
+          "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+        },
+        {
+          "artifact_id": "readback_classifier",
+          "bytes": 13008016,
+          "container_artifact_id": "readback_classifier_envelope",
+          "container_offset_bytes": 0,
+          "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+        },
+        {
+          "artifact_id": "readback_classifier_envelope",
+          "bytes": 13107200,
+          "sha256": "d728218ebd0ce59f1099a2b763ef27fc11f1277bdfeae034b3d99b7fc48c422b"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "vela_compiled_backbone",
+          "bytes": 20465840,
+          "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+        },
+        {
+          "artifact_id": "vela_compiled_classifier",
+          "bytes": 13008016,
+          "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+        },
+        {
+          "artifact_id": "recipe_OSPI1_PREPARATION_AUTHORITY.json",
+          "bytes": 13003,
+          "sha256": "6b8979812104b1e291c9aad0f2372d00c5b15a168a5de22828487b5b1dfbd4d8"
+        },
+        {
+          "artifact_id": "e8_ospi1_project",
+          "bytes": 2094,
+          "sha256": "5b808efe04b1a51df98f08aeaa09603165514d5c873f24f541635a6bbb22a939"
+        }
+      ],
+      "name": "V3 storage programming/recovery and complete readback",
+      "notes": "The accepted classifier bytes were already exact and were not rewritten during the successful backbone recovery. Writing a different board/configuration needs prospective hardware authority.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_program-frozen-V3-backbone-qualified-route-command.json",
+          "bytes": 3690,
+          "sha256": "d5e5ace606c69c4ff05249b079653b5050e9307c75c5f696fab4de157449874a"
+        },
+        {
+          "artifact_id": "recipe_OSPI1_PREPARATION_AUTHORITY.json",
+          "bytes": 13003,
+          "sha256": "6b8979812104b1e291c9aad0f2372d00c5b15a168a5de22828487b5b1dfbd4d8"
+        },
+        {
+          "artifact_id": "recipe_post-program-backbone-full-loader-read-command.json",
+          "bytes": 1405,
+          "sha256": "fbbf49683b4ed524dc83c93dadec38f18c76a381d1b71b72d27cc1e2441aff3c"
+        },
+        {
+          "artifact_id": "recipe_post-program-classifier-full-loader-read-command.json",
+          "bytes": 1382,
+          "sha256": "4640b60dea25a3d7358c6065ba4dcb6ddedd979c05be0774e6738d724dbba2b4"
+        },
+        {
+          "artifact_id": "recipe_post-backbone-persistent-and-restoration-readonly-command.json",
+          "bytes": 1420,
+          "sha256": "7c92cb2cf1d8bb10b7b437cd889060dfb9eca3bd99ad8c00b11c6a7194b38ff1"
+        }
+      ],
+      "status_labels": [
+        "PHYSICAL_ACTION_REQUIRED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "H02",
+      "tool_identities": [
+        {
+          "artifact_id": "JFlashExe_9.78",
+          "bytes": 1747032,
+          "sha256": "39434ea36dc0029de04e75bec78350932d4e20152282cf7935c05b27255e2eda"
+        }
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Current identity/readiness/model-storage observations before each slot; exact order canonical, canonical-repeat, silence, low_amplitude_sine, high_valid_two_tone, high_valid_two_tone-repeat, structured_impulse.",
+        "Capture complete same-run native frontend, deployment input, shared feature, embedding, classifier input, logits and scores; exact native quantization and captured-embedding bridge.",
+        "Oracles consume actual captured integer inputs; exact backbone/GeM-plus-bridge/classifier boundaries; 8/8 named repeat captures; stage-specific U85 submission/IRQ/queue and integrity proof; stop on first hard failure."
+      ],
+      "command_templates": [
+        "Retained fresh entry recipe: <HOST_PYTHON> -B <WORK>/m5-physical-v3/v2-execution/entry.py; then the retained ordinary-run/capture/check scripts under a new prospective execution freeze.",
+        "Historical collector command source: <HOST_PYTHON> -B <WORK>/m5-physical-v3/v2-execution/runner.py. Historical safe-resume source: runner_resume_final.py; it requires the preserved first canonical capture and is not a fresh seven-slot entry point."
+      ],
+      "expected_output_identities": [
+        {
+          "U85_submissions": 14,
+          "all_comparisons": 21,
+          "all_elements": 654360,
+          "completion_IRQs": 14,
+          "disposition": "M5_4_V2_INTEGRATED_PHYSICAL_V3_EXECUTION_PASS",
+          "maximum_LSB_error": 0,
+          "mismatches": 0,
+          "primary_comparisons": 15,
+          "primary_elements": 467400,
+          "primary_fixtures": 5,
+          "repeat_captures": 8,
+          "slots": 7
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "recipe_M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        },
+        {
+          "artifact_id": "recipe_M5_4_V2_EXECUTION_MANIFEST.prepared.json",
+          "bytes": 70527,
+          "sha256": "a507600b5ce388932d4c3d79b34cafc7fd570244e3f7e8d3c8ef0e61692a020f"
+        },
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        },
+        {
+          "artifact_id": "production_source_bundle",
+          "sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91"
+        }
+      ],
+      "name": "USB/runtime entry and M5-4 V2 physical execution",
+      "notes": "This accepted campaign retained host checker, GeM-permission and fresh-serial-transcript corrections without rerunning canonical inference. A future fresh campaign must prospectively incorporate those orchestration corrections, create a new unexecuted namespace/freeze, and obtain separate physical authorization. Old V1 captures or historical continuation files cannot count as new V2 runs.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_entry.py",
+          "bytes": 4547,
+          "sha256": "0f8390737e68df20b11c5fc311cafbdd9908247cce4cbca60ae80dca5d40d6eb"
+        },
+        {
+          "artifact_id": "recipe_runner.py",
+          "bytes": 14386,
+          "sha256": "4fa18c320c0f92786d1d7926486ac04e358908c2281f7ad4615962e4ccb9a38a"
+        },
+        {
+          "artifact_id": "recipe_runner_resume_final.py",
+          "bytes": 17540,
+          "sha256": "a8f0a3b12125d84895a5688086a7cef2876c50895a73820067809c6c80dc7c4c"
+        },
+        {
+          "artifact_id": "recipe_checks_corrected.py",
+          "bytes": 11533,
+          "sha256": "eaca611cd930cfb6c1e21561f66c58b9ce036ff7131790489d15d30b1c37138a"
+        },
+        {
+          "artifact_id": "recipe_gem_replay.py",
+          "bytes": 5138,
+          "sha256": "9fb9bb0060148119554df6d9470185abe5fae6ac418e9594b881a61c802d2aec"
+        },
+        {
+          "artifact_id": "recipe_HOST_CHECKER_CORRECTION.json",
+          "bytes": 4722,
+          "sha256": "68006d4d99fa145dce4e753b1cc8c644d22302c86eb341e6bef0cf5b80356dcb"
+        },
+        {
+          "artifact_id": "recipe_HOST_GEM_PERMISSION_CORRECTION.json",
+          "bytes": 3565,
+          "sha256": "b942602be7e2bb952d61a86d7e1eac84c9d3bb9067267675326e5861d46bed5b"
+        },
+        {
+          "artifact_id": "recipe_HOST_FRESH_SERIAL_TRANSCRIPT_CORRECTION.json",
+          "bytes": 862,
+          "sha256": "81aa8be73037841967974141b5b5b173d675cfccae3b2304c55a2f1a85cc6eea"
+        }
+      ],
+      "status_labels": [
+        "PHYSICAL_ACTION_REQUIRED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "H03",
+      "tool_identities": [
+        "production",
+        "oracle",
+        "TensorFlow"
+      ]
+    }
+  ],
+  "schema": "m5-recreation-guidance-v1",
+  "technical_execution": [],
+  "terminology": {
+    "LOCALLY_RETAINED_REQUIRED": "Explicit required private/licensed input or complete original freeze/recipe dependency; unavailable from Git alone. Preserve the sole authoritative bytes.",
+    "PHYSICAL_ACTION_REQUIRED": "Requires separately authorized hardware access and current physical precondition confirmation.",
+    "PINNED": "Exact authority/tool/configuration identity is fixed and must be verified.",
+    "RECONSTRUCTABLE": "Retained recipe/source/configuration exists; fresh byte identity has not been demonstrated where stated.",
+    "REPRODUCED": "Property demonstrated in retained exact executions; this closure performs no new execution."
+  },
+  "toolchain_pins": "records/m5/TOOLCHAIN_PINS.json",
+  "without_hardware": [
+    {
+      "acceptance_checks": [
+        "Verify authoritative archive/labels before use; exact wheel locks; all four canonical files and tree hash; H1-only source contract."
+      ],
+      "command_templates": [
+        "scripts/bootstrap_m1_m3.sh",
+        "Use REPRODUCIBILITY.md sections 6-7 exact constructor/reload commands in a fresh recreation checkout."
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "canonical_M3_tree",
+          "bytes": 143767337,
+          "sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "official_fp32_archive",
+          "bytes": 499609919,
+          "published_md5": "f0409a35ac3e1605cbe6190e0c81bba9",
+          "sha256": "ead54e1c3c0cbf6032def4a5aa6e583b63263440f6975e2dbade7d925e775eeb",
+          "url": "https://zenodo.org/records/20703646/files/BirdNET%2B_V3.0-preview3.1_Global_11K_FP32_Protobuf.zip?download=1"
+        },
+        {
+          "artifact_id": "official_labels",
+          "bytes": 809172,
+          "published_md5": "21ccf9e984a955bfc2d5c52faab6a6ea",
+          "sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+          "url": "https://zenodo.org/records/20703646/files/BirdNET%2B_V3.0-preview3.1_Global_11K_Labels.csv?download=1"
+        }
+      ],
+      "name": "Retrieve/freeze upstream and canonical M3",
+      "notes": "M1-M3 fresh reconstruction was established previously. Existing accepted records are verification targets, not new outputs from this closure.",
+      "retained_recipe_identities": [],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED"
+      ],
+      "step_id": "R01",
+      "tool_identities": [
+        "TensorFlow"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Require all frozen implementation/authority hashes; canonical calibration aggregate identities; exact V2 control; only permitted tensor-926 scale/max delta; all four V3 bytes equal A/B."
+      ],
+      "command_templates": [
+        "<TF_PYTHON> <WORK>/m4-shared-feature-closure/construct_v3.py A",
+        "<TF_PYTHON> <WORK>/m4-shared-feature-closure/construct_v3.py B"
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "v3_source_frontend",
+          "bytes": 545776,
+          "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0"
+        },
+        {
+          "artifact_id": "v3_source_backbone",
+          "bytes": 24619568,
+          "sha256": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70"
+        },
+        {
+          "artifact_id": "v3_source_gem",
+          "bytes": 1780,
+          "sha256": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353"
+        },
+        {
+          "artifact_id": "v3_source_classifier",
+          "bytes": 15261544,
+          "sha256": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "canonical_M3_tree",
+          "sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a"
+        },
+        {
+          "artifact_id": "recipe_M4_V3_CANDIDATE_FREEZE.json",
+          "bytes": 25276,
+          "sha256": "d1e03985b58d676850113defcbf6bbec6bcb5a1563c167e18797586fb39b4ef2"
+        },
+        {
+          "artifact_id": "recipe_CALIBRATION_FREEZE.json",
+          "bytes": 2000,
+          "sha256": "a58ad4385be27a477944cba91b0dc934e3971aee3bb115dd0935340a4847170f"
+        },
+        {
+          "artifact_id": "recipe_CURRENT_SE_MEAN_CONTRACT.json",
+          "bytes": 71393,
+          "sha256": "6af68ee58ed3efcf3f723c5b4db393e01f94b4db2467834a3896c429ec0e3f38"
+        },
+        {
+          "artifact_id": "recipe_SE_MEAN_TOPOLOGY_INVENTORY.json",
+          "bytes": 270927,
+          "sha256": "48b6baac31b6beb60af51d2a1b281e5cac9092b663800093a9855a9ef8a244be"
+        },
+        {
+          "artifact_id": "v3_source_gem",
+          "bytes": 1780,
+          "sha256": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353"
+        }
+      ],
+      "name": "Construct accepted V3 model state",
+      "notes": "The accepted constructor reuses the unchanged accepted GeM TFLite as an explicitly required input. This guide does not claim that constructor regenerates GeM from nothing. Restore the complete freeze preflight map, including unused verification-only snapshots; do not remove hash checks.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_construct_v3.py",
+          "bytes": 9468,
+          "sha256": "d0695e65c3632c1a20d62002245a33c9f18a0b2a018787957ecde85879e3e673"
+        }
+      ],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R02",
+      "tool_identities": [
+        "TensorFlow"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Smallest binary32 scale covers both exact required-domain endpoints; immediate predecessor fails; unchanged quantizer produces accepted scale from the smallest accepted statistic."
+      ],
+      "command_templates": [
+        "<TF_PYTHON> <WORK>/m4-shared-feature-closure/derive_v3.py"
+      ],
+      "expected_output_identities": [
+        {
+          "classifier_input_scale_bits": "0x380049c8",
+          "frontend_to_backbone_scale_bits": "0x396001c1",
+          "logit_scale_bits": "0x3a08d017",
+          "prospective_output_calibration_max_bits": "0x3fe06b91",
+          "shared_feature_scale_bits": "0x38606d52"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "recipe_SHARED_FEATURE_REQUIRED_DOMAIN.json",
+          "bytes": 19701,
+          "sha256": "8677dbddc4e0b23010fcbde13b7b292f810b03d21c96915e555b5f39e0a2ebee"
+        },
+        {
+          "artifact_id": "recipe_SHARED_FEATURE_QUANTIZER_ORIGIN.json",
+          "bytes": 5533,
+          "sha256": "54bb39e4cd65f78e383c85d652f02f71ce8a4f5599c45e6fc49f70e6f4a65fda"
+        }
+      ],
+      "name": "Reproduce/check quantization-scale derivation",
+      "notes": "Derived scales and prospective calibration maximum are fixed authority, not values chosen from physical outputs.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_derive_v3.py",
+          "bytes": 3483,
+          "sha256": "be3526667b1def1914c1940c2128afb0b8e051a60f63565341ca3b48d4e3076e"
+        }
+      ],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R03",
+      "tool_identities": [
+        "TensorFlow"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Exact Vela wheel/package/config/runtime identity; A/B executable bytes identical; source and compiled public scales/shape/dtype equal; U85-256; zero CPU fallback."
+      ],
+      "command_templates": [
+        "<VELA_PYTHON> -m ethosu.vela <V3_COMPONENT_TFLITE> --accelerator-config ethos-u85-256 --config <DEDICATED_SRAM_INI> --system-config Ethos_U85_SRAM_OSPI --memory-mode Dedicated_Sram --arena-cache-size 524288 --optimise Performance --enable-debug-db --show-cpu-operations --show-subgraph-io-summary --verbose-allocation --verbose-operators --verbose-performance --output-dir <FRESH_COMPONENT_OUTPUT>"
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "vela_compiled_backbone",
+          "bytes": 20465840,
+          "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+        },
+        {
+          "artifact_id": "vela_compiled_classifier",
+          "bytes": 13008016,
+          "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "v3_source_backbone",
+          "bytes": 24619568,
+          "sha256": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70"
+        },
+        {
+          "artifact_id": "v3_source_classifier",
+          "bytes": 15261544,
+          "sha256": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81"
+        },
+        {
+          "artifact_id": "dedicated_sram_config",
+          "bytes": 624,
+          "sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb"
+        }
+      ],
+      "name": "Obtain or reproduce Vela compiled components",
+      "notes": "A/B compilation of both components already established executable-byte repeatability; path-bearing XML/stdout differed and was not normalized into executable evidence. The published Vela binary wheel was verified, not reproducibly rebuilt from source.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_compile_v3.py",
+          "bytes": 3470,
+          "sha256": "0f7c0a7123fa841018fbc36a088f8f77878526c068f2af9813748b07761607f6"
+        }
+      ],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED"
+      ],
+      "step_id": "R04",
+      "tool_identities": [
+        "Vela"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "All 544 backbone + 6 classifier rules/coefficient domains complete; sealed static-command/source binding; exact contract/corpus hashes; no runtime outputs used as primitive expectations."
+      ],
+      "command_templates": [
+        "<VELA_PYTHON> <WORK>/m5-integer-contract/bind_deployment_v1.py",
+        "<VELA_PYTHON> <WORK>/m5-integer-contract/freeze_contract_v1.py"
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "arithmetic_contract",
+          "bytes": 49527683,
+          "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+        },
+        {
+          "artifact_id": "primitive_corpus",
+          "bytes": 1458185,
+          "sha256": "bc90f90172922d6bfd2fe6ae34afd2c927fe7e8a9093dd19fba5108cda878134"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "v3_source_backbone",
+          "bytes": 24619568,
+          "sha256": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70"
+        },
+        {
+          "artifact_id": "v3_source_classifier",
+          "bytes": 15261544,
+          "sha256": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81"
+        },
+        {
+          "artifact_id": "vela_compiled_backbone",
+          "bytes": 20465840,
+          "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+        },
+        {
+          "artifact_id": "vela_compiled_classifier",
+          "bytes": 13008016,
+          "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+        },
+        {
+          "artifact_id": "arithmetic_contract",
+          "bytes": 49527683,
+          "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+        }
+      ],
+      "name": "Reproduce/check the sealed integer contract",
+      "notes": "Exact frozen contract/corpus bytes are required. Generators and their complete authority dependencies are retained; independent byte-identical regeneration of timestamped/path-bearing receipts is not established. Never regenerate over the sole accepted freeze or change its identity to get a pass.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_bind_deployment_v1.py",
+          "bytes": 20617,
+          "sha256": "b632b269887daf13ee1e48e59949e32e58fd5aee97491d3f2b59916094825c41"
+        },
+        {
+          "artifact_id": "recipe_freeze_contract_v1.py",
+          "bytes": 34341,
+          "sha256": "94e807beeaaae3fd2424b996f9074da3833c455d2449d25466c95bc133275838"
+        }
+      ],
+      "status_labels": [
+        "RECONSTRUCTABLE",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R05",
+      "tool_identities": [
+        "Vela",
+        "oracle"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Exact six-source aggregate; standard-library-only arithmetic; no TFLite/Vela/firmware arithmetic linkage; 0 mismatches/0 LSB for both primitive implementations."
+      ],
+      "command_templates": [
+        "g++ -std=c++17 -O3 -fno-tree-vectorize -fno-fast-math scalar_executor.cpp -o build/scalar_executor",
+        "<HOST_PYTHON> -B <WORK>/m5-integer-contract/oracle-v1/test_primitives.py"
+      ],
+      "expected_output_identities": [
+        {
+          "cases_per_implementation": 5451,
+          "result": "PRIMITIVE_SELF_TESTS_PASS",
+          "total_checks": 10902
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "arithmetic_contract",
+          "bytes": 49527683,
+          "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+        },
+        {
+          "artifact_id": "primitive_corpus",
+          "bytes": 1458185,
+          "sha256": "bc90f90172922d6bfd2fe6ae34afd2c927fe7e8a9093dd19fba5108cda878134"
+        },
+        {
+          "artifact_id": "oracle_source_aggregate",
+          "sha256": "3aa920d9855a67cc74d61e67c6290acc6704ceaf3337c4a79bfd94cda3a344eb"
+        }
+      ],
+      "name": "Reproduce independent oracle and primitive checks",
+      "notes": "An exact historical oracle executable is retained separately. A newly compiled host executable is not promised byte-identical merely because its compiler version matches.",
+      "retained_recipe_identities": [],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R06",
+      "tool_identities": [
+        "oracle"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Prospective new entry/execution freeze for the isolated recreation state; unchanged immutable contract, payload, oracle and variable-input route; normal U85 mode; all 38 input pairs executable; stop on first hard failure."
+      ],
+      "command_templates": [
+        "<HOST_PYTHON> -B <WORK>/m5-integer-contract/formal-campaign-v1-route-extended/campaign.py"
+      ],
+      "expected_output_identities": [
+        {
+          "boundary_comparisons": 152,
+          "fixtures": 38,
+          "integer_elements": 10727856,
+          "maximum_LSB_error": 0,
+          "mismatches": 0,
+          "repeat_captures_byte_identical": 8,
+          "result": "M5_2_EXACT_INTEGER_CONFORMANCE_V1_PASS"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "arithmetic_contract",
+          "bytes": 49527683,
+          "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+        },
+        {
+          "artifact_id": "primitive_corpus",
+          "bytes": 1458185,
+          "sha256": "bc90f90172922d6bfd2fe6ae34afd2c927fe7e8a9093dd19fba5108cda878134"
+        },
+        {
+          "artifact_id": "recipe_END_TO_END_CORPUS_V1.json",
+          "bytes": 26640,
+          "sha256": "eae2311e70548a01610096687420385998f1769ddbc4ae37ac99ffefe50a3bf0"
+        },
+        {
+          "artifact_id": "recipe_M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+          "bytes": 17965,
+          "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+        },
+        {
+          "artifact_id": "recipe_M5_2_FORMAL_CAMPAIGN_MANIFEST_V1_ROUTE_EXTENDED.prepared.json",
+          "bytes": 79490,
+          "sha256": "b9021a721e47457426ab16c105177a69fa986fa71986ad8608dea37e54b1383a"
+        }
+      ],
+      "name": "Run host/Corstone M5-2 campaign",
+      "notes": "The historical campaign binds branch, HEAD, Git diff, source identities, directory inodes, old entry and receipt paths. It is an exact retained recipe, not a portable command to run over this completed campaign. Recreate in a separately prepared namespace with prospectively reviewed entry metadata; all model/arithmetic/route hashes and exact checks remain unchanged.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_campaign.py",
+          "bytes": 36824,
+          "sha256": "19b5ba2dfdbbcd85c8c781af7636e0079c2c04ad8d3776dc87090d57e6f69fb7"
+        },
+        {
+          "artifact_id": "recipe_compare_exact.py",
+          "bytes": 2868,
+          "sha256": "143c3982da31f24d35293d3f91fb297c630372971216645b35d5a437f1b69efb"
+        }
+      ],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R07",
+      "tool_identities": [
+        "Corstone",
+        "oracle",
+        "TensorFlow"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Use west argv array retained below; exact input bindings and original CMake identity material; linked production bridge/runner route; package has H1-HP only at 0x80200000 and ATOC at 0x8057f0d0; compare payloads to retained accepted identities."
+      ],
+      "command_templates": [
+        "<WEST_PYTHON> -m west build -S ospi-flash --build-dir <FRESH_BUILD> -s <REPO>/firmware/h1 -b alif_e8_dk/ae822fa0e5597xx0/rtss_hp -- -DH1_AUDIO_BACKEND=NONE -DH1_FRONTEND_DIAGNOSTICS=ON -DH1_FRONTEND_MODEL_BIN=<FRONTEND> -DH1_BACKBONE_MODEL_BIN=<V3_BACKBONE> -DH1_CLASSIFIER_MODEL_BIN=<V3_CLASSIFIER> -DH1_SYNTHETIC_BIN=<SYNTHETIC_F32LE> -DH1_WREN_BIN=<WREN_F32LE> -DEXTRA_CONF_FILE=<REPO>/firmware/h1/u85-256.conf;<REPO>/firmware/h1/external-flash.conf;<REPO>/firmware/h1/psram.conf -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256 -DZEPHYR_SDK_INSTALL_DIR=<ZEPHYR_SDK> -DUSER_CACHE_DIR=<FRESH_CACHE> -DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "Pad zephyr.bin to the next 16-byte boundary with zero bytes; retained accepted padding is 12 bytes. From an identity-checked isolated package: ./app-gen-toc -f build/config/app-cfg.json -v"
+      ],
+      "expected_output_identities": [
+        {
+          "artifact_id": "firmware_elf",
+          "bytes": 10079924,
+          "sha256": "4891d93b96b50fc35db142b53f0d5a667f9f73a0f3ed0bcf4cb61afcf90a3216"
+        },
+        {
+          "artifact_id": "firmware_bin",
+          "bytes": 1693988,
+          "sha256": "2a85a6772a8fb0a681457cc940a049a0f5a1da9e093f5a2e4b0c8cd491826753"
+        },
+        {
+          "artifact_id": "programmed_application",
+          "bytes": 1694000,
+          "sha256": "d85d1c055d7d6567122b214ee18a4da71953839c68151560920f52649ab687f6"
+        },
+        {
+          "artifact_id": "programmed_atoc",
+          "bytes": 3888,
+          "sha256": "c9ad887b6c25ec439ff971367e611978cc828f1fc503a84d6b4f8c7f36757024"
+        },
+        {
+          "artifact_id": "firmware_config",
+          "bytes": 50634,
+          "sha256": "cea68bf634b8aeb21bc053246f68c22b5f2a2e9067e57f4c71604da55fb09a2c"
+        },
+        {
+          "artifact_id": "firmware_dts",
+          "bytes": 83923,
+          "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "production_source_bundle",
+          "sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91"
+        },
+        {
+          "artifact_id": "v3_source_frontend",
+          "bytes": 545776,
+          "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0"
+        },
+        {
+          "artifact_id": "vela_compiled_backbone",
+          "bytes": 20465840,
+          "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+        },
+        {
+          "artifact_id": "vela_compiled_classifier",
+          "bytes": 13008016,
+          "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+        },
+        {
+          "artifact_id": "synthetic_f32le",
+          "bytes": 384000,
+          "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8"
+        },
+        {
+          "artifact_id": "wren_f32le",
+          "bytes": 384000,
+          "license": "CC BY-SA 3.0; acquire/prepare under tracked attribution",
+          "sha256": "46be8bff9ee1fbbb90d66952cc5efb1cde3582ae21862f6744721a1be5183556"
+        }
+      ],
+      "name": "Build production firmware candidate and ATOC package",
+      "notes": "Accepted build PASS does not establish a fresh byte-identical firmware rebuild. Retained ELF/BIN/package are required for exact accepted-state programming; a changed fresh build is a new candidate needing the applicable source/build/programmed/physical checks.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_build_candidate.py",
+          "bytes": 3796,
+          "sha256": "d5ee39db185ed98657114962250071740dff5954f2f9a0a4d9b8e29cac570789"
+        },
+        {
+          "artifact_id": "recipe_prepare_package.py",
+          "bytes": 2201,
+          "sha256": "ba3683c64ae78b0df340e9d536c4b19701774d95e0b4e64f40f62c2b77ac1eed"
+        }
+      ],
+      "status_labels": [
+        "RECONSTRUCTABLE",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R08",
+      "tool_identities": [
+        "production",
+        "packaging"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "Independent Fraction reference; exact frozen 38-vector inputs; 0 mismatches/0 LSB and exact saturation counters."
+      ],
+      "command_templates": [
+        "g++ -std=c++17 -O2 -fPIC -shared -fno-fast-math -ffp-contract=off -fsanitize=undefined -fno-sanitize-recover=all -I<REPO>/firmware/h1/src <REPO>/firmware/h1/src/classifier_bridge.cpp <WORK>/m5-firmware-v3/bridge_harness.cpp -o <WORK>/m5-firmware-v3/bridge-host.so",
+        "<HOST_PYTHON> -B <WORK>/m5-firmware-v3/qualify_bridge.py"
+      ],
+      "expected_output_identities": [
+        {
+          "full_vector_comparisons": 48640,
+          "maximum_LSB_error": 0,
+          "mismatches": 0,
+          "primitive_comparisons": 223247,
+          "total": 271887
+        }
+      ],
+      "input_identities": [
+        {
+          "artifact_id": "production_classifier_bridge",
+          "bytes": 3658,
+          "sha256": "d5ca5ac2975ba02c1358688a8b093c182c5e1fbc6646a16d81424e107852992d"
+        },
+        {
+          "artifact_id": "bridge_policy",
+          "bytes": 3158,
+          "sha256": "67010defc48ed1772ee975b9dd3fc53213198f0b0deca26964e7af579af80087"
+        },
+        {
+          "artifact_id": "recipe_BRIDGE_CONFORMANCE_CORPUS_V1.json",
+          "bytes": 73156094,
+          "sha256": "637b29377da846a1de0ad75abaff2b0414064ea0f21ee47fb31d69ef97121097"
+        }
+      ],
+      "name": "Run host production-bridge conformance",
+      "notes": "This is host bridge conformance; physical upstream GeM/integrated execution is covered separately by M5-4 V2.",
+      "retained_recipe_identities": [
+        {
+          "artifact_id": "recipe_qualify_bridge.py",
+          "bytes": 5248,
+          "sha256": "b8442691f276443275bd711e96ec058e0951b2754fd8e28a18211606d2477b22"
+        },
+        {
+          "artifact_id": "recipe_bridge_reference.py",
+          "bytes": 1188,
+          "sha256": "ab31a8b5041f34bf5d4edca1f305d9ac3dd6ff17282933d2701cce70d38065ef"
+        }
+      ],
+      "status_labels": [
+        "REPRODUCED",
+        "PINNED",
+        "LOCALLY_RETAINED_REQUIRED"
+      ],
+      "step_id": "R09",
+      "tool_identities": [
+        "production"
+      ]
+    }
+  ]
+}

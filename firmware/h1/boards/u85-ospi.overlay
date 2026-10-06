@@ -16,3 +16,41 @@
 		status = "okay";
 	};
 };
+
+/* Copyright (C) Alif Semiconductor - All Rights Reserved.
+ * Use, distribution and modification of this code is permitted under the
+ * terms stated in the Alif Semiconductor Software License Agreement.
+ *
+ * Historical E8 DK PSRAM pin groups from the accepted ospi-psram snippet
+ * (e8_dk_ospi0.overlay, SHA-256
+ * 2add03d875047de8df6faa1a5b132625d34051ddc3e2ba87365804d300ab6d93).
+ */
+&pinctrl_ospi0 {
+	group0 {
+		pinmux = < PIN_P2_0__OSPI0_D0_B >,
+			 < PIN_P2_1__OSPI0_D1_B >,
+			 < PIN_P2_2__OSPI0_D2_B >,
+			 < PIN_P2_3__OSPI0_D3_B >,
+			 < PIN_P2_4__OSPI0_D4_B >,
+			 < PIN_P2_5__OSPI0_D5_B >,
+			 < PIN_P2_6__OSPI0_D6_B >,
+			 < PIN_P2_7__OSPI0_D7_B >;
+		read-enable = <0x1>;
+		drive-strength = <12>;
+		slew-rate = <0x1>;
+		schmitt-enable = <0x1>;
+	};
+	group1 {
+		pinmux = < PIN_P3_0__OSPI0_SCLK_B >,
+			 < PIN_P3_2__OSPI0_SS0_B >;
+		read-enable = <0x1>;
+		drive-strength = <12>;
+	};
+	group2 {
+		pinmux = < PIN_P1_6__OSPI0_RXDS_B >;
+		read-enable = <0x1>;
+		drive-strength = <12>;
+		slew-rate = <0x1>;
+		schmitt-enable = <0x1>;
+	};
+};

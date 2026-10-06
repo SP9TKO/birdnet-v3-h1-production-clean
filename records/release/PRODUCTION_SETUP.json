@@ -1,0 +1,1311 @@
+{
+  "Matter": {
+    "build_pin": null,
+    "historical_binding": "UNRESOLVED HISTORICAL PROVENANCE LIMITATION",
+    "module": "ABSENT",
+    "recreation_prerequisite": false,
+    "runtime_support": "NOT USED"
+  },
+  "Vela": {
+    "accelerator": "ethos-u85-256",
+    "arena_cache_bytes": 524288,
+    "config": {
+      "artifact_id": "dedicated_sram_config",
+      "bytes": 624,
+      "sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb"
+    },
+    "dependency_lock": {
+      "artifact_id": "vela_dependency_lock",
+      "bytes": 382,
+      "public_path": "requirements/m5-vela-frozen.txt",
+      "sha256": "ba155ebd9b225ce20013c185376e2bf1ffa90966ac1a145428766a316476a351"
+    },
+    "memory_mode": "Dedicated_Sram",
+    "official_commit": "0f8edf7d00bf471845c4b44a16f8d2bac53c2dff",
+    "official_repository": "https://gitlab.arm.com/artificial-intelligence/ethos-u/ethos-u-vela",
+    "optimization": "Performance",
+    "python": {
+      "artifact_id": "vela_python_3.12.14",
+      "bytes": 30894944,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    },
+    "python_base_archive": {
+      "artifact_id": "vela_python_base_archive",
+      "bytes": 35951713,
+      "sha256": "b4268795a0ef0ae6e008a5c6c7be8f0c2d121248bd1db6fdc0e11fcf9b769713"
+    },
+    "source_distribution": {
+      "artifact_id": "vela_source_distribution",
+      "bytes": 2336628,
+      "sha256": "2aca4502cf3af2788e067e1604649afe5cc48ee41be609220bda8b801c9df28d"
+    },
+    "system_config": "Ethos_U85_SRAM_OSPI",
+    "version": "5.0.0",
+    "wheels": [
+      {
+        "artifact_id": "ethos-u-vela_wheel",
+        "bytes": 1958908,
+        "filename": "ethos_u_vela-5.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "package": "ethos-u-vela",
+        "sha256": "93505c30a421bce318a0665a51814563b6a62b883f0739fc5c1fb321932f70a0",
+        "version": "5.0.0"
+      },
+      {
+        "artifact_id": "flatbuffers_wheel",
+        "bytes": 26784,
+        "filename": "flatbuffers-24.3.25-py2.py3-none-any.whl",
+        "package": "flatbuffers",
+        "sha256": "8dbdec58f935f3765e4f7f3cf635ac3a77f83568138d6a2311f524ec96364812",
+        "version": "24.3.25"
+      },
+      {
+        "artifact_id": "numpy_wheel",
+        "bytes": 16606086,
+        "filename": "numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+        "package": "numpy",
+        "sha256": "0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28",
+        "version": "2.3.5"
+      },
+      {
+        "artifact_id": "pip_wheel",
+        "bytes": 1841526,
+        "filename": "pip-25.0.1-py3-none-any.whl",
+        "package": "pip",
+        "sha256": "c46efd13b6aa8279f33f2864459c8ce587ea6a1a59ee20de055868d8f7688f7f",
+        "version": "25.0.1"
+      }
+    ]
+  },
+  "Vela_command": [
+    "<VELA_PYTHON> -m ethosu.vela <V3_COMPONENT_TFLITE> --accelerator-config ethos-u85-256 --config <DEDICATED_SRAM_INI> --system-config Ethos_U85_SRAM_OSPI --memory-mode Dedicated_Sram --arena-cache-size 524288 --optimise Performance --enable-debug-db --show-cpu-operations --show-subgraph-io-summary --verbose-allocation --verbose-operators --verbose-performance --output-dir <FRESH_COMPONENT_OUTPUT>"
+  ],
+  "Wren": {
+    "bytes": 384000,
+    "classification": "LOCALLY_RETAINED_REQUIRED",
+    "cmake_key": "H1_WREN_BIN",
+    "formation_status": "No new public acquisition/formation pipeline",
+    "licensing": "External Wren CC BY-SA 3.0; no payload distribution authorized",
+    "sha256": "46be8bff9ee1fbbb90d66952cc5efb1cde3582ae21862f6744721a1be5183556"
+  },
+  "Wren_attribution": "records/development/BIOLOGICAL_AUDIO_ATTRIBUTION.md",
+  "Wren_public_payload_distribution": "NOT_AUTHORIZED",
+  "accepted_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "acquisition_boundary": "Pinned acquisition classification preserves retained provenance; no downloads, builds, Vela/Corstone runs or fresh executable-byte reconstruction were attempted in this scope session.",
+  "acquisition_classifications": {
+    "LOCALLY_RETAINED_REQUIRED": 5,
+    "PINNED_PUBLIC_SOURCE": 20,
+    "PINNED_VENDOR_SOURCE": 8,
+    "REPRODUCIBLY_DOWNLOADABLE": 42
+  },
+  "board": "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+  "build_argv_template": [
+    "<CMAKE>",
+    "--build",
+    "<FRESH_BUILD>",
+    "--parallel",
+    "8"
+  ],
+  "configure_cwd": "<WEST_WORKSPACE>",
+  "configure_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "ZEPHYR_BASE": "<WEST_WORKSPACE>/zephyr",
+    "ZEPHYR_TOOLCHAIN_VARIANT": "zephyr"
+  },
+  "date": "2026-10-06",
+  "external_dependencies": [
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/alif",
+      "name": "alif",
+      "path": "alif",
+      "revision": "a524855a8b470fff0e3edb2c902a034d45ddf2a4",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "a5b9182e53d13f270b51a3e0ddd54e705b8405ea",
+      "url": "https://github.com/alifsemi/sdk-alif.git"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/bootloader/mcuboot",
+      "name": "bootloader_mcuboot",
+      "path": "bootloader/mcuboot",
+      "revision": "346f7374ff4467e40b5594658f8ac67a5e9813c9",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "d40a5d5c5664e4edaae6a4527b02929ebbbbfbf7",
+      "url": "https://github.com/alifsemi/mcuboot_alif"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/crypto/mbedtls",
+      "name": "modules_crypto_mbedtls",
+      "path": "modules/crypto/mbedtls",
+      "revision": "4952e1328529ee549d412b498ea71c54f30aa3b1",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "7b2f14676ab1afe76e056f93929cfb6d71d37796",
+      "url": "https://github.com/zephyrproject-rtos/mbedtls"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 2,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/crypto/tinycrypt",
+      "name": "modules_crypto_tinycrypt",
+      "path": "modules/crypto/tinycrypt",
+      "revision": "1012a3ebee18c15ede5efc8332ee2fc37817670f",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "8cd4b1950622b35a1a7b4b5d178d882eda05f9b6",
+      "url": "https://github.com/zephyrproject-rtos/tinycrypt"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/debug/mipi-sys-t",
+      "name": "modules_debug_mipi-sys-t",
+      "path": "modules/debug/mipi-sys-t",
+      "revision": "33e5c23cbedda5ba12dbe50c4baefb362a791001",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "917bce150d9e7cf0bb5657266c3abde0a950816f",
+      "url": "https://github.com/zephyrproject-rtos/mipi-sys-t"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/debug/segger",
+      "name": "modules_debug_segger",
+      "path": "modules/debug/segger",
+      "revision": "cf56b1d9c80f81a26e2ac5727c9cf177116a4692",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "838a049f1b7522799a4928519f1cab052d8c4dd2",
+      "url": "https://github.com/zephyrproject-rtos/segger"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/drivers/dave2d",
+      "name": "modules_drivers_dave2d",
+      "path": "modules/drivers/dave2d",
+      "revision": "d667a8e47f13e2f39bc724d66def5230827b2808",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "3db1ba0ed8b11c9c7fd287cb1f7de18178dc72ce",
+      "url": "https://github.com/alifsemi/alif_dave2d-driver"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/fs/fatfs",
+      "name": "modules_fs_fatfs",
+      "path": "modules/fs/fatfs",
+      "revision": "16245c7c41d2b79e74984f49b5202551786b8a9b",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "b82d174795c3b76cec1c698b76ff9efb9385338c",
+      "url": "https://github.com/zephyrproject-rtos/fatfs"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/fs/littlefs",
+      "name": "modules_fs_littlefs",
+      "path": "modules/fs/littlefs",
+      "revision": "ed0531d59ee37f5fb2762bcf2fc8ba4efaf82656",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "36541977a4fe6b60d514e93a430e88028cfc4f1b",
+      "url": "https://github.com/zephyrproject-rtos/littlefs"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 8,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/hal/alif",
+      "name": "modules_hal_alif",
+      "path": "modules/hal/alif",
+      "revision": "89ee0aa748134dc31fcc8d3a266d7bb4d3fd3b53",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "760407fb59d653bfee9f8b1ca4ded23fba30d6e3",
+      "url": "https://github.com/alifsemi/hal_alif"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/hal/cmsis",
+      "name": "modules_hal_cmsis",
+      "path": "modules/hal/cmsis",
+      "revision": "85f6b92af0f6ac72594d391f895c45cc30847e41",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "a37651c30842d9a4a54b34239f377ad45f9af425",
+      "url": "https://github.com/alifsemi/cmsis_alif"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 1,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/hal/ethos_u",
+      "name": "modules_hal_ethos_u",
+      "path": "modules/hal/ethos_u",
+      "revision": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "9a6e0dc3e1eeb131d6f2e012e6b1381f550dcbdf",
+      "url": "https://github.com/zephyrproject-rtos/hal_ethos_u"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/hal/infineon",
+      "name": "modules_hal_infineon",
+      "path": "modules/hal/infineon",
+      "revision": "470f874ce432763a2b82cd322d0ff6efc89240cd",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "66697f68bee91f01ef76e27c39a0ae3d816ca61b",
+      "url": "https://github.com/zephyrproject-rtos/hal_infineon"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/hal/libmetal",
+      "name": "modules_hal_libmetal",
+      "path": "modules/hal/libmetal",
+      "revision": "3e8781aae9d7285203118c05bc01d4eb0ca565a7",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "5599d3b5d17f37c24e996f8867928527600d24df",
+      "url": "https://github.com/zephyrproject-rtos/libmetal"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/aipl",
+      "name": "modules_lib_aipl",
+      "path": "modules/lib/aipl",
+      "revision": "b4444c0504be3a1eed4a0655c9a95fe343706dcb",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "7d58a653526c9f2b7230bffcc595e3c122559e48",
+      "url": "https://github.com/alifsemi/alif_image-processing-lib"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 178,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/cmsis-dsp",
+      "name": "modules_lib_cmsis-dsp",
+      "path": "modules/lib/cmsis-dsp",
+      "revision": "d80a49b2bb186317dc1db4ac88da49c0ab77e6e7",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "addbcbe58fc7548bfbdc2ad7f82a7754b1e554e9",
+      "url": "https://github.com/zephyrproject-rtos/cmsis-dsp"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/executorch",
+      "name": "modules_lib_executorch",
+      "path": "modules/lib/executorch",
+      "revision": "45fe55c49c70a5fc741833eeb99fb023ffb4646f",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "1faa3fff56dca40327dc037aa8ebd00cbbd8a75c",
+      "url": "https://github.com/pytorch/executorch"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/gui/lvgl",
+      "name": "modules_lib_gui_lvgl",
+      "path": "modules/lib/gui/lvgl",
+      "revision": "1ed1ddd881c3784049a92bb9fe37c38c6c74d998",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "85d6df0452b10b6de1b28c9fc2beb1c2a36f4730",
+      "url": "https://github.com/zephyrproject-rtos/lvgl"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/liblc3",
+      "name": "modules_lib_liblc3",
+      "path": "modules/lib/liblc3",
+      "revision": "48bbd3eacd36e99a57317a0a4867002e0b09e183",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "85375c105c296b8580789c0a440b99255a68a90f",
+      "url": "https://github.com/zephyrproject-rtos/liblc3"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/openthread",
+      "name": "modules_lib_openthread",
+      "path": "modules/lib/openthread",
+      "revision": "3ae741f95e7dfb391dec35c48742862049eb62e8",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "62b6abbacd5b56f6eb56d2a1774456f43d9a7f4b",
+      "url": "https://github.com/zephyrproject-rtos/openthread"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/picolibc",
+      "name": "modules_lib_picolibc",
+      "path": "modules/lib/picolibc",
+      "revision": "82d62ed1ac55b4e34a12d0390aced2dc9af13fc9",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "133c4b82b42da9a4b75e3238cc91dac8d5c1cad7",
+      "url": "https://github.com/zephyrproject-rtos/picolibc"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/uoscore-uedhoc",
+      "name": "modules_lib_uoscore-uedhoc",
+      "path": "modules/lib/uoscore-uedhoc",
+      "revision": "54abc109c9c0adfd53c70077744c14e454f04f4a",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "4dcb46f12660bf9d14069cd8ae42699503c51c93",
+      "url": "https://github.com/zephyrproject-rtos/uoscore-uedhoc"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "dependency": "external/west/modules/lib/zcbor",
+      "name": "modules_lib_zcbor",
+      "path": "modules/lib/zcbor",
+      "revision": "9b07780aca6fb21f82a241ba386ad9b379809337",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "6e2ae87e05dfaf83f6d3709272a9a85660c2d5e0",
+      "url": "https://github.com/zephyrproject-rtos/zcbor"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 163,
+      "configuration_participates": true,
+      "dependency": "external/west/optional/modules/lib/tflite-micro",
+      "name": "optional_modules_lib_tflite-micro",
+      "path": "optional/modules/lib/tflite-micro",
+      "revision": "8d404de73acf7687831e16d88e86e4f73cfddf8e",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "d960867156641deb5e780484c5c50264808df8f6",
+      "url": "https://github.com/zephyrproject-rtos/tflite-micro"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 126,
+      "configuration_participates": true,
+      "dependency": "external/west/zephyr",
+      "name": "zephyr",
+      "path": "zephyr",
+      "revision": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+      "role": "CLEAN_CANDIDATE_CONFIG_OR_BUILD",
+      "tree": "75f4bf0e0d7b94159f0b128e4526253452183d1f",
+      "url": "https://github.com/alifsemi/zephyr_alif"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/absl_py-2.5.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "0f17b89f2a4eaaedc4f28c622998aa690564b3012a396a4ffad0821007fe03ba"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/astunparse-1.6.3-py2.py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "c2652417f2c8b5bb325c885ae329bdf3f86424075c4fd1a128674bc6fba4b8e8"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/certifi-2026.7.22-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/charset_normalizer-3.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "b9af956078716df40d985fb0dfeb2c2120c5ca92ba4ff4b388acfd01cdc14d08"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/flatbuffers-25.12.19-py2.py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/gast-0.7.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "99cbf1365633a74099f69c59bd650476b96baa5ef196fec88032b00b31ba36f7"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/google_pasta-0.2.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "b32482794a366b5366a32c92a9a9201b107821889935a02b3e51f6b432ea84ed"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/grpcio-1.84.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "b44f0a0fc7bc6677d38cc80bca1a32814ce6c8f200fb8b3c1a61c9d77eaefbf3"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/h5py-3.14.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "0cbd41f4e3761f150aa5b662df991868ca533872c95467216f2bec5fcad84882"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/idna-3.20-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/jaxlib-0.11.2-cp312-cp312-manylinux_2_27_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "6338a1f0956f60d02529404ac33a8070015a52635cdb6bbb15d0d199757077bb"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/keras-3.15.1-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "836460e480930acbd19bb7a17e62f9ecad40e8a9af9a651fc8d0586a96d27e20"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/libclang-18.1.1-py2.py3-none-manylinux2010_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "c533091d8a3bbf7460a00cb6c1a71da93bffe148f172c7d03b1c31fbf8aa2a0b"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/markdown_it_py-4.2.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/mdurl-0.1.2-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/ml_dtypes-0.6.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "3b4a480aa8fd54a1805b8ac10f3f91763926a74f73c0c364c10f9231854f4170"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/namex-0.1.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "e2012a474502f1e2251267062aae3114611f07df4224b6e06334c57b0f2ce87c"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/opt_einsum-3.4.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/optree-0.20.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "5c4ed341ea1ee7eb04eff01527b88a868cb19aac672a667e0aefadf7d14c0260"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/packaging-26.3-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/pip-26.2.1-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "71138adf1f4ca900cdb7d289c21b7494329f2332b6d85f0e1c42108c0384ed3e"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "89f23aa53c24553a2416fd4fd1ec06f74fa42b14b546d8883128813f775bbfd2"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/pygments-2.21.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/requests-2.34.2-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/rich-15.0.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/scipy-1.18.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "f55fa87b6c612ecd6b058f167c53231b1d14e412efe361d3d6e38b3631c73218"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/setuptools-84.0.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/six-1.17.0-py2.py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/tensorflow-2.21.0-cp312-cp312-manylinux_2_27_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "b3b95643c4e70eb925839938fb35cbe142f317ec84af6844ee61513713bb13c0"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/termcolor-3.3.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "cf642efadaf0a8ebbbf4bc7a31cec2f9b5f21a9f726f4ccbb08192c9c26f43a5"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/typing_extensions-4.16.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/urllib3-2.8.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/wheel-0.48.0-py3-none-any.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "3217dcc807155e45db462d7ef2431f5ddda0d7273b700d05a67b271ceb1287ab"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "tensorflow-wheel/wrapt-2.4.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl",
+      "role": "M1_M3_MODEL_RECONSTRUCTION",
+      "sha256": "30d11c289b013bf384ff1a1a6553f150d0b855901708a9bef667a5680f8247c9"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "TensorFlow-runtime",
+      "pins": {
+        "NumPy": "2.2.6",
+        "Python": "3.12.14",
+        "container": "python:3.12.14-slim-bookworm@sha256:8cbe7fcd5df843c789eb26a3d3059859469441633d6e671111f31553e8dc7156",
+        "deterministic_ops": true,
+        "observed_runtime_image_id": "sha256:febd0be41adb897a0ab8f1f1c693d8912669ea60c4940e076e9946b60e210ef0",
+        "oneDNN": false,
+        "requirements": "requirements/requirements-frozen.txt",
+        "thread_counts": 1,
+        "version": "2.21.0",
+        "wheel_hashes": "requirements/WHEEL_SHA256SUMS.txt"
+      },
+      "role": "MODEL_RECONSTRUCTION"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "official_fp32_archive",
+      "bytes": 499609919,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "upstream/official_fp32_archive",
+      "published_md5": "f0409a35ac3e1605cbe6190e0c81bba9",
+      "role": "MODEL_RECONSTRUCTION",
+      "sha256": "ead54e1c3c0cbf6032def4a5aa6e583b63263440f6975e2dbade7d925e775eeb",
+      "url": "https://zenodo.org/records/20703646/files/BirdNET%2B_V3.0-preview3.1_Global_11K_FP32_Protobuf.zip?download=1"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "official_labels",
+      "bytes": 809172,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "upstream/official_labels",
+      "published_md5": "21ccf9e984a955bfc2d5c52faab6a6ea",
+      "role": "MODEL_RECONSTRUCTION",
+      "sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+      "url": "https://zenodo.org/records/20703646/files/BirdNET%2B_V3.0-preview3.1_Global_11K_Labels.csv?download=1"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "ethos-u-vela_wheel",
+      "bytes": 1958908,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "vela-wheel/ethos_u_vela-5.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "filename": "ethos_u_vela-5.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "package": "ethos-u-vela",
+      "role": "V3_COMPILATION",
+      "sha256": "93505c30a421bce318a0665a51814563b6a62b883f0739fc5c1fb321932f70a0",
+      "version": "5.0.0"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "flatbuffers_wheel",
+      "bytes": 26784,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "vela-wheel/flatbuffers-24.3.25-py2.py3-none-any.whl",
+      "filename": "flatbuffers-24.3.25-py2.py3-none-any.whl",
+      "package": "flatbuffers",
+      "role": "V3_COMPILATION",
+      "sha256": "8dbdec58f935f3765e4f7f3cf635ac3a77f83568138d6a2311f524ec96364812",
+      "version": "24.3.25"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "numpy_wheel",
+      "bytes": 16606086,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "vela-wheel/numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "filename": "numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "package": "numpy",
+      "role": "V3_COMPILATION",
+      "sha256": "0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28",
+      "version": "2.3.5"
+    },
+    {
+      "acquisition_tested_this_session": false,
+      "artifact_id": "pip_wheel",
+      "bytes": 1841526,
+      "classification": "REPRODUCIBLY_DOWNLOADABLE",
+      "dependency": "vela-wheel/pip-25.0.1-py3-none-any.whl",
+      "filename": "pip-25.0.1-py3-none-any.whl",
+      "package": "pip",
+      "role": "V3_COMPILATION",
+      "sha256": "c46efd13b6aa8279f33f2864459c8ce587ea6a1a59ee20de055868d8f7688f7f",
+      "version": "25.0.1"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "dependency": "Vela-source",
+      "revision": "0f8edf7d00bf471845c4b44a16f8d2bac53c2dff",
+      "role": "V3_COMPILER_PROVENANCE",
+      "url": "https://gitlab.arm.com/artificial-intelligence/ethos-u/ethos-u-vela",
+      "version": "5.0.0"
+    },
+    {
+      "artifact_id": "vela_python_3.12.14",
+      "base_archive": {
+        "artifact_id": "vela_python_base_archive",
+        "bytes": 35951713,
+        "sha256": "b4268795a0ef0ae6e008a5c6c7be8f0c2d121248bd1db6fdc0e11fcf9b769713"
+      },
+      "bytes": 30894944,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "dependency": "Vela-Python",
+      "historical_executable_byte_recreation_required": false,
+      "role": "QUALIFIED_VELA_RUNTIME",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "dependency": "Zephyr-SDK",
+      "role": "CLEAN_CANDIDATE_COMPILER_TOOLCHAIN",
+      "tools": [
+        {
+          "bytes": 1420048,
+          "role": "arm-zephyr-eabi-gcc",
+          "sha256": "42e96e38c3d24e74ec0f5752b0a644362c84f2dd473461158f6ab3816f7fa4f7",
+          "version": "arm-zephyr-eabi-gcc (Zephyr SDK 0.17.0) 12.2.0"
+        },
+        {
+          "bytes": 1420048,
+          "role": "arm-zephyr-eabi-g++",
+          "sha256": "8a08c8d52ba6bbf26e06e0b45fd68247b7fb4918a183fd3b966ea058ecdcf8c9",
+          "version": "arm-zephyr-eabi-g++ (Zephyr SDK 0.17.0) 12.2.0"
+        },
+        {
+          "bytes": 1719288,
+          "role": "arm-zephyr-eabi-ld.bfd",
+          "sha256": "9822eac6ae8efeb478125ed9600b5cf6c38ab92f6550b3c5943711af18123ef0",
+          "version": "GNU ld (Zephyr SDK 0.17.0) 2.38"
+        }
+      ],
+      "version": "0.17.0"
+    },
+    {
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "dependency": "production-build-tools",
+      "historical_executable_byte_recreation_required": false,
+      "role": "PINNED_BUILD_AND_HOST_TOOL_IDENTITIES",
+      "tools": [
+        {
+          "bytes": 14253272,
+          "role": "cmake",
+          "sha256": "6e1dccda39845415d68eabb934c598998949c99ec4668625d571aee1827b05c7",
+          "version": "cmake version 4.2.3"
+        },
+        {
+          "bytes": 350624,
+          "role": "ninja",
+          "sha256": "91e9548850cda2799facfdaa7abe33f9e978832f85e98212255708a7bbe437f2",
+          "version": "1.13.2"
+        },
+        {
+          "bytes": 1305304,
+          "role": "g++",
+          "sha256": "e6718f7e0c7d057c3ff77b550c603da9bc4030e3ede3c053705acce1293dbe4d",
+          "version": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+        }
+      ]
+    },
+    {
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "dependency": "Corstone-qualification-runtime",
+      "pins": {
+        "FVP": {
+          "artifact_id": "FVP",
+          "bytes": 23688816,
+          "sha256": "9cf4a25fdece7f4a2bedeed6980f932990036e399be59ab9507dc219f062ee3e"
+        },
+        "archive": {
+          "artifact_id": "archive",
+          "bytes": 118975463,
+          "sha256": "6986af8805de54fa8dcbc54ea2cd63b305ebf5f1c07d3cba09641e2f8cc4e2f5",
+          "version": "11.27_25"
+        },
+        "driver": "Generic U85 pack source 2.0.0; unmodified",
+        "libEthosU85": {
+          "artifact_id": "libEthosU85",
+          "bytes": 12160544,
+          "sha256": "24a095d69affc64faddc7702f017a52ff5374c9629f2d7c4f1872acc8cc0bd41"
+        },
+        "runtime_version": "Fast Models 11.27.25; Corstone SSE-320 package 11.27_25"
+      },
+      "role": "OPTIONAL_HISTORICAL_REPLAY_ONLY; not an ordinary firmware build prerequisite"
+    },
+    {
+      "candidate_padding_bytes": 8,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "dependency": "SETOOLS-packaging-programmer",
+      "pins": {
+        "config": {
+          "artifact_id": "app_cfg",
+          "bytes": 341,
+          "sha256": "1cbd6c5a791edea0c472d041bc0f104a40663dc2386265b319771b0f4ff475f3"
+        },
+        "generation_argv": [
+          "./app-gen-toc",
+          "-f",
+          "build/config/app-cfg.json",
+          "-v"
+        ],
+        "generator": {
+          "artifact_id": "app_gen_toc",
+          "bytes": 11121504,
+          "sha256": "ba7abded62ffb13d8c7e1b7e33412a54978792f942d297be6b83eb6ea35effe7"
+        },
+        "padding_value": 0,
+        "writer": {
+          "artifact_id": "app_write_mram",
+          "bytes": 11433888,
+          "sha256": "16d5986dcdfdb00622f8e0ca6f41aab99cc7b21543b9aa1c1297ed543c6ada9b"
+        }
+      },
+      "role": "CONDITIONAL_PACKAGE_PHYSICAL_REPLAY"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "dependency": "host-client-pyserial",
+      "role": "ORDINARY_UPLOADED_WAVEFORM_HOST_CLIENT",
+      "version": "3.5"
+    },
+    {
+      "bytes": 384000,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "cmake_key": "H1_WREN_BIN",
+      "dependency": "exact-Wren-build-input",
+      "formation_status": "No new public acquisition/formation pipeline",
+      "licensing": "External Wren CC BY-SA 3.0; no payload distribution authorized",
+      "role": "MANDATORY_UNCHANGED_FIXTURE_EMBEDDING",
+      "sha256": "46be8bff9ee1fbbb90d66952cc5efb1cde3582ae21862f6744721a1be5183556"
+    }
+  ],
+  "external_dependency_count": 75,
+  "fresh_build_boundary": "A fresh build is a new artifact identity. It does not inherit historical M5 physical acceptance or the retained candidate qualification without the applicable new prospective checks.",
+  "historical_firmware_byte_equality": {
+    "claim": false,
+    "demonstration": "UNPROVEN",
+    "requirement": "NOT_REQUIRED"
+  },
+  "local_preflight_prerequisites": {
+    "ordinary_candidate_build_requires": "Exact five payloads + declared pinned SDK/tool/workspace inputs. No bringup branch or private repository is a construction source.",
+    "public_guide": "records/m5/RECREATION_GUIDANCE.json",
+    "required_for_complete_original_M4_M5_replay": true
+  },
+  "mandatory_build_payloads": [
+    {
+      "bytes": 545776,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "cmake_key": "H1_FRONTEND_MODEL_BIN",
+      "formation_status": "RECONSTRUCTABLE with explicitly declared retained model/preflight inputs",
+      "licensing": "BirdNET upstream/derived-model terms; no payload distribution",
+      "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0"
+    },
+    {
+      "bytes": 20465840,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "cmake_key": "H1_BACKBONE_MODEL_BIN",
+      "formation_status": "RECONSTRUCTABLE with explicitly declared retained model/preflight inputs",
+      "licensing": "BirdNET upstream/derived-model terms; no payload distribution",
+      "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+    },
+    {
+      "bytes": 13008016,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "cmake_key": "H1_CLASSIFIER_MODEL_BIN",
+      "formation_status": "RECONSTRUCTABLE with explicitly declared retained model/preflight inputs",
+      "licensing": "BirdNET upstream/derived-model terms; no payload distribution",
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+    },
+    {
+      "bytes": 384000,
+      "classification": "REPRODUCIBLY_REGENERABLE",
+      "cmake_key": "H1_SYNTHETIC_BIN",
+      "formation_status": "Project synthetic fixture export",
+      "licensing": "Project-authored synthetic fixture",
+      "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8"
+    },
+    {
+      "bytes": 384000,
+      "classification": "LOCALLY_RETAINED_REQUIRED",
+      "cmake_key": "H1_WREN_BIN",
+      "formation_status": "No new public acquisition/formation pipeline",
+      "licensing": "External Wren CC BY-SA 3.0; no payload distribution authorized",
+      "sha256": "46be8bff9ee1fbbb90d66952cc5efb1cde3582ae21862f6744721a1be5183556"
+    }
+  ],
+  "observed_hardware": "Alif E8 DK M55-HP / Ethos-U85-256",
+  "participating_repositories": [
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "alif",
+      "path": "alif",
+      "revision": "a524855a8b470fff0e3edb2c902a034d45ddf2a4",
+      "tree": "a5b9182e53d13f270b51a3e0ddd54e705b8405ea",
+      "url": "https://github.com/alifsemi/sdk-alif.git"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "bootloader_mcuboot",
+      "path": "bootloader/mcuboot",
+      "revision": "346f7374ff4467e40b5594658f8ac67a5e9813c9",
+      "tree": "d40a5d5c5664e4edaae6a4527b02929ebbbbfbf7",
+      "url": "https://github.com/alifsemi/mcuboot_alif"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_crypto_mbedtls",
+      "path": "modules/crypto/mbedtls",
+      "revision": "4952e1328529ee549d412b498ea71c54f30aa3b1",
+      "tree": "7b2f14676ab1afe76e056f93929cfb6d71d37796",
+      "url": "https://github.com/zephyrproject-rtos/mbedtls"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 2,
+      "configuration_participates": true,
+      "name": "modules_crypto_tinycrypt",
+      "path": "modules/crypto/tinycrypt",
+      "revision": "1012a3ebee18c15ede5efc8332ee2fc37817670f",
+      "tree": "8cd4b1950622b35a1a7b4b5d178d882eda05f9b6",
+      "url": "https://github.com/zephyrproject-rtos/tinycrypt"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_debug_mipi-sys-t",
+      "path": "modules/debug/mipi-sys-t",
+      "revision": "33e5c23cbedda5ba12dbe50c4baefb362a791001",
+      "tree": "917bce150d9e7cf0bb5657266c3abde0a950816f",
+      "url": "https://github.com/zephyrproject-rtos/mipi-sys-t"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_debug_segger",
+      "path": "modules/debug/segger",
+      "revision": "cf56b1d9c80f81a26e2ac5727c9cf177116a4692",
+      "tree": "838a049f1b7522799a4928519f1cab052d8c4dd2",
+      "url": "https://github.com/zephyrproject-rtos/segger"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_drivers_dave2d",
+      "path": "modules/drivers/dave2d",
+      "revision": "d667a8e47f13e2f39bc724d66def5230827b2808",
+      "tree": "3db1ba0ed8b11c9c7fd287cb1f7de18178dc72ce",
+      "url": "https://github.com/alifsemi/alif_dave2d-driver"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_fs_fatfs",
+      "path": "modules/fs/fatfs",
+      "revision": "16245c7c41d2b79e74984f49b5202551786b8a9b",
+      "tree": "b82d174795c3b76cec1c698b76ff9efb9385338c",
+      "url": "https://github.com/zephyrproject-rtos/fatfs"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_fs_littlefs",
+      "path": "modules/fs/littlefs",
+      "revision": "ed0531d59ee37f5fb2762bcf2fc8ba4efaf82656",
+      "tree": "36541977a4fe6b60d514e93a430e88028cfc4f1b",
+      "url": "https://github.com/zephyrproject-rtos/littlefs"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 8,
+      "configuration_participates": true,
+      "name": "modules_hal_alif",
+      "path": "modules/hal/alif",
+      "revision": "89ee0aa748134dc31fcc8d3a266d7bb4d3fd3b53",
+      "tree": "760407fb59d653bfee9f8b1ca4ded23fba30d6e3",
+      "url": "https://github.com/alifsemi/hal_alif"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_hal_cmsis",
+      "path": "modules/hal/cmsis",
+      "revision": "85f6b92af0f6ac72594d391f895c45cc30847e41",
+      "tree": "a37651c30842d9a4a54b34239f377ad45f9af425",
+      "url": "https://github.com/alifsemi/cmsis_alif"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 1,
+      "configuration_participates": true,
+      "name": "modules_hal_ethos_u",
+      "path": "modules/hal/ethos_u",
+      "revision": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+      "tree": "9a6e0dc3e1eeb131d6f2e012e6b1381f550dcbdf",
+      "url": "https://github.com/zephyrproject-rtos/hal_ethos_u"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_hal_infineon",
+      "path": "modules/hal/infineon",
+      "revision": "470f874ce432763a2b82cd322d0ff6efc89240cd",
+      "tree": "66697f68bee91f01ef76e27c39a0ae3d816ca61b",
+      "url": "https://github.com/zephyrproject-rtos/hal_infineon"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_hal_libmetal",
+      "path": "modules/hal/libmetal",
+      "revision": "3e8781aae9d7285203118c05bc01d4eb0ca565a7",
+      "tree": "5599d3b5d17f37c24e996f8867928527600d24df",
+      "url": "https://github.com/zephyrproject-rtos/libmetal"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_aipl",
+      "path": "modules/lib/aipl",
+      "revision": "b4444c0504be3a1eed4a0655c9a95fe343706dcb",
+      "tree": "7d58a653526c9f2b7230bffcc595e3c122559e48",
+      "url": "https://github.com/alifsemi/alif_image-processing-lib"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 178,
+      "configuration_participates": true,
+      "name": "modules_lib_cmsis-dsp",
+      "path": "modules/lib/cmsis-dsp",
+      "revision": "d80a49b2bb186317dc1db4ac88da49c0ab77e6e7",
+      "tree": "addbcbe58fc7548bfbdc2ad7f82a7754b1e554e9",
+      "url": "https://github.com/zephyrproject-rtos/cmsis-dsp"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_executorch",
+      "path": "modules/lib/executorch",
+      "revision": "45fe55c49c70a5fc741833eeb99fb023ffb4646f",
+      "tree": "1faa3fff56dca40327dc037aa8ebd00cbbd8a75c",
+      "url": "https://github.com/pytorch/executorch"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_gui_lvgl",
+      "path": "modules/lib/gui/lvgl",
+      "revision": "1ed1ddd881c3784049a92bb9fe37c38c6c74d998",
+      "tree": "85d6df0452b10b6de1b28c9fc2beb1c2a36f4730",
+      "url": "https://github.com/zephyrproject-rtos/lvgl"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_liblc3",
+      "path": "modules/lib/liblc3",
+      "revision": "48bbd3eacd36e99a57317a0a4867002e0b09e183",
+      "tree": "85375c105c296b8580789c0a440b99255a68a90f",
+      "url": "https://github.com/zephyrproject-rtos/liblc3"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_openthread",
+      "path": "modules/lib/openthread",
+      "revision": "3ae741f95e7dfb391dec35c48742862049eb62e8",
+      "tree": "62b6abbacd5b56f6eb56d2a1774456f43d9a7f4b",
+      "url": "https://github.com/zephyrproject-rtos/openthread"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_picolibc",
+      "path": "modules/lib/picolibc",
+      "revision": "82d62ed1ac55b4e34a12d0390aced2dc9af13fc9",
+      "tree": "133c4b82b42da9a4b75e3238cc91dac8d5c1cad7",
+      "url": "https://github.com/zephyrproject-rtos/picolibc"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_uoscore-uedhoc",
+      "path": "modules/lib/uoscore-uedhoc",
+      "revision": "54abc109c9c0adfd53c70077744c14e454f04f4a",
+      "tree": "4dcb46f12660bf9d14069cd8ae42699503c51c93",
+      "url": "https://github.com/zephyrproject-rtos/uoscore-uedhoc"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 0,
+      "configuration_participates": true,
+      "name": "modules_lib_zcbor",
+      "path": "modules/lib/zcbor",
+      "revision": "9b07780aca6fb21f82a241ba386ad9b379809337",
+      "tree": "6e2ae87e05dfaf83f6d3709272a9a85660c2d5e0",
+      "url": "https://github.com/zephyrproject-rtos/zcbor"
+    },
+    {
+      "classification": "PINNED_PUBLIC_SOURCE",
+      "compiled_entries": 163,
+      "configuration_participates": true,
+      "name": "optional_modules_lib_tflite-micro",
+      "path": "optional/modules/lib/tflite-micro",
+      "revision": "8d404de73acf7687831e16d88e86e4f73cfddf8e",
+      "tree": "d960867156641deb5e780484c5c50264808df8f6",
+      "url": "https://github.com/zephyrproject-rtos/tflite-micro"
+    },
+    {
+      "classification": "PINNED_VENDOR_SOURCE",
+      "compiled_entries": 126,
+      "configuration_participates": true,
+      "name": "zephyr",
+      "path": "zephyr",
+      "revision": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+      "tree": "75f4bf0e0d7b94159f0b128e4526253452183d1f",
+      "url": "https://github.com/alifsemi/zephyr_alif"
+    }
+  ],
+  "qualified_candidate_state": "NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED",
+  "qualified_configure_argv_template": [
+    "<WEST_PYTHON>",
+    "-m",
+    "west",
+    "build",
+    "-S",
+    "ospi-flash",
+    "--build-dir",
+    "<FRESH_BUILD>",
+    "-s",
+    "<REPO>/firmware/h1",
+    "-b",
+    "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+    "--cmake-only",
+    "--",
+    "-DH1_AUDIO_BACKEND=NONE",
+    "-DH1_FRONTEND_DIAGNOSTICS=ON",
+    "-DH1_FRONTEND_MODEL_BIN=<FRONTEND>",
+    "-DH1_BACKBONE_MODEL_BIN=<V3_BACKBONE>",
+    "-DH1_CLASSIFIER_MODEL_BIN=<V3_CLASSIFIER>",
+    "-DH1_SYNTHETIC_BIN=<SYNTHETIC_F32LE>",
+    "-DH1_WREN_BIN=<WREN_F32LE>",
+    "-DEXTRA_CONF_FILE=<REPO>/firmware/h1/u85-256.conf;<REPO>/firmware/h1/external-flash.conf;<REPO>/firmware/h1/psram.conf",
+    "-DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256",
+    "-DZEPHYR_SDK_INSTALL_DIR=<ZEPHYR_SDK>",
+    "-DUSER_CACHE_DIR=<FRESH_CACHE>",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+  ],
+  "schema": "PUBLIC_PRODUCTION_SETUP_NO_MATTER_V1",
+  "selected_configuration": {
+    "ETHOSU_TARGET_NPU_CONFIG": "ethos-u85-256",
+    "H1_AUDIO_BACKEND": "NONE",
+    "H1_FRONTEND_DIAGNOSTICS": "ON",
+    "extra_conf": [
+      "firmware/h1/u85-256.conf",
+      "firmware/h1/external-flash.conf",
+      "firmware/h1/psram.conf"
+    ],
+    "overlays": [
+      "firmware/h1/boards/psram-model.overlay",
+      "firmware/h1/boards/usb-cdc.overlay",
+      "firmware/h1/boards/u85-ospi.overlay",
+      "firmware/h1/boards/audio-no-pdm.overlay"
+    ],
+    "west_snippet": "ospi-flash"
+  },
+  "tools": {
+    "Ethos_U_driver_version": "0.16.0",
+    "Zephyr_SDK": "0.17.0",
+    "build_Python": "3.12.14",
+    "compiler": "GCC 12.2.0",
+    "host_package_lock_caution": "Retained September environment lock identifies the reused environment; no October all-packages freeze or fresh historical host executable-byte reconstruction is claimed.",
+    "qualified_tool_identities": [
+      {
+        "bytes": 1420048,
+        "role": "arm-zephyr-eabi-gcc",
+        "sha256": "42e96e38c3d24e74ec0f5752b0a644362c84f2dd473461158f6ab3816f7fa4f7",
+        "version": "arm-zephyr-eabi-gcc (Zephyr SDK 0.17.0) 12.2.0"
+      },
+      {
+        "bytes": 1420048,
+        "role": "arm-zephyr-eabi-g++",
+        "sha256": "8a08c8d52ba6bbf26e06e0b45fd68247b7fb4918a183fd3b966ea058ecdcf8c9",
+        "version": "arm-zephyr-eabi-g++ (Zephyr SDK 0.17.0) 12.2.0"
+      },
+      {
+        "bytes": 1719288,
+        "role": "arm-zephyr-eabi-ld.bfd",
+        "sha256": "9822eac6ae8efeb478125ed9600b5cf6c38ab92f6550b3c5943711af18123ef0",
+        "version": "GNU ld (Zephyr SDK 0.17.0) 2.38"
+      },
+      {
+        "bytes": 14253272,
+        "role": "cmake",
+        "sha256": "6e1dccda39845415d68eabb934c598998949c99ec4668625d571aee1827b05c7",
+        "version": "cmake version 4.2.3"
+      },
+      {
+        "bytes": 350624,
+        "role": "ninja",
+        "sha256": "91e9548850cda2799facfdaa7abe33f9e978832f85e98212255708a7bbe437f2",
+        "version": "1.13.2"
+      },
+      {
+        "bytes": 1305304,
+        "role": "g++",
+        "sha256": "e6718f7e0c7d057c3ff77b550c603da9bc4030e3ede3c053705acce1293dbe4d",
+        "version": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+      }
+    ],
+    "west": "1.5.0"
+  },
+  "workspace_manifest": {
+    "Zephyr_registered_module_count": 24,
+    "bytes": 5728,
+    "imports": "NONE",
+    "participating_repository_count": 25,
+    "path": "firmware/h1/workspace/west.yml",
+    "sdk_upstream_manifest_imported": false,
+    "sha256": "6ded24c5aff6efc30e2fc7840d3335f0be4942eb5de25bcacc64274efd405302"
+  },
+  "workspace_recipe": [
+    "Create a fresh workspace with manifest/west.yml copied exactly from firmware/h1/workspace/west.yml.",
+    "From <WEST_WORKSPACE>: <WEST_PYTHON> -m west init -l manifest",
+    "From <WEST_WORKSPACE>: <WEST_PYTHON> -m west update",
+    "Use this local manifest exclusively; do not initialize/import sdk-alif/west.yml or add modules/lib/matter."
+  ]
+}

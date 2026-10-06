@@ -1,0 +1,1292 @@
+{
+  "M5_4_V1_status": "NOT ACCEPTED permanently",
+  "failed_attempts_remain_failed": true,
+  "gate_rows": [
+    {
+      "accepted_disposition": "M5_ENTRY_PASS",
+      "definition": "Accepted M4 range-covering V3 and exact canonical componentized input",
+      "definition_authority": {
+        "field": "M5.M5 entry",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5 entry",
+      "input_authorities": [
+        {
+          "artifact_id": "canonical_M3_tree",
+          "sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+          "bytes": 4286,
+          "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M4_FORMAL_DISPOSITION.json",
+        "bytes": 787,
+        "sha256": "48d03c9dad3afdf70547e181cea39469bfa155f31a41a3e712e8ea7c882e3696"
+      },
+      "receipt_sha256": "48d03c9dad3afdf70547e181cea39469bfa155f31a41a3e712e8ea7c882e3696",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01"
+      ]
+    },
+    {
+      "accepted_disposition": "M5_1_ACCEPTED_M4_V3_CANONICAL_BINDING_PASS",
+      "definition": "Accepted M4 and exact canonical deployment input binding",
+      "definition_authority": {
+        "field": "M5",
+        "policy_references": "ACCEPTED_STATE_INDEX; recovered M4 stop boundary",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-1",
+      "input_authorities": [
+        {
+          "artifact_id": "M4_FORMAL_DISPOSITION.json",
+          "bytes": 787,
+          "sha256": "48d03c9dad3afdf70547e181cea39469bfa155f31a41a3e712e8ea7c882e3696"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+          "bytes": 4286,
+          "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+        "bytes": 4286,
+        "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+      },
+      "receipt_sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "M5_2_EXACT_INTEGER_CONFORMANCE_V1_PASS",
+      "definition": "Exact Vela/firmware/runtime/memory/target identity; selected sealed integer arithmetic implementation conformance 0 mismatches / 0 LSB error",
+      "definition_authority": {
+        "field": "M5",
+        "policy_references": "D-007; D-020; docs/DEVELOPMENT Phase E",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2",
+      "input_authorities": [
+        {
+          "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+          "bytes": 4286,
+          "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+        },
+        {
+          "artifact_id": "FULL_U85_INTEGER_ARITHMETIC_CONTRACT_V1.json",
+          "bytes": 49527683,
+          "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+        },
+        {
+          "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+          "bytes": 17965,
+          "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+        "bytes": 170998,
+        "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+      },
+      "receipt_sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [
+        {
+          "attempt": "M5-2 original formal entry",
+          "disposition": "M5_2_FORMAL_CAMPAIGN_ENTRY_IDENTITY_FAIL",
+          "reason": "The frozen original route accepted canonical-only component inputs; silence was the first unsupported fixture. File hash integrity passed; zero formal fixture comparisons ran.",
+          "receipt": {
+            "artifact_id": "CAMPAIGN_ENTRY_RECEIPT.json",
+            "bytes": 1263298,
+            "sha256": "c7ea28a2555009c158efa4787ebd496a4a5fbeebc3f1636073ec73359f433bdc"
+          },
+          "state": "FAILED_ENTRY_NO_NUMERICAL_EXECUTION"
+        },
+        {
+          "attempt": "M5-2 per-fixture route extension",
+          "disposition": "M5_2_CORSTONE_U85_PER_FIXTURE_INPUT_ROUTE_QUALIFIED",
+          "reason": "Variable raw input transport for the unchanged sealed V1 components; 76 input identities, canonical equivalence and negative loader checks. No arithmetic or tolerance change.",
+          "receipt": {
+            "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+            "bytes": 17965,
+            "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+          },
+          "state": "PROSPECTIVELY_QUALIFIED_BEFORE_FORMAL_CAMPAIGN"
+        }
+      ],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "M5_3_PRODUCTION_FIRMWARE_V3_BINDING_BRIDGE_AND_PROGRAMMED_IDENTITY_PASS",
+      "definition": "Exact source/build/programmed application and ATOC/model-storage identities; explicit descriptors, runner, M55/NPU execution, ownership/completion, shared fan-out",
+      "definition_authority": {
+        "field": "M5",
+        "policy_references": "D-017; D-021; exact-artifact rules",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-3",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        },
+        {
+          "artifact_id": "M5_3_FIRMWARE_CANDIDATE_FREEZE.json",
+          "bytes": 35101,
+          "sha256": "863e21f616a3b3226442cc9bc71d56261970829f60efa18afe1fccda57d96a76"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+        "bytes": 9557,
+        "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+      },
+      "receipt_sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [
+        {
+          "attempt": "M5-3 first OSPI programming",
+          "cause_closure": {
+            "artifact_id": "OSPI1_FAILURE_CAUSE_CLOSURE.json",
+            "bytes": 3523,
+            "sha256": "c60356aff880545ba42872a1dad225e4324ba45d7f36186195683e78b4c8c0f7"
+          },
+          "limit": "The two-step recovery was validated as a whole; individual GPIO-pulse versus FIFO-normalization necessity was not isolated.",
+          "reason": "Loader stalled in transfer/TX-FIFO-empty wait; retained volatile FIFO-start normalization and restored flash reset preparation had been omitted. Complete storage audit preceded the successful qualified route.",
+          "receipt": {
+            "artifact_id": "M5_3_FINAL_DISPOSITION.json",
+            "bytes": 10710,
+            "sha256": "5d0e7177581a65ac16d359b25114c91d131b92806a2700fe09d0b648953aac04"
+          },
+          "state": "FAILED_NOT_ACCEPTED"
+        }
+      ],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "M5_4_V2_INTEGRATED_PHYSICAL_V3_EXECUTION_PASS",
+      "definition": "Successful live uploaded-waveform H1 inference on observed Alif E8 M55-HP/U85-256 target, finite complete vectors, repeats and scoped semantics",
+      "definition_authority": {
+        "field": "M5",
+        "policy_references": "D-009 interpreted at accepted uploaded-waveform scope; no live microphone/accuracy claim",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-4",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        },
+        {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        },
+        {
+          "artifact_id": "M5_4_V2_EXECUTION_FREEZE.json",
+          "bytes": 7834,
+          "sha256": "e02b6f331e047ae08288f18c95e5a91b62ebce325498cbfec8c78f2a3762e9ba"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+        "bytes": 20249,
+        "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+      },
+      "receipt_sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [
+        {
+          "attempt": "M5-4 V1",
+          "disposition": "M5_4_STOP_FIRST_FORMAL_HARD_FAILURE_EXACT_DEPLOYMENT_INPUT_MISMATCH",
+          "failed_boundary": "host-reference versus physical deployment_input",
+          "failure_preserved": true,
+          "mismatched_codes": 2264,
+          "receipt": {
+            "artifact_id": "M5_4_FINAL_DISPOSITION.json",
+            "bytes": 9807,
+            "sha256": "9a8e4b06901120c6f1ec031655bb1796f591b3597f2f5dcad21b014692e6b1b5"
+          },
+          "state": "NOT ACCEPTED permanently"
+        },
+        {
+          "attempt": "M5-4 V2 scope correction",
+          "reason": "Native frontend is retained-scoped; actual native output is independently quantized, and the captured actual integer input drives downstream exact oracles. V1 is not reclassified or reused as V2 evidence.",
+          "receipt": {
+            "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+            "bytes": 60735,
+            "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+          },
+          "state": "PROSPECTIVE_BEFORE_NEW_PHYSICAL_EXECUTION"
+        }
+      ],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "M5_5_CUMULATIVE_EVIDENCE_AND_RECREATION_CLOSURE_PASS",
+      "definition": "Compact cumulative qualified evidence and recreation guidance once all hard gates pass",
+      "definition_authority": {
+        "field": "M5",
+        "policy_references": "D-002; D-011; D-013; EVIDENCE_RETENTION_POLICY",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-5",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        },
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        },
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_5_CLOSURE_RECEIPT.json",
+          "bytes": 2730,
+          "sha256": "c7a3767ad95861eaa7377f90e0a804febcf4ec6e5b94bf4811b357e2e8857154"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_5_CLOSURE_RECEIPT.json",
+        "bytes": 2730,
+        "sha256": "c7a3767ad95861eaa7377f90e0a804febcf4ec6e5b94bf4811b357e2e8857154"
+      },
+      "receipt_sha256": "c7a3767ad95861eaa7377f90e0a804febcf4ec6e5b94bf4811b357e2e8857154",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Selected sealed full 550-operator arithmetic and independent oracle",
+      "definition_authority": {
+        "field": "D-007/D-020",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2.contract_and_oracle",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "ORACLE_INDEPENDENCE_V1.established.json",
+          "bytes": 3170,
+          "sha256": "1ee3bf1eb9a83902258e07bea94136761abe948bfdd66f328b4965ed60ee3067"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "ORACLE_INDEPENDENCE_V1.established.json",
+        "bytes": 3170,
+        "sha256": "1ee3bf1eb9a83902258e07bea94136761abe948bfdd66f328b4965ed60ee3067"
+      },
+      "receipt_sha256": "1ee3bf1eb9a83902258e07bea94136761abe948bfdd66f328b4965ed60ee3067",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Both independent arithmetic implementations pass frozen primitive expectations exactly",
+      "definition_authority": {
+        "field": "Sealed V1 primitive corpus",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2.primitives",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "PRIMITIVE_SELF_TEST_RESULT_V1.json",
+          "bytes": 1017,
+          "sha256": "d161e7e2eda4ed12b00b2374c6fa8cc58c83907d6def03168331b1feeab06ae8"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "PRIMITIVE_SELF_TEST_RESULT_V1.json",
+        "bytes": 1017,
+        "sha256": "d161e7e2eda4ed12b00b2374c6fa8cc58c83907d6def03168331b1feeab06ae8"
+      },
+      "receipt_sha256": "d161e7e2eda4ed12b00b2374c6fa8cc58c83907d6def03168331b1feeab06ae8",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "All 38 fixture input pairs executable by prospectively qualified unchanged integer route",
+      "definition_authority": {
+        "field": "Qualified per-fixture route freeze",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2.execution_route",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+          "bytes": 17965,
+          "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+        "bytes": 17965,
+        "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+      },
+      "receipt_sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "All 38 fixtures / four integer boundaries have zero mismatches / zero LSB",
+      "definition_authority": {
+        "field": "Retained M5-2 exact campaign",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2.all_boundaries",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+        "bytes": 170998,
+        "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+      },
+      "receipt_sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Canonical and high_valid_two_tone four-boundary repeats are byte-identical",
+      "definition_authority": {
+        "field": "Retained M5-2 manifest",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-2.repeatability",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+          "bytes": 170998,
+          "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "REPEATABILITY_RECEIPT.json",
+          "bytes": 7208,
+          "sha256": "c719d571927a18bcb518ead91f18014cddf296e659b1750882e6b2a864cb9de4"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "REPEATABILITY_RECEIPT.json",
+        "bytes": 7208,
+        "sha256": "c719d571927a18bcb518ead91f18014cddf296e659b1750882e6b2a864cb9de4"
+      },
+      "receipt_sha256": "c719d571927a18bcb518ead91f18014cddf296e659b1750882e6b2a864cb9de4",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact V3 binding plus production bridge primitive/vector conformance",
+      "definition_authority": {
+        "field": "D-017/D-021; bridge policy V1",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-3.binding_and_bridge",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "FULL_VECTOR_BRIDGE_RESULT.json",
+          "bytes": 48911,
+          "sha256": "ce7595cb32077598eb44344fba642dd7798be7082386e512092667d0bbc85f71"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "FULL_VECTOR_BRIDGE_RESULT.json",
+        "bytes": 48911,
+        "sha256": "ce7595cb32077598eb44344fba642dd7798be7082386e512092667d0bbc85f71"
+      },
+      "receipt_sha256": "ce7595cb32077598eb44344fba642dd7798be7082386e512092667d0bbc85f71",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact production build and linked bridge/runner path",
+      "definition_authority": {
+        "field": "Retained M5-3 exact source/build authority",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-3.build_and_linked_route",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "LINKED_IMAGE_AUDIT_V2.json",
+          "bytes": 11103,
+          "sha256": "17eff99969c3f651f524c6e6878d38be8e81bf7ea88d33db387f44d1410d4f67"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "LINKED_IMAGE_AUDIT_V2.json",
+        "bytes": 11103,
+        "sha256": "17eff99969c3f651f524c6e6878d38be8e81bf7ea88d33db387f44d1410d4f67"
+      },
+      "receipt_sha256": "17eff99969c3f651f524c6e6878d38be8e81bf7ea88d33db387f44d1410d4f67",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Complete source/build/application/ATOC/backbone/classifier identity chain",
+      "definition_authority": {
+        "field": "Retained M5-3 exact-artifact authority",
+        "receipt": {
+          "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+          "bytes": 6501,
+          "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+        }
+      },
+      "gate_id": "M5-3.programmed_identity",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+          "bytes": 9557,
+          "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_3_FINAL_IDENTITY_MATRIX_V2.json",
+          "bytes": 20136,
+          "sha256": "725f198c1a56ccc7e1c252a80318ec6f0889f3ed5349c6b126a1cf5f74e41dca"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_3_FINAL_IDENTITY_MATRIX_V2.json",
+        "bytes": 20136,
+        "sha256": "725f198c1a56ccc7e1c252a80318ec6f0889f3ed5349c6b126a1cf5f74e41dca"
+      },
+      "receipt_sha256": "725f198c1a56ccc7e1c252a80318ec6f0889f3ed5349c6b126a1cf5f74e41dca",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Preserved scoped native frontend structural/finite boundary, without host/native equality",
+      "definition_authority": {
+        "field": "V2 criteria gates.frontend",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.frontend_scope",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_RETAINED_FRONTEND_SCOPE_REVIEW.json",
+          "bytes": 99617,
+          "sha256": "83dfd6b35b892f27024d81e751e266b772ac3ef799e7c9f46c793a0fe4e598ec"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_RETAINED_FRONTEND_SCOPE_REVIEW.json",
+        "bytes": 99617,
+        "sha256": "83dfd6b35b892f27024d81e751e266b772ac3ef799e7c9f46c793a0fe4e598ec"
+      },
+      "receipt_sha256": "83dfd6b35b892f27024d81e751e266b772ac3ef799e7c9f46c793a0fe4e598ec",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Independent exact quantization of same-run native frontend into actual deployment input",
+      "definition_authority": {
+        "field": "V2 criteria gates.frontend",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.native_quantization",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FRONTEND_QUANTIZATION_RESULT.json",
+          "bytes": 10392,
+          "sha256": "c3fa1d08135ac9bba3d8644aa4ce75e1a85003737cb1431d56e8b4ca7aa4ac3d"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_FRONTEND_QUANTIZATION_RESULT.json",
+        "bytes": 10392,
+        "sha256": "c3fa1d08135ac9bba3d8644aa4ce75e1a85003737cb1431d56e8b4ca7aa4ac3d"
+      },
+      "receipt_sha256": "c3fa1d08135ac9bba3d8644aa4ce75e1a85003737cb1431d56e8b4ca7aa4ac3d",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact shared feature from oracle consuming actual physical deployment input",
+      "definition_authority": {
+        "field": "V2 criteria gates.backbone",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.backbone",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_BACKBONE_RESULT.json",
+          "bytes": 14653,
+          "sha256": "62715b41a650594bb89c31d4f560fdc0c841628366d9687a7b3a3d1cef888403"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_BACKBONE_RESULT.json",
+        "bytes": 14653,
+        "sha256": "62715b41a650594bb89c31d4f560fdc0c841628366d9687a7b3a3d1cef888403"
+      },
+      "receipt_sha256": "62715b41a650594bb89c31d4f560fdc0c841628366d9687a7b3a3d1cef888403",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact classifier input from retained GeM plus exact bridge consuming actual shared feature",
+      "definition_authority": {
+        "field": "V2 criteria gates.GeM_bridge",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.GeM_bridge",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_GEM_BRIDGE_RESULT.json",
+          "bytes": 125048,
+          "sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_GEM_BRIDGE_RESULT.json",
+        "bytes": 125048,
+        "sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60"
+      },
+      "receipt_sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact independent bridge of captured physical embedding",
+      "definition_authority": {
+        "field": "V2 captured_embedding_bridge requirement",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.captured_embedding_bridge",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_GEM_BRIDGE_RESULT.json",
+          "bytes": 125048,
+          "sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_GEM_BRIDGE_RESULT.json",
+        "bytes": 125048,
+        "sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60"
+      },
+      "receipt_sha256": "7cafeb440b5e753cacb052754b60cdc25cb86467659d75da362ceb54c1142e60",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exact logits from oracle consuming actual physical classifier input",
+      "definition_authority": {
+        "field": "V2 criteria gates.classifier",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.classifier",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_CLASSIFIER_RESULT.json",
+          "bytes": 14607,
+          "sha256": "b29a2afcfa333c4bd4d3458107774031a3dbae386923c52a7fc07722aeea2976"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_CLASSIFIER_RESULT.json",
+        "bytes": 14607,
+        "sha256": "b29a2afcfa333c4bd4d3458107774031a3dbae386923c52a7fc07722aeea2976"
+      },
+      "receipt_sha256": "b29a2afcfa333c4bd4d3458107774031a3dbae386923c52a7fc07722aeea2976",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Exactly the two named four-boundary repeat captures are byte-identical",
+      "definition_authority": {
+        "field": "V2 criteria repeatability",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.repeatability",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_REPEATABILITY_RESULT.json",
+          "bytes": 6036,
+          "sha256": "3b0361b8742e24fad015b6ce54035edb206bdda1dbceec0e841db8c894d7e2bf"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_REPEATABILITY_RESULT.json",
+        "bytes": 6036,
+        "sha256": "3b0361b8742e24fad015b6ce54035edb206bdda1dbceec0e841db8c894d7e2bf"
+      },
+      "receipt_sha256": "3b0361b8742e24fad015b6ce54035edb206bdda1dbceec0e841db8c894d7e2bf",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Observed U85-256 stage submissions/completion IRQs/queue; no CPU fallback",
+      "definition_authority": {
+        "field": "V2 criteria U85_memory_integrity",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.U85",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_U85_EXECUTION_PROOF.json",
+          "bytes": 47138,
+          "sha256": "7d2df3f2ac24e828ef583ca08f5c16a838c815ca405ec9442894bc11dc3c3d61"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_U85_EXECUTION_PROOF.json",
+        "bytes": 47138,
+        "sha256": "7d2df3f2ac24e828ef583ca08f5c16a838c815ca405ec9442894bc11dc3c3d61"
+      },
+      "receipt_sha256": "7d2df3f2ac24e828ef583ca08f5c16a838c815ca405ec9442894bc11dc3c3d61",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Required guards/faults/lifecycle/bounds/ownership and memory integrity",
+      "definition_authority": {
+        "field": "V2 criteria U85_memory_integrity",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.memory_integrity",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_MEMORY_INTEGRITY_RESULT.json",
+          "bytes": 10955,
+          "sha256": "65c6a68dd7c37c01808ceb681a78af801ef41fb3a1ed432b93b6601871a0d077"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_MEMORY_INTEGRITY_RESULT.json",
+        "bytes": 10955,
+        "sha256": "65c6a68dd7c37c01808ceb681a78af801ef41fb3a1ed432b93b6601871a0d077"
+      },
+      "receipt_sha256": "65c6a68dd7c37c01808ceb681a78af801ef41fb3a1ed432b93b6601871a0d077",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    },
+    {
+      "accepted_disposition": "PASS_AT_ACCEPTED_PARENT_SCOPE",
+      "definition": "Complete finite H1 logits/scores/official labels sanity for all slots",
+      "definition_authority": {
+        "field": "V2 criteria U85_memory_integrity.scores_sanity",
+        "receipt": {
+          "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+          "bytes": 60735,
+          "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+        }
+      },
+      "gate_id": "M5-4.V2.output_sanity",
+      "input_authorities": [
+        {
+          "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+          "bytes": 20249,
+          "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+        }
+      ],
+      "limitation_reference_rule": "Resolve IDs in top-level known_limitations; these are claim boundaries, not failed hard gates.",
+      "output_authorities": [
+        {
+          "artifact_id": "M5_4_V2_RUN_RESULTS.json",
+          "bytes": 597298,
+          "sha256": "eb2296df97af10cf911f824811b63435cf0fcb55a329ffb46b8ae78629f7a797"
+        }
+      ],
+      "primary_receipt": {
+        "artifact_id": "M5_4_V2_RUN_RESULTS.json",
+        "bytes": 597298,
+        "sha256": "eb2296df97af10cf911f824811b63435cf0fcb55a329ffb46b8ae78629f7a797"
+      },
+      "receipt_sha256": "eb2296df97af10cf911f824811b63435cf0fcb55a329ffb46b8ae78629f7a797",
+      "status": "PASS",
+      "superseded_failed_historical_attempts": [],
+      "unresolved_limitations": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11"
+      ]
+    }
+  ],
+  "known_limitations": {
+    "L01": "Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.",
+    "L02": "M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.",
+    "L03": "GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary.",
+    "L04": "M5-2 qualifies the sealed integer deployment arithmetic on 38 fixtures through the independently qualified Corstone U85 route. M5-4 V2 qualifies actual physical integer inputs and their downstream outputs on five synthetic fixtures and two repeats.",
+    "L05": "Physical acceptance is limited to the observed Alif E8 DK M55-HP / Ethos-U85-256, exact firmware, compiled components, configuration and retained runtime. It does not generalize to arbitrary boards or settings.",
+    "L06": "Five physical synthetic fixtures do not establish biological accuracy or new V3 biological semantics. Older seven-window B/C evidence stays at its original model/build/runtime/scale.",
+    "L07": "No live microphone, acoustic accuracy, whole-domain equivalence, global TensorFlow/deployment equivalence, universal memory safety, final performance/resource proof, H2/H3, regional head, shared-backbone multi-head execution or multi-U85 acceptance is claimed.",
+    "L08": "M5-4 V2 used the existing runtime and does not create a new cold-boot proof. Cold boot is optional in the retained contract.",
+    "L09": "The waveform SHA-256 was computed/declared by the host and echoed by the board; the board independently checked CRC32. Packet sequence/kind/offset/length/CRC was validated; an original raw packet transcript was not retained.",
+    "L10": "Queue registers were observed after the classifier. Backbone completion is bound to stage-specific submission/IRQ hooks and successful queue-wait return, without an intermediate queue-register snapshot claim.",
+    "L11": "New firmware byte-identical rebuilds and byte-identical timestamped receipt regeneration have not been established. Retained artifact identities are comparison targets; prospective recreation must keep immutable numerical and payload checks."
+  },
+  "new_technical_execution": false,
+  "result": "ALL_RETAINED_HARD_GATES_PASS",
+  "schema": "m5-cumulative-hard-gate-matrix-v1",
+  "scope_correction": "M5-4 V2 prospective and separate; exact downstream criteria unchanged"
+}

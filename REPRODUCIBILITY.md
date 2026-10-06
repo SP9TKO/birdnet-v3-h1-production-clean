@@ -1,8 +1,18 @@
 # Reproducibility guide
 
+## Historical acceptance and clean public candidate
+
+Historical M5 remains **ACCEPTED** at its original uploaded-waveform H1 scope. Its historical Matter source binding remains `MATTER_BINDING_UNRESOLVED_STOP`: the accepted workspace discovered Matter Kconfig inputs, but its exact source revision could not be bound.
+
+The clean public candidate removes Matter prospectively through [the flat workspace manifest](firmware/h1/workspace/west.yml). It separately passed `H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS` and `H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS`, reaching `NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED`. This candidate has a new firmware identity; historical firmware byte equality is not claimed and historical M5 was not reaccepted.
+
+The physical campaign covers only canonical and high_valid_two_tone with immediate repeats: four slots PASS, 12 downstream comparisons / 373,920 integer elements / 0 mismatch / 0 LSB, historical 8/8 boundaries byte-identical, repeat 8/8 boundaries byte-identical, and 8 U85 submissions / 8 completion IRQs. The historical five-fixture M5 campaign was not rerun. No biological-accuracy or arbitrary-board claim follows.
+
+Use [the candidate authority](records/release/CANDIDATE_AUTHORITY.json), [static/build evidence](records/release/NO_MATTER_STATIC_BUILD.json), [physical evidence](records/release/NO_MATTER_PHYSICAL.json), [production setup](records/release/PRODUCTION_SETUP.json) and [candidate recreation](records/release/RECREATION.md). Wren remains a mandatory locally retained 384,000-byte build input; no public-only M5 or fresh historical executable-byte reconstruction is promised.
+
 Project: **BirdNET V3 H1 Clean Reproduction and Live Inference on Alif U8 DK**
 
-This guide describes the accepted TensorFlow-only path through M3. No formal M4 or M5 acceptance is claimed; prior development observations are summarized separately.
+This guide retains the accepted TensorFlow-only fresh-checkout path through M3. M4/M5 are now accepted at their scoped boundaries; continue with [the exact M5 recreation guide](records/m5/RECREATION.md), [machine-readable steps](records/m5/RECREATION_GUIDANCE.json) and [toolchain pins](records/m5/TOOLCHAIN_PINS.json). Those later steps explicitly distinguish demonstrated repeatability from retained-input reconstruction and physical actions.
 
 ## 1. Authoritative inputs
 
@@ -373,4 +383,12 @@ Read accepted state in this order:
 The five fixtures and their numerical maxima are engineering conformance
 evidence, not biological-accuracy validation or universal error bounds. M3
 makes no TFLite, quantization, Vela, M55, firmware or Alif hardware claim.
-PyTorch and ONNX did not participate in accepted M1–M3. M4 has not started.
+PyTorch and ONNX did not participate in accepted M1–M3. Accepted M4/M5 evidence and limitations are consolidated under `records/m4/` and `records/m5/`; M3 alone still makes no deployment/hardware claim.
+
+## 10. Accepted V3 deployment and M5 recreation
+
+[M5 recreation](records/m5/RECREATION.md) distinguishes no-hardware construction/scale/Vela/contract/oracle/Corstone/build/bridge steps from physical application/ATOC/storage/USB/U85 steps. Each structured step binds exact inputs, tools, commands, expected identities and hard checks. Required private/licensed freeze/corpus/runtime/payload inputs are explicitly `LOCALLY_RETAINED_REQUIRED`. Public source snapshots are unchanged copies; no turnkey M5 fresh-checkout or fresh byte-identical firmware rebuild is promised.
+
+Native frontend host/reference bit equality and GeM FP32 bit equality are not acceptance claims. M5-4 V1 remains permanently failed; prospective V2 uses actual captured integer inputs and exact downstream oracles. All physical recreation requires separate authorization; the closure session performed none.
+
+The original M5 documentation digest remains historical evidence in [DOCUMENTATION_IDENTITY.json](records/m5/DOCUMENTATION_IDENTITY.json). [DOCUMENTATION_SUPPLEMENT.json](records/release/DOCUMENTATION_SUPPLEMENT.json) binds the current candidate document hashes separately.

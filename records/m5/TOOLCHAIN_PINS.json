@@ -1,0 +1,214 @@
+{
+  "Corstone": {
+    "FVP": {
+      "artifact_id": "FVP",
+      "bytes": 23688816,
+      "sha256": "9cf4a25fdece7f4a2bedeed6980f932990036e399be59ab9507dc219f062ee3e"
+    },
+    "archive": {
+      "artifact_id": "archive",
+      "bytes": 118975463,
+      "sha256": "6986af8805de54fa8dcbc54ea2cd63b305ebf5f1c07d3cba09641e2f8cc4e2f5",
+      "version": "11.27_25"
+    },
+    "driver": "Generic U85 pack source 2.0.0; unmodified",
+    "libEthosU85": {
+      "artifact_id": "libEthosU85",
+      "bytes": 12160544,
+      "sha256": "24a095d69affc64faddc7702f017a52ff5374c9629f2d7c4f1872acc8cc0bd41"
+    },
+    "runtime_version": "Fast Models 11.27.25; Corstone SSE-320 package 11.27_25"
+  },
+  "TensorFlow": {
+    "NumPy": "2.2.6",
+    "Python": "3.12.14",
+    "container": "python:3.12.14-slim-bookworm@sha256:8cbe7fcd5df843c789eb26a3d3059859469441633d6e671111f31553e8dc7156",
+    "deterministic_ops": true,
+    "observed_runtime_image_id": "sha256:febd0be41adb897a0ab8f1f1c693d8912669ea60c4940e076e9946b60e210ef0",
+    "oneDNN": false,
+    "requirements": "requirements/requirements-frozen.txt",
+    "thread_counts": 1,
+    "version": "2.21.0",
+    "wheel_hashes": "requirements/WHEEL_SHA256SUMS.txt"
+  },
+  "Vela": {
+    "accelerator": "ethos-u85-256",
+    "arena_cache_bytes": 524288,
+    "config": {
+      "artifact_id": "dedicated_sram_config",
+      "bytes": 624,
+      "sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb"
+    },
+    "dependency_lock": {
+      "artifact_id": "vela_dependency_lock",
+      "bytes": 382,
+      "public_path": "requirements/m5-vela-frozen.txt",
+      "sha256": "ba155ebd9b225ce20013c185376e2bf1ffa90966ac1a145428766a316476a351"
+    },
+    "memory_mode": "Dedicated_Sram",
+    "official_commit": "0f8edf7d00bf471845c4b44a16f8d2bac53c2dff",
+    "official_repository": "https://gitlab.arm.com/artificial-intelligence/ethos-u/ethos-u-vela",
+    "optimization": "Performance",
+    "python": {
+      "artifact_id": "vela_python_3.12.14",
+      "bytes": 30894944,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    },
+    "python_base_archive": {
+      "artifact_id": "vela_python_base_archive",
+      "bytes": 35951713,
+      "sha256": "b4268795a0ef0ae6e008a5c6c7be8f0c2d121248bd1db6fdc0e11fcf9b769713"
+    },
+    "source_distribution": {
+      "artifact_id": "vela_source_distribution",
+      "bytes": 2336628,
+      "sha256": "2aca4502cf3af2788e067e1604649afe5cc48ee41be609220bda8b801c9df28d"
+    },
+    "system_config": "Ethos_U85_SRAM_OSPI",
+    "version": "5.0.0",
+    "wheels": [
+      {
+        "artifact_id": "ethos-u-vela_wheel",
+        "bytes": 1958908,
+        "filename": "ethos_u_vela-5.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "package": "ethos-u-vela",
+        "sha256": "93505c30a421bce318a0665a51814563b6a62b883f0739fc5c1fb321932f70a0",
+        "version": "5.0.0"
+      },
+      {
+        "artifact_id": "flatbuffers_wheel",
+        "bytes": 26784,
+        "filename": "flatbuffers-24.3.25-py2.py3-none-any.whl",
+        "package": "flatbuffers",
+        "sha256": "8dbdec58f935f3765e4f7f3cf635ac3a77f83568138d6a2311f524ec96364812",
+        "version": "24.3.25"
+      },
+      {
+        "artifact_id": "numpy_wheel",
+        "bytes": 16606086,
+        "filename": "numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+        "package": "numpy",
+        "sha256": "0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28",
+        "version": "2.3.5"
+      },
+      {
+        "artifact_id": "pip_wheel",
+        "bytes": 1841526,
+        "filename": "pip-25.0.1-py3-none-any.whl",
+        "package": "pip",
+        "sha256": "c46efd13b6aa8279f33f2864459c8ce587ea6a1a59ee20de055868d8f7688f7f",
+        "version": "25.0.1"
+      }
+    ]
+  },
+  "oracle": {
+    "build_argv": [
+      "g++",
+      "-std=c++17",
+      "-O3",
+      "-fno-tree-vectorize",
+      "-fno-fast-math",
+      "scalar_executor.cpp",
+      "-o",
+      "build/scalar_executor"
+    ],
+    "compiler": "GCC 15.2.0",
+    "source_aggregate_sha256": "3aa920d9855a67cc74d61e67c6290acc6704ceaf3337c4a79bfd94cda3a344eb",
+    "source_manifest": {
+      "artifact_id": "ORACLE_SOURCE_MANIFEST_V1.json",
+      "bytes": 3138,
+      "sha256": "4f3b04b62fce158c685e5cd00d6ce28db3040706e7f2c115d42a0b80acd1f026"
+    }
+  },
+  "packaging": {
+    "config": {
+      "artifact_id": "app_cfg",
+      "bytes": 341,
+      "sha256": "1cbd6c5a791edea0c472d041bc0f104a40663dc2386265b319771b0f4ff475f3"
+    },
+    "generation_argv": [
+      "./app-gen-toc",
+      "-f",
+      "build/config/app-cfg.json",
+      "-v"
+    ],
+    "generator": {
+      "artifact_id": "app_gen_toc",
+      "bytes": 11121504,
+      "sha256": "ba7abded62ffb13d8c7e1b7e33412a54978792f942d297be6b83eb6ea35effe7"
+    },
+    "padding_bytes": 12,
+    "padding_value": 0,
+    "writer": {
+      "artifact_id": "app_write_mram",
+      "bytes": 11433888,
+      "sha256": "16d5986dcdfdb00622f8e0ca6f41aab99cc7b21543b9aa1c1297ed543c6ada9b"
+    }
+  },
+  "production": {
+    "CPU": "M55_HP",
+    "GCC": "12.2.0",
+    "NPU": "U85_256",
+    "Zephyr_SDK": "0.17.0",
+    "board": "alif_e8_dk/ae822fa0e5597xx0/rtss_hp",
+    "driver_version": "0.16.0",
+    "runtime_reported_sdk_alif_commit": "a524855a8b470fff0e3edb2c902a034d45ddf2a4",
+    "source_repositories": [
+      {
+        "commit": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+        "role": "zephyr"
+      },
+      {
+        "commit": "89ee0aa748134dc31fcc8d3a266d7bb4d3fd3b53",
+        "role": "alif"
+      },
+      {
+        "commit": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+        "role": "ethos_u"
+      },
+      {
+        "commit": "3c0f759d73bcbaa936c21bdfa81f9214b2b5df88",
+        "role": "workspace"
+      }
+    ],
+    "tools": [
+      {
+        "bytes": 1420048,
+        "role": "arm-zephyr-eabi-gcc",
+        "sha256": "42e96e38c3d24e74ec0f5752b0a644362c84f2dd473461158f6ab3816f7fa4f7",
+        "version": "arm-zephyr-eabi-gcc (Zephyr SDK 0.17.0) 12.2.0"
+      },
+      {
+        "bytes": 1420048,
+        "role": "arm-zephyr-eabi-g++",
+        "sha256": "8a08c8d52ba6bbf26e06e0b45fd68247b7fb4918a183fd3b966ea058ecdcf8c9",
+        "version": "arm-zephyr-eabi-g++ (Zephyr SDK 0.17.0) 12.2.0"
+      },
+      {
+        "bytes": 1719288,
+        "role": "arm-zephyr-eabi-ld.bfd",
+        "sha256": "9822eac6ae8efeb478125ed9600b5cf6c38ab92f6550b3c5943711af18123ef0",
+        "version": "GNU ld (Zephyr SDK 0.17.0) 2.38"
+      },
+      {
+        "bytes": 14253272,
+        "role": "cmake",
+        "sha256": "6e1dccda39845415d68eabb934c598998949c99ec4668625d571aee1827b05c7",
+        "version": "cmake version 4.2.3"
+      },
+      {
+        "bytes": 350624,
+        "role": "ninja",
+        "sha256": "91e9548850cda2799facfdaa7abe33f9e978832f85e98212255708a7bbe437f2",
+        "version": "1.13.2"
+      },
+      {
+        "bytes": 1305304,
+        "role": "g++",
+        "sha256": "e6718f7e0c7d057c3ff77b550c603da9bc4030e3ede3c053705acce1293dbe4d",
+        "version": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+      }
+    ]
+  },
+  "schema": "m5-recreation-toolchain-pins-v1"
+}

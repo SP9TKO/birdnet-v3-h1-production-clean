@@ -1,0 +1,22 @@
+{
+  "candidate": "M4_RANGE_COVERING_V3",
+  "canonical_M5_input": {
+    "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+    "bytes": 4286,
+    "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+  },
+  "gate_matrix": {
+    "artifact_id": "M4_GATE_MATRIX.json",
+    "bytes": 2395,
+    "sha256": "7cb771f7b3cecf76d4de41f2cc56bb94efecabd76ce356f3740defd39c612594"
+  },
+  "new_M4_qualification_performed": false,
+  "primary_receipt": {
+    "artifact_id": "M4_FORMAL_DISPOSITION.json",
+    "bytes": 787,
+    "sha256": "48d03c9dad3afdf70547e181cea39469bfa155f31a41a3e712e8ea7c882e3696"
+  },
+  "schema": "m4-cumulative-accepted-state-v1",
+  "scope": "Retained range/structure/deterministic construction and scoped frontend/host semantics; no global TensorFlow/deployment or new V3 biological equivalence claim.",
+  "state": "ACCEPTED"
+}

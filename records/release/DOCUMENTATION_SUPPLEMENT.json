@@ -1,0 +1,59 @@
+{
+  "accepted_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "date": "2026-10-06",
+  "documents": [
+    {
+      "current_bytes": 5670,
+      "current_sha256": "d3d7712a29fd304e2821d5702671897e5550d518a192606f8074a9501b3336de",
+      "historical_sha256": "8611feb44d709d37d42052b0de53b9c5f1763a5e0a2a753450da999887937489",
+      "path": "README.md"
+    },
+    {
+      "current_bytes": 4275,
+      "current_sha256": "f51009b6719aac1ab02bb151e5ff89826a2519f70aaccb9df4bcd7f3a206e13c",
+      "historical_sha256": "ba0e55a82f7007fd23c55fc3008c508b44fa5d309a48136f52de8bc00f3cab6e",
+      "path": "PROJECT_STATUS.md"
+    },
+    {
+      "current_bytes": 3298,
+      "current_sha256": "d2258ccc6c4b0de68bc4bbf9be7bf28bf9c3c963c01953af07357d7dd754de0b",
+      "historical_sha256": "ca8cec1f60f2ae6672bfd65fc5710d6f53abb1ce3135cbfe96f1ccbfab6fa76a",
+      "path": "ACCEPTED_STATE_INDEX.md"
+    },
+    {
+      "current_bytes": 12428,
+      "current_sha256": "b7328b841039badf66ba8041464733fc2b80027eded18f7cb68d5c46a3456fe5",
+      "historical_sha256": "9011ce9135b2c10cbc7f1889752a94a3132d2b7ca1bdb4f5ff3b94799c70335c",
+      "path": "DECISION_LOG.md"
+    },
+    {
+      "current_bytes": 17792,
+      "current_sha256": "29042d280f6c9e9b53a653fcd0f7a8432ff13e822efe5a4911d5a0f8a518f5ff",
+      "historical_sha256": "3d9c8b1cb919ee537f7e09597365536594d41fb77196ecd2035e176a92aa5998",
+      "path": "REPRODUCIBILITY.md"
+    },
+    {
+      "current_bytes": 18828,
+      "current_sha256": "3f2b72e0a0f25ce9b2a2b014e67903036ace0072d1ad0f41128e32d52febee37",
+      "historical_sha256": "e92a42e8c20d0b67b93c5d64a15e29173e3865051768a7823dd21031d867056b",
+      "path": "PAPER.md"
+    },
+    {
+      "current_bytes": 7559,
+      "current_sha256": "ffcf1b56415262b8a9039367ac7a6df2eac6cada0bbd1de4403d5ed3ddb23918",
+      "historical_sha256": "2d519cbd91acbe31b3811268734524136847aac383477113bda168045741e18c",
+      "path": "docs/DEVELOPMENT.md"
+    }
+  ],
+  "historical_documentation_bundle_sha256": "ac30dd74de5f86bf722283aeb68dc3862e651f81d251a75430db122303141be3",
+  "historical_documentation_identity": {
+    "bytes": 1825,
+    "path": "records/m5/DOCUMENTATION_IDENTITY.json",
+    "sha256": "472a305596d123fe80acfeccbf94794ba54460c8f979a89ab676211cbed532f6"
+  },
+  "interpretation": "The original M5 document digest identifies the original historical acceptance reconciliation, not the later public candidate documents. Historical acceptance and its recorded facts remain immutable. The current seven documents add a separately qualified no-Matter candidate and have the distinct exact hashes below.",
+  "qualification_scope_changed": false,
+  "schema": "PUBLIC_DOCUMENTATION_GENERATION_SUPPLEMENT_V1",
+  "source_bound_firmware_README_changed": false,
+  "source_bound_firmware_README_sha256": "6695136825fb824692abde7280c986a8829423ebdc0a8dd29130cc9685030b5d"
+}

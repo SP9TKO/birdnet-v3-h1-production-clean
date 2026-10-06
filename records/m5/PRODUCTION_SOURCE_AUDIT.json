@@ -1,0 +1,104 @@
+{
+  "HEAD": "015239f8aef1e32b5fce17bcb539aa004589527a",
+  "accepted_delta_count": 9,
+  "all_137_frozen_source_files_match_before_documentation_reconciliation": true,
+  "arithmetic_changed_in_closure": false,
+  "branch": "bringup/h1-post-f-incremental",
+  "changes": [
+    {
+      "bytes": 4117,
+      "classification": [
+        "V3 binding"
+      ],
+      "path": "firmware/h1/BUILD_INPUTS.md",
+      "sha256": "2d9c759d5a25ec23f2a669d0e05981b8fcb10194fa7cd4ba2465f3fa9822f7b8"
+    },
+    {
+      "bytes": 22472,
+      "classification": [
+        "V3 binding",
+        "exact classifier bridge",
+        "build identity"
+      ],
+      "path": "firmware/h1/CMakeLists.txt",
+      "sha256": "272237a7b45fc18b781202306a92a77859114c036b0334480525edbca62e776e"
+    },
+    {
+      "bytes": 151,
+      "classification": [
+        "build identity"
+      ],
+      "path": "firmware/h1/src/build_identity.h.in",
+      "sha256": "35b8e3bd3500d3ed1a60c97d018f3bc1ec29df9736e17c6aac98cf6d7eaa468d"
+    },
+    {
+      "bytes": 3315,
+      "classification": [
+        "V3 binding",
+        "required memory/contract update"
+      ],
+      "path": "firmware/h1/src/h1_contract.h",
+      "sha256": "8fe1aa6b34588b4c72b5d008af690a1ca4e3a2969c601bbfd584d402d0a6775d"
+    },
+    {
+      "bytes": 2710,
+      "classification": [
+        "required memory/contract update"
+      ],
+      "path": "firmware/h1/src/h1_gem.cpp",
+      "sha256": "94f3e35a949493d82bcd240b993704cc00cb6eebb80c8ef0d6e42567951755a0"
+    },
+    {
+      "bytes": 1669,
+      "classification": [
+        "V3 binding",
+        "required memory/contract update"
+      ],
+      "path": "firmware/h1/src/h1_memory_contract.h",
+      "sha256": "938575d5a4d28d9e8a3b4e31b7dde5e6ce81ad3e726853ff6860d3eb95a986c5"
+    },
+    {
+      "bytes": 110528,
+      "classification": [
+        "exact classifier bridge",
+        "V3 binding",
+        "build identity"
+      ],
+      "path": "firmware/h1/src/main.cpp",
+      "sha256": "988dceb88d96a490483a464e8936fc18a3a0645bee987894bb7cdfa5506335c1"
+    },
+    {
+      "bytes": 3658,
+      "classification": [
+        "exact classifier bridge"
+      ],
+      "path": "firmware/h1/src/classifier_bridge.cpp",
+      "sha256": "d5ca5ac2975ba02c1358688a8b093c182c5e1fbc6646a16d81424e107852992d"
+    },
+    {
+      "bytes": 767,
+      "classification": [
+        "exact classifier bridge"
+      ],
+      "path": "firmware/h1/src/classifier_bridge.hpp",
+      "sha256": "1b37e3f5f2dad33760b5f44ac33a4b6d36d14053f4466b1508d2dabe39b8e931"
+    }
+  ],
+  "documentation_reconciliation_rule": "Seven reviewed project documents may change outside CMake firmware identity material; preserve source-bundle-bound firmware README exactly and explain its historical wording separately.",
+  "documentation_review_revision": "SOURCE_BOUND_README_PRESERVED_BEFORE_ANY_TRACKED_EDIT",
+  "frozen_candidate": {
+    "artifact_id": "M5_3_FIRMWARE_CANDIDATE_FREEZE.json",
+    "bytes": 35101,
+    "sha256": "863e21f616a3b3226442cc9bc71d56261970829f60efa18afe1fccda57d96a76"
+  },
+  "frozen_runtime_identity_text": "formal_m5_acceptance=false is the frozen build-time engineering label; milestone acceptance is assigned by retained host receipts. Do not rebuild to change telemetry.",
+  "production_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "result": "PASS",
+  "schema": "m5-final-production-source-audit-v1",
+  "source_identity_material": {
+    "artifact_id": "source-bundle-material.txt",
+    "bytes": 5141,
+    "sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91"
+  },
+  "unrelated_source_changes": 0
+}

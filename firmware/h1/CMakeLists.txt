@@ -35,7 +35,7 @@ endif()
 
 set(H1_FRONTEND_SHA256 "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0")
 set(H1_FRONTEND_BYTES 545776)
-set(H1_BACKBONE_SHA256 "72b80de6c7cf91ae4eb40036d399b4f792ce183d5f629b974f347edec01556c1")
+set(H1_BACKBONE_SHA256 "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7")
 set(H1_BACKBONE_BYTES 20465840)
 set(H1_CLASSIFIER_SHA256 "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93")
 set(H1_CLASSIFIER_BYTES 13008016)
@@ -347,6 +347,10 @@ set(H1_IDENTITY_FILES
   src/frontend_m55_spectral.hpp
   src/frontend_diagnostics.cpp
   src/frontend_diagnostics.hpp
+  src/numeric_error_metrics.cpp
+  src/numeric_error_metrics.hpp
+  src/classifier_bridge.cpp
+  src/classifier_bridge.hpp
   boards/audio-no-pdm.overlay
   boards/u85-ospi.overlay
   src/h1_contract.h
@@ -383,6 +387,7 @@ endif()
 string(APPEND H1_SOURCE_IDENTITY_MATERIAL "pinned_tinycrypt/sha256.c:${TINYCRYPT_SHA256_SOURCE_SHA256}\n")
 string(APPEND H1_SOURCE_IDENTITY_MATERIAL "pinned_tinycrypt/sha256.h:${TINYCRYPT_SHA256_HEADER_SHA256}\n")
 string(SHA256 H1_SOURCE_BUNDLE_SHA256 "${H1_SOURCE_IDENTITY_MATERIAL}")
+file(SHA256 "${H1_SOURCE_DIR}/classifier_bridge.cpp" H1_BRIDGE_IMPLEMENTATION_SHA256)
 configure_file(src/build_identity.h.in generated/build_identity.h @ONLY)
 
 target_include_directories(app PRIVATE
@@ -396,9 +401,11 @@ get_filename_component(ALIF_HAL_DIR "${ZEPHYR_BASE}/../modules/hal/alif" ABSOLUT
 if(TARGET drivers__memc)
   target_include_directories(drivers__memc PRIVATE
     "${ALIF_HAL_DIR}/drivers/ospi/include")
-  target_sources(drivers__memc PRIVATE
-    "${ALIF_HAL_DIR}/drivers/ospi/src/ospi.c"
-    "${ALIF_HAL_DIR}/drivers/ospi/src/ospi_hal.c")
+  if(NOT CONFIG_USE_ALIF_HAL_OSPI)
+    target_sources(drivers__memc PRIVATE
+      "${ALIF_HAL_DIR}/drivers/ospi/src/ospi.c"
+      "${ALIF_HAL_DIR}/drivers/ospi/src/ospi_hal.c")
+  endif()
 endif()
 
 target_sources(app PRIVATE
@@ -408,6 +415,8 @@ target_sources(app PRIVATE
   src/sliding_window.cpp
   src/frontend.cpp
   src/frontend_m55_spectral.cpp
+  src/numeric_error_metrics.cpp
+  src/classifier_bridge.cpp
   src/main.cpp
   src/model_storage.cpp
   src/runtime_profile.c

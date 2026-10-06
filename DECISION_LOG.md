@@ -105,7 +105,7 @@ State: **ACCEPTED**.
 The former FP16-characterization M2 and PyTorch/FP64 M3 definitions are not
 active milestones and do not authorize M4. The active M2 is clean TensorFlow
 FP32 H1 reproduction; the active M3 is serialized/reloaded TensorFlow FP32 H1.
-Both are now accepted. M4 entry is authorized, but M4 has not started.
+Both are accepted. The later retained range-covering V3 and M5 cumulative records now also close M4/M5; the historical supersession described here remains unchanged.
 
 ## D-017 — Preserve future shared-feature deployment flexibility without expanding H1 scope
 
@@ -169,3 +169,27 @@ H1_H23_FULL
 H1 consumes the feature through GeM and the H1 classifier. Optional H2/H3 consume the spatial feature directly through a separately replaceable H23 module; they must not be forced through GeM or the H1 embedding.
 
 This decision supersedes only a narrow implementation-scope interpretation of D-014 and D-017. Formal clean reproduction/acceptance of H2/H3 remains outside the present H1 milestone scope unless explicitly authorized. Development-only H23 integration may be performed later without redefining the current formal H1 acceptance target.
+
+## D-022 — Cumulative H1 M5 closure preserves exact acceptance scope
+
+State: **ACCEPTED cumulative evidence reconciliation**.
+
+M5-2 exact integer conformance, M5-3 exact production bridge/source/build/programmed identity and the separately prospective M5-4 V2 physical campaign are accepted at their immutable receipts. M5-4 V1 remains permanently NOT ACCEPTED; its failed host-reference/native deployment-input boundary is not rewritten. Native Path C is scoped, GeM FP32 residual remains characterization, and classifier-input INT16 exactness is accepted.
+
+M5-5 consolidates compact tracked records and retained script/configuration recreation guidance under D-002/D-011/D-013 and EVIDENCE_RETENTION_POLICY. It introduces no technical source change, new arithmetic, tolerance or physical claim. Final disposition is `M5_5_CUMULATIVE_EVIDENCE_AND_RECREATION_CLOSURE_PASS`; M5 is ACCEPTED at uploaded-waveform H1 scope on the observed exact target.
+
+D-001/D-009 define M5 as the final H1 milestone. Microphone, biological/acoustic accuracy, performance/resource proof, public release and future architecture are separate work. Tracked evidence preparation does not authorize a commit, push, merge, release tag or binary publication.
+
+## D-023 — Keep historical acceptance and qualified no-Matter candidate separate
+
+State: **QUALIFIED CANDIDATE; historical acceptance unchanged**.
+
+Historical M5 remains **ACCEPTED** at its original uploaded-waveform H1 scope. Its historical Matter source binding remains `MATTER_BINDING_UNRESOLVED_STOP`: the accepted workspace discovered Matter Kconfig inputs, but its exact source revision could not be bound.
+
+The clean public candidate removes Matter prospectively through [the flat workspace manifest](firmware/h1/workspace/west.yml). It separately passed `H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS` and `H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS`, reaching `NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED`. This candidate has a new firmware identity; historical firmware byte equality is not claimed and historical M5 was not reaccepted.
+
+The physical campaign covers only canonical and high_valid_two_tone with immediate repeats: four slots PASS, 12 downstream comparisons / 373,920 integer elements / 0 mismatch / 0 LSB, historical 8/8 boundaries byte-identical, repeat 8/8 boundaries byte-identical, and 8 U85 submissions / 8 completion IRQs. The historical five-fixture M5 campaign was not rerun. No biological-accuracy or arbitrary-board claim follows.
+
+Use [the candidate authority](records/release/CANDIDATE_AUTHORITY.json), [static/build evidence](records/release/NO_MATTER_STATIC_BUILD.json), [physical evidence](records/release/NO_MATTER_PHYSICAL.json), [production setup](records/release/PRODUCTION_SETUP.json) and [candidate recreation](records/release/RECREATION.md). Wren remains a mandatory locally retained 384,000-byte build input; no public-only M5 or fresh historical executable-byte reconstruction is promised.
+
+The original M5 documentation digest remains historical evidence in [DOCUMENTATION_IDENTITY.json](records/m5/DOCUMENTATION_IDENTITY.json). [DOCUMENTATION_SUPPLEMENT.json](records/release/DOCUMENTATION_SUPPLEMENT.json) binds the current candidate document hashes separately.
