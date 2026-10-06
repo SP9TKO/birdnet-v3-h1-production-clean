@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+// SPDX-License-Identifier: Apache-2.0
 #include "classifier_bridge.hpp"
 #include "h1_contract.h"
 

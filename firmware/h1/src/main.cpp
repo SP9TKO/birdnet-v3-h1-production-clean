@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+// SPDX-License-Identifier: Apache-2.0
 #include "build_identity.h"
 #if !defined(H1_DIAG_SKIP_PDM_INIT) || H1_DIAG_SKIP_PDM_INIT == 0
 #include "audio_pdm.hpp"

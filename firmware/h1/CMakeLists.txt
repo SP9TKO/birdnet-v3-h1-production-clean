@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+# SPDX-License-Identifier: Apache-2.0
 cmake_minimum_required(VERSION 3.20.0)
 
 # Audio selection controls only the application build personality. PDM remains

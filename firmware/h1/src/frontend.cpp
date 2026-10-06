@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+// SPDX-License-Identifier: Apache-2.0
 #include "frontend.hpp"
 #include "frontend_m55_spectral.hpp"
 

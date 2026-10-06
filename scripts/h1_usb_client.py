@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+# SPDX-License-Identifier: Apache-2.0
 """Minimal framed USB CDC client for the Pre-M5 integrated H1 firmware."""
 
 from __future__ import annotations

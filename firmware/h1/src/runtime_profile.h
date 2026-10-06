@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
+// SPDX-License-Identifier: Apache-2.0
 /*
  * Development-only H1 compute timing. The command-start and IRQ-entry hooks
  * preserve the previously qualified A/B/C/D Ethos-U timing boundaries.
