@@ -1,7 +1,21 @@
 # Development policy
 
+## Historical acceptance and clean public candidate
+
+Historical M5 remains **ACCEPTED** at its original uploaded-waveform H1 scope. Its historical Matter source binding remains `MATTER_BINDING_UNRESOLVED_STOP`: the accepted workspace discovered Matter Kconfig inputs, but its exact source revision could not be bound.
+
+The clean public candidate removes Matter prospectively through [the flat workspace manifest](../firmware/h1/workspace/west.yml). It separately passed `H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS` and `H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS`, reaching `NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED`. This candidate has a new firmware identity; historical firmware byte equality is not claimed and historical M5 was not reaccepted.
+
+The physical campaign covers only canonical and high_valid_two_tone with immediate repeats: four slots PASS, 12 downstream comparisons / 373,920 integer elements / 0 mismatch / 0 LSB, historical 8/8 boundaries byte-identical, repeat 8/8 boundaries byte-identical, and 8 U85 submissions / 8 completion IRQs. The historical five-fixture M5 campaign was not rerun. No biological-accuracy or arbitrary-board claim follows.
+
+Use [the candidate authority](../records/release/CANDIDATE_AUTHORITY.json), [static/build evidence](../records/release/NO_MATTER_STATIC_BUILD.json), [physical evidence](../records/release/NO_MATTER_PHYSICAL.json), [production setup](../records/release/PRODUCTION_SETUP.json) and [candidate recreation](../records/release/RECREATION.md). Wren remains a mandatory locally retained 384,000-byte build input; no public-only M5 or fresh historical executable-byte reconstruction is promised.
+
 State: **ACCEPTED DEVELOPMENT POLICY**
-Date: 2026-09-28
+Date: 2026-09-28; cumulative status reconciled 2026-10-05
+
+## Current formal state
+
+M4 and M5 are ACCEPTED at the retained range-covering V3 and uploaded-waveform H1 scopes. [M5 completion](../M5_COMPLETION_REPORT.md) and [cumulative evidence](../records/m5/ACCEPTED_STATE.json) are the current authority. The development sequence below is historical policy and grants no H2/H3, regional-head, multi-U85, microphone or performance acceptance.
 
 ## Purpose
 
@@ -168,3 +182,5 @@ PoC labels such as `EXECUTED`, `PARTIAL`, `VIABLE` or `BLOCKED` are development 
 They do not create formal `ACCEPTED_STATE.json`, accept M4, authorize M5, or replace canonical TensorFlow authority.
 
 When the PoC demonstrates a viable architecture, formal qualification starts from the selected frozen implementation rather than from every discarded intermediate experiment.
+
+The original M5 documentation digest remains historical evidence in [DOCUMENTATION_IDENTITY.json](../records/m5/DOCUMENTATION_IDENTITY.json). [DOCUMENTATION_SUPPLEMENT.json](../records/release/DOCUMENTATION_SUPPLEMENT.json) binds the current candidate document hashes separately.

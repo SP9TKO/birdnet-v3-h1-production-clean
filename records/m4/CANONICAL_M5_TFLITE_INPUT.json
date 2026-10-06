@@ -1,0 +1,40 @@
+{
+  "candidate": "M4_RANGE_COVERING_V3",
+  "canonical_M3_tree_sha256": "4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a",
+  "components": [
+    {
+      "artifact_id": "v3_source_frontend",
+      "bytes": 545776,
+      "sha256": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0"
+    },
+    {
+      "artifact_id": "v3_source_backbone",
+      "bytes": 24619568,
+      "sha256": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70"
+    },
+    {
+      "artifact_id": "v3_source_gem",
+      "bytes": 1780,
+      "sha256": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353"
+    },
+    {
+      "artifact_id": "v3_source_classifier",
+      "bytes": 15261544,
+      "sha256": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81"
+    }
+  ],
+  "limitations": [
+    "Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.",
+    "M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.",
+    "GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary."
+  ],
+  "retained_binding": {
+    "artifact_id": "CANONICAL_M5_TFLITE_INPUT.json",
+    "bytes": 4286,
+    "sha256": "8522d972824059ed6d5af21103ccaddede94136c8ea4f2350c60298d6f75b99e"
+  },
+  "schema": "m4-public-canonical-m5-input-v1",
+  "source_component_bundle_sha256": "536fdb4e13bbaef5f979e5f18e0042b40d6f0da0b49dc858c1a0ca506cf3d5cb",
+  "state": "ACCEPTED",
+  "substitution_permitted": false
+}

@@ -1,0 +1,161 @@
+{
+  "manifest": {
+    "version": "0.13",
+    "projects": [
+      {
+        "name": "alif",
+        "url": "https://github.com/alifsemi/sdk-alif.git",
+        "revision": "a524855a8b470fff0e3edb2c902a034d45ddf2a4",
+        "path": "alif"
+      },
+      {
+        "name": "bootloader_mcuboot",
+        "url": "https://github.com/alifsemi/mcuboot_alif",
+        "revision": "346f7374ff4467e40b5594658f8ac67a5e9813c9",
+        "path": "bootloader/mcuboot"
+      },
+      {
+        "name": "modules_crypto_mbedtls",
+        "url": "https://github.com/zephyrproject-rtos/mbedtls",
+        "revision": "4952e1328529ee549d412b498ea71c54f30aa3b1",
+        "path": "modules/crypto/mbedtls"
+      },
+      {
+        "name": "modules_crypto_tinycrypt",
+        "url": "https://github.com/zephyrproject-rtos/tinycrypt",
+        "revision": "1012a3ebee18c15ede5efc8332ee2fc37817670f",
+        "path": "modules/crypto/tinycrypt"
+      },
+      {
+        "name": "modules_debug_mipi-sys-t",
+        "url": "https://github.com/zephyrproject-rtos/mipi-sys-t",
+        "revision": "33e5c23cbedda5ba12dbe50c4baefb362a791001",
+        "path": "modules/debug/mipi-sys-t"
+      },
+      {
+        "name": "modules_debug_segger",
+        "url": "https://github.com/zephyrproject-rtos/segger",
+        "revision": "cf56b1d9c80f81a26e2ac5727c9cf177116a4692",
+        "path": "modules/debug/segger"
+      },
+      {
+        "name": "modules_drivers_dave2d",
+        "url": "https://github.com/alifsemi/alif_dave2d-driver",
+        "revision": "d667a8e47f13e2f39bc724d66def5230827b2808",
+        "path": "modules/drivers/dave2d"
+      },
+      {
+        "name": "modules_fs_fatfs",
+        "url": "https://github.com/zephyrproject-rtos/fatfs",
+        "revision": "16245c7c41d2b79e74984f49b5202551786b8a9b",
+        "path": "modules/fs/fatfs"
+      },
+      {
+        "name": "modules_fs_littlefs",
+        "url": "https://github.com/zephyrproject-rtos/littlefs",
+        "revision": "ed0531d59ee37f5fb2762bcf2fc8ba4efaf82656",
+        "path": "modules/fs/littlefs"
+      },
+      {
+        "name": "modules_hal_alif",
+        "url": "https://github.com/alifsemi/hal_alif",
+        "revision": "89ee0aa748134dc31fcc8d3a266d7bb4d3fd3b53",
+        "path": "modules/hal/alif"
+      },
+      {
+        "name": "modules_hal_cmsis",
+        "url": "https://github.com/alifsemi/cmsis_alif",
+        "revision": "85f6b92af0f6ac72594d391f895c45cc30847e41",
+        "path": "modules/hal/cmsis"
+      },
+      {
+        "name": "modules_hal_ethos_u",
+        "url": "https://github.com/zephyrproject-rtos/hal_ethos_u",
+        "revision": "50ddffca1cc700112f25ad9bc077915a0355ee5d",
+        "path": "modules/hal/ethos_u"
+      },
+      {
+        "name": "modules_hal_infineon",
+        "url": "https://github.com/zephyrproject-rtos/hal_infineon",
+        "revision": "470f874ce432763a2b82cd322d0ff6efc89240cd",
+        "path": "modules/hal/infineon"
+      },
+      {
+        "name": "modules_hal_libmetal",
+        "url": "https://github.com/zephyrproject-rtos/libmetal",
+        "revision": "3e8781aae9d7285203118c05bc01d4eb0ca565a7",
+        "path": "modules/hal/libmetal"
+      },
+      {
+        "name": "modules_lib_aipl",
+        "url": "https://github.com/alifsemi/alif_image-processing-lib",
+        "revision": "b4444c0504be3a1eed4a0655c9a95fe343706dcb",
+        "path": "modules/lib/aipl"
+      },
+      {
+        "name": "modules_lib_cmsis-dsp",
+        "url": "https://github.com/zephyrproject-rtos/cmsis-dsp",
+        "revision": "d80a49b2bb186317dc1db4ac88da49c0ab77e6e7",
+        "path": "modules/lib/cmsis-dsp"
+      },
+      {
+        "name": "modules_lib_executorch",
+        "url": "https://github.com/pytorch/executorch",
+        "revision": "45fe55c49c70a5fc741833eeb99fb023ffb4646f",
+        "path": "modules/lib/executorch"
+      },
+      {
+        "name": "modules_lib_gui_lvgl",
+        "url": "https://github.com/zephyrproject-rtos/lvgl",
+        "revision": "1ed1ddd881c3784049a92bb9fe37c38c6c74d998",
+        "path": "modules/lib/gui/lvgl"
+      },
+      {
+        "name": "modules_lib_liblc3",
+        "url": "https://github.com/zephyrproject-rtos/liblc3",
+        "revision": "48bbd3eacd36e99a57317a0a4867002e0b09e183",
+        "path": "modules/lib/liblc3"
+      },
+      {
+        "name": "modules_lib_openthread",
+        "url": "https://github.com/zephyrproject-rtos/openthread",
+        "revision": "3ae741f95e7dfb391dec35c48742862049eb62e8",
+        "path": "modules/lib/openthread"
+      },
+      {
+        "name": "modules_lib_picolibc",
+        "url": "https://github.com/zephyrproject-rtos/picolibc",
+        "revision": "82d62ed1ac55b4e34a12d0390aced2dc9af13fc9",
+        "path": "modules/lib/picolibc"
+      },
+      {
+        "name": "modules_lib_uoscore-uedhoc",
+        "url": "https://github.com/zephyrproject-rtos/uoscore-uedhoc",
+        "revision": "54abc109c9c0adfd53c70077744c14e454f04f4a",
+        "path": "modules/lib/uoscore-uedhoc"
+      },
+      {
+        "name": "modules_lib_zcbor",
+        "url": "https://github.com/zephyrproject-rtos/zcbor",
+        "revision": "9b07780aca6fb21f82a241ba386ad9b379809337",
+        "path": "modules/lib/zcbor"
+      },
+      {
+        "name": "optional_modules_lib_tflite-micro",
+        "url": "https://github.com/zephyrproject-rtos/tflite-micro",
+        "revision": "8d404de73acf7687831e16d88e86e4f73cfddf8e",
+        "path": "optional/modules/lib/tflite-micro"
+      },
+      {
+        "name": "zephyr",
+        "url": "https://github.com/alifsemi/zephyr_alif",
+        "revision": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+        "path": "zephyr",
+        "west-commands": "scripts/west-commands.yml"
+      }
+    ],
+    "self": {
+      "path": "manifest"
+    }
+  }
+}

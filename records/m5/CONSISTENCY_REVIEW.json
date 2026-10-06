@@ -1,0 +1,375 @@
+{
+  "M5_4_V1": "NOT ACCEPTED permanently",
+  "M5_4_V2": "Prospective scope correction and accepted new physical campaign",
+  "checks": [
+    {
+      "basis": "Exact immutable prospective row; D-002/D-011/D-013/retention; no commit/push/tag hard gate.",
+      "check_id": "retained_definition",
+      "result": "PASS"
+    },
+    {
+      "basis": "Three exact accepted parent receipts; physical V2 only.",
+      "check_id": "accepted_receipts",
+      "result": "PASS"
+    },
+    {
+      "basis": "Separate audit recomputed retained-byte equality and totals; no model/target execution.",
+      "check_id": "retained_exact_byte_verification",
+      "result": "PASS"
+    },
+    {
+      "basis": "All frozen source files and independently resolved CMake identity inputs, including firmware README and TinyCrypt, are exact.",
+      "check_id": "qualified_production_source",
+      "result": "PASS"
+    },
+    {
+      "basis": "Current active firmware metadata is accepted V3, not historical V2. Historical V2 controls remain explicitly historical.",
+      "check_id": "current_V3_binding",
+      "result": "PASS"
+    },
+    {
+      "basis": "V1 permanently failed; all 696 pre-existing V1/localization files rehashed unchanged.",
+      "check_id": "V1_failure_preserved",
+      "result": "PASS"
+    },
+    {
+      "basis": "V2 changed the frontend authority boundary prospectively; separate fresh physical captures, zero downstream tolerance change.",
+      "check_id": "V2_prospective_scope",
+      "result": "PASS"
+    },
+    {
+      "basis": "Exact five retained gate definitions, M5 entry and explicit supporting arithmetic/production/physical hard boundaries.",
+      "check_id": "all_retained_hard_gates",
+      "result": "PASS"
+    },
+    {
+      "basis": "Twelve exact input/tool/recipe/output/check steps distinguish hardware and proof status.",
+      "check_id": "recreation_proof_labels",
+      "result": "PASS"
+    },
+    {
+      "basis": "Original source/config/freezes, licensed runtime/data/payload and continuation preconditions explicitly retained-required; no unproven fresh byte-rebuild promise.",
+      "check_id": "no_hidden_recreation_dependencies",
+      "result": "PASS"
+    },
+    {
+      "basis": "Native frontend scoped; GeM floating residual characterized; exact actual integer boundaries; no biology/arbitrary-board/future-architecture overclaims.",
+      "check_id": "scope_and_claim_limits",
+      "result": "PASS"
+    },
+    {
+      "basis": "All 32,536 original M5 family files, approximately 8.83 GB, rehashed unchanged; no deletion.",
+      "check_id": "private_retention_preserved",
+      "result": "PASS"
+    },
+    {
+      "basis": "28 new unchanged project source/config snapshots and two exact existing sources reused; no numerical implementation edits.",
+      "check_id": "recreation_source_unchanged",
+      "result": "PASS"
+    },
+    {
+      "basis": "Compact JSON/Markdown, source/configuration only; no machine-local/private paths, probe identifier, raw logs/tensors, model/audio/firmware/vendor binaries or symlinks.",
+      "check_id": "public_hygiene_and_minimization",
+      "result": "PASS"
+    },
+    {
+      "basis": {
+        "missing": [],
+        "resolved_reference_count": 451
+      },
+      "check_id": "all_critical_hash_references_resolve",
+      "result": "PASS"
+    },
+    {
+      "basis": "Seven current documents align with cumulative acceptance; source-bound firmware README and runtime text remain exact with explicit historical explanation.",
+      "check_id": "documentation_consistency",
+      "result": "PASS"
+    },
+    {
+      "basis": "Separate final seven-document hash bundle; original qualified document snapshots preserved.",
+      "check_id": "final_documentation_identity",
+      "result": "PASS"
+    },
+    {
+      "basis": "Correct existing branch/HEAD; staged diff empty; both diff checks PASS; no commit/push/tag/merge/reset/clean/stash/rebase.",
+      "check_id": "Git_scope_and_publication",
+      "result": "PASS"
+    },
+    {
+      "basis": "All retained closure requirements are represented and independently consistent; formal acceptance follows exact tracked preparation.",
+      "check_id": "M5_5_requirements",
+      "result": "PASS"
+    }
+  ],
+  "commit_push_performed": false,
+  "documentation_bundle_sha256": "ac30dd74de5f86bf722283aeb68dc3862e651f81d251a75430db122303141be3",
+  "hard_check_count": 19,
+  "hash_graph_rule": "Review hashes core files; evidence manifest hashes core plus review; ACCEPTED_STATE hashes manifest plus review. Manifest and top-level accepted-state anchor are excluded from their own graph to avoid cycles.",
+  "independence": "Separate read-only audit implementation; direct retained identities, source material, raw evidence verification receipt and complete private inventory rehashed; no reliance on proposed PASS labels alone.",
+  "no_new_technical_execution": true,
+  "production_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "result": "PASS",
+  "reviewed_core_files": [
+    {
+      "bytes": 1387,
+      "path": "ACCEPTED_STATE_INDEX.md",
+      "sha256": "ca8cec1f60f2ae6672bfd65fc5710d6f53abb1ce3135cbfe96f1ccbfab6fa76a"
+    },
+    {
+      "bytes": 10420,
+      "path": "DECISION_LOG.md",
+      "sha256": "9011ce9135b2c10cbc7f1889752a94a3132d2b7ca1bdb4f5ff3b94799c70335c"
+    },
+    {
+      "bytes": 2253,
+      "path": "M5_COMPLETION_REPORT.md",
+      "sha256": "7c0f660b1135d488a71e617160afcdc39c37c6507c503f0526eaf4d19fda5e68"
+    },
+    {
+      "bytes": 2064,
+      "path": "M5_DEFINITION.md",
+      "sha256": "865e7601df31c603c8b533c006438d95b83c525dd057124ef5fe8aada5709ba6"
+    },
+    {
+      "bytes": 16914,
+      "path": "PAPER.md",
+      "sha256": "e92a42e8c20d0b67b93c5d64a15e29173e3865051768a7823dd21031d867056b"
+    },
+    {
+      "bytes": 2296,
+      "path": "PROJECT_STATUS.md",
+      "sha256": "ba0e55a82f7007fd23c55fc3008c508b44fa5d309a48136f52de8bc00f3cab6e"
+    },
+    {
+      "bytes": 3759,
+      "path": "README.md",
+      "sha256": "8611feb44d709d37d42052b0de53b9c5f1763a5e0a2a753450da999887937489"
+    },
+    {
+      "bytes": 15881,
+      "path": "REPRODUCIBILITY.md",
+      "sha256": "3d9c8b1cb919ee537f7e09597365536594d41fb77196ecd2035e176a92aa5998"
+    },
+    {
+      "bytes": 5624,
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "2d519cbd91acbe31b3811268734524136847aac383477113bda168045741e18c"
+    },
+    {
+      "bytes": 855,
+      "path": "records/m4/ACCEPTED_STATE.json",
+      "sha256": "e2d8941a430f79e6505e9c3c2b3dcb0f3114f672dfd43a3c7c712f5fa54df382"
+    },
+    {
+      "bytes": 1786,
+      "path": "records/m4/CANONICAL_M5_TFLITE_INPUT.json",
+      "sha256": "b1e23fa9026d6f25c504681f97bf497945d5c816f20bce48e1a9897272e97722"
+    },
+    {
+      "bytes": 12084,
+      "path": "records/m5/ACCEPTED_IDENTITY_CHAIN.json",
+      "sha256": "6b9641d9af21bc03d4655551c14c64219a51cd37b1cbcb76d0bbcedbc724194f"
+    },
+    {
+      "bytes": 2730,
+      "path": "records/m5/CLOSURE_RECEIPT.json",
+      "sha256": "c7a3767ad95861eaa7377f90e0a804febcf4ec6e5b94bf4811b357e2e8857154"
+    },
+    {
+      "bytes": 48267,
+      "path": "records/m5/CUMULATIVE_GATE_MATRIX.json",
+      "sha256": "5e3d89cbba8368dbe6276da91722fb02dd61e11b0cd0657eb7056b66f5022fe9"
+    },
+    {
+      "bytes": 1825,
+      "path": "records/m5/DOCUMENTATION_IDENTITY.json",
+      "sha256": "472a305596d123fe80acfeccbf94794ba54460c8f979a89ab676211cbed532f6"
+    },
+    {
+      "bytes": 3636,
+      "path": "records/m5/PRODUCTION_SOURCE_AUDIT.json",
+      "sha256": "1864ff7972c6e68a2f1bb2f72a2092745f5372fd91d1a70a70ff662182ecae1a"
+    },
+    {
+      "bytes": 5141,
+      "path": "records/m5/PRODUCTION_SOURCE_IDENTITY.txt",
+      "sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91"
+    },
+    {
+      "bytes": 12123,
+      "path": "records/m5/QUALIFIED_EVIDENCE.json",
+      "sha256": "ac50dc3df000b1968849d64b5726592cb10ba450c9f4b54039ca92063c73672f"
+    },
+    {
+      "bytes": 15191,
+      "path": "records/m5/RECREATION.md",
+      "sha256": "f02a6dc49db2efb61c952fccbb80b773e6dfc7bcf88b89d2cd96599333c1c00e"
+    },
+    {
+      "bytes": 63837,
+      "path": "records/m5/RECREATION_GUIDANCE.json",
+      "sha256": "3c6fd937d16935053f90ae420276a32fcaa6c5b541866185cea9468ab16f1457"
+    },
+    {
+      "bytes": 11811,
+      "path": "records/m5/RECREATION_SOURCE_INDEX.json",
+      "sha256": "011856ab1f4394a74db8c5495c52df6df10d9802fc76651773850d96b8d36e4d"
+    },
+    {
+      "bytes": 1892,
+      "path": "records/m5/SOURCE_IDENTITY.md",
+      "sha256": "a3583c656522b290b348a3d8292e86eb2487451940412a9436479ca017352678"
+    },
+    {
+      "bytes": 7107,
+      "path": "records/m5/TOOLCHAIN_PINS.json",
+      "sha256": "657411b44fbcc5e607cd40fc2512bbb35e92e13a06f01ae9a703996f19f75fb3"
+    },
+    {
+      "bytes": 382,
+      "path": "requirements/m5-vela-frozen.txt",
+      "sha256": "ba155ebd9b225ce20013c185376e2bf1ffa90966ac1a145428766a316476a351"
+    },
+    {
+      "bytes": 17207,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_componentized_candidate_common.py",
+      "sha256": "20417aac1f961d6952481d25275ef0df5df42981abeae73910c40bd6dca3e037"
+    },
+    {
+      "bytes": 29095,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_componentized_common.py",
+      "sha256": "b3ff54bc52e0a9d79002279f7e8ed4bf883d6129d3b31dc0bdc1b3a6aac01299"
+    },
+    {
+      "bytes": 7736,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_compose.py",
+      "sha256": "ba4677e03f749458d4270fca8fbbe7d62a3ed0d3ad33bcb9a7c8aa5396b54e80"
+    },
+    {
+      "bytes": 5176,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_flatbuffer.py",
+      "sha256": "ea56dc267218d3dc3e958a3675c5382d4a2f8f4b39c8615988e064d14082fd22"
+    },
+    {
+      "bytes": 7549,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_freeze_common.py",
+      "sha256": "75833dc5a285dcfa2807ecb2233b6150bab2717f6e9e869cf65f1e470fad52c3"
+    },
+    {
+      "bytes": 8812,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_git.py",
+      "sha256": "a0a9d1ae934074215d1fddc9d9f052de1e6729f916357ba1c8199bff957415cb"
+    },
+    {
+      "bytes": 23825,
+      "path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_se_mean_emit.py",
+      "sha256": "1deee29823b76ebb9e96531cb8bab7e0f26cdf06f603267bf7c0bce9c02b5234"
+    },
+    {
+      "bytes": 9468,
+      "path": "scripts/m5/recreation-layout/m4-shared-feature-closure/construct_v3.py",
+      "sha256": "d0695e65c3632c1a20d62002245a33c9f18a0b2a018787957ecde85879e3e673"
+    },
+    {
+      "bytes": 1548,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/bindings.h",
+      "sha256": "3b9719337ce41e2f88e8014428923596844ac5ea8751a015624839474df4d5c8"
+    },
+    {
+      "bytes": 10367,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/input_catalog.h",
+      "sha256": "a7e325a1568b2bf8a8d21441e0b5fa9d7e87780d4fa7d41ec0b1a59f589cc1ae"
+    },
+    {
+      "bytes": 1260,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/linker.ld",
+      "sha256": "9de3d2977b0830cdefea93831cdf9b55deca54d1bfd6cdb1047bce3697a818fa"
+    },
+    {
+      "bytes": 10865,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/main.c",
+      "sha256": "2bef6019b5ed177194234e672634d34ed465a3152150e9b1dea22518ef78d5d8"
+    },
+    {
+      "bytes": 3011,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/semihost.c",
+      "sha256": "3bac3b95b677150b1d922c3ac6d3b7df9dfe79a75c337827b70559715e76da0f"
+    },
+    {
+      "bytes": 231,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/semihost.h",
+      "sha256": "36b9aa4b522d1555b0b3566e173af3ed394c2d60e366e92b449183b314385907"
+    },
+    {
+      "bytes": 2242,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/sha256.c",
+      "sha256": "6a63e627e3b82341c6cdad5302b0d2600e719278efeca4ba9bc303a3b62c07f6"
+    },
+    {
+      "bytes": 120,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/sha256.h",
+      "sha256": "95e7a343c97aae9f734705bc750e092b2f03c5a821622b54fbd8cea15d8993a6"
+    },
+    {
+      "bytes": 1281,
+      "path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/startup.c",
+      "sha256": "5744642ccd434ac7cf766300107725b8863355366823e7517e1524d11324bea5"
+    },
+    {
+      "bytes": 636,
+      "path": "scripts/m5/recreation-layout/m5-firmware-v3/bridge_harness.cpp",
+      "sha256": "e6ea1ac24ea59a6661e333d7645dbfebbee287a94cc9ad692c58148de03102ff"
+    },
+    {
+      "bytes": 1188,
+      "path": "scripts/m5/recreation-layout/m5-firmware-v3/bridge_reference.py",
+      "sha256": "ab31a8b5041f34bf5d4edca1f305d9ac3dd6ff17282933d2701cce70d38065ef"
+    },
+    {
+      "bytes": 4999,
+      "path": "scripts/m5/recreation-layout/m5-firmware-v3/freeze_bridge_corpus.py",
+      "sha256": "711c59cd431e396788f57250008c6ff12aa98b71a9f1bc4e5e0e329971d49185"
+    },
+    {
+      "bytes": 5248,
+      "path": "scripts/m5/recreation-layout/m5-firmware-v3/qualify_bridge.py",
+      "sha256": "b8442691f276443275bd711e96ec058e0951b2754fd8e28a18211606d2477b22"
+    },
+    {
+      "bytes": 2031,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/README.md",
+      "sha256": "b23fc97f4581a5ef70b9a8ccc80ddb3cf300d2f0693aae8fb1b508ca3670ea17"
+    },
+    {
+      "bytes": 6842,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/arithmetic.py",
+      "sha256": "749da455c8dc8a288cfb3428aafc65fdf2b05963c9bb8121bffefd74a1283a40"
+    },
+    {
+      "bytes": 6701,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/model_io.py",
+      "sha256": "fd4f630027337762750639d2d170b9be96c3f73a7459ad240071dac7040583c4"
+    },
+    {
+      "bytes": 5459,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/run_oracle.py",
+      "sha256": "d45838449fb4b069d10468c2fd89c19534d3d9fa41ae47dbc6717fd53ee5e488"
+    },
+    {
+      "bytes": 16396,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/scalar_executor.cpp",
+      "sha256": "03799561ac9182400f397c1ba5b83b34b45f32e6a0e1172a1557e84aad03f2ae"
+    },
+    {
+      "bytes": 3301,
+      "path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/test_primitives.py",
+      "sha256": "2724087117284d6afa4e7c05aff84d07311b588b6f398fefede7b3fb8d534a81"
+    },
+    {
+      "bytes": 624,
+      "path": "scripts/m5/recreation-layout/m5-v3-deployment/dedicated-sram.ini",
+      "sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb"
+    }
+  ],
+  "schema": "m5-final-adversarial-consistency-review-v1"
+}

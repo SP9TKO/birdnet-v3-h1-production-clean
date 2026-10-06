@@ -1,0 +1,220 @@
+{
+  "arithmetic_changes": 0,
+  "execution_status": "NOT_EXECUTED_IN_CLOSURE",
+  "existing_source_reused": 2,
+  "new_snapshot_count": 28,
+  "restore_rule": "Restore snapshots at the indicated ignored relative layout in an isolated recreation checkout. Full freeze preflight dependencies and licensed runtimes/data listed in the guidance remain explicitly LOCALLY_RETAINED_REQUIRED; these source snapshots are not a turnkey M5 fresh-checkout builder.",
+  "schema": "m5-recreation-source-index-v1",
+  "sources": [
+    {
+      "bytes": 9468,
+      "public_path": "scripts/m5/recreation-layout/m4-shared-feature-closure/construct_v3.py",
+      "restore_relative_path": ".development-work/m4-shared-feature-closure/construct_v3.py",
+      "sha256": "d0695e65c3632c1a20d62002245a33c9f18a0b2a018787957ecde85879e3e673",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 5883,
+      "public_path": "scripts/construct_h1.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/construct_h1.py",
+      "sha256": "17a1bd658f3cea579be67319c64bf2fe5bb14054efb5fe7f1649919e2cd45742",
+      "status": "EXACT_EXISTING_TRACKED_SOURCE_REUSED"
+    },
+    {
+      "bytes": 35455,
+      "public_path": "scripts/h1_model.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/h1_model.py",
+      "sha256": "e76d167744866104daa5619fe501d7559d3364d1158cb22b157093ae815cb752",
+      "status": "EXACT_EXISTING_TRACKED_SOURCE_REUSED"
+    },
+    {
+      "bytes": 17207,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_componentized_candidate_common.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_componentized_candidate_common.py",
+      "sha256": "20417aac1f961d6952481d25275ef0df5df42981abeae73910c40bd6dca3e037",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 29095,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_componentized_common.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_componentized_common.py",
+      "sha256": "b3ff54bc52e0a9d79002279f7e8ed4bf883d6129d3b31dc0bdc1b3a6aac01299",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 7736,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_compose.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_n1_compose.py",
+      "sha256": "ba4677e03f749458d4270fca8fbbe7d62a3ed0d3ad33bcb9a7c8aa5396b54e80",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 5176,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_flatbuffer.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_n1_flatbuffer.py",
+      "sha256": "ea56dc267218d3dc3e958a3675c5382d4a2f8f4b39c8615988e064d14082fd22",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 7549,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_freeze_common.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_n1_freeze_common.py",
+      "sha256": "75833dc5a285dcfa2807ecb2233b6150bab2717f6e9e869cf65f1e470fad52c3",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 8812,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_git.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_n1_git.py",
+      "sha256": "a0a9d1ae934074215d1fddc9d9f052de1e6729f916357ba1c8199bff957415cb",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 23825,
+      "public_path": "scripts/m5/recreation-layout/m4-range-closure/construction/m4_n1_se_mean_emit.py",
+      "restore_relative_path": ".development-work/m4-range-closure/construction/m4_n1_se_mean_emit.py",
+      "sha256": "1deee29823b76ebb9e96531cb8bab7e0f26cdf06f603267bf7c0bce9c02b5234",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 2031,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/README.md",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/README.md",
+      "sha256": "b23fc97f4581a5ef70b9a8ccc80ddb3cf300d2f0693aae8fb1b508ca3670ea17",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 6842,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/arithmetic.py",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/arithmetic.py",
+      "sha256": "749da455c8dc8a288cfb3428aafc65fdf2b05963c9bb8121bffefd74a1283a40",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 6701,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/model_io.py",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/model_io.py",
+      "sha256": "fd4f630027337762750639d2d170b9be96c3f73a7459ad240071dac7040583c4",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 5459,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/run_oracle.py",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/run_oracle.py",
+      "sha256": "d45838449fb4b069d10468c2fd89c19534d3d9fa41ae47dbc6717fd53ee5e488",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 16396,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/scalar_executor.cpp",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/scalar_executor.cpp",
+      "sha256": "03799561ac9182400f397c1ba5b83b34b45f32e6a0e1172a1557e84aad03f2ae",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 3301,
+      "public_path": "scripts/m5/recreation-layout/m5-integer-contract/oracle-v1/test_primitives.py",
+      "restore_relative_path": ".development-work/m5-integer-contract/oracle-v1/test_primitives.py",
+      "sha256": "2724087117284d6afa4e7c05aff84d07311b588b6f398fefede7b3fb8d534a81",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 1188,
+      "public_path": "scripts/m5/recreation-layout/m5-firmware-v3/bridge_reference.py",
+      "restore_relative_path": ".development-work/m5-firmware-v3/bridge_reference.py",
+      "sha256": "ab31a8b5041f34bf5d4edca1f305d9ac3dd6ff17282933d2701cce70d38065ef",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 636,
+      "public_path": "scripts/m5/recreation-layout/m5-firmware-v3/bridge_harness.cpp",
+      "restore_relative_path": ".development-work/m5-firmware-v3/bridge_harness.cpp",
+      "sha256": "e6ea1ac24ea59a6661e333d7645dbfebbee287a94cc9ad692c58148de03102ff",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 4999,
+      "public_path": "scripts/m5/recreation-layout/m5-firmware-v3/freeze_bridge_corpus.py",
+      "restore_relative_path": ".development-work/m5-firmware-v3/freeze_bridge_corpus.py",
+      "sha256": "711c59cd431e396788f57250008c6ff12aa98b71a9f1bc4e5e0e329971d49185",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 5248,
+      "public_path": "scripts/m5/recreation-layout/m5-firmware-v3/qualify_bridge.py",
+      "restore_relative_path": ".development-work/m5-firmware-v3/qualify_bridge.py",
+      "sha256": "b8442691f276443275bd711e96ec058e0951b2754fd8e28a18211606d2477b22",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 1548,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/bindings.h",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/bindings.h",
+      "sha256": "3b9719337ce41e2f88e8014428923596844ac5ea8751a015624839474df4d5c8",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 10367,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/input_catalog.h",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/input_catalog.h",
+      "sha256": "a7e325a1568b2bf8a8d21441e0b5fa9d7e87780d4fa7d41ec0b1a59f589cc1ae",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 1260,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/linker.ld",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/linker.ld",
+      "sha256": "9de3d2977b0830cdefea93831cdf9b55deca54d1bfd6cdb1047bce3697a818fa",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 10865,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/main.c",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/main.c",
+      "sha256": "2bef6019b5ed177194234e672634d34ed465a3152150e9b1dea22518ef78d5d8",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 3011,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/semihost.c",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/semihost.c",
+      "sha256": "3bac3b95b677150b1d922c3ac6d3b7df9dfe79a75c337827b70559715e76da0f",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 231,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/semihost.h",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/semihost.h",
+      "sha256": "36b9aa4b522d1555b0b3566e173af3ed394c2d60e366e92b449183b314385907",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 2242,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/sha256.c",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/sha256.c",
+      "sha256": "6a63e627e3b82341c6cdad5302b0d2600e719278efeca4ba9bc303a3b62c07f6",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 120,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/sha256.h",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/sha256.h",
+      "sha256": "95e7a343c97aae9f734705bc750e092b2f03c5a821622b54fbd8cea15d8993a6",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 1281,
+      "public_path": "scripts/m5/recreation-layout/m5-corstone-harness/per-fixture-input-route/src/startup.c",
+      "restore_relative_path": ".development-work/m5-corstone-harness/per-fixture-input-route/src/startup.c",
+      "sha256": "5744642ccd434ac7cf766300107725b8863355366823e7517e1524d11324bea5",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    },
+    {
+      "bytes": 624,
+      "public_path": "scripts/m5/recreation-layout/m5-v3-deployment/dedicated-sram.ini",
+      "restore_relative_path": ".development-work/m5-v3-deployment/dedicated-sram.ini",
+      "sha256": "869589e2757a48cf7b2d1ab8ef11f33fe6482705982b3566e5e48eaf9e4117bb",
+      "status": "EXACT_UNCHANGED_RETAINED_SOURCE_SNAPSHOT"
+    }
+  ]
+}

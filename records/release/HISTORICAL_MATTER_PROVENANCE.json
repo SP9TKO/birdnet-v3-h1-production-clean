@@ -1,0 +1,11 @@
+{
+  "Matter_module_in_clean_candidate": "ABSENT",
+  "Matter_public_build_pin_or_recreation_prerequisite": "NONE",
+  "Matter_runtime_support": "NOT USED",
+  "clean_candidate": "Matter removed prospectively through the flat pinned manifest; separately static/build and physically qualified.",
+  "historical_M5": "HISTORICAL_M5_ACCEPTED",
+  "historical_binding": "MATTER_BINDING_UNRESOLVED_STOP",
+  "historical_fact": "The accepted workspace discovered Matter Kconfig inputs. Its exact historical Matter source revision could not be bound. This limitation is unchanged.",
+  "retained_witness_sha256": "dc225ca9cb7793eddbb0a1d690ef743440025f8f17af61e91e170e1ef8f50037",
+  "schema": "COMPACT_HISTORICAL_MATTER_PROVENANCE_V1"
+}

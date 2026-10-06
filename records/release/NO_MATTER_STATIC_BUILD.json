@@ -1,0 +1,58 @@
+{
+  "CPU_fallback": false,
+  "DTS": "BYTE_IDENTICAL",
+  "Matter_registration_Kconfig_source_link_init": "ABSENT",
+  "build": "PASS",
+  "candidate_artifacts": {
+    "ATOC": {
+      "bytes": 3888,
+      "sha256": "9a6028e0d0d15db388279b351ccf9a607542b0f054272457e522c9c570fdff13"
+    },
+    "BIN": {
+      "bytes": 1693992,
+      "sha256": "2d6a6263e090b9d3fb068b284f4f41dc6f1a912f1728859289624bd4225d94af"
+    },
+    "DTS": {
+      "bytes": 83923,
+      "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+    },
+    "ELF": {
+      "bytes": 10065744,
+      "sha256": "b75b63eff5dca8b85aea0cf156b73f928ef77ca5e734781da1ea5f94769566df"
+    },
+    "application": {
+      "bytes": 1694000,
+      "sha256": "cdd5c3aa0879a3ec6db33dddbe46f159defb2718f0f6aeac6365d4a21195c0f3"
+    },
+    "config": {
+      "bytes": 49649,
+      "sha256": "385328c12c15c3d65c6ff4b37d6a415d6825042c3004e2ac9a96a491501bb834"
+    }
+  },
+  "compile_entries": 499,
+  "configure": "PASS",
+  "criteria": {
+    "bytes": 7940,
+    "sha256": "06493affcc6760a67cded40eb9bf137f7ce157ed1bdfc355d6a0491dfff57662"
+  },
+  "critical_storage_stack_heap_symbols_and_contracts": 70,
+  "date": "2026-10-06",
+  "disposition": "H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS",
+  "historical_M5_changed": false,
+  "historical_firmware_byte_equality_claimed": false,
+  "mechanism": "Flat no-import west manifest; all 25 non-Matter exact repository pins unchanged; Matter omitted.",
+  "memory_contracts": "PASS",
+  "only_removed_Kconfig_symbols": [
+    "CONFIG_CHIP=n",
+    "CONFIG_ZEPHYR_CONNECTEDHOMEIP_MODULE=y"
+  ],
+  "production_H1_route": "M55 frontend \u2192 U85 backbone \u2192 M55 GeM/bridge \u2192 U85 classifier \u2192 M55 reporting",
+  "retained_disposition": {
+    "bytes": 16469,
+    "sha256": "2d0c1530ed5ff52f587f3af01eeb3296afb945294c140f00cf707ae89ce4e82b"
+  },
+  "schema": "COMPACT_NO_MATTER_STATIC_BUILD_QUALIFICATION_V1",
+  "source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "source_or_header_substitutions": 0,
+  "surviving_Kconfig_values_identical": 1125
+}

@@ -1,0 +1,276 @@
+{
+  "GeM_FP32_characterization_max_abs_residual": 1.4901161193847656e-08,
+  "U85": {
+    "CPU_fallback": false,
+    "completion_IRQs": 8,
+    "submissions": 8
+  },
+  "accepted_physical_model_storage": {
+    "backbone": {
+      "bytes": 20465840,
+      "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+    },
+    "classifier": {
+      "bytes": 13008016,
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+    }
+  },
+  "all_four_slots": "PASS",
+  "candidate_artifacts": {
+    "ATOC": {
+      "bytes": 3888,
+      "sha256": "9a6028e0d0d15db388279b351ccf9a607542b0f054272457e522c9c570fdff13"
+    },
+    "BIN": {
+      "bytes": 1693992,
+      "sha256": "2d6a6263e090b9d3fb068b284f4f41dc6f1a912f1728859289624bd4225d94af"
+    },
+    "DTS": {
+      "bytes": 83923,
+      "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+    },
+    "ELF": {
+      "bytes": 10065744,
+      "sha256": "b75b63eff5dca8b85aea0cf156b73f928ef77ca5e734781da1ea5f94769566df"
+    },
+    "application": {
+      "bytes": 1694000,
+      "sha256": "cdd5c3aa0879a3ec6db33dddbe46f159defb2718f0f6aeac6365d4a21195c0f3"
+    },
+    "config": {
+      "bytes": 49649,
+      "sha256": "385328c12c15c3d65c6ff4b37d6a415d6825042c3004e2ac9a96a491501bb834"
+    }
+  },
+  "candidate_repeat_boundaries_byte_identical": {
+    "observed": 8,
+    "required": 8
+  },
+  "candidate_state": "NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED",
+  "criteria": {
+    "bytes": 49856,
+    "sha256": "c173ec8ec14305a1432d14f08646c59a7c26d6bcde1f4fa7f4c93ee223f50e6e"
+  },
+  "date": "2026-10-06",
+  "disposition": "H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS",
+  "exact_results": {
+    "backbone": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 4,
+      "elements": 322560,
+      "result": "PASS"
+    },
+    "captured_embedding_bridge": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 4,
+      "elements": 5120,
+      "result": "PASS"
+    },
+    "classifier": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 4,
+      "elements": 46240,
+      "result": "PASS"
+    },
+    "downstream": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 12,
+      "elements": 373920,
+      "result": "PASS"
+    },
+    "frontend_quantization": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 4,
+      "elements": 755328,
+      "result": "PASS"
+    },
+    "gem_bridge": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparisons": 4,
+      "elements": 5120,
+      "result": "PASS"
+    }
+  },
+  "execution_manifest": {
+    "bytes": 49537,
+    "sha256": "ae5ab7e95092822797f150d93a17201e113a0d588dbebfa660a9e6c6a4fefde7"
+  },
+  "frozen_inputs": [
+    {
+      "dtype": "float32",
+      "elements": 96000,
+      "endianness": "little",
+      "fixture": "canonical",
+      "layout": "C",
+      "sample_rate_hz": 32000,
+      "shape": [
+        1,
+        96000
+      ],
+      "waveform": {
+        "bytes": 384000,
+        "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8"
+      },
+      "waveform_crc32": "ce4fc4ce"
+    },
+    {
+      "dtype": "float32",
+      "elements": 96000,
+      "endianness": "little",
+      "fixture": "high_valid_two_tone",
+      "layout": "C",
+      "sample_rate_hz": 32000,
+      "shape": [
+        1,
+        96000
+      ],
+      "waveform": {
+        "bytes": 384000,
+        "sha256": "1af7db58ba98f1850049411d6221673d9c3396fffe3a87de93dfd19d22f2a506"
+      },
+      "waveform_crc32": "8d724d7d"
+    }
+  ],
+  "guards_faults_bounds_memory_cache_lifecycle": "PASS",
+  "historical_M5": "UNCHANGED ACCEPTED",
+  "historical_Matter": "UNCHANGED MATTER_BINDING_UNRESOLVED_STOP",
+  "historical_capture_authority": {
+    "bytes": 8184,
+    "sha256": "1371326642c16d9a13156165513359824a2d4b9b152cc1d3e07bb8fbb02e55ff"
+  },
+  "historical_integer_boundaries_byte_identical": {
+    "observed": 8,
+    "required": 8
+  },
+  "limitations": [
+    "Qualification is restricted to canonical and high_valid_two_tone and their immediate repeats on the observed Alif E8 DK M55-HP / Ethos-U85-256.",
+    "The candidate has a new firmware identity. Historical firmware byte equality and fresh historical executable-byte reconstruction are NOT_REQUIRED / UNPROVEN.",
+    "Historical M5 was not reaccepted and the full historical five-fixture M5 campaign was not rerun.",
+    "No arbitrary-board acceptance, biological accuracy, live-microphone qualification, universal equivalence or final performance/resource proof.",
+    "GeM FP32 residual approximately 1.49e-8 is characterization; accepted classifier-input INT16 remains exact."
+  ],
+  "model_storage_write": false,
+  "raw_captures_in_public_tree": false,
+  "retained_disposition": {
+    "bytes": 279484,
+    "sha256": "7dc1bd8a185cb5cd5b6e1b31daa792be1b101024b6d0a72814641bb3bd89f8d9"
+  },
+  "schema": "COMPACT_NO_MATTER_PHYSICAL_QUALIFICATION_V1",
+  "slots": [
+    {
+      "U85_submissions": 2,
+      "boundary_identities": {
+        "classifier_input": {
+          "bytes": 2560,
+          "sha256": "c60e63f161cd3d6909599dc6796608977d3197f3c66fd38805c73e02086d4d32"
+        },
+        "deployment_input": {
+          "bytes": 377664,
+          "sha256": "5e9297447d8743540fae5b174fe3698354db108450102d5abbde717b90df9ee9"
+        },
+        "integer_logits": {
+          "bytes": 23120,
+          "sha256": "c39faed048cf0c4b1ae4831756d43e0d9bd73c79334059ee45bfcedbbd874722"
+        },
+        "shared_feature": {
+          "bytes": 161280,
+          "sha256": "7d085e9490a617f64a9fc774c0ef683fd9e899adec6d250ea406330c9ae7320e"
+        }
+      },
+      "completion_IRQs": 2,
+      "fixture": "canonical",
+      "integrity": "PASS",
+      "result": "PASS",
+      "role": "BASE",
+      "slot": 1
+    },
+    {
+      "U85_submissions": 2,
+      "boundary_identities": {
+        "classifier_input": {
+          "bytes": 2560,
+          "sha256": "c60e63f161cd3d6909599dc6796608977d3197f3c66fd38805c73e02086d4d32"
+        },
+        "deployment_input": {
+          "bytes": 377664,
+          "sha256": "5e9297447d8743540fae5b174fe3698354db108450102d5abbde717b90df9ee9"
+        },
+        "integer_logits": {
+          "bytes": 23120,
+          "sha256": "c39faed048cf0c4b1ae4831756d43e0d9bd73c79334059ee45bfcedbbd874722"
+        },
+        "shared_feature": {
+          "bytes": 161280,
+          "sha256": "7d085e9490a617f64a9fc774c0ef683fd9e899adec6d250ea406330c9ae7320e"
+        }
+      },
+      "completion_IRQs": 2,
+      "fixture": "canonical",
+      "integrity": "PASS",
+      "result": "PASS",
+      "role": "REPEAT",
+      "slot": 2
+    },
+    {
+      "U85_submissions": 2,
+      "boundary_identities": {
+        "classifier_input": {
+          "bytes": 2560,
+          "sha256": "7fd2e91465f88d87be2f7a20c93d13329b6ef956d876cda59cd50e98e8f7f48e"
+        },
+        "deployment_input": {
+          "bytes": 377664,
+          "sha256": "a0c84217a4c7b07fe8e0475e002c681405abab3c80adae0cdf6e858256df7e12"
+        },
+        "integer_logits": {
+          "bytes": 23120,
+          "sha256": "3be135fa024819909dc23a4d6616123e78c02200761581129254581fa12caa28"
+        },
+        "shared_feature": {
+          "bytes": 161280,
+          "sha256": "d84343e9b2b95750543096f5788f3b86838ead87ca9720daaa004a0b1d8040ff"
+        }
+      },
+      "completion_IRQs": 2,
+      "fixture": "high_valid_two_tone",
+      "integrity": "PASS",
+      "result": "PASS",
+      "role": "BASE",
+      "slot": 3
+    },
+    {
+      "U85_submissions": 2,
+      "boundary_identities": {
+        "classifier_input": {
+          "bytes": 2560,
+          "sha256": "7fd2e91465f88d87be2f7a20c93d13329b6ef956d876cda59cd50e98e8f7f48e"
+        },
+        "deployment_input": {
+          "bytes": 377664,
+          "sha256": "a0c84217a4c7b07fe8e0475e002c681405abab3c80adae0cdf6e858256df7e12"
+        },
+        "integer_logits": {
+          "bytes": 23120,
+          "sha256": "3be135fa024819909dc23a4d6616123e78c02200761581129254581fa12caa28"
+        },
+        "shared_feature": {
+          "bytes": 161280,
+          "sha256": "d84343e9b2b95750543096f5788f3b86838ead87ca9720daaa004a0b1d8040ff"
+        }
+      },
+      "completion_IRQs": 2,
+      "fixture": "high_valid_two_tone",
+      "integrity": "PASS",
+      "result": "PASS",
+      "role": "REPEAT",
+      "slot": 4
+    }
+  ],
+  "unexpected_reset": false
+}

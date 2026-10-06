@@ -1,0 +1,11 @@
+# Qualified production source and historical documentation
+
+The qualified no-Matter candidate preserves the same H1 source-bundle bytes and prospectively changes workspace discovery through [the exact flat manifest](../../firmware/h1/workspace/west.yml). Its ELF/BIN/application/ATOC identities are new and separately qualified; see [candidate authority](../release/CANDIDATE_AUTHORITY.json). Historical M5 acceptance and historical Matter binding are unchanged.
+
+The accepted source bundle is `485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91`. [PRODUCTION_SOURCE_IDENTITY.txt](PRODUCTION_SOURCE_IDENTITY.txt) is its exact CMake identity material; SHA-256 of those bytes is the bundle identity. The nine accepted production files remain unchanged during closure.
+
+`firmware/h1/README.md` is itself hashed into that bundle and is preserved as the exact build-time snapshot. Its older reference-frontend/characterization/no-new-physical-qualification wording is historical and is superseded for current technical status by [the cumulative accepted record](ACCEPTED_STATE.json) and [qualified evidence](QUALIFIED_EVIDENCE.json). Its retained identity is not permission to make a current characterization-only claim. The current accepted path uses native M55 frontend, U85 V3 backbone, M55 GeM, the exact classifier bridge and U85 classifier. Native frontend acceptance is scoped; host/native bit equality and GeM FP32 bit equality are not claimed.
+
+The frozen runtime string `formal_m5_acceptance=false` likewise records build-time engineering state; the final host evidence assigns milestone acceptance. Updating either source-bound text would change the qualified bundle, so no such update or rebuild is performed. BUILD_INPUTS.md retains the exact accepted payload bindings. A future documentation-only source-bundle change would create a new build identity and needs its own prospective disposition.
+
+Recreation source-snapshot comments retain their original campaign phase, including the independent-oracle README written before the production bridge was qualified. Current implementation and milestone state come from the bound cumulative receipts, rather than older snapshot commentary. Those exact snapshots are preserved for provenance and contain no new acceptance claim.

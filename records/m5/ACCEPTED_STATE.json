@@ -1,0 +1,89 @@
+{
+  "M5_4_V1": "NOT ACCEPTED permanently",
+  "M5_5_disposition": "M5_5_CUMULATIVE_EVIDENCE_AND_RECREATION_CLOSURE_PASS",
+  "accepted_dispositions": {
+    "M5_2": "M5_2_EXACT_INTEGER_CONFORMANCE_V1_PASS",
+    "M5_3": "M5_3_PRODUCTION_FIRMWARE_V3_BINDING_BRIDGE_AND_PROGRAMMED_IDENTITY_PASS",
+    "M5_4_V2": "M5_4_V2_INTEGRATED_PHYSICAL_V3_EXECUTION_PASS"
+  },
+  "adversarial_review": {
+    "bytes": 14967,
+    "path": "records/m5/CONSISTENCY_REVIEW.json",
+    "sha256": "f56523eb3753d89c614096f07bf50359cf95de855b073c23dfca803406fbe0f3"
+  },
+  "closure_receipt": {
+    "bytes": 2730,
+    "path": "records/m5/CLOSURE_RECEIPT.json",
+    "sha256": "c7a3767ad95861eaa7377f90e0a804febcf4ec6e5b94bf4811b357e2e8857154"
+  },
+  "commit": false,
+  "date": "2026-10-05",
+  "documentation_bundle_sha256": "ac30dd74de5f86bf722283aeb68dc3862e651f81d251a75430db122303141be3",
+  "evidence_manifest": {
+    "bytes": 49451,
+    "path": "records/m5/EVIDENCE_MANIFEST.json",
+    "sha256": "176da4e74a13a5b06d952033b89e21536fe1633e38fa9f5bd4e599af8e047385"
+  },
+  "gate_matrix": {
+    "bytes": 48267,
+    "path": "records/m5/CUMULATIVE_GATE_MATRIX.json",
+    "sha256": "5e3d89cbba8368dbe6276da91722fb02dd61e11b0cd0657eb7056b66f5022fe9"
+  },
+  "identity_chain": {
+    "bytes": 12084,
+    "path": "records/m5/ACCEPTED_IDENTITY_CHAIN.json",
+    "sha256": "6b9641d9af21bc03d4655551c14c64219a51cd37b1cbcb76d0bbcedbc724194f"
+  },
+  "later_work": [
+    "live microphone qualification",
+    "biological/acoustic accuracy",
+    "performance/resource proof",
+    "repository/public binary release",
+    "paper publication"
+  ],
+  "limitations": [
+    "Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.",
+    "M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.",
+    "GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary.",
+    "M5-2 qualifies the sealed integer deployment arithmetic on 38 fixtures through the independently qualified Corstone U85 route. M5-4 V2 qualifies actual physical integer inputs and their downstream outputs on five synthetic fixtures and two repeats.",
+    "Physical acceptance is limited to the observed Alif E8 DK M55-HP / Ethos-U85-256, exact firmware, compiled components, configuration and retained runtime. It does not generalize to arbitrary boards or settings.",
+    "Five physical synthetic fixtures do not establish biological accuracy or new V3 biological semantics. Older seven-window B/C evidence stays at its original model/build/runtime/scale.",
+    "No live microphone, acoustic accuracy, whole-domain equivalence, global TensorFlow/deployment equivalence, universal memory safety, final performance/resource proof, H2/H3, regional head, shared-backbone multi-head execution or multi-U85 acceptance is claimed.",
+    "M5-4 V2 used the existing runtime and does not create a new cold-boot proof. Cold boot is optional in the retained contract.",
+    "The waveform SHA-256 was computed/declared by the host and echoed by the board; the board independently checked CRC32. Packet sequence/kind/offset/length/CRC was validated; an original raw packet transcript was not retained.",
+    "Queue registers were observed after the classifier. Backbone completion is bound to stage-specific submission/IRQ hooks and successful queue-wait return, without an intermediate queue-register snapshot claim.",
+    "New firmware byte-identical rebuilds and byte-identical timestamped receipt regeneration have not been established. Retained artifact identities are comparison targets; prospective recreation must keep immutable numerical and payload checks."
+  ],
+  "milestone": "M5",
+  "primary_retained_receipts": {
+    "M5_2": {
+      "bytes": 170998,
+      "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+    },
+    "M5_3": {
+      "bytes": 9557,
+      "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+    },
+    "M5_4_V2": {
+      "bytes": 20249,
+      "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+    }
+  },
+  "production_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "project_milestone_scope": "D-001/D-009: M5 is final defined H1 milestone under retained uploaded-waveform completion objective.",
+  "publication_state": "M5_5_CLOSURE_PREPARED; COMMIT_PUSH_AWAITING_EXPLICIT_AUTHORIZATION",
+  "push": false,
+  "qualified_source_delta": "Seven modified tracked production files plus classifier_bridge.cpp/.hpp; closure changes no production byte.",
+  "recreation_guidance": {
+    "bytes": 63837,
+    "path": "records/m5/RECREATION_GUIDANCE.json",
+    "sha256": "3c6fd937d16935053f90ae420276a32fcaa6c5b541866185cea9468ab16f1457"
+  },
+  "schema": "m5-cumulative-accepted-state-v1",
+  "scope": "Uploaded-waveform H1 on the observed exact Alif E8 DK M55-HP/U85-256 target; exact actual integer deployment boundaries.",
+  "source_base_HEAD": "015239f8aef1e32b5fce17bcb539aa004589527a",
+  "source_bound_historical_wording": "firmware README and formal_m5_acceptance=false remain exact build inputs/telemetry. SOURCE_IDENTITY.md reconciles current evidence authority.",
+  "state": "ACCEPTED",
+  "tag": false,
+  "technical_execution_in_closure": []
+}
