@@ -15,7 +15,7 @@ extern "C" {
 #define H1_BASELINE_DIAGNOSTIC_SAMPLES 20u
 #define H1_BASELINE_MAX_CACHE 8u
 #define H1_BASELINE_EVENTS 7u
-#define H1_BASELINE_MAX_ORDERED_EVENTS 72u
+#define H1_BASELINE_MAX_ORDERED_EVENTS 80u
 #define H1_BASELINE_CACHE_CLEAN 1u
 #define H1_BASELINE_CACHE_INVALIDATE 2u
 #define H1_BASELINE_CACHE_WHOLE 4u
@@ -43,10 +43,10 @@ enum H1BaselineEventKind {
  H1_EVENT_POST_COMPLETION_CACHE_BEGIN, H1_EVENT_POST_COMPLETION_CACHE_END,
  H1_EVENT_NPU_SUBMIT, H1_EVENT_NPU_COMPLETION_IRQ
 };
-struct H1BaselineEvent {
+struct __attribute__((packed, aligned(4))) H1BaselineEvent {
  uint64_t cycles;
- uint16_t kind, stage;
- uint32_t value;
+ uint8_t kind, stage;
+ uint16_t value;
 };
 struct H1BaselinePmu {
  uint64_t before_cycles, after_cycles;

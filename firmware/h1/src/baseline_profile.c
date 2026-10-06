@@ -20,6 +20,8 @@
 __attribute__((section(".h1_baseline"), aligned(32)))
 struct H1BaselineState h1BaselineState;
 _Static_assert(sizeof(struct H1BaselineState) <= 65536, "baseline RAM budget");
+_Static_assert(sizeof(struct H1BaselineEvent) == 12, "baseline event padding");
+_Static_assert(H1_BASELINE_MAX_ORDERED_EVENTS >= 76, "complete event trace budget");
 static const enum ethosu_pmu_event_type events[H1_BASELINE_EVENTS] = {
  ETHOSU_PMU_NPU_ACTIVE, ETHOSU_PMU_MAC_ACTIVE, ETHOSU_PMU_WD_ACTIVE,
  ETHOSU_PMU_WD_STALLED, ETHOSU_PMU_EXT_RD_TRAN_REQ_STALLED,
