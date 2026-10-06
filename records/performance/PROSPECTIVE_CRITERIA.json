@@ -1,0 +1,418 @@
+{
+  "schema": "birdnet-h1-prospective-performance-criteria-v1",
+  "criteria_version": 1,
+  "stage": "H1 repeatable sub-700 ms production inference",
+  "status": "PROSPECTIVE_CRITERIA_FROZEN_MEASUREMENT_NOT_STARTED",
+  "authority": "This machine-readable file is authoritative; docs/PERFORMANCE.md must agree with it.",
+  "provenance": {
+    "created_date": "2026-10-06",
+    "created_before_new_performance_measurement": true,
+    "no_candidate_timing_data_consulted": true,
+    "threshold_origin": "Current user instruction, specified prospectively: <700.000 ms.",
+    "published_master_base_sha": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+    "published_master_parent_sha": "f2293668e657c0659fad075e4f69fdfd063f7432",
+    "published_master_tree_oid": "73e663007ffbace297b66a9abd68ced687134fdb",
+    "published_release_content_sha256_authority": "413fa44e9375f184a5b7b2714af40709430051664bcae946e33baaa33f60e39a",
+    "attribution_commit_sha": "cf0778692922d3fa2e89d32ce83ac177b5d2ea5a",
+    "performance_branch": "performance/h1-sub700ms",
+    "historical_state_preserved": {
+      "M5": "ACCEPTED",
+      "historical_matter_provenance": "MATTER_BINDING_UNRESOLVED_STOP",
+      "published_clean_candidate": "NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED"
+    },
+    "stage_relationship": "Post-M5/post-release engineering; historical acceptance records are not reopened or weakened.",
+    "known_followup": {
+      "N1": "POST_RELEASE_FOLLOWUP_NONBLOCKER",
+      "path": "scripts/h1_usb_client.py",
+      "obsolete_path": "validate_identity() / validate-canonical",
+      "action_in_initialization": "Leave implementation unchanged."
+    }
+  },
+  "primary_latency": {
+    "kind": "Steady-state repeated production inference",
+    "start": "A complete valid 3-second mono waveform is already resident in the production waveform/input buffer and the inference request is ready to begin.",
+    "end": "The final H1 inference result required by the ordinary production reporting path is ready in firmware memory for reporting.",
+    "include_all_per_inference_work_after_start": [
+      "Frontend processing",
+      "Frontend quantization",
+      "All production stage handoffs",
+      "CPU memory copies",
+      "Cache clean/invalidate operations required by the run",
+      "U85 backbone execution",
+      "Backbone-output ownership transition",
+      "M55 GeM",
+      "Exact classifier bridge",
+      "Classifier-input ownership transition",
+      "U85 classifier execution",
+      "Result conversion/postprocessing required by ordinary production reporting"
+    ],
+    "exclude": [
+      "USB upload/host transport",
+      "Live audio acquisition time",
+      "Cold boot",
+      "Firmware startup",
+      "One-time model loading/copy",
+      "Model hash verification performed only at initialization",
+      "One-time interpreter construction",
+      "One-time NPU initialization",
+      "Debug export/capture not part of ordinary production execution"
+    ],
+    "one_time_exclusion_rule": "Only work actually performed once at initialization is excluded. Model copies, checks or reconstruction performed per inference remain inside the interval and must satisfy the structural gates.",
+    "end_rule": "Do not stop timing at the classifier IRQ or raw logits if ordinary reporting still requires conversion or postprocessing."
+  },
+  "repeatability_campaign": {
+    "input": {
+      "authority": "Canonical valid 3-second waveform already used by the accepted uploaded-waveform route.",
+      "resident_before_start": true,
+      "duration_seconds": 3,
+      "channels": 1,
+      "sample_rate_hz": 32000,
+      "element_type": "Little-endian float32",
+      "element_count": 96000,
+      "bytes": 384000,
+      "sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8"
+    },
+    "warmup_runs": 5,
+    "warmup_policy": "Five consecutive successful production-path runs immediately precede the measured sequence.",
+    "measured_runs": 100,
+    "measured_policy": "One sequence of 100 consecutive completed production-path runs; retain every sample. Failed, incomplete or missing runs fail the campaign.",
+    "outlier_removal": "NONE",
+    "hard_latency_gate": {
+      "unit": "ms",
+      "threshold_ms": "700.000",
+      "comparison": "<",
+      "per_run_expression": "end_to_end_latency_ms < 700.000",
+      "all_measured_runs_must_pass": true,
+      "equivalent_max_expression": "max_ms < 700.000",
+      "comparison_uses_unrounded_samples": true,
+      "equal_to_threshold_passes": false
+    },
+    "required_aggregate_metrics": [
+      "count",
+      "minimum_ms",
+      "mean_ms",
+      "median_ms",
+      "p95_ms",
+      "maximum_ms",
+      "population_standard_deviation_ms"
+    ],
+    "statistics_definition": {
+      "count": "100 measured latency samples; warmups excluded from measured statistics.",
+      "minimum_ms": "Minimum of all measured samples.",
+      "mean_ms": "Arithmetic mean of all measured samples.",
+      "median_ms": "Mean of the 50th and 51st samples in ascending order.",
+      "p95_ms": "Nearest-rank percentile: ceil(0.95 * count), the 95th ascending sample for count 100.",
+      "maximum_ms": "Maximum of all measured samples.",
+      "population_standard_deviation_ms": "Square root of sum((sample - mean)^2) / count; denominator 100."
+    },
+    "raw_sample_retention": "Preserve all 100 raw per-run latency samples privately with run identifiers, timestamp/cycle data and clock conversion identity.",
+    "public_evidence": "Compact aggregates plus bound identity/procedure information sufficient to reproduce or inspect the campaign; no raw captures or restricted payloads."
+  },
+  "timing_integrity": {
+    "acceptance_timing_mode": {
+      "instrumentation": "Minimal; must not materially distort production timing or behavior.",
+      "allowed": [
+        "High-resolution monotonic timestamp/cycle reads",
+        "Required lightweight run identifiers",
+        "Lightweight counters that do not materially alter production behavior"
+      ],
+      "forbidden_inside_primary_interval": [
+        "USB tensor dumps",
+        "Complete tensor CRC sweeps not part of production",
+        "File/host transfers",
+        "Large printk logging",
+        "Debug copies",
+        "Full tensor comparisons",
+        "Expensive PMU reconfiguration"
+      ],
+      "clock_requirements": "Bind clock frequency and timestamp conversion, resolution and wrap handling; compare unrounded latency to the strict threshold."
+    },
+    "diagnostic_profiling_mode": {
+      "campaign": "Separate from the acceptance timing campaign.",
+      "may_collect": [
+        "Richer stage timings",
+        "PMU counters",
+        "Transfer/cache information"
+      ],
+      "latency_eligible_for_hard_acceptance_gate": false,
+      "substitution_policy": "V1 does not allow diagnostic latency to substitute for acceptance timing. Any exception requires independently demonstrated negligible overhead and an explicitly permitting prospectively versioned criteria revision."
+    }
+  },
+  "required_diagnostic_stage_profile": {
+    "must_precede_optimization_decisions": true,
+    "stages": [
+      {
+        "id": 1,
+        "name": "Frontend spectral/STFT/power",
+        "processor": "CPU"
+      },
+      {
+        "id": 2,
+        "name": "Compact mel",
+        "processor": "CPU"
+      },
+      {
+        "id": 3,
+        "name": "Remaining frontend normalization/resize/quantization",
+        "processor": "CPU"
+      },
+      {
+        "id": 4,
+        "name": "Frontend -> backbone handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 5,
+        "name": "U85 backbone submit -> completion",
+        "processor": "U85"
+      },
+      {
+        "id": 6,
+        "name": "Backbone -> GeM ownership/handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 7,
+        "name": "M55 GeM",
+        "processor": "CPU"
+      },
+      {
+        "id": 8,
+        "name": "GeM/classifier bridge",
+        "processor": "CPU"
+      },
+      {
+        "id": 9,
+        "name": "Classifier-input handoff",
+        "processor": "CPU/handoff"
+      },
+      {
+        "id": 10,
+        "name": "U85 classifier submit -> completion",
+        "processor": "U85"
+      },
+      {
+        "id": 11,
+        "name": "Logits/result postprocessing",
+        "processor": "CPU"
+      },
+      {
+        "id": 12,
+        "name": "Total waveform-ready -> result-ready",
+        "processor": "End-to-end"
+      }
+    ],
+    "cpu_metrics_where_reliable": [
+      "Cycles",
+      "Microseconds/milliseconds"
+    ],
+    "u85_metrics_report_separately_where_available": [
+      "Submit -> completion wall time",
+      "NPU cycle count",
+      "NPU active",
+      "MAC active",
+      "Weight-decoder active/stalled",
+      "External-read transaction stalls",
+      "SRAM transaction stalls"
+    ],
+    "missing_metric_policy": "Record availability and reason for any unavailable or unreliable metric; preserve the required stage boundaries.",
+    "historical_timing_policy": "Historical D512 timing is architectural background only and must not substitute for current H1 baseline measurements."
+  },
+  "baseline_memory_transfer_ledger": {
+    "must_be_observed_before_memory_ownership_or_layout_changes": true,
+    "every_production_transfer_or_handoff_requires": [
+      "Producer stage",
+      "Consumer stage",
+      "Source address",
+      "Source region",
+      "Destination address",
+      "Destination region",
+      "Element type",
+      "Element count",
+      "Bytes",
+      "Mechanism",
+      "Transfers per inference",
+      "Total bytes moved per inference",
+      "Cache state before transition",
+      "Cache clean bytes",
+      "Cache invalidate bytes",
+      "Whole-cache versus range maintenance",
+      "Lifetime start",
+      "Lifetime end",
+      "Alignment",
+      "Whether producer and consumer can legally share the same physical buffer",
+      "Reason if a copy is mandatory"
+    ],
+    "mechanisms": [
+      "Direct alias",
+      "CPU memcpy",
+      "Loop copy",
+      "DMA",
+      "NPU write",
+      "Other"
+    ],
+    "required_major_boundaries": [
+      "Waveform -> frontend",
+      "Frontend -> backbone",
+      "Backbone -> shared feature / GeM",
+      "GeM -> classifier bridge",
+      "Bridge -> classifier input",
+      "Classifier -> reporting"
+    ],
+    "additional_scope": "Audit every full-size frontend intermediate tensor.",
+    "candidate_rule": "Create candidate zero-copy opportunities only after the baseline ledger is observed.",
+    "ownership_proof": "Bind hardware/runtime accessibility, cache ownership and live-buffer lifetime evidence for each legally shared buffer and every proposed removed copy."
+  },
+  "structural_performance_requirements": [
+    {
+      "id": 1,
+      "requirement": "No per-inference model payload copy."
+    },
+    {
+      "id": 2,
+      "requirement": "No per-inference interpreter/model reconstruction."
+    },
+    {
+      "id": 3,
+      "requirement": "No CPU fallback from either U85 stage."
+    },
+    {
+      "id": 4,
+      "requirement": "Model identities remain fixed during the campaign."
+    },
+    {
+      "id": 5,
+      "requirement": "Required cache coherency remains correct."
+    },
+    {
+      "id": 6,
+      "requirement": "No memory guard/lifetime regression."
+    },
+    {
+      "id": 7,
+      "requirement": "No numerical boundary regression relative to the applicable qualified authority."
+    },
+    {
+      "id": 8,
+      "requirement": "Every removed copy is replaced by an explicitly proven ownership/lifetime transition."
+    }
+  ],
+  "zero_copy_definition": {
+    "meaning": "One producer -> one physical boundary buffer -> one consumer, where the hardware/runtime contract permits it.",
+    "excluded_claim": "Unavoidable U85 weight/activation memory traffic is not called zero-copy."
+  },
+  "nonbinding_investigation_order": {
+    "is_acceptance_gate": false,
+    "steps": [
+      "Detect/eliminate any per-run model copy/reinitialization.",
+      "Frontend writes directly to backbone input where legal.",
+      "Backbone output consumed in place by GeM where legal.",
+      "GeM/bridge writes directly to classifier input where legal.",
+      "Classifier output processed in place where legal.",
+      "Replace unnecessary whole-cache operations with validated range-specific maintenance.",
+      "Remove production-path diagnostic copies/CRCs not required for ordinary inference.",
+      "Remeasure U85 PMU/external-memory stalls.",
+      "Only if required, investigate U85 staging/fast-memory changes.",
+      "Only after simpler transfer changes, consider frontend fusion, GeM arithmetic optimization or postprocessing changes."
+    ],
+    "selection_rule": "Observed baseline data decides which candidates proceed; this order does not predetermine results."
+  },
+  "numerical_equivalence_guard": {
+    "candidate_must_be_classified_before_implementation": true,
+    "classes": [
+      {
+        "name": "MEMORY_PLACEMENT_ONLY",
+        "gate": "Applicable exact integer boundary preservation and existing qualified floating-scope preservation."
+      },
+      {
+        "name": "COPY_ELIMINATION_ONLY",
+        "gate": "Applicable exact integer boundary preservation and existing qualified floating-scope preservation."
+      },
+      {
+        "name": "CACHE_MAINTENANCE_ONLY",
+        "gate": "Applicable exact integer boundary preservation and existing qualified floating-scope preservation."
+      },
+      {
+        "name": "INSTRUMENTATION_ONLY",
+        "gate": "Applicable exact integer boundary preservation and existing qualified floating-scope preservation."
+      },
+      {
+        "name": "ARITHMETIC_IMPLEMENTATION_CHANGE",
+        "gate": "Separately defined prospective equivalence/requalification gate before candidate acceptance."
+      },
+      {
+        "name": "MODEL/VELA_CHANGE",
+        "gate": "Separately defined prospective equivalence/requalification gate before candidate acceptance."
+      }
+    ],
+    "authority": "Applicable qualified H1 numerical/runtime authority bound through the published master and accepted records; preserve its documented claim scope and tolerances.",
+    "prohibition": "Speed alone does not justify arithmetic/model changes or relaxed numerical tolerances, exact identities, model contracts or safety checks."
+  },
+  "future_success_disposition": {
+    "name": "H1_REPEATABLE_SUB700MS_PERFORMANCE_PASS",
+    "issued_by_this_freeze": false,
+    "requires_all": [
+      "All structural performance gates pass.",
+      "Production acceptance timing mode is used.",
+      "Five consecutive warmups complete.",
+      "100/100 consecutive measured runs complete.",
+      "No outliers are removed.",
+      "Every measured run is <700.000 ms.",
+      "Maximum measured latency is <700.000 ms.",
+      "Numerical/runtime integrity gates pass.",
+      "Both U85 stages remain the production route.",
+      "No CPU fallback occurs.",
+      "Final source/build/model identities are bound."
+    ],
+    "campaign_identity_binding": [
+      "Source commit and source bundle identity",
+      "Built/target artifact identities",
+      "Model identities",
+      "Production route/configuration",
+      "Board/processor identity and clock settings",
+      "Timing mode and procedure",
+      "Frozen criteria SHA-256"
+    ]
+  },
+  "scope_exclusions": [
+    "Live line-input audio",
+    "Live microphone acquisition",
+    "Acoustic/biological accuracy",
+    "Cold-boot latency",
+    "USB upload throughput",
+    "Arbitrary boards",
+    "H2/H3",
+    "Regional head deployment",
+    "Shared-backbone multi-head scheduling",
+    "Power consumption unless separately measured",
+    "Energy per inference unless separately measured"
+  ],
+  "live_audio_sequence": "Line-input/live-microphone qualification starts only after this performance target is accepted.",
+  "integrity": {
+    "sha256_binding": "SHA-256 of the exact criteria bytes is recorded in docs/PERFORMANCE.md and private stage receipts.",
+    "criteria_sha256_immutable_for_stage": true,
+    "revision_policy": "Any later change requires a new prospectively versioned criteria file and an explicit reason; never edit this frozen file after observing benchmark results."
+  },
+  "initialization_stop": {
+    "one_eventual_pr_for_whole_stage": true,
+    "separate_attribution_pr": false,
+    "stop_after": "Two signed commits, performance-branch push and GitHub Verified checks.",
+    "no_new_performance_data_in_freeze": true,
+    "actions_not_started": [
+      "Benchmarks",
+      "Firmware builds/CMake/Ninja",
+      "Vela",
+      "Inference",
+      "Hardware access/programming/reset",
+      "PMU collection",
+      "Instrumentation changes",
+      "Source optimization",
+      "Algorithmic arithmetic changes",
+      "Model binary changes",
+      "N1 implementation cleanup",
+      "PR creation",
+      "Merge/master update",
+      "Tags/releases"
+    ]
+  }
+}
