@@ -32,7 +32,7 @@ bool validDescriptor(const SharedFeatureDescriptor &feature)
 	       feature.shape.dimensions[2] == kWidth &&
 	       feature.shape.dimensions[3] == kChannels &&
 	       feature.byteLength == kInputBytes && feature.zeroPoint == 0 &&
-	       floatBits(feature.scale) == UINT32_C(0x38420de1) &&
+	       floatBits(feature.scale) == UINT32_C(0x38606d52) &&
 	       floatBits(kClampEpsilon) == UINT32_C(0x358637bd) &&
 	       floatBits(kPower) == UINT32_C(0x40ed0f08) &&
 	       floatBits(kReciprocalPower) == UINT32_C(0x3e0a3a34);

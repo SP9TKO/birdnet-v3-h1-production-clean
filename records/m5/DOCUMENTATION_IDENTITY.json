@@ -1,0 +1,53 @@
+{
+  "algorithm": "SHA256 of ordered UTF8 path NUL SHA256 NUL decimal_bytes LF rows",
+  "documentation_bundle_sha256": "ac30dd74de5f86bf722283aeb68dc3862e651f81d251a75430db122303141be3",
+  "note": "Final documentation is bound separately; original qualified project-document snapshots remain private. All firmware identity inputs, including its README, remain exact.",
+  "ordered_documents": [
+    {
+      "bytes": 3759,
+      "path": "README.md",
+      "sha256": "8611feb44d709d37d42052b0de53b9c5f1763a5e0a2a753450da999887937489"
+    },
+    {
+      "bytes": 2296,
+      "path": "PROJECT_STATUS.md",
+      "sha256": "ba0e55a82f7007fd23c55fc3008c508b44fa5d309a48136f52de8bc00f3cab6e"
+    },
+    {
+      "bytes": 1387,
+      "path": "ACCEPTED_STATE_INDEX.md",
+      "sha256": "ca8cec1f60f2ae6672bfd65fc5710d6f53abb1ce3135cbfe96f1ccbfab6fa76a"
+    },
+    {
+      "bytes": 10420,
+      "path": "DECISION_LOG.md",
+      "sha256": "9011ce9135b2c10cbc7f1889752a94a3132d2b7ca1bdb4f5ff3b94799c70335c"
+    },
+    {
+      "bytes": 15881,
+      "path": "REPRODUCIBILITY.md",
+      "sha256": "3d9c8b1cb919ee537f7e09597365536594d41fb77196ecd2035e176a92aa5998"
+    },
+    {
+      "bytes": 16914,
+      "path": "PAPER.md",
+      "sha256": "e92a42e8c20d0b67b93c5d64a15e29173e3865051768a7823dd21031d867056b"
+    },
+    {
+      "bytes": 5624,
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "2d519cbd91acbe31b3811268734524136847aac383477113bda168045741e18c"
+    }
+  ],
+  "schema": "m5-final-documentation-identity-v1",
+  "source_bound_documents_preserved": [
+    {
+      "path": "firmware/h1/README.md",
+      "sha256": "6695136825fb824692abde7280c986a8829423ebdc0a8dd29130cc9685030b5d"
+    },
+    {
+      "path": "firmware/h1/BUILD_INPUTS.md",
+      "sha256": "2d9c759d5a25ec23f2a669d0e05981b8fcb10194fa7cd4ba2465f3fa9822f7b8"
+    }
+  ]
+}

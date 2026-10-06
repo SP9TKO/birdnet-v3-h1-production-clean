@@ -1,0 +1,259 @@
+{
+  "M5_2": {
+    "arithmetic_contract": {
+      "artifact_id": "FULL_U85_INTEGER_ARITHMETIC_CONTRACT_V1.json",
+      "bytes": 49527683,
+      "sha256": "0d3bcf5039ddba491f8902a582e8666fa62a6d924aa514df02a2543f5db7a8f2"
+    },
+    "boundary_comparisons": 152,
+    "disposition": "M5_2_EXACT_INTEGER_CONFORMANCE_V1_PASS",
+    "execution_route": {
+      "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+      "bytes": 17965,
+      "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+    },
+    "fixtures": 38,
+    "integer_elements": 10727856,
+    "maximum_LSB_error": 0,
+    "mismatches": 0,
+    "oracle_independence": {
+      "artifact_id": "ORACLE_INDEPENDENCE_V1.established.json",
+      "bytes": 3170,
+      "sha256": "1ee3bf1eb9a83902258e07bea94136761abe948bfdd66f328b4965ed60ee3067"
+    },
+    "oracle_source_aggregate_sha256": "3aa920d9855a67cc74d61e67c6290acc6704ceaf3337c4a79bfd94cda3a344eb",
+    "primitive_corpus": {
+      "artifact_id": "PRIMITIVE_CORPUS_V1.json",
+      "bytes": 1458185,
+      "sha256": "bc90f90172922d6bfd2fe6ae34afd2c927fe7e8a9093dd19fba5108cda878134"
+    },
+    "primitive_result": {
+      "artifact_id": "PRIMITIVE_SELF_TEST_RESULT_V1.json",
+      "bytes": 1017,
+      "sha256": "d161e7e2eda4ed12b00b2374c6fa8cc58c83907d6def03168331b1feeab06ae8"
+    },
+    "receipt": {
+      "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+      "bytes": 170998,
+      "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+    },
+    "repeatability": {
+      "byte_identical": 8,
+      "captures": 8,
+      "receipt": {
+        "artifact_id": "REPEATABILITY_RECEIPT.json",
+        "bytes": 7208,
+        "sha256": "c719d571927a18bcb518ead91f18014cddf296e659b1750882e6b2a864cb9de4"
+      }
+    }
+  },
+  "M5_3": {
+    "active_stale_V2_bindings_remaining": 0,
+    "active_stale_bindings_corrected": 16,
+    "bridge_full_vector_comparisons": 48640,
+    "bridge_full_vector_result": {
+      "artifact_id": "FULL_VECTOR_BRIDGE_RESULT.json",
+      "bytes": 48911,
+      "sha256": "ce7595cb32077598eb44344fba642dd7798be7082386e512092667d0bbc85f71"
+    },
+    "bridge_primitive_comparisons": 223247,
+    "bridge_primitive_result": {
+      "artifact_id": "BRIDGE_CONFORMANCE_RESULT.json",
+      "bytes": 1769,
+      "sha256": "0db5fb5a724ddecacd0302480693a8a13d50de14e1a1625de9f2735a220ef25a"
+    },
+    "bridge_total_comparisons": 271887,
+    "disposition": "M5_3_PRODUCTION_FIRMWARE_V3_BINDING_BRIDGE_AND_PROGRAMMED_IDENTITY_PASS",
+    "frozen_candidate": {
+      "artifact_id": "M5_3_FIRMWARE_CANDIDATE_FREEZE.json",
+      "bytes": 35101,
+      "sha256": "863e21f616a3b3226442cc9bc71d56261970829f60efa18afe1fccda57d96a76"
+    },
+    "linked_route": "PASS",
+    "maximum_LSB_error": 0,
+    "mismatches": 0,
+    "production_build": "PASS",
+    "programmed_identity_matrix": {
+      "artifact_id": "M5_3_FINAL_IDENTITY_MATRIX_V2.json",
+      "bytes": 20136,
+      "sha256": "725f198c1a56ccc7e1c252a80318ec6f0889f3ed5349c6b126a1cf5f74e41dca"
+    },
+    "receipt": {
+      "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+      "bytes": 9557,
+      "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+    },
+    "source_build_programmed_chain": "CLOSED",
+    "source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91"
+  },
+  "M5_4_V2": {
+    "GeM_FP32": "CHARACTERIZATION_ONLY",
+    "U85": {
+      "no_CPU_fallback": true,
+      "physical_U85_256_required": true,
+      "primary_fixtures_with_proof": 5,
+      "queue_claim_limit": "Final queue registers observed after classifier. Each backbone completion is established by the exact stage-specific physical submission/completion-IRQ hooks and successful queue-wait return; no intermediate queue register snapshot is claimed.",
+      "result": "PASS",
+      "total_completion_IRQs": 14,
+      "total_runs_with_proof": 7,
+      "total_stage_submissions": 14
+    },
+    "all_downstream": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparison_count": 21,
+      "integer_elements_compared": 654360
+    },
+    "captured_embedding_bridge": {
+      "all_runs": {
+        "MAXIMUM_LSB_ERROR": 0,
+        "TOTAL_MISMATCHED_ELEMENTS": 0,
+        "comparison_count": 7,
+        "integer_elements_compared": 8960
+      },
+      "primary": {
+        "MAXIMUM_LSB_ERROR": 0,
+        "TOTAL_MISMATCHED_ELEMENTS": 0,
+        "comparison_count": 5,
+        "integer_elements_compared": 6400
+      }
+    },
+    "criteria": {
+      "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+      "bytes": 60735,
+      "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+    },
+    "disposition": "M5_4_V2_INTEGRATED_PHYSICAL_V3_EXECUTION_PASS",
+    "execution_freeze": {
+      "artifact_id": "M5_4_V2_EXECUTION_FREEZE.json",
+      "bytes": 7834,
+      "sha256": "e02b6f331e047ae08288f18c95e5a91b62ebce325498cbfec8c78f2a3762e9ba"
+    },
+    "memory_integrity": {
+      "primary_fixtures_with_integrity_proof": 5,
+      "result": "PASS",
+      "total_runs_with_integrity_proof": 7,
+      "universal_memory_safety_claim": false
+    },
+    "native_frontend_quantization": {
+      "all_runs": {
+        "MAXIMUM_LSB_ERROR": 0,
+        "TOTAL_MISMATCHED_ELEMENTS": 0,
+        "comparison_count": 7,
+        "integer_elements_compared": 1321824
+      },
+      "primary": {
+        "MAXIMUM_LSB_ERROR": 0,
+        "TOTAL_MISMATCHED_ELEMENTS": 0,
+        "comparison_count": 5,
+        "integer_elements_compared": 944160
+      }
+    },
+    "prepared_manifest": {
+      "artifact_id": "M5_4_V2_EXECUTION_MANIFEST.prepared.json",
+      "bytes": 70527,
+      "sha256": "a507600b5ce388932d4c3d79b34cafc7fd570244e3f7e8d3c8ef0e61692a020f"
+    },
+    "primary_downstream": {
+      "MAXIMUM_LSB_ERROR": 0,
+      "TOTAL_MISMATCHED_ELEMENTS": 0,
+      "comparison_count": 15,
+      "integer_elements_compared": 467400
+    },
+    "primary_fixtures": 5,
+    "receipt": {
+      "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+      "bytes": 20249,
+      "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+    },
+    "repeatability": {
+      "byte_identical": 8,
+      "captures": 8,
+      "receipt": {
+        "artifact_id": "M5_4_V2_REPEATABILITY_RESULT.json",
+        "bytes": 6036,
+        "sha256": "3b0361b8742e24fad015b6ce54035edb206bdda1dbceec0e841db8c894d7e2bf"
+      }
+    },
+    "total_slots": 7
+  },
+  "failed_and_superseded_attempts": [
+    {
+      "attempt": "M5-2 original formal entry",
+      "disposition": "M5_2_FORMAL_CAMPAIGN_ENTRY_IDENTITY_FAIL",
+      "reason": "The frozen original route accepted canonical-only component inputs; silence was the first unsupported fixture. File hash integrity passed; zero formal fixture comparisons ran.",
+      "receipt": {
+        "artifact_id": "CAMPAIGN_ENTRY_RECEIPT.json",
+        "bytes": 1263298,
+        "sha256": "c7ea28a2555009c158efa4787ebd496a4a5fbeebc3f1636073ec73359f433bdc"
+      },
+      "state": "FAILED_ENTRY_NO_NUMERICAL_EXECUTION"
+    },
+    {
+      "attempt": "M5-2 per-fixture route extension",
+      "disposition": "M5_2_CORSTONE_U85_PER_FIXTURE_INPUT_ROUTE_QUALIFIED",
+      "reason": "Variable raw input transport for the unchanged sealed V1 components; 76 input identities, canonical equivalence and negative loader checks. No arithmetic or tolerance change.",
+      "receipt": {
+        "artifact_id": "M5_2_PER_FIXTURE_INPUT_ROUTE_FREEZE.json",
+        "bytes": 17965,
+        "sha256": "349e77cb7197fdd5e48357581741cf398b0e9d7b9bf2f4da18f601f2cf1eaa7b"
+      },
+      "state": "PROSPECTIVELY_QUALIFIED_BEFORE_FORMAL_CAMPAIGN"
+    },
+    {
+      "attempt": "M5-3 first OSPI programming",
+      "cause_closure": {
+        "artifact_id": "OSPI1_FAILURE_CAUSE_CLOSURE.json",
+        "bytes": 3523,
+        "sha256": "c60356aff880545ba42872a1dad225e4324ba45d7f36186195683e78b4c8c0f7"
+      },
+      "limit": "The two-step recovery was validated as a whole; individual GPIO-pulse versus FIFO-normalization necessity was not isolated.",
+      "reason": "Loader stalled in transfer/TX-FIFO-empty wait; retained volatile FIFO-start normalization and restored flash reset preparation had been omitted. Complete storage audit preceded the successful qualified route.",
+      "receipt": {
+        "artifact_id": "M5_3_FINAL_DISPOSITION.json",
+        "bytes": 10710,
+        "sha256": "5d0e7177581a65ac16d359b25114c91d131b92806a2700fe09d0b648953aac04"
+      },
+      "state": "FAILED_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "M5-4 V1",
+      "disposition": "M5_4_STOP_FIRST_FORMAL_HARD_FAILURE_EXACT_DEPLOYMENT_INPUT_MISMATCH",
+      "failed_boundary": "host-reference versus physical deployment_input",
+      "failure_preserved": true,
+      "mismatched_codes": 2264,
+      "receipt": {
+        "artifact_id": "M5_4_FINAL_DISPOSITION.json",
+        "bytes": 9807,
+        "sha256": "9a8e4b06901120c6f1ec031655bb1796f591b3597f2f5dcad21b014692e6b1b5"
+      },
+      "state": "NOT ACCEPTED permanently"
+    },
+    {
+      "attempt": "M5-4 V2 scope correction",
+      "reason": "Native frontend is retained-scoped; actual native output is independently quantized, and the captured actual integer input drives downstream exact oracles. V1 is not reclassified or reused as V2 evidence.",
+      "receipt": {
+        "artifact_id": "M5_4_V2_CRITERIA_FREEZE.json",
+        "bytes": 60735,
+        "sha256": "25c0308d53acffd0b5248bbea672486916c09dc36ab2e6166fe8443f3d5725c3"
+      },
+      "state": "PROSPECTIVE_BEFORE_NEW_PHYSICAL_EXECUTION"
+    }
+  ],
+  "limitations": [
+    "Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.",
+    "M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.",
+    "GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary.",
+    "M5-2 qualifies the sealed integer deployment arithmetic on 38 fixtures through the independently qualified Corstone U85 route. M5-4 V2 qualifies actual physical integer inputs and their downstream outputs on five synthetic fixtures and two repeats.",
+    "Physical acceptance is limited to the observed Alif E8 DK M55-HP / Ethos-U85-256, exact firmware, compiled components, configuration and retained runtime. It does not generalize to arbitrary boards or settings.",
+    "Five physical synthetic fixtures do not establish biological accuracy or new V3 biological semantics. Older seven-window B/C evidence stays at its original model/build/runtime/scale.",
+    "No live microphone, acoustic accuracy, whole-domain equivalence, global TensorFlow/deployment equivalence, universal memory safety, final performance/resource proof, H2/H3, regional head, shared-backbone multi-head execution or multi-U85 acceptance is claimed.",
+    "M5-4 V2 used the existing runtime and does not create a new cold-boot proof. Cold boot is optional in the retained contract.",
+    "The waveform SHA-256 was computed/declared by the host and echoed by the board; the board independently checked CRC32. Packet sequence/kind/offset/length/CRC was validated; an original raw packet transcript was not retained.",
+    "Queue registers were observed after the classifier. Backbone completion is bound to stage-specific submission/IRQ hooks and successful queue-wait return, without an intermediate queue-register snapshot claim.",
+    "New firmware byte-identical rebuilds and byte-identical timestamped receipt regeneration have not been established. Retained artifact identities are comparison targets; prospective recreation must keep immutable numerical and payload checks."
+  ],
+  "raw_evidence": "Retained privately and hash-indexed; no raw tensors, logs, model payloads, hardware identifiers or build directories promoted.",
+  "result": "ALL_PREDECESSOR_HARD_GATES_PASS",
+  "schema": "m5-compact-qualified-evidence-v1"
+}

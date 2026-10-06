@@ -1,0 +1,38 @@
+{
+  "Matter_candidate_prerequisite": false,
+  "candidate_supplement": "Prospectively qualified no-Matter workspace with a new firmware identity. This supplement preserves rather than strengthens the frozen V1 recreation contract.",
+  "firmware_byte_identity": {
+    "demonstration": "UNPROVEN",
+    "historical_artifact_identity": "REQUIRED",
+    "requirement": "NOT_REQUIRED"
+  },
+  "fresh_reconstruction": {
+    "claim": "A new candidate can be reconstructed conditionally from published source/configuration with identified exact authoritative/local/licensed prerequisites.",
+    "historical_identity_inheritance": false,
+    "immutable_model_arithmetic_payload_gates": "UNCHANGED",
+    "new_entry_execution_freeze_required": true,
+    "public_only_M5": "NOT_CLAIMED"
+  },
+  "historical_Matter": "MATTER_BINDING_UNRESOLVED_STOP",
+  "local_prerequisites": "records/m5/RECREATION_GUIDANCE.json contains exact complete preflight/recipe/corpus/runtime/payload maps; production Wren is additionally explicitly retained in PRODUCTION_SETUP.json.",
+  "not_claimed": [
+    "turnkey public-only M5 reproduction",
+    "fresh firmware byte-identical rebuild",
+    "automatic physical requalification",
+    "host/native frontend bit equality",
+    "GeM FP32 bit identity",
+    "biological accuracy",
+    "arbitrary-board acceptance"
+  ],
+  "original_disposition": "PUBLIC_RECREATION_CONTRACT_V1_FROZEN",
+  "original_frozen_contract_sha256": "c36e6237c9f9f4e3029191f4c3c724ff3af73743f5c77041e2e04aad7afa186a",
+  "schema": "PUBLIC_RECREATION_CONTRACT_V1_COMPACT_DERIVATIVE",
+  "strongest_honest_public_claim": "Historically accepted M5 uploaded-waveform H1 implementation, exact production source/configuration, compact acceptance evidence, and conditional recreation guidance.",
+  "terminology": {
+    "LOCALLY_RETAINED_REQUIRED": "Explicit required private/licensed input or complete original freeze/recipe dependency; unavailable from Git alone. Preserve the sole authoritative bytes.",
+    "PHYSICAL_ACTION_REQUIRED": "Requires separately authorized hardware access and current physical precondition confirmation.",
+    "PINNED": "Exact authority/tool/configuration identity is fixed and must be verified.",
+    "RECONSTRUCTABLE": "Retained recipe/source/configuration exists; fresh byte identity has not been demonstrated where stated.",
+    "REPRODUCED": "Property demonstrated in retained exact executions; this closure performs no new execution."
+  }
+}

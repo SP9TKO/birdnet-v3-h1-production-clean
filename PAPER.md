@@ -1,7 +1,6 @@
 # BirdNET V3 H1 Clean Reproduction and Live Inference on Alif U8 DK
 
-**Living technical paper — TensorFlow foundation M1–M3 accepted; M4–M5 not
-started**
+**Living technical paper — M1–M5 accepted at the documented H1 scopes**
 
 ## Abstract
 
@@ -16,8 +15,7 @@ standard TensorFlow SavedModel, independently reloads it, reproduces the entire
 four-file tree byte for byte in a second constructor process, and binds its
 aggregate SHA-256 for future conversion. Across five frozen fixtures, all
 official/in-memory/reloaded production comparisons are raw-byte equal.
-PyTorch and ONNX do not participate. No TFLite conversion, quantization, Vela,
-M55, firmware or hardware work is claimed here.
+PyTorch and ONNX do not participate. The later range-covering V3 deployment and M5 qualification extend that foundation through exact integer arithmetic, an exact production bridge/programmed identity and prospective uploaded-waveform physical execution on the observed Alif E8 DK M55-HP/U85-256. Floating frontend/GeM and biological/performance claim boundaries remain explicit.
 
 ## 1. Scope and lineage
 
@@ -35,7 +33,7 @@ Vela / M55 execution
 Alif U8 DK
 ```
 
-This report reaches only the canonical serialized TensorFlow FP32 H1 boundary.
+This report now reaches the scoped accepted physical H1 boundary. The M1–M3 results below retain their original canonical TensorFlow scope.
 It does not retrain, remove classes, implement H2/H3, perform regional class
 projection, create dynamic head packs, schedule multiple NPUs or alter model
 semantics for accelerator convenience. The shared-feature contract remains
@@ -60,7 +58,7 @@ also not an implementation or numerical-authority input.
 
 ## 3. Runtime and method
 
-All acceptance execution uses CPython 3.12.14, TensorFlow 2.21.0 and NumPy
+M1–M3 and canonical host acceptance execution uses CPython 3.12.14, TensorFlow 2.21.0 and NumPy
 2.2.6. TensorFlow intra-op and inter-op thread counts are one. OpenMP, MKL,
 OpenBLAS and NumExpr thread counts are one. `PYTHONHASHSEED=0`, deterministic
 TensorFlow operations and disabled oneDNN are fixed; constant folding and the
@@ -226,23 +224,44 @@ The immutable future-M4 binding is
 `records/m3/CANONICAL_M4_FP32_INPUT.json`; substitution is forbidden without a
 new gate decision.
 
-## 12. Limitations and next boundary
+## 12. Accepted range-covering V3 and M5 results
 
-The fixtures establish engineering conformance only. They do not establish
-biological or ecological accuracy, calibration quality, general behavior on
-all waveforms, or correctness of any later quantized deployment model.
+M5-2: 38/38 fixtures, 152/152 comparisons, 10,727,856 integer elements, 0 mismatches/0 LSB; 8/8 repeat captures byte-identical. M5-3: 271,887 bridge integer comparisons exact, 16 active stale bindings corrected, production build/linked route and complete source→build→programmed chain PASS. M5-4 V2: 5/5 primary fixtures and 7/7 slots, 15 primary/21 total downstream comparisons, 467,400 primary/654,360 total downstream elements exact, 14 U85 submissions/14 completion IRQs, 8/8 repeat captures, scoped memory/integrity PASS.
 
-No production TFLite model exists in the accepted state. No quantization,
-A16W8 work, calibration, Vela compilation, M55 implementation, firmware,
-board programming, memory qualification or Alif U8 execution has begun. M4
-entry is authorized by M3, but M4 has not started.
+V3 construction retains canonical M3 provenance, exact labels, source topology and learned parameters; only the prospectively frozen range-covering output-lattice metadata changes. Independent fresh-process component emission and pinned Vela compilation established the retained executable identities. A fresh byte-identical firmware rebuild is not inferred from build success. Complete source/build/application/ATOC/backbone/classifier readbacks close the programmed identity chain.
 
-## 13. Conclusion
+The independent integer oracle uses a sealed 550-operator arithmetic contract and standard-library scalar implementations, without executing or linking TFLite/Vela/firmware arithmetic. The Corstone variable-input route was prospectively qualified after the original canonical-only formal-entry failure. The first OSPI programming failure is also retained with its qualified recovery and full readback conclusion.
 
-M1–M3 establish a mechanically traced, parameter-exact, numerically exact and
-byte-reproducible TensorFlow FP32 H1 foundation from the official TensorFlow
-release. The sole canonical serialized input for any future M4 has aggregate
-tree SHA-256
-`4321d40230ba518912a7629ecc11cede7cf3c917e3ab4f8331b04e769b6dd22a`.
-The project remains incomplete until later, separately gated work demonstrates
-live H1 inference on the Alif U8 DK.
+M5-4 V1 remains permanently NOT ACCEPTED: canonical host-reference versus physical deployment-input equality had 2,264 mismatched codes. V2 prospectively corrected that stronger-than-retained frontend boundary before new physical execution. It independently quantizes captured native output and feeds the actual captured integer input to downstream exact oracles. No V1 capture counts as V2 execution. Native quantization covers 1,321,824 exact codes; the captured-embedding bridge covers 8,960 exact codes.
+
+## 13. Limitations
+
+- Native Path C frontend is scoped and numerically qualified. Host-reference/native frontend float or deployment-input bit identity is not established.
+- M5-4 V1 permanently failed its stronger host-reference deployment-input equality boundary: 2,264 canonical codes differed. V2 prospectively corrected the authority boundary before its separate fresh physical campaign.
+- GeM FP32 residual is characterization only. GeM FP32 bit identity and a new floating tolerance are not claimed; classifier-input INT16 exactness is a hard accepted boundary.
+- M5-2 qualifies the sealed integer deployment arithmetic on 38 fixtures through the independently qualified Corstone U85 route. M5-4 V2 qualifies actual physical integer inputs and their downstream outputs on five synthetic fixtures and two repeats.
+- Physical acceptance is limited to the observed Alif E8 DK M55-HP / Ethos-U85-256, exact firmware, compiled components, configuration and retained runtime. It does not generalize to arbitrary boards or settings.
+- Five physical synthetic fixtures do not establish biological accuracy or new V3 biological semantics. Older seven-window B/C evidence stays at its original model/build/runtime/scale.
+- No live microphone, acoustic accuracy, whole-domain equivalence, global TensorFlow/deployment equivalence, universal memory safety, final performance/resource proof, H2/H3, regional head, shared-backbone multi-head execution or multi-U85 acceptance is claimed.
+- M5-4 V2 used the existing runtime and does not create a new cold-boot proof. Cold boot is optional in the retained contract.
+- The waveform SHA-256 was computed/declared by the host and echoed by the board; the board independently checked CRC32. Packet sequence/kind/offset/length/CRC was validated; an original raw packet transcript was not retained.
+- Queue registers were observed after the classifier. Backbone completion is bound to stage-specific submission/IRQ hooks and successful queue-wait return, without an intermediate queue-register snapshot claim.
+- New firmware byte-identical rebuilds and byte-identical timestamped receipt regeneration have not been established. Retained artifact identities are comparison targets; prospective recreation must keep immutable numerical and payload checks.
+
+## 14. Cumulative evidence and conclusion
+
+The five defined H1 milestones are accepted at their retained scopes. M5-5 closes compact cumulative evidence and exact recreation guidance under D-002/D-011/D-013 and the retention policy. [The accepted state](records/m5/ACCEPTED_STATE.json), [gate matrix](records/m5/CUMULATIVE_GATE_MATRIX.json), [identity chain](records/m5/ACCEPTED_IDENTITY_CHAIN.json) and [recreation guide](records/m5/RECREATION.md) provide the authoritative compact records. Raw private measurement evidence and material failures remain preserved, with model/data/vendor licensing unchanged.
+
+The retained uploaded-waveform objective is reached on the observed exact target. Live microphone qualification, biological/acoustic accuracy, performance/resource proof, public release and paper publication remain separate work. No repository commit, push, merge, tag or binary release is implied by milestone acceptance.
+
+## 15. Separately qualified no-Matter public candidate
+
+Historical M5 remains **ACCEPTED** at its original uploaded-waveform H1 scope. Its historical Matter source binding remains `MATTER_BINDING_UNRESOLVED_STOP`: the accepted workspace discovered Matter Kconfig inputs, but its exact source revision could not be bound.
+
+The clean public candidate removes Matter prospectively through [the flat workspace manifest](firmware/h1/workspace/west.yml). It separately passed `H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS` and `H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS`, reaching `NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED`. This candidate has a new firmware identity; historical firmware byte equality is not claimed and historical M5 was not reaccepted.
+
+The physical campaign covers only canonical and high_valid_two_tone with immediate repeats: four slots PASS, 12 downstream comparisons / 373,920 integer elements / 0 mismatch / 0 LSB, historical 8/8 boundaries byte-identical, repeat 8/8 boundaries byte-identical, and 8 U85 submissions / 8 completion IRQs. The historical five-fixture M5 campaign was not rerun. No biological-accuracy or arbitrary-board claim follows.
+
+Use [the candidate authority](records/release/CANDIDATE_AUTHORITY.json), [static/build evidence](records/release/NO_MATTER_STATIC_BUILD.json), [physical evidence](records/release/NO_MATTER_PHYSICAL.json), [production setup](records/release/PRODUCTION_SETUP.json) and [candidate recreation](records/release/RECREATION.md). Wren remains a mandatory locally retained 384,000-byte build input; no public-only M5 or fresh historical executable-byte reconstruction is promised.
+
+The original M5 documentation digest remains historical evidence in [DOCUMENTATION_IDENTITY.json](records/m5/DOCUMENTATION_IDENTITY.json). [DOCUMENTATION_SUPPLEMENT.json](records/release/DOCUMENTATION_SUPPLEMENT.json) binds the current candidate document hashes separately.

@@ -1,0 +1,84 @@
+{
+  "accepted_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "candidate_artifacts": {
+    "ATOC": {
+      "bytes": 3888,
+      "sha256": "9a6028e0d0d15db388279b351ccf9a607542b0f054272457e522c9c570fdff13"
+    },
+    "BIN": {
+      "bytes": 1693992,
+      "sha256": "2d6a6263e090b9d3fb068b284f4f41dc6f1a912f1728859289624bd4225d94af"
+    },
+    "DTS": {
+      "bytes": 83923,
+      "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+    },
+    "ELF": {
+      "bytes": 10065744,
+      "sha256": "b75b63eff5dca8b85aea0cf156b73f928ef77ca5e734781da1ea5f94769566df"
+    },
+    "application": {
+      "bytes": 1694000,
+      "sha256": "cdd5c3aa0879a3ec6db33dddbe46f159defb2718f0f6aeac6365d4a21195c0f3"
+    },
+    "config": {
+      "bytes": 49649,
+      "sha256": "385328c12c15c3d65c6ff4b37d6a415d6825042c3004e2ac9a96a491501bb834"
+    }
+  },
+  "candidate_state": "NO_MATTER_PUBLIC_CANDIDATE_QUALIFIED",
+  "date": "2026-10-06",
+  "historical_M5": {
+    "disposition": "M5_5_CUMULATIVE_EVIDENCE_AND_RECREATION_CLOSURE_PASS",
+    "primary_public_record": "records/m5/ACCEPTED_STATE.json",
+    "state": "HISTORICAL_M5_ACCEPTED"
+  },
+  "historical_Matter": "MATTER_BINDING_UNRESOLVED_STOP",
+  "implementation": "Historical accepted H1 project source + separately qualified no-Matter workspace/module configuration + static/build qualification + finite-scope physical equivalence qualification",
+  "limitations": [
+    "Qualification is restricted to canonical and high_valid_two_tone and their immediate repeats on the observed Alif E8 DK M55-HP / Ethos-U85-256.",
+    "The candidate has a new firmware identity. Historical firmware byte equality and fresh historical executable-byte reconstruction are NOT_REQUIRED / UNPROVEN.",
+    "Historical M5 was not reaccepted and the full historical five-fixture M5 campaign was not rerun.",
+    "No arbitrary-board acceptance, biological accuracy, live-microphone qualification, universal equivalence or final performance/resource proof.",
+    "GeM FP32 residual approximately 1.49e-8 is characterization; accepted classifier-input INT16 remains exact."
+  ],
+  "physical_disposition": "H1_NO_MATTER_PHYSICAL_EQUIVALENCE_PASS",
+  "private_payload_publication": false,
+  "public_base": "f2293668e657c0659fad075e4f69fdfd063f7432",
+  "raw_authority_identities": {
+    "historical_capture_authority": {
+      "bytes": 8184,
+      "sha256": "1371326642c16d9a13156165513359824a2d4b9b152cc1d3e07bb8fbb02e55ff"
+    },
+    "no_Matter_manifest": {
+      "bytes": 5728,
+      "sha256": "6ded24c5aff6efc30e2fc7840d3335f0be4942eb5de25bcacc64274efd405302"
+    },
+    "physical_criteria": {
+      "bytes": 49856,
+      "sha256": "c173ec8ec14305a1432d14f08646c59a7c26d6bcde1f4fa7f4c93ee223f50e6e"
+    },
+    "physical_disposition": {
+      "bytes": 279484,
+      "sha256": "7dc1bd8a185cb5cd5b6e1b31daa792be1b101024b6d0a72814641bb3bd89f8d9"
+    },
+    "physical_execution_manifest": {
+      "bytes": 49537,
+      "sha256": "ae5ab7e95092822797f150d93a17201e113a0d588dbebfa660a9e6c6a4fefde7"
+    },
+    "removal_mechanism": {
+      "bytes": 2816,
+      "sha256": "14ec97419b5e507b959875e1150171ef647015c3cfb1a4df0f66afc9d8b58f6b"
+    },
+    "static_criteria": {
+      "bytes": 7940,
+      "sha256": "06493affcc6760a67cded40eb9bf137f7ce157ed1bdfc355d6a0491dfff57662"
+    },
+    "static_disposition": {
+      "bytes": 16469,
+      "sha256": "2d0c1530ed5ff52f587f3af01eeb3296afb945294c140f00cf707ae89ce4e82b"
+    }
+  },
+  "schema": "PUBLIC_NO_MATTER_CANDIDATE_AUTHORITY_V1",
+  "static_disposition": "H1_NO_MATTER_STATIC_AND_BUILD_EQUIVALENCE_PASS"
+}

@@ -1,0 +1,68 @@
+{
+  "commit_required": false,
+  "compact_evidence": {
+    "bytes": 12123,
+    "path": "records/m5/QUALIFIED_EVIDENCE.json",
+    "sha256": "ac50dc3df000b1968849d64b5726592cb10ba450c9f4b54039ca92063c73672f"
+  },
+  "date": "2026-10-05",
+  "documentation_bundle_sha256": "ac30dd74de5f86bf722283aeb68dc3862e651f81d251a75430db122303141be3",
+  "exact_requirement": "Compact cumulative qualified evidence and recreation guidance once all hard gates pass",
+  "formal_assignment": "Only after final adversarial review and exact tracked preparation; top-level accepted state binds the final review.",
+  "human_recreation": {
+    "bytes": 15191,
+    "path": "records/m5/RECREATION.md",
+    "sha256": "f02a6dc49db2efb61c952fccbb80b773e6dfc7bcf88b89d2cd96599333c1c00e"
+  },
+  "predecessors": {
+    "M5_2": {
+      "artifact_id": "M5_2_EXACT_CONFORMANCE_RESULT.json",
+      "bytes": 170998,
+      "sha256": "210b7393c1a8203bcbfe43949517d4e9ac7e568495815eba77e63c9c98ab272a"
+    },
+    "M5_3": {
+      "artifact_id": "M5_3_FINAL_DISPOSITION_V2.json",
+      "bytes": 9557,
+      "sha256": "fe4572bf8f7dece2f9c7899d49a8e09b71c4e5f94e7369821e163afc97fdbead"
+    },
+    "M5_4_V2": {
+      "artifact_id": "M5_4_V2_FINAL_DISPOSITION.json",
+      "bytes": 20249,
+      "sha256": "00086426e2a28308f241ad65878e7a9f0d18ff82b9162642194c97ec72908f68"
+    }
+  },
+  "production_source_bundle_sha256": "485cfc634d27b85d1ebb19c92da85fbe37db277ef7e3b6ac8b403570c20fcd91",
+  "proposed_success_disposition": "M5_5_CUMULATIVE_EVIDENCE_AND_RECREATION_CLOSURE_PASS",
+  "public_compact_preparation_required": true,
+  "publication_authorization": "ABSENT",
+  "push_required": false,
+  "recreation_guidance": {
+    "bytes": 63837,
+    "path": "records/m5/RECREATION_GUIDANCE.json",
+    "sha256": "3c6fd937d16935053f90ae420276a32fcaa6c5b541866185cea9468ab16f1457"
+  },
+  "required_authorities": [
+    "D-002",
+    "D-011",
+    "D-013",
+    "EVIDENCE_RETENTION_POLICY"
+  ],
+  "required_property_checks": {
+    "accepted_predecessors": "PASS",
+    "compact_receipt_bound_evidence": "PASS",
+    "cumulative_project_status_decision_paper_reconciliation": "PASS",
+    "explicit_input_output_tool_recipe_recreation_checks": "PASS",
+    "known_limitations_and_material_failures_preserved": "PASS",
+    "public_compact_derivatives_only": "PASS",
+    "qualified_production_source_unchanged": "PASS",
+    "retained_scriptable_source_and_config": "PASS",
+    "retention_classification_no_deletion": "PASS"
+  },
+  "retained_definition": {
+    "artifact_id": "PROSPECTIVE_M4_M5_CLOSURE_CRITERIA.json",
+    "bytes": 6501,
+    "sha256": "134fc7d1d0e38ab6b24cf17c6c4aa74d08cfab9ba0979fff9493e017b9d2674f"
+  },
+  "schema": "m5-5-closure-requirements-receipt-v1",
+  "tag_required": false
+}

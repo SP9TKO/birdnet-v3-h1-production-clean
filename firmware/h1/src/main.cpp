@@ -7,11 +7,17 @@
 #include "audio_i2s.hpp"
 #endif
 #include "frontend.hpp"
+#if defined(H1_FRONTEND_DIAGNOSTICS)
+#include "frontend_diagnostics.hpp"
+#endif
 #include "frontend_m55_spectral.hpp"
 #include "h1_gem.hpp"
+#include "classifier_bridge.hpp"
 #include "h1_contract.h"
 #include "model_storage.hpp"
+#include "numeric_error_metrics.hpp"
 #include "run_state.hpp"
+#include "sha256.hpp"
 #include "h1_memory_contract.h"
 #include "h1_memory.hpp"
 #include "runtime_profile.h"
@@ -26,6 +32,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <limits>
 
 #include <cmsis_core.h>
 #include <ethosu_driver.h>
@@ -73,6 +80,7 @@ enum class RunStatus : uint32_t {
 	Classifier = 6,
 	Postprocess = 7,
 	Profile = 8,
+	NotReady = 9,
 };
 
 struct H1TopEntry {
@@ -87,6 +95,7 @@ struct H1RunResult {
 	FixtureId fixture;
 	RunStatus status;
 	uint32_t canonicalSynthetic;
+	bool frontendNative;
 	uint32_t inputCrc32;
 	char inputSha256[65];
 	uint32_t finiteCount;
@@ -149,6 +158,8 @@ H1FrontendStatus gM55FrontendStatus = H1FrontendStatus::InvalidInput;
 H1M55FrontendExecution gM55FrontendExecution{};
 bool gM55FrontendCommandCurrent;
 bool gM55FrontendValid;
+// True only while complete inference boundary buffers are current.
+bool gInferenceDataValid;
 #if H1_RAW_MEMORY_READ_DIAGNOSTIC
 constexpr uint32_t kRawReadDoneMagic = UINT32_C(0x52444f4e);
 constexpr uint32_t kRawReadUnarmed = UINT32_MAX;
@@ -160,6 +171,7 @@ volatile uint32_t gRawReadCompletionMarker;
 H1UploadState gUpload;
 uint32_t gRunSequence;
 bool gComputeReady;
+bool gModelStorageVerified;
 
 uint32_t crc32(const uint8_t *data, size_t bytes)
 {
@@ -230,6 +242,8 @@ const char *runStatusName(RunStatus status)
 		return "postprocess";
 	case RunStatus::Profile:
 		return "profile";
+	case RunStatus::NotReady:
+		return "not_ready";
 	}
 	return "unknown";
 }
@@ -479,26 +493,6 @@ void quantizeBackboneInput(const float *input, int16_t *output, size_t elements,
 	}
 }
 
-void quantizeClassifierInput(const float *input, int16_t *output, size_t elements,
-			     size_t &saturatedLow, size_t &saturatedHigh)
-{
-	const float scale = floatFromBits(H1_CLASSIFIER_INPUT_SCALE_BITS);
-	saturatedLow = 0;
-	saturatedHigh = 0;
-	for (size_t index = 0; index < elements; ++index) {
-		const float scaled = input[index] / scale;
-		float rounded = scaled >= 0.0f ? ::floorf(scaled + 0.5f)
-					       : ::ceilf(scaled - 0.5f);
-		if (rounded < -32768.0f) {
-			rounded = -32768.0f;
-			++saturatedLow;
-		} else if (rounded > 32767.0f) {
-			rounded = 32767.0f;
-			++saturatedHigh;
-		}
-		output[index] = static_cast<int16_t>(rounded);
-	}
-}
 
 bool betterScore(const float *scores, uint32_t left, uint32_t right)
 {
@@ -569,8 +563,11 @@ void recordBoundaryCrcs(H1RunResult &result, const H1Boundaries &boundaries)
 }
 
 bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc,
-	     const char *inputSha256, bool canonicalSynthetic, H1RunResult &result)
+	     const char *inputSha256, bool canonicalSynthetic, H1RunResult &result,
+	     bool legacyReference = false)
 {
+	gInferenceDataValid = false;
+	gM55FrontendValid = false;
 	h1RunStateMark(H1RunState::RunOnceEnter);
 	memset(&result, 0, sizeof(result));
 	result.resultVersion = 1;
@@ -578,6 +575,11 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	result.fixture = fixture;
 	result.status = RunStatus::NotRun;
 	result.canonicalSynthetic = canonicalSynthetic;
+	result.frontendNative = !legacyReference;
+	if (!gComputeReady || !gModelStorageVerified) {
+		result.status = RunStatus::NotReady;
+		return false;
+	}
 	result.inputCrc32 = crc32(reinterpret_cast<const uint8_t *>(waveform),
 				  H1_WAVEFORM_BYTES);
 	strncpy(result.inputSha256, inputSha256, sizeof(result.inputSha256) - 1);
@@ -595,9 +597,11 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1RunStateMark(H1RunState::FrontendBegin);
 	result.profile.pre_frontend_overhead_cycles =
 		frontendStart - totalStart;
-	const H1FrontendStatus frontendStatus = h1RunFrontend(
-		waveform, H1_WAVEFORM_ELEMENTS, scratch, boundaries.frontend,
-		H1_FRONTEND_ELEMENTS);
+	const H1FrontendStatus frontendStatus = legacyReference
+		? h1RunFrontendLegacy(waveform, H1_WAVEFORM_ELEMENTS, scratch,
+			boundaries.frontend, H1_FRONTEND_ELEMENTS)
+		: h1RunFrontend(waveform, H1_WAVEFORM_ELEMENTS, scratch,
+			gM55FrontendRuntime, boundaries.frontend, H1_FRONTEND_ELEMENTS);
 	const uint64_t frontendEnd = h1ProfileNow();
 	result.profile.frontend_cycles = frontendEnd - frontendStart;
 	if (frontendStatus != H1FrontendStatus::Ok || frontendEnd <= frontendStart) {
@@ -656,8 +660,13 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1RunStateMark(H1RunState::GemDone);
 
 	const uint64_t classifierQuantizeStart = h1ProfileNow();
-	quantizeClassifierInput(boundaries.embedding, boundaries.classifierInput,
-				H1_CLASSIFIER_INPUT_ELEMENTS, saturatedLow, saturatedHigh);
+	if (!birdnet::h1::quantizeClassifierInput(
+		    boundaries.embedding, boundaries.classifierInput,
+		    H1_CLASSIFIER_INPUT_ELEMENTS, saturatedLow, saturatedHigh)) {
+		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
+		result.status = RunStatus::Gem;
+		return false;
+	}
 	const uint64_t classifierQuantizeEnd = h1ProfileNow();
 	result.profile.embedding_to_classifier_quantize_cycles =
 		classifierQuantizeEnd - classifierQuantizeStart;
@@ -695,6 +704,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	recordBoundaryCrcs(result, boundaries);
 	result.status = RunStatus::Ok;
 	result.valid = 1;
+	gInferenceDataValid = true;
 	return true;
 }
 
@@ -1192,6 +1202,7 @@ bool numericallyEqual(const H1RunResult &left, const H1RunResult &right)
 void saveResult(H1RunResult &result)
 {
 	if (gLastResult.valid && result.valid &&
+	    gLastResult.frontendNative == result.frontendNative &&
 	    gLastResult.inputCrc32 == result.inputCrc32 &&
 	    strcmp(gLastResult.inputSha256, result.inputSha256) == 0) {
 		result.repeatComparable = 1;
@@ -1374,13 +1385,15 @@ void sendStatus(const H1UsbFrame &request)
 	const int length = snprintf(
 		response, H1_PROTOCOL_RESPONSE_BYTES,
 		"{\"ok\":true,\"scope\":\"H1_ENGINEERING_DEVELOPMENT\","
-		"\"compute_ready\":%s,\"usb_initialized\":%s,\"usb_enabled\":%s,"
+		"\"compute_ready\":%s,\"model_storage_verified\":%s,\"usb_initialized\":%s,\"usb_enabled\":%s,"
 		"\"vbus_present\":%s,\"configured\":%s,\"dtr\":%s,"
 		"\"bus_speed\":\"%s\",\"controller_maximum_speed\":\"%s\","
 		"\"connection_generation\":%u,\"received_bytes\":%u,"
 		"\"transmitted_bytes\":%u,\"last_stack_error\":%d,"
 		"\"upload_valid\":%s,\"result_valid\":%s,\"profile_valid\":%s}",
-		gComputeReady ? "true" : "false", usb.initialized ? "true" : "false",
+		gComputeReady ? "true" : "false",
+		gModelStorageVerified ? "true" : "false",
+		usb.initialized ? "true" : "false",
 		usb.enabled ? "true" : "false", usb.vbusPresent ? "true" : "false",
 		usb.configured ? "true" : "false", usb.dtr ? "true" : "false",
 		h1UsbSpeedName(usb.busSpeed), h1UsbSpeedName(usb.controllerMaximumSpeed),
@@ -1395,17 +1408,487 @@ void sendStatus(const H1UsbFrame &request)
 	}
 }
 
+void compareNumericErrorSelfTest(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0) {
+		sendError(request, "INVALID_ARGUMENT",
+			  "CompareNumericErrorSelfTest takes no payload");
+		return;
+	}
+	const float reference[] = {
+		1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f,
+		std::numeric_limits<float>::quiet_NaN(),
+	};
+	const float candidate[] = {
+		1.0f, 2.5f, 1.0f, -1.0f, 9.0f, 6.0f, 8.0f,
+		std::numeric_limits<float>::infinity(),
+	};
+	const int16_t referenceInt16[] = {0, 1, -1, 100, -100, 32767, -32768};
+	const int16_t candidateInt16[] = {0, 2, -3, 98, -97, 32767, -32760};
+	h1diag::FloatBufferErrorMetrics floating{};
+	h1diag::Int16BufferErrorMetrics integer{};
+	if (!h1diag::compareFloatBuffers(reference, candidate,
+					 sizeof(reference) / sizeof(reference[0]), floating) ||
+	    !h1diag::compareInt16Buffers(referenceInt16, candidateInt16,
+					 sizeof(referenceInt16) / sizeof(referenceInt16[0]),
+					 integer)) {
+		sendError(request, "NUMERIC_COMPARISON_FAILED",
+			  "Deterministic comparison buffers were rejected");
+		return;
+	}
+	const bool knownVectorPass = floating.elementCount == 8 &&
+		floating.referenceFiniteCount == 7 &&
+		floating.candidateFiniteCount == 7 &&
+		floating.finitePairCount == 7 &&
+		floating.maximumAbsoluteError == 5.0 &&
+		std::fabs(floating.meanAbsoluteError - (12.5 / 7.0)) < 1.0e-12 &&
+		integer.elementCount == 7 && integer.mismatchedElements == 5 &&
+		integer.maximumAbsoluteDelta == 8 && integer.deltaOneCount == 1 &&
+		integer.deltaTwoCount == 2 && integer.deltaGreaterThanTwoCount == 2;
+	char *response = h1ProtocolResponse();
+	const int length = snprintf(
+		response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":%s,\"command\":\"NUMERIC_ERROR_SELF_TEST\","
+		"\"float\":{\"element_count\":%u,\"reference_finite_count\":%u,"
+		"\"candidate_finite_count\":%u,\"finite_pair_count\":%u,"
+		"\"mean_absolute_error\":%.12g,\"rms_error\":%.12g,"
+		"\"relative_rms_error\":%.12g,\"max_absolute_error\":%.12g,"
+		"\"reference_crc32\":\"%08x\",\"candidate_crc32\":\"%08x\"},"
+		"\"int16\":{\"element_count\":%u,\"mismatched_elements\":%u,"
+		"\"max_absolute_delta\":%u,\"delta_one_count\":%u,"
+		"\"delta_two_count\":%u,\"delta_greater_than_two_count\":%u,"
+		"\"reference_crc32\":\"%08x\",\"candidate_crc32\":\"%08x\"}}",
+		knownVectorPass ? "true" : "false", floating.elementCount,
+		floating.referenceFiniteCount, floating.candidateFiniteCount,
+		floating.finitePairCount, floating.meanAbsoluteError,
+		floating.rootMeanSquareError, floating.relativeRootMeanSquareError,
+		floating.maximumAbsoluteError, floating.referenceCrc32,
+		floating.candidateCrc32, integer.elementCount,
+		integer.mismatchedElements, integer.maximumAbsoluteDelta,
+		integer.deltaOneCount, integer.deltaTwoCount,
+		integer.deltaGreaterThanTwoCount, integer.referenceCrc32,
+		integer.candidateCrc32);
+	if (length > 0 && length < int(H1_PROTOCOL_RESPONSE_BYTES)) {
+		sendJson(request, response, static_cast<size_t>(length));
+	} else {
+		sendError(request, "FORMAT_OVERFLOW",
+			  "Numeric comparison report did not fit");
+	}
+}
+
+void compareNativeSpectral(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0) {
+		sendError(request, "INVALID_ARGUMENT",
+			  "CompareNativeSpectral takes no payload");
+		return;
+	}
+
+	constexpr uint32_t frameCount = H1_M55_FRAME_COUNT;
+	constexpr uint32_t spectrumBins = H1_M55_RFFT_BINS;
+	constexpr size_t valuesPerFrame = H1_M55_RFFT_BINS;
+	const float *const waveform = h1SyntheticWaveformData;
+	const float *nativeHann = nullptr;
+	H1FrontendScratch &scratch = h1FrontendScratch();
+	if (!h1GetFrontendHann(&nativeHann)) {
+		sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+			  "failure_stage=HANN_CONSTANTS");
+		return;
+	}
+	const H1FrontendStatus referenceInit =
+		h1InitializeReferenceSpectral(scratch);
+	if (referenceInit != H1FrontendStatus::Ok) {
+		sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+			  "failure_stage=REFERENCE_FFT_INIT");
+		return;
+	}
+	if (!h1M55SpectralPrepare(&gM55Spectral.context,
+				  &h1M55SpectralWorkspace())) {
+		sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+			  "failure_stage=NATIVE_FFT_INIT");
+		return;
+	}
+
+	uint32_t referenceFinite = 0;
+	uint32_t candidateFinite = 0;
+	uint32_t finitePairs = 0;
+	uint32_t framesCompleted = 0;
+	uint32_t clockHz = 0;
+	uint32_t referenceCrcState = UINT32_C(0xffffffff);
+	uint32_t candidateCrcState = UINT32_C(0xffffffff);
+	double absoluteErrorSum = 0.0;
+	double errorSquares = 0.0;
+	double referenceSquares = 0.0;
+	double maximumAbsoluteError = 0.0;
+	uint64_t totalCycles = 0;
+	uint64_t framePreparationCycles = 0;
+	uint64_t hannCycles = 0;
+	uint64_t fftCycles = 0;
+	uint64_t realSplitCycles = 0;
+	uint64_t powerCycles = 0;
+
+	auto updateCrc = [](uint32_t &state, const float *values, size_t elements) {
+		const auto *const bytes = reinterpret_cast<const uint8_t *>(values);
+		for (size_t index = 0; index < elements * sizeof(float); ++index) {
+			state ^= bytes[index];
+			for (unsigned bit = 0; bit < 8; ++bit) {
+				state = (state >> 1) ^
+					(UINT32_C(0xedb88320) & (0u - (state & 1u)));
+			}
+		}
+	};
+
+	for (uint32_t frame = 0; frame < frameCount; ++frame) {
+		if (h1RunReferenceSpectralFrame(
+			    waveform, H1_WAVEFORM_ELEMENTS, scratch,
+			    static_cast<int>(frame)) != H1FrontendStatus::Ok) {
+			sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+				  "failure_stage=REFERENCE_FRAME");
+			return;
+		}
+
+		H1M55SpectralTiming timing{};
+		H1M55SpectralCapture capture{
+			nullptr, nullptr, nullptr, gM55Spectral.power, &timing, nullptr};
+		const uint64_t nativeStart = k_cycle_get_64();
+		const bool nativeOk = h1M55SpectralProcessFrame(
+			&gM55Spectral.context, waveform, H1_WAVEFORM_ELEMENTS,
+			nativeHann, static_cast<int>(frame), &capture,
+			H1_M55_STAGE_POWER_CMSIS_MAG_SQUARED, false);
+		const uint64_t nativeEnd = k_cycle_get_64();
+		if (!nativeOk) {
+			sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+				  "failure_stage=NATIVE_SPECTRAL_FRAME");
+			return;
+		}
+		if (clockHz == 0) {
+			clockHz = timing.clockHz;
+		}
+		totalCycles += nativeEnd - nativeStart;
+		framePreparationCycles += timing.framePreparationCycles;
+		hannCycles += timing.hannCycles;
+		fftCycles += timing.cfftCycles;
+		realSplitCycles += timing.realSplitCycles;
+		powerCycles += timing.powerCmsisMagSquaredCycles;
+
+		h1diag::FloatBufferErrorMetrics frameMetrics{};
+		if (!h1diag::compareFloatBuffers(scratch.power, gM55Spectral.power,
+						 valuesPerFrame, frameMetrics)) {
+			sendError(request, "SPECTRAL_DIAGNOSTIC_FAILED",
+				  "failure_stage=NUMERIC_COMPARISON");
+			return;
+		}
+		referenceFinite += frameMetrics.referenceFiniteCount;
+		candidateFinite += frameMetrics.candidateFiniteCount;
+		finitePairs += frameMetrics.finitePairCount;
+		updateCrc(referenceCrcState, scratch.power, valuesPerFrame);
+		updateCrc(candidateCrcState, gM55Spectral.power, valuesPerFrame);
+		for (size_t bin = 0; bin < valuesPerFrame; ++bin) {
+			const float reference = scratch.power[bin];
+			const float candidate = gM55Spectral.power[bin];
+			if (!std::isfinite(reference) || !std::isfinite(candidate)) {
+				continue;
+			}
+			const double referenceValue = static_cast<double>(reference);
+			const double error = std::fabs(
+				referenceValue - static_cast<double>(candidate));
+			absoluteErrorSum += error;
+			errorSquares += error * error;
+			referenceSquares += referenceValue * referenceValue;
+			if (error > maximumAbsoluteError) {
+				maximumAbsoluteError = error;
+			}
+		}
+		++framesCompleted;
+	}
+
+	const uint32_t totalValues = frameCount * spectrumBins;
+	const double pairCount = finitePairs ? static_cast<double>(finitePairs) : 1.0;
+	const double meanAbsoluteError = absoluteErrorSum / pairCount;
+	const double rmsError = std::sqrt(errorSquares / pairCount);
+	const double relativeRms = referenceSquares > 0.0
+		? std::sqrt(errorSquares / referenceSquares) : 0.0;
+	const bool allFinite = referenceFinite == totalValues &&
+		candidateFinite == totalValues && finitePairs == totalValues;
+	const bool numericPass = allFinite && relativeRms <= 1.0e-6 &&
+		maximumAbsoluteError <= 2.0e-4;
+	const double cyclesToUs = clockHz != 0
+		? 1000000.0 / static_cast<double>(clockHz) : 0.0;
+	char *response = h1ProtocolResponse();
+	const int length = snprintf(
+		response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":true,\"command\":\"COMPARE_NATIVE_SPECTRAL\","
+		"\"executed\":%s,\"numeric_pass\":%s,\"failure_stage\":\"%s\","
+		"\"power_implementation\":\"CMSIS arm_cmplx_mag_squared_f32 with scalar DC/Nyquist squares\","
+		"\"reference_semantics\":\"tflm_signal RFFT, hypotf magnitude squared\","
+		"\"frame_count\":%u,\"spectrum_bins\":%u,"
+		"\"finite_reference\":%u,\"finite_candidate\":%u,\"finite_pairs\":%u,"
+		"\"mae\":%.12g,\"rms\":%.12g,\"relative_rms\":%.12g,"
+		"\"max_abs\":%.12g,\"reference_crc32\":\"%08x\","
+		"\"candidate_crc32\":\"%08x\",\"clock_hz\":%u,"
+		"\"total_cycles\":%llu,\"total_us\":%.6f,"
+		"\"frame_preparation_cycles\":%llu,\"frame_preparation_us\":%.6f,"
+		"\"hann_cycles\":%llu,\"hann_us\":%.6f,"
+		"\"fft_cycles\":%llu,\"fft_us\":%.6f,"
+		"\"real_split_cycles\":%llu,\"real_split_us\":%.6f,"
+		"\"power_cycles\":%llu,\"power_us\":%.6f}",
+		framesCompleted == frameCount ? "true" : "false",
+		numericPass ? "true" : "false",
+		numericPass ? "NONE" : (allFinite ? "NUMERICAL_THRESHOLDS" : "NONFINITE"),
+		frameCount, spectrumBins, referenceFinite, candidateFinite, finitePairs,
+		meanAbsoluteError, rmsError, relativeRms, maximumAbsoluteError,
+		~referenceCrcState, ~candidateCrcState, clockHz,
+		static_cast<unsigned long long>(totalCycles),
+		static_cast<double>(totalCycles) * cyclesToUs,
+		static_cast<unsigned long long>(framePreparationCycles),
+		static_cast<double>(framePreparationCycles) * cyclesToUs,
+		static_cast<unsigned long long>(hannCycles),
+		static_cast<double>(hannCycles) * cyclesToUs,
+		static_cast<unsigned long long>(fftCycles),
+		static_cast<double>(fftCycles) * cyclesToUs,
+		static_cast<unsigned long long>(realSplitCycles),
+		static_cast<double>(realSplitCycles) * cyclesToUs,
+		static_cast<unsigned long long>(powerCycles),
+		static_cast<double>(powerCycles) * cyclesToUs);
+	if (length > 0 && length < int(H1_PROTOCOL_RESPONSE_BYTES)) {
+		sendJson(request, response, static_cast<size_t>(length));
+	} else {
+		sendError(request, "FORMAT_OVERFLOW",
+			  "Native spectral report did not fit");
+	}
+}
+
+bool appendCompactMelMetrics(char *response, size_t capacity, size_t &used,
+			     const char *name,
+			     const H1M55CompactScalarMelMetrics &metrics)
+{
+	return append(response, capacity, used,
+		"\"%s\":{\"elements\":%u,\"finite_reference\":%u,"
+		"\"finite_candidate\":%u,\"finite_pairs\":%u,"
+		"\"mae\":%.12g,\"rms\":%.12g,\"relative_rms\":%.12g,"
+		"\"max_abs\":%.12g,\"exact_bit_matches\":%u,"
+		"\"crc_equal\":%s,\"reference_crc32\":\"%08x\","
+		"\"candidate_crc32\":\"%08x\"}",
+		name, metrics.elementCount, metrics.finiteReference,
+		metrics.finiteCandidate, metrics.finitePairs,
+		metrics.meanAbsoluteError, metrics.rootMeanSquareError,
+		metrics.relativeRootMeanSquareError, metrics.maximumAbsoluteError,
+		metrics.exactBitMatches,
+		metrics.referenceCrc32 == metrics.candidateCrc32 ? "true" : "false",
+		metrics.referenceCrc32, metrics.candidateCrc32);
+}
+
+void compareCompactScalarMel(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0 || !gUpload.valid ||
+	    !h1FrontendM55Ready(gM55FrontendRuntime)) {
+		sendError(request, "COMPACT_MEL_REQUIRES_UPLOAD",
+			  "Upload the canonical waveform and initialize the frontend first");
+		return;
+	}
+	H1M55CompactScalarMelReport report{};
+	if (!h1RunCompactScalarMelDiagnostic(
+		    h1UploadedWaveform(), H1_WAVEFORM_ELEMENTS, h1FrontendScratch(),
+		    gM55FrontendRuntime, report)) {
+		sendError(request, "COMPACT_MEL_DIAGNOSTIC_FAILED",
+			  "Reference, compact representation, or native spectral path failed");
+		return;
+	}
+	char *response = h1ProtocolResponse();
+	size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"frame_count\":%u,\"mel_bins\":%u,"
+		"\"value_count\":%u,\"compact_weight_count\":%u,"
+		"\"compact_structure_valid\":%s,"
+		"\"compact_weight_identity_valid\":%s,\"clock_hz\":%u,"
+		"\"dense_native_power_crc32\":\"%08x\","
+		"\"compact_native_power_crc32\":\"%08x\",\"isolation\":{",
+		report.frameCount, report.melBins, report.valueCount,
+		report.compactWeightCount,
+		report.compactStructureValid ? "true" : "false",
+		report.compactWeightIdentityValid ? "true" : "false",
+		report.clockHz, report.denseNativePowerCrc32,
+		report.compactNativePowerCrc32);
+	ok = ok && appendCompactMelMetrics(response, H1_PROTOCOL_RESPONSE_BYTES,
+					 used, "metrics", report.isolation);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"},\"end_to_end\":{");
+	ok = ok && appendCompactMelMetrics(response, H1_PROTOCOL_RESPONSE_BYTES,
+					 used, "metrics", report.endToEnd);
+	const uint64_t summedCycles = report.spectralCycles + report.compactMelCycles;
+	const double cyclesToUs = report.clockHz != 0
+		? 1000000.0 / static_cast<double>(report.clockHz) : 0.0;
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"},\"timing\":{\"spectral_cycles\":%llu,"
+		"\"spectral_us\":%.6f,\"compact_mel_cycles\":%llu,"
+		"\"compact_mel_us\":%.6f,\"total_cycles\":%llu,"
+		"\"total_us\":%.6f,\"construction_cycles\":0,"
+		"\"construction_us\":0}}",
+		static_cast<unsigned long long>(report.spectralCycles),
+		static_cast<double>(report.spectralCycles) * cyclesToUs,
+		static_cast<unsigned long long>(report.compactMelCycles),
+		static_cast<double>(report.compactMelCycles) * cyclesToUs,
+		static_cast<unsigned long long>(summedCycles),
+		static_cast<double>(summedCycles) * cyclesToUs);
+	if (ok) sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "Compact mel response did not fit");
+}
+
+void compareMveCompactMel(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0 || !gUpload.valid ||
+	    !h1FrontendM55Ready(gM55FrontendRuntime)) {
+		sendError(request, "MVE_MEL_REQUIRES_UPLOAD",
+			  "Upload the canonical waveform and initialize the frontend first");
+		return;
+	}
+	H1M55MveCompactMelReport report{};
+	if (!h1RunMveCompactMelDiagnostic(
+		    h1UploadedWaveform(), H1_WAVEFORM_ELEMENTS,
+		    h1FrontendScratch(), gM55FrontendRuntime, report)) {
+		sendError(request, "MVE_MEL_DIAGNOSTIC_FAILED",
+			  "Compact table, shared power, or mel output validation failed");
+		return;
+	}
+	const H1M55CompactScalarMelMetrics &isolated = report.scalarVsMve;
+	const H1M55CompactScalarMelMetrics &contextual = report.referenceVsMve;
+	const double exactPercent = isolated.elementCount == 0 ? 0.0 :
+		100.0 * static_cast<double>(isolated.exactBitMatches) /
+		static_cast<double>(isolated.elementCount);
+	const double cyclesToUs = 1000000.0 / static_cast<double>(report.clockHz);
+	const double speedup = report.mveCycles == 0 ? 0.0 :
+		static_cast<double>(report.scalarCycles) / report.mveCycles;
+	const double reduction = report.scalarCycles == 0 ? 0.0 :
+		100.0 * (static_cast<double>(report.scalarCycles) - report.mveCycles) /
+		static_cast<double>(report.scalarCycles);
+	char *response = h1ProtocolResponse();
+	size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"implementation\":\"%s\",\"used_mve\":%s,"
+		"\"shape\":[%u,%u],\"retained_weights\":%u,"
+		"\"isolated\":{\"total_outputs\":%u,\"finite_scalar\":%u,"
+		"\"finite_mve\":%u,\"finite_pairs\":%u,"
+		"\"exact_bit_matches\":%u,\"exact_percent\":%.9f,"
+		"\"mae\":%.12g,\"rms\":%.12g,\"relative_rms\":%.12g,"
+		"\"max_abs\":%.12g,\"scalar_crc32\":\"%08x\","
+		"\"mve_crc32\":\"%08x\",\"native_power_crc32\":\"%08x\","
+		"\"max_index\":%u,\"max_frame\":%u,\"max_band\":%u,"
+		"\"max_scalar\":%.9g,\"max_mve\":%.9g,\"bit_identical\":%s},"
+		"\"contextual\":{\"finite_reference\":%u,\"finite_mve\":%u,"
+		"\"exact_matches\":%u,\"mae\":%.12g,\"rms\":%.12g,"
+		"\"relative_rms\":%.12g,\"max_abs\":%.12g,"
+		"\"reference_crc32\":\"%08x\",\"mve_crc32\":\"%08x\","
+		"\"native_power_crc32\":\"%08x\",\"threshold\":5e-6,"
+		"\"pass\":%s},\"timing\":{\"clock_hz\":%u,"
+		"\"scalar_cycles\":%llu,\"scalar_us\":%.6f,"
+		"\"mve_cycles\":%llu,\"mve_us\":%.6f,"
+		"\"speedup\":%.9f,\"cycle_reduction_percent\":%.6f}}",
+		report.usedMve ? "mve_f32_four_frame" : "scalar_fallback",
+		report.usedMve ? "true" : "false", report.frames, report.bands,
+		report.retainedWeights, isolated.elementCount,
+		isolated.finiteReference, isolated.finiteCandidate, isolated.finitePairs,
+		isolated.exactBitMatches, exactPercent, isolated.meanAbsoluteError,
+		isolated.rootMeanSquareError, isolated.relativeRootMeanSquareError,
+		isolated.maximumAbsoluteError, isolated.referenceCrc32,
+		isolated.candidateCrc32, report.nativePowerCrc32,
+		report.maximumErrorIndex, report.maximumErrorFrame,
+		report.maximumErrorBand,
+		static_cast<double>(report.maximumErrorScalarValue),
+		static_cast<double>(report.maximumErrorMveValue),
+		isolated.exactBitMatches == isolated.elementCount ? "true" : "false",
+		contextual.finiteReference, contextual.finiteCandidate,
+		contextual.exactBitMatches, contextual.meanAbsoluteError,
+		contextual.rootMeanSquareError,
+		contextual.relativeRootMeanSquareError,
+		contextual.maximumAbsoluteError, contextual.referenceCrc32,
+		contextual.candidateCrc32, report.nativePowerCrc32,
+		contextual.relativeRootMeanSquareError < 5.0e-6 ? "true" : "false",
+		report.clockHz,
+		static_cast<unsigned long long>(report.scalarCycles),
+		static_cast<double>(report.scalarCycles) * cyclesToUs,
+		static_cast<unsigned long long>(report.mveCycles),
+		static_cast<double>(report.mveCycles) * cyclesToUs,
+		speedup, reduction);
+	if (ok) sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "MVE mel report did not fit");
+}
+
+void verifyModelStorage(const H1UsbFrame &request)
+{
+	if (request.payloadLength != 0) {
+		sendError(request, "INVALID_ARGUMENT", "VerifyModelStorage takes no payload");
+		return;
+	}
+	gModelStorageVerified = false;
+	struct ModelIdentity {
+		uint32_t address;
+		uint32_t bytes;
+		uint32_t expectedCrc;
+		const char *expectedSha;
+		uint32_t observedCrc;
+		char observedSha[65];
+		bool crcMatch;
+		bool shaMatch;
+	};
+	ModelIdentity models[] = {
+		{H1_BACKBONE_FLASH_ADDRESS, H1_BACKBONE_MODEL_BYTES,
+		 H1_BACKBONE_MODEL_CRC32, H1_BACKBONE_MODEL_SHA256, 0, {}, false, false},
+		{H1_CLASSIFIER_FLASH_ADDRESS, H1_CLASSIFIER_MODEL_BYTES,
+		 H1_CLASSIFIER_MODEL_CRC32, H1_CLASSIFIER_MODEL_SHA256, 0, {}, false, false},
+	};
+	for (ModelIdentity &model : models) {
+		printk("H1_OSPI_IDENTITY_BEGIN address=0x%08x bytes=%u read_only=1\n",
+		       model.address, model.bytes);
+		const auto *data = reinterpret_cast<const uint8_t *>(model.address);
+		model.observedCrc = crc32(data, model.bytes);
+		h1Sha256Hex(data, model.bytes, model.observedSha);
+		model.crcMatch = model.observedCrc == model.expectedCrc;
+		model.shaMatch = model.observedSha[0] != '\0' &&
+			strcmp(model.observedSha, model.expectedSha) == 0;
+		printk("H1_OSPI_IDENTITY_DONE address=0x%08x crc32=%08x sha256=%s "
+		       "crc_match=%u sha_match=%u\n",
+		       model.address, model.observedCrc, model.observedSha,
+		       unsigned(model.crcMatch), unsigned(model.shaMatch));
+	}
+	gModelStorageVerified = models[0].crcMatch && models[0].shaMatch &&
+		models[1].crcMatch && models[1].shaMatch;
+	char *response = h1ProtocolResponse();
+	const int length = snprintf(
+		response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":true,\"backbone\":{\"address\":\"0x%08x\","
+		"\"bytes\":%u,\"crc32\":\"%08x\",\"sha256\":\"%s\","
+		"\"crc_match\":%s,\"sha_match\":%s},"
+		"\"classifier\":{\"address\":\"0x%08x\",\"bytes\":%u,"
+		"\"crc32\":\"%08x\",\"sha256\":\"%s\","
+		"\"crc_match\":%s,\"sha_match\":%s},"
+		"\"all_models_verified\":%s}",
+		models[0].address, models[0].bytes, models[0].observedCrc,
+		models[0].observedSha, models[0].crcMatch ? "true" : "false",
+		models[0].shaMatch ? "true" : "false", models[1].address,
+		models[1].bytes, models[1].observedCrc, models[1].observedSha,
+		models[1].crcMatch ? "true" : "false",
+		models[1].shaMatch ? "true" : "false",
+		gModelStorageVerified ? "true" : "false");
+	if (length > 0 && length < int(H1_PROTOCOL_RESPONSE_BYTES)) {
+		sendJson(request, response, size_t(length));
+	} else {
+		gModelStorageVerified = false;
+		sendError(request, "FORMAT_OVERFLOW", "model identity response did not fit");
+	}
+}
+
 void sendIdentity(const H1UsbFrame &request)
 {
 	char *response = h1ProtocolResponse();
 	const int length = snprintf(
 		response, H1_PROTOCOL_RESPONSE_BYTES,
 		"{\"ok\":true,\"scope\":\"H1_ENGINEERING_DEVELOPMENT\","
-		"\"candidate\":\"DEVELOPMENT\",\"m4\":\"BLOCKED\","
-		"\"canonical_m5_input\":null,\"formal_m5_acceptance\":false,"
+		"\"candidate\":\"M4_RANGE_COVERING_V3\",\"m4\":\"ACCEPTED\","
+		"\"canonical_m5_input\":\"M4_RANGE_COVERING_V3\",\"formal_m5_acceptance\":false,"
 		"\"firmware_source_bundle_sha256\":\"%s\","
 		"\"frontend_sha256\":\"%s\",\"source_backbone_sha256\":\"%s\","
 		"\"compiled_backbone_sha256\":\"%s\",\"gem_sha256\":\"%s\","
+		"\"bridge_policy_sha256\":\"%s\",\"bridge_implementation_sha256\":\"%s\","
 		"\"source_classifier_sha256\":\"%s\","
 		"\"compiled_classifier_sha256\":\"%s\",\"labels_sha256\":\"%s\","
 		"\"sdk_alif_commit\":\"a524855a8b470fff0e3edb2c902a034d45ddf2a4\","
@@ -1418,7 +1901,8 @@ void sendIdentity(const H1UsbFrame &request)
 		"\"usb_vid\":\"2fe3\",\"usb_pid\":\"0001\","
 		"\"usb_product\":\"BirdNET H1 Dev CDC\",\"usb_serial\":\"H1DEV1\"}",
 		H1_SOURCE_BUNDLE_SHA256, H1_FRONTEND_SHA256, H1_SOURCE_BACKBONE_SHA256,
-		H1_COMPILED_BACKBONE_SHA256, H1_GEM_SHA256, H1_SOURCE_CLASSIFIER_SHA256,
+		H1_COMPILED_BACKBONE_SHA256, H1_GEM_SHA256,
+		H1_BRIDGE_POLICY_SHA256, H1_BRIDGE_IMPLEMENTATION_SHA256, H1_SOURCE_CLASSIFIER_SHA256,
 		H1_COMPILED_CLASSIFIER_SHA256, H1_LABELS_SHA256);
 	if (length > 0 && length < int(H1_PROTOCOL_RESPONSE_BYTES)) {
 		sendJson(request, response, size_t(length));
@@ -1454,11 +1938,12 @@ bool sendRunResult(const H1UsbFrame &request, const H1RunResult &result)
 	const int length = snprintf(
 		response, H1_PROTOCOL_RESPONSE_BYTES,
 		"{\"ok\":true,\"run_sequence\":%u,\"result_ready\":true,"
-		"\"profile_ready\":true,\"fixture_identity\":\"%s\","
+		"\"profile_ready\":true,\"frontend_path\":\"%s\",\"fixture_identity\":\"%s\","
 		"\"input_crc32\":\"%08x\",\"score_crc32\":\"%08x\","
 		"\"top1_index\":%u,\"threshold_count\":%u,"
 		"\"repeat_comparable\":%s,\"repeat_equal\":%s}",
 		result.runSequence,
+		result.frontendNative ? "native_m55_compact_mve" : "legacy_tflm_dense_scalar",
 		result.canonicalSynthetic ? "canonical_synthetic" : fixtureName(result.fixture),
 		result.inputCrc32, result.scoreCrc32, result.top[0].index,
 		result.thresholdCount, result.repeatComparable ? "true" : "false",
@@ -1699,7 +2184,8 @@ void sendResultSummary(const H1UsbFrame &request)
 	}
 }
 
-void runUsbCommand(const H1UsbFrame &request, bool uploaded)
+void runUsbCommand(const H1UsbFrame &request, bool uploaded,
+		   bool legacyReference = false)
 {
 	if (!gComputeReady) {
 		sendError(request, "COMPUTE_NOT_READY", "NPU or memory identity check failed");
@@ -1715,7 +2201,7 @@ void runUsbCommand(const H1UsbFrame &request, bool uploaded)
 	H1RunResult result;
 	const bool success = uploaded
 		? runOnce(FixtureId::Uploaded, h1UploadedWaveform(), gUpload.rawCrc32,
-			  gUpload.declaredSha256, gUpload.canonicalByteMatch, result)
+			  gUpload.declaredSha256, gUpload.canonicalByteMatch, result, legacyReference)
 		: runOnce(FixtureId::Synthetic, h1SyntheticWaveformData,
 			  H1_SYNTHETIC_WAVEFORM_CRC32, H1_SYNTHETIC_RAW_SHA256, true,
 			  result);
@@ -1785,8 +2271,57 @@ void runMicUsbCommand(const H1UsbFrame &request)
 
 #endif
 
+void sendInferenceData(const H1UsbFrame &request)
+{
+	if (!gInferenceDataValid || !gLastResult.valid) {
+		sendError(request, "NO_INFERENCE_DATA", "Complete an inference first");
+		return;
+	}
+	const unsigned kind = readLe32(request.payload);
+	const unsigned offset = readLe32(request.payload + 4);
+	const unsigned count = readLe32(request.payload + 8);
+	const unsigned length = kind == 0 ? H1_FRONTEND_ELEMENTS :
+		(kind == 1 ? H1_LOGIT_ELEMENTS : 0);
+	if (kind > 1 || count == 0 || count > 256 || offset > length ||
+	    count > length - offset) {
+		sendError(request, "INVALID_INFERENCE_RANGE", "kind 0 frontend or 1 scores; count 1..256, in-range offset required");
+		return;
+	}
+	const float *data = kind == 0 ? h1CurrentBoundaries().frontend :
+		h1CurrentBoundaries().scores;
+	char *response = h1ProtocolResponse();
+	size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"run_sequence\":%u,\"kind\":%u,\"offset\":%u,\"values\":[",
+		gLastResult.runSequence, kind, offset);
+	for (unsigned i = 0; ok && i < count; ++i)
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+			"%s\"%08x\"", i ? "," : "", floatBits(data[offset + i]));
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]}");
+	if (ok) sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "Inference data chunk did not fit");
+}
+
 void handleFrame(const H1UsbFrame &request)
 {
+	// Commands that can overwrite shared inference scratch invalidate the reader.
+	switch (H1MessageType(request.type)) {
+	case H1MessageType::RunUploadedWaveform:
+	case H1MessageType::RunLegacyUploadedWaveform:
+	case H1MessageType::RunCanonical:
+	case H1MessageType::MicRunWindow:
+	case H1MessageType::RunM55SpectralFrame:
+	case H1MessageType::RunM55SpectralLoop:
+	case H1MessageType::RunM55SpectralBoundedLoop:
+	case H1MessageType::RunM55CompleteFrontend:
+	case H1MessageType::CompareNativeSpectral:
+	case H1MessageType::CompareCompactScalarMel:
+	case H1MessageType::CompareMveCompactMel:
+		gInferenceDataValid = false;
+		break;
+	default:
+		break;
+	}
 	switch (H1MessageType(request.type)) {
 	case H1MessageType::Ping:
 		sendPing(request);
@@ -1814,6 +2349,21 @@ void handleFrame(const H1UsbFrame &request)
 	case H1MessageType::GetIdentity:
 		sendIdentity(request);
 		break;
+	case H1MessageType::VerifyModelStorage:
+		verifyModelStorage(request);
+		break;
+	case H1MessageType::CompareNumericErrorSelfTest:
+		compareNumericErrorSelfTest(request);
+		break;
+	case H1MessageType::CompareNativeSpectral:
+		compareNativeSpectral(request);
+		break;
+	case H1MessageType::CompareCompactScalarMel:
+		compareCompactScalarMel(request);
+		break;
+	case H1MessageType::CompareMveCompactMel:
+		compareMveCompactMel(request);
+		break;
 	case H1MessageType::UploadWaveform:
 		if (validateUpload(request)) {
 			sendUploadResult(request);
@@ -1821,6 +2371,12 @@ void handleFrame(const H1UsbFrame &request)
 			sendError(request, "UPLOAD_REJECTED",
 				  "Frame, metadata, raw CRC, or finite-value validation failed");
 		}
+		break;
+	case H1MessageType::RunLegacyUploadedWaveform:
+		runUsbCommand(request, true, true);
+		break;
+	case H1MessageType::GetInferenceData:
+		sendInferenceData(request);
 		break;
 	case H1MessageType::RunUploadedWaveform:
 		runUsbCommand(request, true);
@@ -2128,14 +2684,18 @@ int main()
 	printk("H1_SPECTRAL_DIAG_BOOT valid=%u address=%p bytes=%u\n",
 	       unsigned(retainedSpectralDiagnostic), &gM55SpectralDiagnostic,
 	       unsigned(sizeof(gM55SpectralDiagnostic)));
-	printk("H1_BOOT scope=H1_ENGINEERING_DEVELOPMENT candidate=DEVELOPMENT "
-	       "m4=BLOCKED canonical_m5_input=NONE formal_acceptance=NO\n");
+	printk("H1_BOOT scope=H1_ENGINEERING_DEVELOPMENT candidate=M4_RANGE_COVERING_V3 "
+	       "m4=ACCEPTED canonical_m5_input=M4_RANGE_COVERING_V3 formal_acceptance=NO\n");
 	printk("H1_ID source_bundle=%s frontend=%s source_backbone=%s "
 	       "compiled_backbone=%s gem=%s source_classifier=%s compiled_classifier=%s "
 	       "labels=%s\n",
 	       H1_SOURCE_BUNDLE_SHA256, H1_FRONTEND_SHA256, H1_SOURCE_BACKBONE_SHA256,
 	       H1_COMPILED_BACKBONE_SHA256, H1_GEM_SHA256, H1_SOURCE_CLASSIFIER_SHA256,
 	       H1_COMPILED_CLASSIFIER_SHA256, H1_LABELS_SHA256);
+	printk("H1_BRIDGE policy=%s implementation=%s scale_bits=%08x "
+	       "rule=EXACT_BINARY32_RATIO_RNE_INT16 zero_point=0\n",
+	       H1_BRIDGE_POLICY_SHA256, H1_BRIDGE_IMPLEMENTATION_SHA256,
+	       unsigned(H1_CLASSIFIER_INPUT_SCALE_BITS));
 	printk("H1_RUNTIME cpu=M55_HP npu=U85_256 sdk_alif=a524855a8b470fff0e3edb2c902a034d45ddf2a4 "
 	       "zephyr=3a2b84d96961b53431a78685c6ec0f0df4ddf347 "
 	       "zephyr_sdk=0.17.0 compiler=gcc-12.2.0 driver=0.16.0 vela=5.0.0\n");
@@ -2143,7 +2703,7 @@ int main()
 	       "producer_owned_until_all_consumers_complete=1 modes=H1_ONLY,H23_ONLY,H1_H23_FULL "
 	       "h23_implemented=0\n");
 	printk("H1_FRONTEND_IMPL kind=NATIVE_M55_FROZEN_GRAPH_SEMANTICS "
-	       "fft=PINNED_TFLM_KISSFFT_FLOAT compiler_fp=fno-fast-math,ffp-contract-off "
+	       "fft=CMSIS_M55_RFFT_FLOAT compiler_fp=fno-fast-math,ffp-contract-off "
 	       "source_model_crc=%08x fpscr=%08x\n",
 	       unsigned(H1_FRONTEND_MODEL_CRC32), unsigned(__get_FPSCR()));
 	printk("H1_MEMORY model_slot=0x%08x model_slot_bytes=%u arena=0x%08x "
