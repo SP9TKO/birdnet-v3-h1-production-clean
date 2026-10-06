@@ -518,11 +518,22 @@
       "WAIT cache relation to IRQ observed, not presumed"
     ],
     "capacity": {
-      "events_per_run": 72,
+      "events_per_run": 80,
       "cache_operations_per_run": 8,
-      "overflow": "FAIL_CLOSED_STOP"
+      "overflow": "FAIL_CLOSED_STOP",
+      "minimum_complete_trace_events": 76
     },
-    "acceptance_mode": "No rich event timestamps/stores, cache ledger stores, or PMU configuration inside the primary interval; lightweight diagnostic-mode guard only"
+    "acceptance_mode": "No rich event timestamps/stores, cache ledger stores, or PMU configuration inside the primary interval; lightweight diagnostic-mode guard only",
+    "record_format": {
+      "bytes": 12,
+      "alignment": 4,
+      "cycles": "uint64 on same clock",
+      "kind": "uint8; defined IDs1..38",
+      "stage": "uint8;0 backbone,1 classifier",
+      "value": "uint16; cache array index0..7,0 for lifecycle events",
+      "sequence": "array index+1; emitted as uint32",
+      "all_cache_addresses_ranges_masks": "Full uint32 in separate cache-operation records; not truncated"
+    }
   },
   "coherent_V2_campaign": {
     "one_exact_ELF_and_BIN": true,
@@ -656,5 +667,16 @@
       "model/Vela changes"
     ],
     "scope_exceeded": "STOP and separately freeze a different candidate"
+  },
+  "pre_observation_sizing_correction": {
+    "before_V2_hardware_execution": true,
+    "before_first_V2_performance_observation": true,
+    "prior_plan_commit": "087fd2e5d5b5fcc6a7d9f4b8d3cca6af2dbace01",
+    "prior_instrumentation_commit": "b226ddc771046661ea8a7169d1775032b05e1726",
+    "prior_plan_sha256": "a6724fb5ce1f69f4d2e2014478d75cac8a19ef2c01fc3abdc04a3e74b0bdfb45",
+    "defect": "Complete38-event trace per stage requires76 events; initial capacity72 was insufficient. Increase capacity80 and reduce diagnostic record padding.",
+    "no_existing_commit_rewritten": true,
+    "complete_event_requirements_not_reduced": true,
+    "production_behavior_unchanged": true
   }
 }
