@@ -131,6 +131,7 @@ void h1ProfileCommandStart(void)
 {
 	h1BaselineCommandSnapshot();
 	const uint64_t now = k_cycle_get_64();
+	h1BaselineObserve(H1_EVENT_NPU_SUBMIT, 0);
 	volatile struct H1NpuProfile *profile = active_npu_profile;
 	if (profile != NULL) {
 		if (profile->command_count == 0) {
@@ -145,6 +146,7 @@ void h1ProfileCommandStart(void)
 void h1ProfileIrqEntry(void)
 {
 	const uint64_t now = k_cycle_get_64();
+	h1BaselineObserve(H1_EVENT_NPU_COMPLETION_IRQ, 0);
 	h1BaselineIrqSnapshot();
 	volatile struct H1NpuProfile *profile = active_npu_profile;
 	if (profile != NULL) {

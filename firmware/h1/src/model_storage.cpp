@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "model_storage.hpp"
+#include "baseline_profile.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -134,9 +135,11 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 	for (unsigned index = 0; index < kGuardBytes; ++index) {
 		h1PsramStorage.modelGuard[index] = guardPattern(index);
 	}
+	h1BaselineObserve(H1_EVENT_MODEL_COPY_BEGIN, 0);
 	const uint64_t copyStart = h1ProfileNow();
 	memcpy(h1PsramStorage.model, source, modelBytes);
 	const uint64_t copyEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_MODEL_COPY_END, 0);
 	profile.copy_cycles = copyEnd - copyStart;
 	profile.copy_count = 1;
 
@@ -161,6 +164,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 		       (unsigned long long)profile.copy_cycles);
 	}
 
+	h1BaselineObserve(H1_EVENT_MODEL_VALIDATE_BEGIN, 0);
 	const uint64_t validateStart = h1ProfileNow();
 	if (destinationCrc != expectedCrc || mismatch != 0 || copyEnd <= copyStart ||
 	    destinationCrcEnd <= destinationCrcStart || memcmpEnd <= memcmpStart ||
@@ -180,7 +184,9 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 		}
 		return nullptr;
 	}
+	h1BaselineObserve(H1_EVENT_MODEL_BIND_BEGIN, 0);
 	const tflite::Model *model = tflite::GetModel(h1PsramStorage.model);
+	h1BaselineObserve(H1_EVENT_MODEL_BIND_END, 0);
 	if (model->version() != TFLITE_SCHEMA_VERSION) {
 		profile.validate_cycles += h1ProfileNow() - validateStart;
 		if (diagnostics) {
@@ -203,6 +209,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 			return nullptr;
 		}
 	}
+	h1BaselineObserve(H1_EVENT_MODEL_VALIDATE_END, 0);
 	profile.validate_cycles += h1ProfileNow() - validateStart;
 	if (diagnostics) {
 		printk("H1_MODEL_READY stage=%s base=%p bytes=%u crc=%08x table=%p\n",

@@ -38,7 +38,11 @@ void h1BaselineInit(void)
 }
 bool h1BaselineDiagnosticActive(void)
 {
+#if defined(H1_BASELINE_V2_INSTRUMENTATION)
  return h1BaselineState.running && h1BaselineState.mode != H1_BASELINE_ACCEPTANCE;
+#else
+ return false;
+#endif
 }
 void h1BaselineBeginCampaign(uint32_t mode, uint32_t sequence)
 {
@@ -49,7 +53,8 @@ void h1BaselineBeginCampaign(uint32_t mode, uint32_t sequence)
  h1BaselineState.mode = mode;
  h1BaselineState.running = 1;
  h1BaselineState.campaign_sequence = sequence;
- h1BaselineState.requested_samples = mode == H1_BASELINE_ACCEPTANCE ? 100 : 20;
+ h1BaselineState.requested_samples = mode == H1_BASELINE_ACCEPTANCE ? 100 :
+  mode == H1_BASELINE_OBSERVER ? 1 : 20;
  h1BaselineState.clock_hz = sys_clock_hw_cycles_per_sec();
  h1BaselineState.campaign_start = k_cycle_get_64();
  if (h1BaselineState.clock_hz != 400000000 || !h1BaselineState.cache_capacity_bytes)
@@ -202,56 +207,90 @@ void ethosu_inference_end(struct ethosu_driver *drv, void *arg)
   ETHOSU_PMU_Disable(drv); h1BaselineState.pmu_driver = NULL;
  }
 }
-bool ethosu_area_needs_flush_dcache(const void *p, size_t bytes);
-bool ethosu_area_needs_invalidate_dcache(const void *p, size_t bytes);
-void __real_ethosu_flush_dcache(uint32_t *p, size_t bytes);
-void __real_ethosu_invalidate_dcache(uint32_t *p, size_t bytes);
-static struct H1BaselineCache *cache_begin(uint32_t address, uint32_t bytes,
- uint32_t flags, bool eligible)
+/* A single IRQ-serialized publication defines sequence and timestamp order.
+ * The lock covers recorder stores only, never production cache maintenance. */
+static uint64_t record_event_locked(struct H1BaselineDiagnostic *p,
+ uint32_t kind, uint32_t value)
+{
+ if (p->event_count >= H1_BASELINE_MAX_ORDERED_EVENTS) {
+  h1BaselineState.error = 10; return 0;
+ }
+ const uint64_t now = k_cycle_get_64();
+ if (p->event_count && now <= p->events[p->event_count - 1].cycles)
+  h1BaselineState.error = 11;
+ struct H1BaselineEvent *e = &p->events[p->event_count++];
+ e->cycles = now; e->kind = kind; e->stage = h1BaselineState.npu_stage;
+ e->value = value;
+ return now;
+}
+void h1BaselineObserve(uint32_t kind, uint32_t value)
+{
+ struct H1BaselineDiagnostic *p = h1BaselineState.current;
+ if (!p) return;
+ unsigned key = irq_lock();
+ record_event_locked(p, kind, value);
+ irq_unlock(key);
+}
+void h1BaselineStageBegin(uint32_t stage)
+{
+ struct H1BaselineDiagnostic *p = h1BaselineState.current;
+ if (!p) return;
+ unsigned key = irq_lock();
+ h1BaselineState.npu_stage = stage;
+ record_event_locked(p, H1_EVENT_LIFECYCLE_STAGE_BEGIN, 0);
+ irq_unlock(key);
+}
+void h1BaselineCacheSelector(uint32_t mask, uint32_t base_index)
+{
+ if (!h1BaselineState.current) return;
+ h1BaselineState.active_cache_mask = mask;
+ h1BaselineState.active_cache_base_index = base_index;
+}
+struct H1BaselineCache *h1BaselineCacheBegin(uint32_t *address, uint32_t bytes,
+ uint32_t flags, uint32_t begin_event)
 {
  struct H1BaselineDiagnostic *p = h1BaselineState.current;
  if (!p) return NULL;
- if (p->cache_count >= H1_BASELINE_MAX_CACHE) { h1BaselineState.error = 8; return NULL; }
- struct H1BaselineCache *c = &p->cache[p->cache_count++];
- c->stage = h1BaselineState.npu_stage; c->address = address; c->requested_bytes = bytes;
- c->rounded_address = address & ~31u;
- c->rounded_bytes = ((address + bytes + 31u) & ~31u) - c->rounded_address;
- if (!eligible) { c->flags = H1_BASELINE_CACHE_BARRIER; c->maintained_bytes = 0; }
- else if (bytes > 131072u) {
-  c->flags = flags | H1_BASELINE_CACHE_WHOLE;
-  if (flags & H1_BASELINE_CACHE_INVALIDATE) c->flags |= H1_BASELINE_CACHE_CLEAN;
-  c->maintained_bytes = h1BaselineState.cache_capacity_bytes;
- } else { c->flags = flags | H1_BASELINE_CACHE_RANGE; c->maintained_bytes = c->rounded_bytes; }
- c->start_cycles = k_cycle_get_64(); return c;
+ unsigned key = irq_lock();
+ if (p->cache_count >= H1_BASELINE_MAX_CACHE) {
+  h1BaselineState.error = 8; irq_unlock(key); return NULL;
+ }
+ const uint32_t index = p->cache_count++;
+ struct H1BaselineCache *c = &p->cache[index];
+ c->stage = h1BaselineState.npu_stage;
+ c->address = (uint32_t)(uintptr_t)address; c->requested_bytes = bytes;
+ c->rounded_address = c->address & ~31u;
+ c->rounded_bytes = ((c->address + bytes + 31u) & ~31u) - c->rounded_address;
+ c->flags = flags;
+ c->maintained_bytes = flags & H1_BASELINE_CACHE_WHOLE ?
+  h1BaselineState.cache_capacity_bytes : flags & H1_BASELINE_CACHE_RANGE ?
+  c->rounded_bytes : 0;
+ c->mask = flags & H1_BASELINE_CACHE_GUARD ? 0 : h1BaselineState.active_cache_mask;
+ c->base_index = flags & H1_BASELINE_CACHE_GUARD ? UINT32_MAX :
+  h1BaselineState.active_cache_base_index;
+ c->start_cycles = record_event_locked(p, begin_event, index);
+ irq_unlock(key);
+ return c;
 }
-void __wrap_ethosu_flush_dcache(uint32_t *p, size_t bytes)
+void h1BaselineCacheEnd(struct H1BaselineCache *c, uint32_t end_event)
 {
- struct H1BaselineCache *c = NULL;
- if (h1BaselineDiagnosticActive()) c = cache_begin((uint32_t)(uintptr_t)p, bytes,
-  H1_BASELINE_CACHE_CLEAN, p && ethosu_area_needs_flush_dcache(p, bytes));
- __real_ethosu_flush_dcache(p, bytes);
- if (c) c->end_cycles = k_cycle_get_64();
-}
-void __wrap_ethosu_invalidate_dcache(uint32_t *p, size_t bytes)
-{
- struct H1BaselineCache *c = NULL;
- if (h1BaselineDiagnosticActive()) c = cache_begin((uint32_t)(uintptr_t)p, bytes,
-  H1_BASELINE_CACHE_INVALIDATE, p && ethosu_area_needs_invalidate_dcache(p, bytes));
- __real_ethosu_invalidate_dcache(p, bytes);
- if (c) c->end_cycles = k_cycle_get_64();
+ if (!c) return;
+ unsigned key = irq_lock();
+ struct H1BaselineDiagnostic *p = h1BaselineState.current;
+ c->end_cycles = record_event_locked(p, end_event, (uint32_t)(c - p->cache));
+ irq_unlock(key);
 }
 void h1BaselineGuardInvalidate(uint32_t address, uint32_t bytes)
 {
- if (h1BaselineDiagnosticActive()) {
-  struct H1BaselineCache *c = cache_begin(address, bytes, H1_BASELINE_CACHE_INVALIDATE, true);
-  if (c) c->end_cycles = c->start_cycles;
- }
+ (void)h1BaselineCacheBegin((uint32_t *)(uintptr_t)address, bytes,
+  H1_BASELINE_CACHE_INVALIDATE | H1_BASELINE_CACHE_RANGE | H1_BASELINE_CACHE_GUARD,
+  H1_EVENT_POST_COMPLETION_CACHE_BEGIN);
 }
-
 void h1BaselineGuardInvalidateDone(void)
 {
  struct H1BaselineDiagnostic *p = h1BaselineState.current;
- if (p && p->cache_count) p->cache[p->cache_count - 1].end_cycles = k_cycle_get_64();
+ if (p && p->cache_count)
+  h1BaselineCacheEnd(&p->cache[p->cache_count - 1], H1_EVENT_POST_COMPLETION_CACHE_END);
 }
 
 uint32_t h1BaselinePmuCounters(void)

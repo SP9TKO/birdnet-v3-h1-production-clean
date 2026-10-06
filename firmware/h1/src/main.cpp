@@ -360,12 +360,14 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	       H1NpuProfile &profile)
 {
 	H1ModelLifecycleProfile &lifecycle = profile.lifecycle;
+	h1BaselineStageBegin(stage == H1NpuStage::Backbone ? 0u : 1u);
 	h1RunStateMark(stage == H1NpuStage::Backbone
 		? H1RunState::BackbonePrepareBegin
 		: H1RunState::ClassifierPrepareBegin);
 	const tflite::Model *model =
 		h1PrepareNpuModel(stage, lifecycle, false);
 
+	h1BaselineObserve(H1_EVENT_MODEL_CONTRACT_BEGIN, 0);
 	const uint64_t modelContractStart = h1ProfileNow();
 	const bool modelContract =
 		model && model->operator_codes() && model->operator_codes()->size() == 1 &&
@@ -378,6 +380,7 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 		strcmp(model->operator_codes()->Get(0)->custom_code()->c_str(),
 		       "ethos-u") == 0;
 	const uint64_t modelContractEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_MODEL_CONTRACT_END, 0);
 	lifecycle.validate_cycles += modelContractEnd - modelContractStart;
 	lifecycle.validate_count = 1;
 	if (!modelContract || modelContractEnd <= modelContractStart) {
@@ -385,22 +388,28 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	}
 
 	const uint64_t runtimeInitStart = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_RESOLVER_SETUP_BEGIN, 0);
 	tflite::MicroMutableOpResolver<1> resolver;
 	if (resolver.AddEthosU() != kTfLiteOk) {
 		return false;
 	}
+	h1BaselineObserve(H1_EVENT_RESOLVER_SETUP_END, 0);
+	h1BaselineObserve(H1_EVENT_INTERPRETER_CONSTRUCT_BEGIN, 0);
 	tflite::MicroInterpreter interpreter(model, resolver, h1TensorArena,
 					     H1_ARENA_RESERVATION_BYTES);
 	const uint64_t runtimeInitEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_INTERPRETER_CONSTRUCT_END, 0);
 	lifecycle.runtime_init_cycles = runtimeInitEnd - runtimeInitStart;
 	lifecycle.runtime_init_count = 1;
 	if (runtimeInitEnd <= runtimeInitStart) {
 		return false;
 	}
 
+	h1BaselineObserve(H1_EVENT_ALLOCATE_TENSORS_BEGIN, 0);
 	const uint64_t allocateStart = h1ProfileNow();
 	const TfLiteStatus allocateStatus = interpreter.AllocateTensors();
 	const uint64_t allocateEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_ALLOCATE_TENSORS_END, 0);
 	lifecycle.allocate_tensors_cycles = allocateEnd - allocateStart;
 	lifecycle.allocate_tensors_count = 1;
 	if (allocateStatus != kTfLiteOk || allocateEnd <= allocateStart) {
@@ -412,8 +421,12 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	const int backboneOutputShape[] = {1, 7, 9, 1280};
 	const int classifierInputShape[] = {1, 1280};
 	const int classifierOutputShape[] = {1, 11560};
+	h1BaselineObserve(H1_EVENT_INPUT_TENSOR_LOOKUP_BEGIN, 0);
 	TfLiteTensor *inputTensor = interpreter.input(0);
+	h1BaselineObserve(H1_EVENT_INPUT_TENSOR_LOOKUP_END, 0);
+	h1BaselineObserve(H1_EVENT_OUTPUT_TENSOR_LOOKUP_BEGIN, 0);
 	TfLiteTensor *outputTensor = interpreter.output(0);
+	h1BaselineObserve(H1_EVENT_OUTPUT_TENSOR_LOOKUP_END, 0);
 	const size_t arenaUsed = interpreter.arena_used_bytes();
 	const bool tensorContract = stage == H1NpuStage::Backbone
 		? matches(inputTensor, backboneInputShape, 4, H1_BACKBONE_INPUT_BYTES,
@@ -443,9 +456,11 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 		uint32_t(reinterpret_cast<uintptr_t>(inputTensor->data.uint8)), uint32_t(inputBytes),
 		uint32_t(reinterpret_cast<uintptr_t>(outputTensor->data.uint8)), uint32_t(outputBytes),
 		uint32_t(arenaUsed));
+	h1BaselineObserve(H1_EVENT_INPUT_COPY_BEGIN, 0);
 	const uint64_t inputCopyStart = h1ProfileNow();
 	memcpy(inputTensor->data.uint8, inputData, inputBytes);
 	const uint64_t inputCopyEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_INPUT_COPY_END, 0);
 	lifecycle.input_copy_cycles = inputCopyEnd - inputCopyStart;
 	lifecycle.input_copy_count = 1;
 	if (inputCopyEnd <= inputCopyStart) {
@@ -461,7 +476,9 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	h1RunStateMark(stage == H1NpuStage::Backbone
 		? H1RunState::BackboneInvokeBegin
 		: H1RunState::ClassifierInvokeBegin);
+	h1BaselineObserve(H1_EVENT_NPU_INVOKE_BEGIN, 0);
 	const TfLiteStatus status = interpreter.Invoke();
+	h1BaselineObserve(H1_EVENT_NPU_INVOKE_END, 0);
 	h1ProfileInvokeEnd(&profile, int32_t(status));
 	h1RunStateMark(stage == H1NpuStage::Backbone
 		? H1RunState::BackboneInvokeDone
@@ -473,11 +490,14 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 		return false;
 	}
 
+	h1BaselineObserve(H1_EVENT_OUTPUT_COPY_BEGIN, 0);
 	const uint64_t outputCopyStart = h1ProfileNow();
 	memcpy(outputData, outputTensor->data.uint8, outputBytes);
 	const uint64_t outputCopyEnd = h1ProfileNow();
+	h1BaselineObserve(H1_EVENT_OUTPUT_COPY_END, 0);
 	lifecycle.output_copy_cycles = outputCopyEnd - outputCopyStart;
 	lifecycle.output_copy_count = 1;
+	h1BaselineObserve(H1_EVENT_LIFECYCLE_STAGE_END, 0);
 	return outputCopyEnd > outputCopyStart;
 }
 
@@ -2207,7 +2227,7 @@ void sendBaselineStatus(const H1UsbFrame &request)
  const uint64_t a = h1ProfileNow(), b = h1ProfileNow();
  char *response = h1ProtocolResponse();
  const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
-  "{\"ok\":true,\"baseline_version\":1,\"running\":%u,\"mode\":%u,\"last_mode\":%u,"
+  "{\"ok\":true,\"baseline_version\":2,\"running\":%u,\"mode\":%u,\"last_mode\":%u,"
   "\"error\":%u,\"warmups\":%u,\"measured\":%u,\"requested\":%u,\"clock_hz\":%u,"
   "\"counter_bits\":64,\"pmu_counters\":%u,\"monotonic_probe\":[%llu,%llu],\"systick_load\":%u,"
   "\"cache_selector\":%u,\"cache_capacity\":%u,\"diagnostic_address\":%u,"
@@ -2235,9 +2255,11 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
  }
  h1BaselineBeginCampaign(mode, request.sequence);
  h1BaselineState.irq_before = h1IrqCount;
- const unsigned measured = mode == H1_BASELINE_ACCEPTANCE ? 100u : 20u;
- for (unsigned run = 0; run < 5u + measured && !h1BaselineState.error; ++run) {
-  const int32_t index = run < 5 ? -1 : int32_t(run - 5);
+ const unsigned warmups = mode == H1_BASELINE_OBSERVER ? 0u : 5u;
+ const unsigned measured = mode == H1_BASELINE_ACCEPTANCE ? 100u :
+  mode == H1_BASELINE_OBSERVER ? 1u : 20u;
+ for (unsigned run = 0; run < warmups + measured && !h1BaselineState.error; ++run) {
+  const int32_t index = run < warmups ? -1 : int32_t(run - warmups);
   H1RunResult result;
   h1BaselineBeginRun(index);
   const uint64_t start = h1ProfileNow();
@@ -2252,8 +2274,8 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
    uint32_t(result.status), result.boundaryCrc32, integrity);
  }
  h1BaselineState.irq_after = h1IrqCount;
- if (h1BaselineState.warmups_completed != 5 || h1BaselineState.measured_completed != measured ||
-     h1BaselineState.irq_after - h1BaselineState.irq_before != 2u * (5u + measured) ||
+ if (h1BaselineState.warmups_completed != warmups || h1BaselineState.measured_completed != measured ||
+     h1BaselineState.irq_after - h1BaselineState.irq_before != 2u * (warmups + measured) ||
      SCB->CFSR || SCB->HFSR) h1BaselineState.error = 9;
  h1BaselineEndCampaign();
  sendBaselineStatus(request);
@@ -2299,10 +2321,18 @@ void sendBaselineSample(const H1UsbFrame &request)
    const H1BaselineCache &c = d.cache[i];
    ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
     "%s{\"stage\":%u,\"address\":%u,\"requested\":%u,\"rounded_address\":%u,\"rounded_bytes\":%u,"
-    "\"maintained\":%u,\"flags\":%u,\"start\":%llu,\"end\":%llu}",
+    "\"maintained\":%u,\"flags\":%u,\"mask\":%u,\"base_index\":%u,\"start\":%llu,\"end\":%llu}",
     i ? "," : "", c.stage, c.address, c.requested_bytes, c.rounded_address,
-    c.rounded_bytes, c.maintained_bytes, c.flags,
+    c.rounded_bytes, c.maintained_bytes, c.flags, c.mask, c.base_index,
     (unsigned long long)c.start_cycles, (unsigned long long)c.end_cycles);
+  }
+  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"events\":[");
+  for (unsigned i = 0; ok && i < d.event_count; ++i) {
+   const H1BaselineEvent &e = d.events[i];
+   ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+    "%s{\"seq\":%u,\"kind\":%u,\"stage\":%u,\"cycles\":%llu,\"value\":%u}",
+    i ? "," : "", i + 1, unsigned(e.kind), unsigned(e.stage),
+    (unsigned long long)e.cycles, e.value);
   }
   ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"profile_le_hex\":\"");
   const auto *raw = reinterpret_cast<const uint8_t *>(&d.profile);
@@ -2506,6 +2536,8 @@ void handleFrame(const H1UsbFrame &request)
 		break;
 	}
 	switch (H1MessageType(request.type)) {
+	case H1MessageType::RunBaselineObserverQualification:
+		runBaselineCampaign(request, H1_BASELINE_OBSERVER); break;
 	case H1MessageType::RunBaselineAcceptance:
 		runBaselineCampaign(request, H1_BASELINE_ACCEPTANCE); break;
 	case H1MessageType::RunBaselineDiagnostic:

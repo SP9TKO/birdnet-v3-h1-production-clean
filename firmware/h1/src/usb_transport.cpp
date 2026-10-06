@@ -226,6 +226,7 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::GetInferenceData:
 	case H1MessageType::GetM55FrontendData:
 		return length == 3 * sizeof(uint32_t);
+	case H1MessageType::RunBaselineObserverQualification:
 	case H1MessageType::RunBaselineAcceptance:
 	case H1MessageType::RunBaselineDiagnostic:
 	case H1MessageType::RunBaselinePmu:
