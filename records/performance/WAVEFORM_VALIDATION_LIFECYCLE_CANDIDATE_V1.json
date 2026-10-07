@@ -1,0 +1,658 @@
+{
+  "schema": "birdnet-h1-waveform-validation-lifecycle-candidate-v1",
+  "candidate_class": "WAVEFORM_VALIDATION_LIFECYCLE_ONLY",
+  "status": "PROSPECTIVE_WAVEFORM_VALIDATION_LIFECYCLE_CANDIDATE_V1_FROZEN",
+  "frozen_date": "2026-10-07",
+  "authorization": "Freeze, sign and push only this candidate and its companion. STOP BEFORE IMPLEMENTATION; future source work and physical requalification need separate authorization.",
+  "branch": "performance/h1-sub700ms",
+  "required_entry_HEAD": "81d7adea02978b5aa0648606eb7c3d1e9c9b24e6",
+  "published_master_preserved": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "main_criteria": {
+    "path": "records/performance/PROSPECTIVE_CRITERIA.json",
+    "sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "unchanged": true,
+    "ultimate_gate": {
+      "warmups": 5,
+      "measured": 100,
+      "consecutive": true,
+      "outlier_removal": "NONE",
+      "every_unrounded_sample_ms": "<700.000",
+      "boundary": "waveform-ready -> ResultReady"
+    }
+  },
+  "accepted_authorities": {
+    "lifecycle": {
+      "implementation_commit": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+      "disposition": "LIFECYCLE_REUSE_ONLY_PASS",
+      "receipt": {
+        "name": "FINAL_LIFECYCLE_REUSE_RECEIPT.json",
+        "bytes": 65406,
+        "sha256": "5c9a5fb656aab9b323c0dce0ce9c4a2806317fdf284b2ae212a78dc22987283f"
+      }
+    },
+    "topk": {
+      "implementation_commit": "88876bc661cb00c954f8072a369ee37421b8a5f8",
+      "disposition": "POSTPROCESSING_OPTIMIZATION_PASS",
+      "receipt": {
+        "name": "FINAL_POSTPROCESSING_TOPK_RECEIPT.json",
+        "bytes": 572434,
+        "sha256": "67bbc7751906b3a0d9b34bbc433c476cd792b99032a8a68e7f88b4d7f9d1afc3"
+      }
+    },
+    "observation": {
+      "plan_commit": "d65b6949b7f010b5b23527335bc30703a0ba0598",
+      "plan_path": "records/performance/HOT_PATH_VALIDATION_OBSERVATION_PLAN_V1.json",
+      "plan_sha256": "ea4e6639910896acc78ce7b992fdd7128f021f89c11fd7664d89fb057dfd15b8",
+      "observer_implementation_commit": "81d7adea02978b5aa0648606eb7c3d1e9c9b24e6",
+      "local_GOOD_SSH_signed": true,
+      "GitHub_Verified": true,
+      "measurement_disposition": "HOT_PATH_VALIDATION_MEASUREMENT_QUALIFIED",
+      "combined_disposition": "COMBINED_HOT_PATH_VALIDATION_LIFECYCLE_CANDIDATE_NOT_JUSTIFIED",
+      "all_20_structurally_qualified": true,
+      "complete_timestamps_counters_exact_W_R_reconciliation": true,
+      "outliers_removed": 0,
+      "compact_evidence_identities": [
+        {
+          "name": "HOT_PATH_VALIDATION_QUALIFIED_20261007T154543Z.json",
+          "bytes": 81686,
+          "sha256": "81ec9b62483d1b75a9225fd3b52458695d12be64add72c1c63fc4d380b009ef1"
+        },
+        {
+          "name": "HOT_PATH_VALIDATION_MEASUREMENT_QUALIFICATION.json",
+          "bytes": 1211,
+          "sha256": "37b73b46d7d12b277919ddeb9e4901b1c1fc05e5667159dcff75679e4837e90c"
+        },
+        {
+          "name": "WAVEFORM_VALIDATION_DECOMPOSITION_STATS.json",
+          "bytes": 8826,
+          "sha256": "d60365ed1a6c5ed91723b2bdedd22325e5210c263de2ef438b7a313f3b6bb365"
+        },
+        {
+          "name": "RESULT_VALIDATION_DECOMPOSITION_STATS.json",
+          "bytes": 16609,
+          "sha256": "8a75bf8d4373deadebcd44371576328117066b6c0f058cf36ebcf228ee255d94"
+        },
+        {
+          "name": "VALIDATION_BYTE_TIME_LEDGER_MEASURED.json",
+          "bytes": 11137,
+          "sha256": "11c3bf70beb495bd9e6a53abf62cd2277e39a50d62caecede688b65130ec5c4e"
+        },
+        {
+          "name": "VALIDATION_SCAN_BYTE_LEDGER.json",
+          "bytes": 3421,
+          "sha256": "afa49dcdf843a83b98249c6c87e887d5837e7a66a75f680cf20ca9d7ca4c4dd2"
+        },
+        {
+          "name": "CONSUMER_CLASSIFICATION_FINAL.json",
+          "bytes": 27365,
+          "sha256": "5e0eb29e9530511e9cb76cdd04a177b9ca00bc549f43b4883e3d121c29ee6c60"
+        },
+        {
+          "name": "WAVEFORM_VALIDATION_CONSUMER_AUDIT.json",
+          "bytes": 11128,
+          "sha256": "d51137bb3df6f01b1fb5eea4690798ccc877ea199dbf34ccaa4f56db28261e55"
+        },
+        {
+          "name": "RESULT_VALIDATION_CONSUMER_AUDIT.json",
+          "bytes": 9718,
+          "sha256": "4d7d2f1b22779320735eec90d88cefbaacae42c54e02451b02d3c851a628d5c2"
+        },
+        {
+          "name": "GENERATION_LIFETIME_ANALYSIS_FINAL.json",
+          "bytes": 6831,
+          "sha256": "b4c7ec0516c3e4bdc39ce8d47e6c634e962c8228442cef475a3af0c73c78a8f9"
+        },
+        {
+          "name": "VALIDATION_BUFFER_LIFETIME_MAP.json",
+          "bytes": 12056,
+          "sha256": "0c4fdecd406e07da28a8be312b6aa0a2ee0872a94a22dcab7bdefce01c201768"
+        },
+        {
+          "name": "CAMPAIGN_USB_RECEIPT.json",
+          "bytes": 8329,
+          "sha256": "3c8de263c985c1153512b3080c66c1334b2ce255f74517e53ec8a9bf29a947a7"
+        },
+        {
+          "name": "EXACT_RECONCILIATION.json",
+          "bytes": 1580,
+          "sha256": "1b43bab119ce2efb06a3f4b90b727734284820a63bced0ad355665b5fc07b4e2"
+        },
+        {
+          "name": "MEASURED_CANDIDATE_OPPORTUNITY_AND_DECISION.json",
+          "bytes": 2012,
+          "sha256": "05301cfa816b3db1bd205ccf87d610ce3d0cea7e40e77fcb0e1f4cd59c747afb"
+        },
+        {
+          "name": "POST_TOPK_ACCEPTANCE_TIMING.json",
+          "bytes": 2879,
+          "sha256": "fe8a5b26cf8b90db3d873f424c4ff1159b3065bb4841a3ab084277546537cb00"
+        }
+      ],
+      "raw_evidence_copied": false
+    }
+  },
+  "qualified_measurement": {
+    "waveform_bytes_per_inference": 384000,
+    "waveform_full_CRC_calls_per_successful_inference": 1,
+    "waveform_full_CRC_mean_ms": "134.403990625",
+    "waveform_full_CRC_p95_ms": "134.404898",
+    "waveform_full_CRC_p95_unrounded_ms": "134.4048975",
+    "waveform_full_CRC_maximum_ms": "134.404980",
+    "W0_mean_ms": "134.415010",
+    "W0_unrounded_mean_ms": "134.41500975",
+    "W_reconciliation_max_error_cycles": 0,
+    "R_reconciliation_max_error_cycles": 0,
+    "seven_boundary_CRC_mean_ms": "479.525781",
+    "seven_boundary_CRC_unrounded_mean_ms": "479.52578125",
+    "R0_mean_ms": "479.549119",
+    "eligible_output_validation_removal_ms": "0",
+    "accepted_post_topk_mean_ms": "1857.83680665",
+    "conditional_projection_ms": "1723.432816025",
+    "new_generation_check_cost": "NONZERO_UNIMPLEMENTED_UNMEASURED",
+    "outliers_removed": 0
+  },
+  "conditional_projection": {
+    "expression": "1857.83680665 - 134.403990625 = 1723.432816025 ms",
+    "projected_mean_ms": "1723.432816025",
+    "only_subtracted_work": "Measured W1 full resident waveform CRC",
+    "output_saving_ms": "0",
+    "generation_check_cost": "NONZERO_UNIMPLEMENTED_UNMEASURED; not assumed free or subtracted",
+    "performance_PASS": false,
+    "future_acceptance_requirement": false,
+    "proof_limit": "Projection only from accepted post-topk timing and qualified diagnostic scan intervals with observer overhead; no optimized binary or acceptance evidence. Actual later measurements are authoritative."
+  },
+  "one_allowed_transformation": "Validate and bind uploaded resident input identity once per generation before waveform-ready; replace repeated uploaded runOnce full scan by generation-bound identity metadata and timed immutable-generation lease checks. Retain every current upload validation and every ordinary output operation.",
+  "waveform_generation_contract": {
+    "schema": "birdnet-h1-waveform-generation-contract-v1",
+    "prospective_only": true,
+    "architectural_rule": "VALIDATE EACH INPUT GENERATION WHEN IT BECOMES VALID. DO NOT RESCAN AN UNCHANGED VALID GENERATION ON EVERY INFERENCE.",
+    "storage_model": "One existing resident waveform buffer and its existing separate transport staging payload; no new double buffering or atomic replacement design.",
+    "states": {
+      "EMPTY": "New runtime: no generation, no receipt and no leases. Retained resident bytes cannot imply validity.",
+      "WRITING": "A new generation owns the upload/acquisition attempt or resident mutation; prior receipt revoked. No inference lease. Staging reception may use this state before any resident byte is written.",
+      "UNVALIDATED": "Expected bytes are complete and mutators are quiescent, but validation/publication is incomplete. Validator retains exclusive control; no inference lease.",
+      "VALID": "Complete generation-bound receipt published atomically after all producer-specific checks; no mutation owner. Buffer is immutable until explicit invalidation.",
+      "INVALID": "Failed, partial-aborted, cancelled, superseded, reset-expired or externally corrupted generation. No receipt or inference lease; this ID cannot return to VALID."
+    },
+    "WAVEFORM_GENERATION_ID": {
+      "identity": "Opaque runtime-epoch plus internally owned monotonically increasing unsigned 64-bit generation counter. Host uploadSequence/request sequence and content CRC/SHA are not generation IDs.",
+      "advance": "Every admitted recognizable new upload attempt and every other new resident mutation/acquisition intent consumes a fresh counter value, even with identical bytes or reused host sequence. Staging, copying, validation and publication for one attempt keep the same ID.",
+      "attempt_boundary": "Serialized parser recognizes UploadWaveform at the first available command-type identification, at latest the complete header and before payload reception; unsupported version/length and subsequent frame errors cannot bypass attempt invalidation. Unrecognizable/truncated framing never publishes a generation.",
+      "reset": "Receipt, leases, writer ownership and producer validity start EMPTY in every new runtime. Epoch denotes that runtime instance; equality is scoped to it. Never restore or compare pre-reset receipts/tokens as current, even if PSRAM bytes or numeric counter values repeat.",
+      "exhaustion": "Counter does not wrap, recycle an ID or cause ABA equality. Exhaustion fails closed and prevents new publication; fresh runtime must begin EMPTY.",
+      "cross_runtime_tokens": "No persisted or host-issued generation token may establish current validity. If implementation cannot enforce runtime scoping and reject stale tokens, STOP."
+    },
+    "receipt_binding": [
+      "generation ID and current runtime epoch",
+      "producer kind (UPLOAD, PDM_ACQUISITION or LINE_ACQUISITION)",
+      "resident base, exact sample count and byte count, format/sample-rate/channel contract",
+      "producer completion and error state",
+      "upload raw/resident CRC and retained declared SHA where applicable",
+      "finite validation and canonical discriminator where applicable",
+      "publication state and mutation/lease ownership"
+    ],
+    "serialized_ownership": "Retain the current single application command owner. Parser admission and all resident writes serialize with inference input consumption. USB traffic may queue in separate transport buffers during a lease; no concurrent parser admission, resident mutation or receipt replacement is allowed.",
+    "mutation_rule": [
+      "Before any first resident-byte write, obtain exclusive mutation admission with no inference lease; retire the prior VALID receipt and clear all upload/acquisition compatibility validity flags.",
+      "Bind a fresh generation ID, producer and exact buffer range; WRITING prevents all leases. Every alias, diagnostic injector, DMA destination and external raw write must follow the same rule.",
+      "Complete writes, revoke mutable aliases/stop DMA ownership, transition to UNVALIDATED, validate the producer contract and atomically publish the receipt with VALID.",
+      "Any failure leaves the new ID INVALID and the old generation retired. A successful reupload is a new ID; INVALID cannot be rehabilitated.",
+      "Uncoordinated external writes invalidate evidence and cannot be followed by inference using an old receipt. Debugger halt alone does not revoke validity; any enabled unmediated writer requires STOP."
+    ],
+    "lease": {
+      "at_waveform_ready_START": "Generation is VALID, producer matches requested input, receipt binds the exact buffer/count/format, and no mutation owner exists. START stays at the existing waveform-ready boundary. Acquire/check and snapshot the lease inside the timed route before any frontend read.",
+      "ownership": "At most one inference input lease; all mutators and parser admissions are excluded until required input consumption is complete. Metadata checks are bounded generation/state/producer/pointer/length checks, not waveform scans.",
+      "during_consumption": "Generation ID, state, producer, buffer and ownership remain unchanged while the frontend consumes the waveform. Validate the same token after consumption and release ownership safely within the measured route; all frontend failure exits release without reviving invalid state.",
+      "result_identity": "Copy the receipt CRC/SHA metadata into the existing result fields using the leased snapshot. Receipt retirement later cannot relabel that result. Do not change saveResult, repeat comparison, result schema or publication.",
+      "cost": "Checks, receipt metadata copying, synchronization, token checks and release have nonzero unmeasured cost. Required input ownership work remains within waveform-ready -> ResultReady.",
+      "concurrency_limit": "No new asynchronous input writer or dispatcher behavior is authorized. If exclusive ownership cannot be maintained with minimal lifecycle hooks, STOP."
+    },
+    "invalid_upload_semantics": "Invalidate old generation at admitted upload-attempt start, before staging or resident mutation. Partial/error/abort/disconnect leaves no new VALID input and never falls back to the old receipt; parser restart creates another fresh ID. A still-incomplete upload stays non-VALID and cannot run inference. Existing last published results retain their ordinary behavior independently of input validity.",
+    "writer_coverage": "UPLOAD_COPY and PDM_PCM_TO_FLOAT are current direct resident writers; transport-attempt hooks, legacy consumers, diagnostics/injection, fixture loading, startup, mutable aliases, future line/I2S and coordinated external writes must all be covered. Stop on any uncovered writer or scope expansion."
+  },
+  "uploaded_waveform_validation_contract": {
+    "schema": "birdnet-h1-uploaded-waveform-validation-contract-v1",
+    "prospective_only": true,
+    "flow": [
+      "Recognizable new upload attempt -> fresh G, revoke old validity/receipt, WRITING before staging or any resident mutation.",
+      "Receive exactly 384060 payload bytes (60 metadata + 384000 raw); complete receive -> UNVALIDATED; reject incomplete/unsupported framing.",
+      "Preserve H1CP framing/version/length and payload CRC validation; validate exact current metadata contract and retain declared raw CRC and SHA bytes.",
+      "Compute the existing full CRC of 384000 staged raw bytes once when this check is reached; require equality with declared raw CRC.",
+      "With the same G under exclusive mutation ownership, WRITING -> complete unchanged memcpy into resident waveform -> UNVALIDATED with no active writer.",
+      "Require all 96000 resident float samples finite and copy completion. Validate actual resident CRC against the same qualified raw/declared CRC once before VALID; this relocates the earliest legacy resident identity check to generation publication.",
+      "Preserve current canonicalByteMatch discriminator (canonical CRC, exact retained declared SHA and complete canonical byte equality where that conditional test applies).",
+      "Bind complete receipt to G and atomically publish VALID/waveform-ready; repeated uploaded inference leases G with bounded metadata/ownership checks only."
+    ],
+    "metadata": {
+      "dtype": 1,
+      "rank": 2,
+      "shape": [
+        1,
+        96000
+      ],
+      "sample_rate_hz": 32000,
+      "raw_bytes": 384000,
+      "metadata_bytes": 60,
+      "payload_bytes": 384060,
+      "declared_SHA_bytes": 32,
+      "ordinary_SHA_hex_characters": 64
+    },
+    "required_validation": [
+      "complete expected payload length",
+      "current protocol framing/version and payload CRC",
+      "current exact dtype/rank/shape/sample-rate/raw-byte contract",
+      "declared raw CRC and existing raw-byte full CRC equality",
+      "complete exact resident copy and resident CRC equality before publication",
+      "finiteCount == 96000",
+      "retained declared SHA metadata",
+      "current conditional canonical CRC/SHA/byte discriminator and canonical-required consumer guards"
+    ],
+    "resident_integrity": "The receipt qualifies actual resident bytes, not merely the transport payload. One once-per-generation post-copy resident CRC check preserves the old resident identity rejection. Do not infer correct resident copy from gUpload.valid or staged CRC alone.",
+    "CRC_scan_accounting": {
+      "FULL_RAW_WAVEFORM_CRC_SCANS_PER_NEW_UPLOAD_GENERATION": {
+        "when_raw_check_reached": 1,
+        "bytes": 384000,
+        "meaning": "Existing staged raw-payload CRC only; early-rejected attempts may have zero and never VALID."
+      },
+      "FULL_RESIDENT_WAVEFORM_CRC_SCANS_PER_VALIDATED_UPLOAD_GENERATION": {
+        "required": 1,
+        "bytes": 384000,
+        "meaning": "Move the earliest legacy resident CRC check before publication. It is separate from the existing staged raw scan and never repeated for inference."
+      },
+      "no_arbitrary_extra_scans": "For a successful upload followed by inference, the two generation-establishment CRC scans correspond to the existing staged raw scan plus first legacy resident scan. No mandatory additional full raw pass, SHA computation, new CRC algorithm or accelerator is invented."
+    },
+    "SHA_contract": "Upload SHA is host-declared metadata retained/echoed today, not board-computed or cryptographically verified against content. Retain its exact value and declaration status; no new full waveform SHA scan is required. Never claim board SHA verification.",
+    "identity_rejection_scope": "IDENTITY_MISMATCH_ACCEPTED=0 covers required raw/resident CRC equality and required fixture/canonical identity guards. Generic finite noncanonical uploads remain permitted. A false canonicalByteMatch is not itself generic upload rejection; do not turn declared SHA echo into a new content-SHA gate.",
+    "per_upload_counters": {
+      "UPLOAD_GENERATIONS_CREATED": "Cumulative admitted recognizable upload attempts, including failed/partial attempts, with exactly one fresh ID per attempt.",
+      "UPLOAD_GENERATIONS_VALIDATED": "Cumulative upload receipt publications; increments once per ID only after every required check.",
+      "FULL_RAW_WAVEFORM_CRC_SCANS_PER_NEW_UPLOAD_GENERATION": "Actual existing staged raw full scan: 1 if reached, otherwise 0; per-ID counters distinguish early failures.",
+      "FULL_RAW_WAVEFORM_CRC_BYTES_PER_NEW_UPLOAD_GENERATION": "384000 if the raw scan completes, otherwise actual bytes processed; failed/incomplete scans cannot publish VALID.",
+      "FULL_RESIDENT_WAVEFORM_CRC_SCANS_PER_VALIDATED_UPLOAD_GENERATION": "Exactly 1 completed prepublication resident scan for each successful uploaded ID; failures retain actual work counts.",
+      "FULL_RESIDENT_WAVEFORM_CRC_BYTES_PER_VALIDATED_UPLOAD_GENERATION": "384000 for that completed resident check.",
+      "VALID_GENERATIONS": "Cumulative VALID publication events across producers, at most one publication per generation ID; not a current occupancy count.",
+      "INVALID_GENERATIONS": "Cumulative IDs terminally invalidated/failed/retired, counted once per ID; excludes initial EMPTY. A previously published generation may later retire.",
+      "CURRENT_WAVEFORM_GENERATION_STATE": "Current state, producer, ID, writer/lease ownership and receipt binding must be observable with bounded metadata."
+    },
+    "ordinary_uploaded_result_identity": {
+      "inputCrc32": "Reuse leased receipt resident CRC, already equal to validated raw/declared CRC. Exact equality to legacy per-inference result.inputCrc32 for the same uploaded bytes/generation.",
+      "inputSha256": "Reuse exact retained declared SHA hex metadata under the existing contract. Exact equality to legacy retained declared inputSha256 for the same generation.",
+      "immutable_VALID_required": true,
+      "INPUT_IDENTITY_FIELD_MISMATCHES": 0,
+      "fields_removed_or_reinterpreted": false
+    },
+    "rejection_gates": {
+      "PARTIAL_UPLOAD_ACCEPTED": 0,
+      "FAILED_FRAME_CRC_ACCEPTED": 0,
+      "INVALID_METADATA_ACCEPTED": 0,
+      "RAW_CRC_MISMATCH_ACCEPTED": 0,
+      "NONFINITE_INVALID_UPLOAD_ACCEPTED": 0,
+      "IDENTITY_MISMATCH_ACCEPTED": 0
+    }
+  },
+  "live_acquisition_validation_contract": {
+    "schema": "birdnet-h1-live-acquisition-validation-contract-v1",
+    "prospective_only": true,
+    "live_input_implementation_authorized": false,
+    "ACQUISITION_GENERATION": "Producer-tagged generation in the same resident ownership domain, linked to an acquisition/DMA or selected-window completion token. It is a fresh input ID, never an uploaded receipt or host content declaration.",
+    "LIVE_AUDIO_EXPECTED_CONTENT_CRC_REQUIRED": false,
+    "predetermined_identity_requirements": {
+      "expected_waveform_CRC": false,
+      "declared_waveform_SHA": false,
+      "known_fixture_identity": false
+    },
+    "VALID_requirements": [
+      "Acquisition/DMA completion for the exact intended window and producer; selected PCM snapshot/copy and any PCM-to-float conversion complete.",
+      "Exact required sample and byte counts at every representation: current H1 waveform contract 96000 mono float32 samples, 384000 resident bytes at 32000 Hz; current PCM16 window 96000 samples/192000 bytes where applicable. Any line format/channel mapping requires its separately authorized exact contract.",
+      "Correct buffer/window/DMA ownership, stable completed resident storage, no active writer of that generation and no lease conflict. Other ring/slab buffers may acquire only without aliasing this generation.",
+      "No acquisition/conversion error and no FIFO, DMA, queue, slab or overrun error that invalidates the window; preserve applicable bounds/finite/format/channel checks.",
+      "Bind completion receipt to acquisition ID and atomically publish VALID only after quiescence and all required checks; ordinary inference uses the same timed lease contract."
+    ],
+    "unknown_content": "Unknown microphone/line content has no pre-known expected CRC/SHA/fixture. Production validity follows completion, exact counts, ownership, errors and format, never comparison to a predetermined content checksum.",
+    "observed_fingerprints": "CRC/SHA may be computed per completed generation for existing ordinary result fields, transport integrity or diagnostics. Such digests identify observed content and do not constitute expected-content validity.",
+    "live_result_product_semantics": "Keep live identity separate from upload declarations. Existing PDM calculated CRC/SHA, if exposed, remain observed generation fingerprints, never a fabricated declared SHA. Detailed future live result availability/representation and any product change require separate authorization; this freeze does not remove or change existing result fields.",
+    "existing_PDM_writer": "The source already contains PDM conversion into shared resident storage, excluded from the exact observer build. Future uploaded optimization must still cover it with minimal common invalidation/ownership hooks or STOP; adding live acquisition, changing conversion arithmetic or expanding backend scope is forbidden.",
+    "future_line_I2S": "Current tree contains conditional dispatch references only, no implemented audio_i2s backend in the accepted build. Before later activation audit every DMA/writer and completion path; incompatible ownership requires STOP."
+  },
+  "writer_audit": {
+    "disposition": "WAVEFORM_WRITER_AUDIT_COMPLETE",
+    "source_commit": "81d7adea02978b5aa0648606eb7c3d1e9c9b24e6",
+    "direct_resident_writer_ids": [
+      "UPLOAD_COPY",
+      "PDM_PCM_TO_FLOAT"
+    ],
+    "exact_observer_audio_backend": "NONE",
+    "current_generation_safety_qualified": false,
+    "known_PDM_stale_upload_flag_risk_covered": true,
+    "fundamental_current_source_blocker_found": false,
+    "scope": "All current references/aliases and backend paths reviewed read-only; future implementation must repeat audit on its exact source/binary. External unmediated mutation cannot claim qualification.",
+    "writers": [
+      {
+        "id": "UPLOAD_COPY",
+        "writer": "validateUpload -> memcpy(h1UploadedWaveform(), raw, 384000)",
+        "entry": "H1CP UploadWaveform command 4",
+        "target": "resident waveform",
+        "current_writer": true,
+        "current_invalidation": "gUpload cleared at validateUpload entry, before copy; parser-level partial/frame rejection can precede this and retain old validity",
+        "current_publication": "gUpload.valid=1 after raw CRC match, copy, finite validation and canonical discriminator",
+        "future_compatible": true,
+        "future_requirement": "Recognize upload-attempt start in serialized parser; allocate fresh ID, invalidate old receipt before staging/mutation; publish only complete generation-bound validation receipt."
+      },
+      {
+        "id": "PDM_PCM_TO_FLOAT",
+        "writer": "runMicUsbCommand -> h1AudioPdmPrepareSelectedWaveform -> destination[index]",
+        "entry": "H1CP MicRunWindow command 16, PDM backend",
+        "target": "resident waveform passed by runMicUsbCommand",
+        "current_writer": true,
+        "current_invalidation": "No gUpload invalidation or shared generation invalidation; known stale uploaded-valid risk currently detected by per-inference CRC",
+        "current_publication": "Selected PCM ownership under gAudioMutex; float CRC/SHA/run-state metadata after conversion, no unified resident generation",
+        "future_compatible": true,
+        "future_requirement": "Common exclusive mutation ownership and upload-receipt revocation before conversion; never lend microphone bytes as an uploaded generation. Minimal hooks only; no live acquisition implementation or arithmetic change."
+      },
+      {
+        "id": "UPLOAD_TRANSPORT_STAGING",
+        "writer": "h1UsbPoll -> gPayload[gPayloadCount++]",
+        "entry": "H1CP UploadWaveform parser",
+        "target": "existing separate uploadPayload staging buffer",
+        "current_writer": false,
+        "current_invalidation": "None at recognizable upload start",
+        "current_publication": "Only complete payload with matching frame CRC dispatched; errors reset parser",
+        "future_compatible": true,
+        "future_requirement": "Attempt-start/abort/error/disconnect invalidation hooks; stage buffer is not resident and is not a new double buffer. No old receipt fallback."
+      },
+      {
+        "id": "LEGACY_UPLOAD_INFERENCE",
+        "writer": "No additional uploader; RunLegacyUploadedWaveform calls runUsbCommand(uploaded=true,legacyReference=true)",
+        "entry": "H1CP legacy uploaded inference",
+        "target": "reads resident waveform",
+        "current_writer": false,
+        "current_invalidation": "Uses current gUpload.valid and repeated resident CRC",
+        "current_publication": "Ordinary result through unchanged saveResult and ResultReady",
+        "future_compatible": true,
+        "future_requirement": "Same uploaded receipt/lease gates; no bypass. Future legacy upload writers must join common mutation ownership."
+      },
+      {
+        "id": "DIAGNOSTIC_INJECTION_AND_FRONTEND",
+        "writer": "No current resident injection writer; spectral/full/legacy frontend commands take const input",
+        "entry": "H1CP diagnostic frontend commands",
+        "target": "reads resident waveform; writes separate scratch/output",
+        "current_writer": false,
+        "current_invalidation": "No mutation requiring input invalidation found",
+        "current_publication": "Diagnostic output only",
+        "future_compatible": true,
+        "future_requirement": "Input readers must obey stable generation ownership; any later injection must invalidate, create, validate and publish a new generation. Output diagnostics unchanged."
+      },
+      {
+        "id": "CANONICAL_AND_FIXTURE_LOAD",
+        "writer": "No current resident fixture loader; h1SyntheticWaveformData/h1WrenWaveformData are const linked fixture inputs",
+        "entry": "RunCanonical and UART C/G fixture routes",
+        "target": "separate immutable linked fixtures",
+        "current_writer": false,
+        "current_invalidation": "No resident mutation",
+        "current_publication": "Current fixture build SHA/size gates and ordinary CRC identity checks",
+        "future_compatible": true,
+        "future_requirement": "Preserve fixture routes and exact gates; uploaded canonical uses normal upload generation. Do not silently widen optimization to independent linked-fixture routes. Any later resident loader is a new writer."
+      },
+      {
+        "id": "LINE_I2S_ACQUISITION",
+        "writer": "Conditional H1_I2S3_ACQUISITION dispatch stubs only; audio_i2s source/header and selectable backend absent at exact HEAD",
+        "entry": "H1CP I2s* commands when separately supplied backend enabled",
+        "target": "no resident writer in current tree/binary",
+        "current_writer": false,
+        "current_invalidation": "Not applicable: no implemented backend to assess",
+        "current_publication": "Not applicable",
+        "future_compatible": "CONTRACT_ONLY_NOT_IMPLEMENTED",
+        "future_requirement": "Future activation requires complete writer/DMA audit and common acquisition generation; STOP if enabled writer cannot be covered within separately authorized scope."
+      },
+      {
+        "id": "RAW_MEMORY_READ_DIAGNOSTIC",
+        "writer": "armRawRead/executeRawRead only write diagnostic state and read volatile const memory",
+        "entry": "H1CP ArmRead/ReadArmed under H1_RAW_MEMORY_READ_DIAGNOSTIC",
+        "target": "reads memory; no resident write command",
+        "current_writer": false,
+        "current_invalidation": "No resident mutation",
+        "current_publication": "Diagnostic completion marker only",
+        "future_compatible": true,
+        "future_requirement": "Retain read-only semantics; any raw write/injection must use mutation ownership or block qualification."
+      },
+      {
+        "id": "MUTABLE_ACCESSOR_AND_EXPORTED_STORAGE",
+        "writer": "h1UploadedWaveform returns float*; exported h1PsramStorage can be addressed externally",
+        "entry": "Internal C++ accessor / symbol access",
+        "target": "all aliases to resident waveform",
+        "current_writer": false,
+        "current_invalidation": "No ownership type or generation mechanism enforced",
+        "current_publication": "No generation receipt",
+        "future_compatible": true,
+        "future_requirement": "Audit every caller and address alias; confine mutable access to admitted writers and const lease access to readers. No untracked pointer escape or asynchronous DMA ownership."
+      },
+      {
+        "id": "BOOT_INITIALIZATION",
+        "writer": "Potential startup/storage initialization; resident storage is not self-validating",
+        "entry": "New firmware runtime / reset",
+        "target": "resident storage and validity metadata",
+        "current_writer": false,
+        "current_invalidation": "gUpload starts cleared; no prior valid upload asserted",
+        "current_publication": "No VALID generation from retained bytes",
+        "future_compatible": true,
+        "future_requirement": "New runtime starts EMPTY regardless of retained PSRAM bytes; all old receipts/leases expire. Any explicit clear becomes a mutation-owned writer."
+      },
+      {
+        "id": "EXTERNAL_DEBUG_RAW_WRITE",
+        "writer": "Debugger/probe/programmer arbitrary memory write capability is external to firmware",
+        "entry": "Separately authorized external write/debug/injection workflow",
+        "target": "may address any resident byte or receipt metadata",
+        "current_writer": "EXTERNAL_CAPABILITY_NOT_EXECUTED",
+        "current_invalidation": "Unmediated writes cannot be observed reliably by firmware",
+        "current_publication": "None",
+        "future_compatible": "ONLY_WITH_COORDINATED_OWNERSHIP",
+        "future_requirement": "No external writes while generation VALID/leased. Before first write revoke receipt and establish exclusive mutation ownership; any uncoordinated write destroys qualification and requires fresh complete validation. Halt alone does not invalidate; resume cannot revive old receipt. If an enabled writer cannot be covered, STOP future implementation."
+      }
+    ]
+  },
+  "future_structural_gates": {
+    "FULL_WAVEFORM_CRC_SCANS_PER_MEASURED_INFERENCE": 0,
+    "FULL_WAVEFORM_CRC_BYTES_PER_MEASURED_INFERENCE": 0,
+    "FULL_WAVEFORM_SHA_SCANS_PER_MEASURED_INFERENCE": 0,
+    "FULL_WAVEFORM_IDENTITY_VALIDATIONS_PER_MEASURED_INFERENCE": 0,
+    "INFERENCE_WITH_INVALID_GENERATION": 0,
+    "INFERENCE_WITH_WRITING_GENERATION": 0,
+    "GENERATION_CHANGED_DURING_INPUT_CONSUMPTION": 0,
+    "STALE_WAVEFORM_ACCEPTED": 0,
+    "FULL_WAVEFORM_CRC_SCANS_ACROSS_105_STEADY_STATE_RUNS": 0
+  },
+  "future_numerical_gates": {
+    "accepted_four_slot_subset": [
+      "canonical",
+      "canonical immediate repeat",
+      "high_valid_two_tone",
+      "high_valid_two_tone immediate repeat"
+    ],
+    "exact_boundaries": [
+      "waveform bytes presented to frontend",
+      "native quantized backbone input",
+      "backbone output",
+      "classifier input",
+      "classifier output",
+      "all 11560 score bits",
+      "top100 indices",
+      "top100 score bits",
+      "finiteCount",
+      "thresholdCount",
+      "topCount",
+      "all seven boundary CRCs",
+      "score CRC",
+      "legacy/future inputCrc32 for same uploaded generation",
+      "legacy retained declared/future inputSha256 for same uploaded generation"
+    ],
+    "hard_gates": {
+      "TOTAL_INTEGER_MISMATCHES": 0,
+      "MAXIMUM_LSB_ERROR": 0,
+      "FULL_SCORE_BIT_MISMATCHES": 0,
+      "TOP100_INDEX_MISMATCHES": 0,
+      "TOP100_SCORE_BIT_MISMATCHES": 0,
+      "BOUNDARY_CRC_MISMATCHES": 0,
+      "INPUT_IDENTITY_FIELD_MISMATCHES": 0
+    },
+    "comparison": "Exact bytes/bits/integers; no numerical tolerance, approximation or weakened identity gates."
+  },
+  "future_repeatability_gates": {
+    "same_generation_survives_repeated_inference": true,
+    "canonical_immediate_repeat_exact": true,
+    "two_tone_immediate_repeat_exact": true,
+    "generation_drift": 0,
+    "accidental_revalidation_scans": 0,
+    "resident_buffer_mutations_during_reuse": 0,
+    "ownership_violations": 0,
+    "steady_state_campaign": {
+      "warmups": 5,
+      "measured": 100,
+      "same_uploaded_generation_for_all_105_permitted": true,
+      "validated_before_campaign": true,
+      "FULL_WAVEFORM_CRC_SCANS_ACROSS_105_STEADY_STATE_RUNS": 0,
+      "repeated_scan_outside_timing_boundary_per_run_forbidden": true
+    }
+  },
+  "lifecycle_topk_preservation": {
+    "LIFECYCLE_REUSE_ONLY_PASS": "RETAIN",
+    "POSTPROCESSING_OPTIMIZATION_PASS": "RETAIN",
+    "MODEL_PAYLOAD_COPY_BYTES_PER_INFERENCE": 0,
+    "INTERPRETER_CONSTRUCTIONS_PER_INFERENCE": 0,
+    "ALLOCATE_TENSORS_CALLS_PER_INFERENCE": 0,
+    "heap_selector_behavior": "Exact current score/index ordering, full score buffer and top100 behavior unchanged.",
+    "all_existing_accepted_storage_model_guard_route_cache_build_identity_gates": "RETAIN_UNCHANGED"
+  },
+  "runtime_integrity_gates": {
+    "CPU_FALLBACK": 0,
+    "FAULTS": 0,
+    "GUARD_FAILURES": 0,
+    "UNEXPECTED_RESET": 0,
+    "PERSISTENT_MODEL_MUTATION": 0,
+    "QUEUE_IRQ_FAILURES": 0,
+    "GENERATION_OWNERSHIP_FAILURES": 0,
+    "INVALID_GENERATION_INFERENCES": 0
+  },
+  "output_checkpoint_preservation": {
+    "boundaryCrc32_0_through_6": "UNCHANGED",
+    "scoreCrc32": "UNCHANGED",
+    "repeat_equal": "UNCHANGED",
+    "numericallyEqual()": "UNCHANGED",
+    "saveResult()": "UNCHANGED",
+    "result_publication": "UNCHANGED",
+    "ResultReady": "UNCHANGED",
+    "full_11560_score_buffer": "UNCHANGED",
+    "top100_result_contract": "UNCHANGED",
+    "post_P0_behavior": "UNCHANGED",
+    "seven_CRC_mean_ms_retained": "479.525781",
+    "seven_CRC_unrounded_mean_ms": "479.52578125",
+    "eligible_output_validation_removal_ms": "0",
+    "reason": "All seven CRCs participate in ordinary repeat_equal; score CRC also participates in ordinary RUN/GET_TOPK. No output validation saving is attributed to this candidate."
+  },
+  "timing_boundary": {
+    "START": "Existing waveform-ready boundary, unchanged",
+    "waveform_ready": "Only after generation VALID and receipt publication",
+    "END": "Existing ResultReady completion, unchanged",
+    "initial_validation": "Upload generation establishment precedes waveform-ready by input readiness definition. It cannot be repeated per inference, hidden outside the timer or deferred past ResultReady.",
+    "inside_measured_route": "Generation validity/source/ownership/lease checks, receipt metadata handling and required release checks have nonzero cost and remain within waveform-ready -> ResultReady. All current output CRC work remains inside.",
+    "boundary_gaming_allowed": false
+  },
+  "prospective_source_scope": [
+    "Introduce only necessary input generation/state/receipt and ownership metadata/interfaces.",
+    "Invalidate and create/bind generations on existing writers and recognizable upload attempts, including failure/partial/abort paths; restrict mutable aliases.",
+    "Preserve upload validation and move resident identity validation to completed generation publication.",
+    "Lease/check the uploaded generation at inference and use its validated CRC/retained declared SHA in existing result fields.",
+    "Add minimal structural proof counters/state and live-acquisition ownership hooks/interfaces; do not implement live acquisition or change conversion arithmetic.",
+    "Preserve existing waveform/model/boundary storage ownership and layout, models, arithmetic, frontend and all output behavior. Minimal bounded input lifecycle metadata may use separately qualified existing memory capacity; no buffer relocation for speed."
+  ],
+  "future_validation": {
+    "preconditions": "Separate implementation and hardware authorization; exact committed/built/target binary binding; repeat complete writer audit; all existing accepted qualification gates.",
+    "negative_and_ownership_checks": [
+      "partial upload/abort/disconnect and malformed framing",
+      "failed frame CRC",
+      "invalid metadata/length/format",
+      "raw or resident CRC mismatch/copy failure",
+      "nonfinite resident upload",
+      "required canonical identity mismatch while generic noncanonical uploads remain valid",
+      "failure both before and after resident copy",
+      "same host sequence and identical-content new attempt still get fresh ID",
+      "upload -> PDM conversion cannot leave upload receipt usable",
+      "writer denied before mutation while input lease active",
+      "stale token, mid-consumption drift, reset-expired receipt and counter exhaustion rejection"
+    ],
+    "diagnostic_campaign": {
+      "warmups": 5,
+      "measured": 20,
+      "raw_samples": "RETAIN_ALL",
+      "confirm": [
+        "zero per-inference full waveform CRC/SHA/identity scans and bytes",
+        "generation check/lease timing with no zero-cost claim",
+        "unchanged seven output CRC and ordinary result behavior",
+        "exact four-slot numerical/input identity equivalence",
+        "lifecycle/topk preservation and runtime/ownership hard gates"
+      ]
+    },
+    "acceptance_campaign": {
+      "same_exact_binary_as_diagnostic": true,
+      "warmups": 5,
+      "measured": 100,
+      "consecutive": true,
+      "outlier_removal": "NONE",
+      "raw_samples": "RETAIN_ALL",
+      "ultimate_sub700_gate": "Every unrounded sample <700.000 ms",
+      "same_generation_reuse_proof": "No CRC scan across all 105 steady-state runs after prevalidation",
+      "qualitative_projection_only": "Approximately 1723 ms mean is conditional context, not an acceptance requirement; do not bias execution."
+    },
+    "candidate_PASS": "WAVEFORM_VALIDATION_LIFECYCLE_ONLY_PASS requires every candidate gate; may be issued with total latency >700 ms. No PASS is issued by this freeze.",
+    "overall_PASS": "H1_REPEATABLE_SUB700MS_PERFORMANCE_PASS is separate and requires unchanged main criteria. If actual later measurements miss it, report POST_WAVEFORM_VALIDATION_SUB700_TARGET_NOT_MET; do not predetermine outcome."
+  },
+  "excluded_optimizations": [
+    "production top-3 contract",
+    "regional classifier projection",
+    "frontend optimization",
+    "frontend fusion",
+    "frontend copy elimination",
+    "GeM optimization",
+    "U85 optimization",
+    "classifier projection",
+    "cache optimization",
+    "stage-boundary zero-copy",
+    "model/Vela change",
+    "clock change",
+    "compiler flag change",
+    "CRC algorithm acceleration",
+    "hardware CRC implementation",
+    "DMA CRC",
+    "boundary CRC relocation",
+    "result-contract change",
+    "output/checkpoint CRC removal or rescheduling",
+    "new double buffering",
+    "live acquisition implementation"
+  ],
+  "implementation_stop_conditions": [
+    "Entry HEAD or remote performance branch unexpectedly advances before freeze; main criteria, observation-plan or qualified evidence identity fails binding.",
+    "Any resident waveform writer, mutable alias, diagnostic injection, DMA destination, parser failure/partial path or external write cannot be covered by exclusive generation ownership and pre-mutation invalidation within this scope.",
+    "Actual resident copy identity cannot be validated before publication, stale/invalid/writing input cannot be rejected, or immutable input consumption/runtime-scoped IDs cannot be enforced.",
+    "Uploaded result.inputCrc32 or retained declared result.inputSha256 cannot remain exact under the existing ordinary semantics.",
+    "Candidate requires output validation changes, START movement, arithmetic, frontend, cache, NPU/U85, model/Vela, compiler/clock changes or any excluded optimization.",
+    "Unknown live-audio validity is made dependent on matching expected content CRC/SHA/fixture identity, or live backend implementation/product change is needed.",
+    "Future numerical/structural/integrity gates fail, evidence is incomplete, binary identity changes between campaigns, or exact criteria/tolerances/checks would need relaxation.",
+    "Separately authorized implementation or physical requalification is absent. Do not broaden scope to rescue the candidate."
+  ],
+  "freeze_scope_review_required": "WAVEFORM_VALIDATION_CANDIDATE_SCOPE_PASS",
+  "freeze_signing": {
+    "SSH_fingerprint": "SHA256:vwwTKHP0Mce4nGalzVyoddmZWIHHdlQW2crs5hx05gs",
+    "local_GOOD_and_GitHub_Verified_required": true,
+    "commit_files_only": [
+      "records/performance/WAVEFORM_VALIDATION_LIFECYCLE_CANDIDATE_V1.json",
+      "docs/PERFORMANCE_WAVEFORM_VALIDATION_LIFECYCLE.md"
+    ],
+    "commit_subject": "Freeze H1 waveform-validation lifecycle candidate",
+    "push_only": "performance/h1-sub700ms",
+    "PR_merge_master_history_rewrite_authorized": false
+  },
+  "session_end": "STOP BEFORE WAVEFORM_VALIDATION_LIFECYCLE IMPLEMENTATION. No firmware edit, build, programming, new inference, generation-state implementation or waveform-CRC removal is authorized in this session.",
+  "firmware_implementation_authorized": false,
+  "hardware_actions_authorized": false,
+  "build_implementation_authorized": false,
+  "optimization_implementation_started": false
+}
