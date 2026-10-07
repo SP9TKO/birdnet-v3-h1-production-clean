@@ -1,0 +1,375 @@
+{
+  "schema": "birdnet-h1-lifecycle-reuse-candidate-v1",
+  "candidate_version": 1,
+  "status": "PROSPECTIVE_LIFECYCLE_REUSE_CANDIDATE_V1_FROZEN",
+  "candidate_class": "LIFECYCLE_REUSE_ONLY",
+  "date": "2026-10-07",
+  "branch": "performance/h1-sub700ms",
+  "definition_before_implementation": true,
+  "implementation_started": false,
+  "authority_for": "A separately authorized next implementation/requalification session only",
+  "evidence_bindings": {
+    "main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "active_V2_plan_commit": "c650393e504200c4d1e637b32019978ed48846a2",
+    "active_V2_plan_sha256": "4e87f589ed05557737b1abfda5a7888130fd2cdc50b393bb4bc84b2c78df8714",
+    "qualified_V2_instrumentation_commit": "f5411cfef6e66c71c5e9f8934bb58d9779ef157d",
+    "correction_plan_sha256": "d9f9bdd4fbf43cbc7a65eaa6adaa00ad6500bba6d147a4332f6ddd16d256ed85",
+    "coherent_V2_firmware_authority": {
+      "bytes": 5470,
+      "sha256": "c6449819c4672e204ecb51bc380a9dc647bd0c7ec0e1556af0192baffa8499cd"
+    },
+    "V2_baseline_receipt": {
+      "bytes": 1739677,
+      "sha256": "3304efe7a000b76fcd2b5ec43d2cd62a2acf809a1ac7645847cd1bd979c6b819"
+    },
+    "V2_acceptance_timing": {
+      "bytes": 1833,
+      "sha256": "ab7058ea0a4dd3c6c3360d28aae3d08de11f2c2797734dc749b19d1b66c33d36"
+    },
+    "V2_diagnostic_profile": {
+      "bytes": 13435,
+      "sha256": "0b1bb4b93de2d6b9b95485e469d483f6a134b62d3fe13c260e0087726979c39e"
+    },
+    "V2_lifecycle_decomposition": {
+      "bytes": 109041,
+      "sha256": "7f97bc3730ae6041418bc11750b10acc57a09147c0160eb81999fc748564648f"
+    },
+    "V2_lifecycle_counts": {
+      "bytes": 28540,
+      "sha256": "c2c724644a39d997c23a8e1ff35399ce44f6cb95f8dc2e424b6161719cd870c8"
+    },
+    "V2_transfer_ledger": {
+      "bytes": 108122,
+      "sha256": "300a405be8c15d0fc055e5d3a67152d0067f6edacb675aabe6f53dac0ef06e5e"
+    },
+    "V2_cache_ledger": {
+      "bytes": 104121,
+      "sha256": "a77a4ddeab6c105ec81eeac8d6a0670ca989df7ab8e00d29b3fbb2f1c56dc4df"
+    },
+    "V2_PMU_result": {
+      "bytes": 60418,
+      "sha256": "3cec4c71fda165c928b76d613bb40cdbc9909d07aef3d898c10f3cb9a1136f7c"
+    },
+    "V2_PMU_integrity": {
+      "bytes": 1213,
+      "sha256": "daaa0320e5b62593f97ccbd57c6290b4bb0e96a0a513a1b4754619f17e2b320e"
+    },
+    "V2_baseline_integrity": {
+      "bytes": 18399,
+      "sha256": "d5af1d2de41dbf75b92e003d2c45787c6d9cae5d9180fe235c6331cd11e31298"
+    },
+    "V2_bottleneck_analysis": {
+      "bytes": 1549570,
+      "sha256": "b3dcdd1114614e43ccf1a934474a252bbc59b7e66bed7e17f86467e9418faf06"
+    },
+    "state_lifetime_audit": {
+      "bytes": 23202,
+      "sha256": "62fb33e8602976241cef6171782f4a8a82d5626ba810bae4b085e82efd5fdc25"
+    },
+    "candidate_selection_evidence_test": {
+      "bytes": 2284,
+      "sha256": "41dab9be5e889a6b83435a1dc9236cb77e488d962b0d2fadc237ad83da47abbd"
+    }
+  },
+  "coherent_baseline_firmware": {
+    "source_commit": "f5411cfef6e66c71c5e9f8934bb58d9779ef157d",
+    "ELF": {
+      "bytes": 10176016,
+      "sha256": "90ecde799ea7261b12e1eb1fb36ad027dffcee401d4a765918b3c22d1d99d210"
+    },
+    "BIN": {
+      "bytes": 1705120,
+      "sha256": "70058dac1a6e806bb459801ef8754cb91b6f9deb4c4a57bdaffbe6d5607391ba"
+    },
+    "programmed_application": {
+      "bytes": 1705120,
+      "sha256": "70058dac1a6e806bb459801ef8754cb91b6f9deb4c4a57bdaffbe6d5607391ba"
+    },
+    "programmed_ATOC": {
+      "bytes": 3888,
+      "sha256": "07aab370aa4cd5d8aa902488a14e3e8cf1b1b5b85c16afe2a069a17acae1df2e"
+    },
+    "models": {
+      "backbone": {
+        "bytes": 20465840,
+        "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+      },
+      "classifier": {
+        "bytes": 13008016,
+        "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+      }
+    },
+    "configuration": {
+      "bytes": 49649,
+      "sha256": "385328c12c15c3d65c6ff4b37d6a415d6825042c3004e2ac9a96a491501bb834"
+    },
+    "DTS": {
+      "bytes": 83923,
+      "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+    }
+  },
+  "selection": {
+    "first_optimization_candidate": true,
+    "primary_evidence": "Coherent V2 only; no V1 timing rows in primary analysis",
+    "acceptance": {
+      "count": 100,
+      "minimum_ms": 38194.7859175,
+      "mean_ms": 38197.38064605,
+      "median_ms": 38197.29642875,
+      "p95_ms": 38198.6870775,
+      "maximum_ms": 38198.7264975,
+      "population_standard_deviation_ms": 0.9157646177357872,
+      "population_variance_ms_squared": 0.8386248350967725,
+      "count_lt_700": 0,
+      "count_ge_700": 100,
+      "raw_sum_cycles": 1527895225842,
+      "raw_mean_cycles": {
+        "numerator": 763947612921,
+        "denominator": 50
+      },
+      "raw_median_cycles": {
+        "numerator": 30557837143,
+        "denominator": 2
+      },
+      "raw_population_variance_cycles_squared": {
+        "numerator": 335449934038709,
+        "denominator": 2500
+      },
+      "nearest_rank_p95_rank": 95,
+      "p95_cycles": 15279474831,
+      "clock_hz": 400000000,
+      "outliers_removed": 0
+    },
+    "baseline_latency_observation": "BASELINE_SUB700_TARGET_NOT_MET",
+    "diagnostic_total_mean_ms": 38197.550922,
+    "lifecycle_broad_pre_submit_mean_ms": 35828.7149295,
+    "lifecycle_percentage_of_diagnostic_total": 93.79846106537772,
+    "avoidable_initialization_component_percentage": 93.74091888310566,
+    "runtime_counts": {
+      "MODEL_PAYLOAD_COPY_BYTES_PER_INFERENCE": 33473856,
+      "MODEL_COPY_OPERATIONS_PER_INFERENCE": 2,
+      "INTERPRETER_CONSTRUCTIONS_PER_INFERENCE": 2,
+      "ALLOCATE_TENSORS_CALLS_PER_INFERENCE": 2,
+      "MODEL_BIND_OPERATIONS_PER_INFERENCE": 2,
+      "INPUT_TENSOR_BIND_OPERATIONS_PER_INFERENCE": 2,
+      "OUTPUT_TENSOR_BIND_OPERATIONS_PER_INFERENCE": 2,
+      "CUSTOM_OP_INIT_OPERATIONS_PER_INFERENCE": 2,
+      "CUSTOM_OP_PREPARE_OPERATIONS_PER_INFERENCE": 2
+    },
+    "model_copy_mean_ms": {
+      "backbone": 1834.390232,
+      "classifier": 1165.951665625
+    },
+    "answers_to_evidence_test": {
+      "01_per_run_model_copies_present": {
+        "answer": true,
+        "bytes_per_inference": 33473856,
+        "operations": 2
+      },
+      "02_interpreters_per_inference": {
+        "answer": true,
+        "count": 2
+      },
+      "03_AllocateTensors_per_inference": {
+        "answer": true,
+        "count": 2
+      },
+      "04_lifecycle_activities_dominant": {
+        "answer": true,
+        "measured_mean_ms": 35806.735225125,
+        "diagnostic_percentage": 93.74091888310566,
+        "avoidability_condition": "Safe reuse is defined by the audited lifetime/ownership contract; fresh memory and preparation-peak qualification remains mandatory before physical implementation."
+      },
+      "05_prepared_contexts_can_preserve_model_Vela_arithmetic": {
+        "answer": true,
+        "artifact_or_arithmetic_changes_allowed": false,
+        "basis": "Exact models have no variables and no custom reset callback; prepared Invoke reuses graph state, temp allocation is runtime-managed, and invocation-local driver lifecycle is preserved. Disjoint stage payload/allocator ownership is mandatory.",
+        "future_new_layout_or_implementation_qualified_now": false
+      },
+      "06_cache_or_placement_should_precede_reuse": {
+        "answer": false,
+        "basis": "Current measured lifecycle costs dominate; observed cache brackets are reported separately and unchanged. No speculative PMU-to-wall-time conversion."
+      }
+    },
+    "reason": "Repeated source/destination CRC, exact-byte comparison, payload staging and preparation dominate diagnostic work. Retain exact initialized contexts first; measured cache/NPU timings do not justify preceding cache/placement optimization. Stall ratios are not hypothetical saved wall time."
+  },
+  "allowed_once_during_initialization": {
+    "backbone": [
+      "Stage exact model payload once in existing PSRAM execution region, preserving full initial copy/identity/FlatBuffer/model/tensor validation",
+      "Obtain/bind model once",
+      "Construct resolver/context once as required",
+      "Construct MicroInterpreter once",
+      "AllocateTensors/graph/custom-op Init/Prepare once",
+      "Bind/store input tensor pointer once",
+      "Bind/store output tensor pointer once",
+      "Retain and reuse valid prepared context across all repeated inference"
+    ],
+    "classifier": [
+      "Stage exact model payload once in existing PSRAM execution region, preserving full initial copy/identity/FlatBuffer/model/tensor validation",
+      "Obtain/bind model once",
+      "Construct resolver/context once as required",
+      "Construct MicroInterpreter once",
+      "AllocateTensors/graph/custom-op Init/Prepare once",
+      "Bind/store input tensor pointer once",
+      "Bind/store output tensor pointer once",
+      "Retain and reuse valid prepared context across all repeated inference"
+    ]
+  },
+  "lifetime_only_storage": {
+    "allowed_only_when_necessary_to_retain_same_runtime_context": true,
+    "persistent_context_objects": [
+      "resolver",
+      "MicroInterpreter",
+      "cached tensor pointers",
+      "context structure"
+    ],
+    "execution_regions_remain": {
+      "models": "existing PSRAM_MODEL region",
+      "arenas": "existing SRAM0 parent reservation"
+    },
+    "existing_shared_slot_or_whole_arena_cannot_retain_both_contexts": true,
+    "necessary_isolation": "Disjoint retained model payload spans and disjoint entire allocator-owned arenas (head, tail, scratch and temp) for backbone and classifier; no competing preparation or overwrite of the other context.",
+    "existing_backbone_model_span_may_be_retained": true,
+    "additional_stage_model_storage_in_same_PSRAM_only_for_lifetime": true,
+    "existing_stage_checkpoint_buffers_copies_and_ownership_preserved": true,
+    "SRAM0_parent_address": "0x02000000",
+    "SRAM0_parent_bytes": 3500800,
+    "fast_memory_address": "0x02356b00",
+    "fast_memory_bytes": 524288,
+    "fast_memory_change_allowed": false,
+    "cacheability_policy_and_operation_types_counts_unchanged": true,
+    "pointer_range_deltas_allowed_only_as_consequence_of_qualified_lifetime_storage_not_cache_optimization": true,
+    "fresh_static_memory_ownership_and_allocator_peak_qualification_required": true,
+    "new_layout_is_not_qualified_by_this_definition": true,
+    "steady_used_sum_is_not_peak_proof": true,
+    "stop_if_safe_isolation_cannot_be_qualified_without_excluded_change": true
+  },
+  "excluded_optimizations": [
+    "frontend-to-backbone copy elimination",
+    "backbone-to-GeM alias redesign",
+    "bridge-to-classifier input copy elimination",
+    "classifier-output zero-copy redesign",
+    "unrelated memcpy removal",
+    "cache-operation reduction",
+    "cache-range optimization",
+    "cache-policy/cacheability change",
+    "U85 staging optimization",
+    "model/Vela recompilation or artifact change",
+    "frontend fusion",
+    "frontend arithmetic optimization",
+    "GeM optimization",
+    "sigmoid/top-k optimization",
+    "clock changes",
+    "compiler optimization/flag changes",
+    "DMA introduction",
+    "memory-region relocation for speed",
+    "U85 fast-memory address/size change",
+    "production stage-boundary ownership change"
+  ],
+  "hard_structural_gates": {
+    "MODEL_PAYLOAD_COPY_BYTES_PER_MEASURED_INFERENCE": 0,
+    "MODEL_PAYLOAD_COPY_OPERATIONS_PER_MEASURED_INFERENCE": 0,
+    "INTERPRETER_CONSTRUCTIONS_PER_MEASURED_INFERENCE": 0,
+    "ALLOCATE_TENSORS_CALLS_PER_MEASURED_INFERENCE": 0,
+    "MODEL_BIND_OPERATIONS_PER_MEASURED_INFERENCE": 0,
+    "MODEL_RUNTIME_ADDRESSES_STABLE": true,
+    "INTERPRETER_ADDRESSES_STABLE": true,
+    "TENSOR_ARENA_ADDRESSES_STABLE": true,
+    "INPUT_TENSOR_POINTERS_STABLE": true,
+    "OUTPUT_TENSOR_POINTERS_STABLE": true,
+    "MODEL_IDENTITIES_EXACT": true,
+    "VELA_IDENTITIES_UNCHANGED": true,
+    "PRODUCTION_MATHEMATICS_UNCHANGED": true,
+    "U85_BACKBONE_ROUTE_UNCHANGED": true,
+    "U85_CLASSIFIER_ROUTE_UNCHANGED": true,
+    "CPU_FALLBACK": 0,
+    "PERSISTENT_MODEL_MUTATION": 0,
+    "UNEXPECTED_RESET": 0,
+    "FAULTS": 0,
+    "GUARD_FAILURES": 0
+  },
+  "model_binding_reuse_basis": "GetModel is a const view into the exact stage-owned immutable retained FlatBuffer payload; bind once safely under the audited nonoverlap/lifetime contract.",
+  "per_inference_contract": {
+    "input_complete_overwrite_bytes": {
+      "backbone": 377664,
+      "classifier": 2560
+    },
+    "output_complete_production_bytes": {
+      "backbone": 161280,
+      "classifier": 23120
+    },
+    "input_output_copies_and_stage_boundaries_unchanged": true,
+    "scratch": "TFLM/custom op/NPU own contents; existing temp-allocation reset after each node retained. Exact models contain zero variable tensors and sole op has no reset callback. No invented blanket scratch reset.",
+    "driver": "Reserve per Eval, same synchronous invoke/wait, consume completion, reset job to IDLE and release. A borrowed reservation must not persist.",
+    "custom_op_base_arrays": "Overwrite all active base addresses/sizes on each Eval, retaining existing fast-memory override.",
+    "profile": "Reset per waveform using existing semantics; initialization receipts are separate from measured-operation counters and never reported as repeated work.",
+    "fault_guard": "Keep actual production checks; do not clear faults, rewrite guards or reconstruct contexts to conceal failures.",
+    "ordinary_result": "Existing result clearing, full postprocessing, ordinary CRCs, previous-result comparison, publication and ResultReady boundary remain."
+  },
+  "numerical_preservation": {
+    "qualified_authority_public_record": "records/release/NO_MATTER_PHYSICAL.json",
+    "qualified_authority_record_sha256": "3190a0a73a6232bd71fa61f05e8f5095be1329d4c0eafe3b455ded0972062574",
+    "qualified_clean_candidate_authority": "records/release/CANDIDATE_AUTHORITY.json",
+    "qualified_clean_candidate_authority_sha256": "d4849f11f67fcc131b9683b1f61730360e14f82b9c59da3eb46c79ae729117e7",
+    "fixture_slots": [
+      "canonical",
+      "canonical immediate repeat",
+      "high_valid_two_tone",
+      "high_valid_two_tone immediate repeat"
+    ],
+    "integer_boundaries": [
+      "native quantized backbone input",
+      "backbone output",
+      "classifier input",
+      "classifier output"
+    ],
+    "captured_embedding_bridge": "Capture applicable bridge evidence and preserve existing qualified scope; no new floating tolerance",
+    "TOTAL_INTEGER_MISMATCHES": 0,
+    "MAXIMUM_LSB_ERROR": 0,
+    "GeM_FP32_scope": "Existing approximately1.49e-8 residual remains characterization, not a new tolerance or FP32 bit-identity claim",
+    "stronger_existing_prospectively_required_scope_must_be_honored": true
+  },
+  "repeatability_lifecycle_stress": {
+    "both_immediate_repeats_integer_exact": true,
+    "pointer_address_drift": 0,
+    "context_reconstruction_between_measured_runs": 0,
+    "model_copy_between_measured_runs": 0,
+    "queue_IRQ_lifecycle_failures": 0,
+    "same_prepared_contexts_entire_5_plus_100_sequence": true,
+    "initialization_complete_before_steady_state_waveform_ready_interval": true
+  },
+  "future_performance_gate": {
+    "same_main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "warmups": 5,
+    "measured_runs": 100,
+    "consecutive": true,
+    "outlier_removal": "NONE",
+    "every_unrounded_sample_ms": "<700.000",
+    "strict_integer_comparison": "cycles*1000 < 700*clock_hz",
+    "primary_boundary": "Frozen waveform-ready before ordinary run-state setup/waveform CRC to ordinary result saved and ResultReady, before output serialization",
+    "minimal_qualified_timing_path_required": true,
+    "host_interaction_or_heavy_exports_inside_interval": false,
+    "LIFECYCLE_REUSE_ONLY_PASS_distinct_from_H1_REPEATABLE_SUB700MS_PERFORMANCE_PASS": true,
+    "correct_lifecycle_candidate_may_pass_implementation_equivalence_while_sub700_milestone_pending": true,
+    "either_implementation_or_overall_performance_pass_issued_by_this_freeze": false
+  },
+  "next_implementation_stop_conditions": [
+    "changed model/Vela artifact",
+    "changed arithmetic or quantization",
+    "cache policy/range change for optimization",
+    "unrelated copy elimination",
+    "memory-region relocation for speed",
+    "stage-boundary alias/ownership redesign",
+    "CPU fallback",
+    "critical unresolved mutable-state lifetime",
+    "failed lifetime-driven memory/ownership/peak qualification",
+    "model/pointer drift, persistent mutation, reset, fault, guard or IRQ/queue failure",
+    "reconstruction or copy reintroduced between measured runs"
+  ],
+  "session_stop": "STOP BEFORE LIFECYCLE-REUSE IMPLEMENTATION",
+  "raw_private_evidence_embedded": false,
+  "public_commit_subject": "Freeze H1 lifecycle-reuse optimization candidate",
+  "SSH_signing_fingerprint": "SHA256:vwwTKHP0Mce4nGalzVyoddmZWIHHdlQW2crs5hx05gs",
+  "push_only": "performance/h1-sub700ms",
+  "PR_merge_master_tag_history_rewrite_authorized": false
+}
