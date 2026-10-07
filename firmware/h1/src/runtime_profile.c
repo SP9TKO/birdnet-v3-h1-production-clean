@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "runtime_profile.h"
 #include "baseline_profile.h"
+#include "lifecycle_reuse.h"
 
 #include <stddef.h>
 #include <string.h>
@@ -17,26 +18,26 @@ static volatile uint32_t unassociated_cache_prepare_count;
 static bool finalize_lifecycle(struct H1ModelLifecycleProfile *profile,
 			       uint32_t clock_hz)
 {
-	if (profile->model_source_address == 0 ||
+	if (!h1LifecycleReuseReady() || profile->model_source_address == 0 ||
 	    profile->model_destination_address == 0 || profile->model_bytes == 0 ||
 	    profile->model_source_crc32 != profile->model_destination_crc32 ||
 	    profile->model_memcmp_result != 0 || profile->arena_used_bytes == 0 ||
 	    profile->input_bytes == 0 || profile->output_bytes == 0 ||
-	    profile->source_crc_count != 1 || profile->copy_count != 1 ||
-	    profile->destination_crc_count != 1 || profile->memcmp_count != 1 ||
-	    profile->validate_count != 1 || profile->runtime_init_count != 1 ||
-	    profile->allocate_tensors_count != 1 || profile->tensor_bind_count != 1 ||
+	    profile->source_crc_count != 0 || profile->copy_count != 0 ||
+	    profile->destination_crc_count != 0 || profile->memcmp_count != 0 ||
+	    profile->validate_count != 0 || profile->runtime_init_count != 0 ||
+	    profile->allocate_tensors_count != 0 || profile->tensor_bind_count != 0 ||
 	    profile->input_copy_count != 1 || profile->output_copy_count != 1 ||
 	    profile->cache_prepare_count != 1 ||
 	    profile->cache_prepare_address == 0 || profile->cache_prepare_bytes == 0 ||
 	    profile->lifecycle_end_cycles <= profile->lifecycle_start_cycles ||
 	    profile->cache_prepare_end_cycles <=
 		    profile->cache_prepare_start_cycles ||
-	    profile->source_crc_cycles == 0 || profile->copy_cycles == 0 ||
-	    profile->destination_crc_cycles == 0 || profile->memcmp_cycles == 0 ||
-	    profile->validate_cycles == 0 || profile->runtime_init_cycles == 0 ||
-	    profile->allocate_tensors_cycles == 0 ||
-	    profile->tensor_bind_cycles == 0 || profile->input_copy_cycles == 0 ||
+	    profile->source_crc_cycles != 0 || profile->copy_cycles != 0 ||
+	    profile->destination_crc_cycles != 0 || profile->memcmp_cycles != 0 ||
+	    profile->validate_cycles != 0 || profile->runtime_init_cycles != 0 ||
+	    profile->allocate_tensors_cycles != 0 ||
+	    profile->tensor_bind_cycles != 0 || profile->input_copy_cycles == 0 ||
 	    profile->output_copy_cycles == 0) {
 		return false;
 	}

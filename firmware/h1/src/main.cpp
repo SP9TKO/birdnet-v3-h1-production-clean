@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "build_identity.h"
 #include "baseline_profile.h"
+#include "lifecycle_reuse.h"
 #if !defined(H1_DIAG_SKIP_PDM_INIT) || H1_DIAG_SKIP_PDM_INIT == 0
 #include "audio_pdm.hpp"
 #include "mic_usb.hpp"
@@ -36,6 +37,7 @@
 #include <cstdio>
 #include <cstring>
 #include <limits>
+#include <new>
 
 #include <cmsis_core.h>
 #include <ethosu_driver.h>
@@ -175,6 +177,81 @@ H1UploadState gUpload;
 uint32_t gRunSequence;
 bool gComputeReady;
 bool gModelStorageVerified;
+
+enum class H1ContextState : uint32_t { Empty, Preparing, Ready, Failed };
+
+struct alignas(32) H1PersistentStageContext {
+	H1ContextState state;
+	uint32_t preparationAttempts;
+	uint32_t modelBindCount;
+	uint32_t interpreterConstructionCount;
+	uint32_t inputLookupCount;
+	uint32_t outputLookupCount;
+	uint32_t invocationCount;
+	uint32_t pointerDriftCount;
+	const tflite::Model *model;
+	tflite::MicroMutableOpResolver<1> *resolver;
+	tflite::MicroInterpreter *interpreter;
+	uint8_t *arena;
+	size_t arenaBytes;
+	TfLiteTensor *inputTensor;
+	TfLiteTensor *outputTensor;
+	uint8_t *inputAddress;
+	uint8_t *outputAddress;
+	const tflite::Model *initialModelAddress;
+	H1ModelLifecycleProfile initialization;
+	alignas(tflite::MicroMutableOpResolver<1>)
+	uint8_t resolverStorage[sizeof(tflite::MicroMutableOpResolver<1>)];
+	alignas(tflite::MicroInterpreter)
+	uint8_t interpreterStorage[sizeof(tflite::MicroInterpreter)];
+};
+
+/* No interpreter/resolver constructors run until explicit preparation. */
+extern "C" {
+H1PersistentStageContext h1PersistentStages[2];
+uint32_t h1LifecycleInitializationComplete;
+}
+
+static_assert(H1_BACKBONE_ARENA_BYTES % 32 == 0);
+static_assert(H1_CLASSIFIER_ARENA_ADDRESS % 32 == 0);
+static_assert(H1_CLASSIFIER_ARENA_BYTES % 32 == 0);
+static_assert(H1_ARENA_ADDRESS + H1_BACKBONE_ARENA_BYTES +
+	      H1_LIFECYCLE_GUARD_BYTES == H1_CLASSIFIER_ARENA_ADDRESS);
+static_assert(H1_CLASSIFIER_ARENA_ADDRESS + H1_CLASSIFIER_ARENA_BYTES +
+	      H1_LIFECYCLE_GUARD_BYTES == H1_FAST_ADDRESS);
+
+uint8_t *arenaGuard(unsigned stage)
+{
+	return h1TensorArena + (stage == 0 ? H1_BACKBONE_ARENA_BYTES :
+		H1_ARENA_RESERVATION_BYTES - H1_LIFECYCLE_GUARD_BYTES);
+}
+
+uint8_t arenaGuardPattern(unsigned stage, unsigned index)
+{
+	return uint8_t(0x3du ^ (stage * 71u) ^ (index * 29u));
+}
+
+bool arenaGuardsCheck()
+{
+	for (unsigned stage = 0; stage < 2; ++stage) {
+		const volatile uint8_t *guard = arenaGuard(stage);
+		for (unsigned index = 0; index < H1_LIFECYCLE_GUARD_BYTES; ++index) {
+			if (guard[index] != arenaGuardPattern(stage, index)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool withinArena(const H1PersistentStageContext &context, const void *pointer,
+		 size_t bytes)
+{
+	const uintptr_t base = reinterpret_cast<uintptr_t>(context.arena);
+	const uintptr_t address = reinterpret_cast<uintptr_t>(pointer);
+	return address >= base && bytes <= context.arenaBytes &&
+		address - base <= context.arenaBytes - bytes;
+}
 
 uint32_t crc32(const uint8_t *data, size_t bytes)
 {
@@ -355,18 +432,36 @@ bool fastGuardCheckQuiet()
 	return true;
 }
 
-bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
-	       void *outputData, size_t outputBytes, FixtureId fixture, unsigned run,
-	       H1NpuProfile &profile)
+bool preparePersistentStage(H1NpuStage stage)
 {
-	H1ModelLifecycleProfile &lifecycle = profile.lifecycle;
-	h1BaselineStageBegin(stage == H1NpuStage::Backbone ? 0u : 1u);
-	h1RunStateMark(stage == H1NpuStage::Backbone
-		? H1RunState::BackbonePrepareBegin
-		: H1RunState::ClassifierPrepareBegin);
-	const tflite::Model *model =
-		h1PrepareNpuModel(stage, lifecycle, false);
-
+	H1PersistentStageContext &context = h1PersistentStages[unsigned(stage)];
+	if (context.state != H1ContextState::Empty) {
+		return false;
+	}
+	context.state = H1ContextState::Preparing;
+	++context.preparationAttempts;
+	struct PreparationFailure {
+		H1PersistentStageContext &context;
+		~PreparationFailure() {
+			if (context.state != H1ContextState::Ready) {
+				context.state = H1ContextState::Failed;
+			}
+		}
+	} failure{context};
+	context.arena = stage == H1NpuStage::Backbone ? h1TensorArena :
+		h1TensorArena + (H1_CLASSIFIER_ARENA_ADDRESS - H1_ARENA_ADDRESS);
+	context.arenaBytes = stage == H1NpuStage::Backbone ?
+		H1_BACKBONE_ARENA_BYTES : H1_CLASSIFIER_ARENA_BYTES;
+	const size_t inputBytes = stage == H1NpuStage::Backbone ?
+		H1_BACKBONE_INPUT_BYTES : H1_CLASSIFIER_INPUT_BYTES;
+	const size_t outputBytes = stage == H1NpuStage::Backbone ?
+		H1_SHARED_FEATURE_BYTES : H1_LOGIT_BYTES;
+	H1ModelLifecycleProfile &lifecycle = context.initialization;
+	const tflite::Model *model = h1PrepareNpuModel(stage, lifecycle, true);
+	context.model = model;
+	if (model) {
+		++context.modelBindCount;
+	}
 	h1BaselineObserve(H1_EVENT_MODEL_CONTRACT_BEGIN, 0);
 	const uint64_t modelContractStart = h1ProfileNow();
 	const bool modelContract =
@@ -389,14 +484,17 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 
 	const uint64_t runtimeInitStart = h1ProfileNow();
 	h1BaselineObserve(H1_EVENT_RESOLVER_SETUP_BEGIN, 0);
-	tflite::MicroMutableOpResolver<1> resolver;
+	context.resolver = new (context.resolverStorage) tflite::MicroMutableOpResolver<1>;
+	tflite::MicroMutableOpResolver<1> &resolver = *context.resolver;
 	if (resolver.AddEthosU() != kTfLiteOk) {
 		return false;
 	}
 	h1BaselineObserve(H1_EVENT_RESOLVER_SETUP_END, 0);
 	h1BaselineObserve(H1_EVENT_INTERPRETER_CONSTRUCT_BEGIN, 0);
-	tflite::MicroInterpreter interpreter(model, resolver, h1TensorArena,
-					     H1_ARENA_RESERVATION_BYTES);
+	context.interpreter = new (context.interpreterStorage)
+		tflite::MicroInterpreter(model, resolver, context.arena, context.arenaBytes);
+	++context.interpreterConstructionCount;
+	tflite::MicroInterpreter &interpreter = *context.interpreter;
 	const uint64_t runtimeInitEnd = h1ProfileNow();
 	h1BaselineObserve(H1_EVENT_INTERPRETER_CONSTRUCT_END, 0);
 	lifecycle.runtime_init_cycles = runtimeInitEnd - runtimeInitStart;
@@ -423,9 +521,11 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	const int classifierOutputShape[] = {1, 11560};
 	h1BaselineObserve(H1_EVENT_INPUT_TENSOR_LOOKUP_BEGIN, 0);
 	TfLiteTensor *inputTensor = interpreter.input(0);
+	++context.inputLookupCount;
 	h1BaselineObserve(H1_EVENT_INPUT_TENSOR_LOOKUP_END, 0);
 	h1BaselineObserve(H1_EVENT_OUTPUT_TENSOR_LOOKUP_BEGIN, 0);
 	TfLiteTensor *outputTensor = interpreter.output(0);
+	++context.outputLookupCount;
 	h1BaselineObserve(H1_EVENT_OUTPUT_TENSOR_LOOKUP_END, 0);
 	const size_t arenaUsed = interpreter.arena_used_bytes();
 	const bool tensorContract = stage == H1NpuStage::Backbone
@@ -441,7 +541,9 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 		interpreter.inputs_size() == 1 && interpreter.outputs_size() == 1 &&
 		tensorContract && inputTensor->bytes == inputBytes &&
 		outputTensor->bytes == outputBytes &&
-		arenaUsed <= H1_ARENA_RESERVATION_BYTES;
+		arenaUsed <= context.arenaBytes &&
+		withinArena(context, inputTensor->data.uint8, inputBytes) &&
+		withinArena(context, outputTensor->data.uint8, outputBytes);
 	const uint64_t tensorBindEnd = h1ProfileNow();
 	lifecycle.tensor_bind_cycles = tensorBindEnd - tensorBindStart;
 	lifecycle.tensor_bind_count = 1;
@@ -451,6 +553,92 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	if (!tensorBindingsValid || tensorBindEnd <= tensorBindStart) {
 		return false;
 	}
+
+	context.inputTensor = inputTensor;
+	context.outputTensor = outputTensor;
+	context.inputAddress = inputTensor->data.uint8;
+	context.outputAddress = outputTensor->data.uint8;
+	context.initialModelAddress = model;
+	if (!arenaGuardsCheck() || !h1ModelGuardCheck(stage, 0, 0, true)) {
+		return false;
+	}
+	lifecycle.lifecycle_end_cycles = h1ProfileNow();
+	lifecycle.lifecycle_cycles =
+		lifecycle.lifecycle_end_cycles - lifecycle.lifecycle_start_cycles;
+	context.state = H1ContextState::Ready;
+	h1BaselineTensorBind(unsigned(stage), uint32_t(uintptr_t(context.inputAddress)),
+		uint32_t(inputBytes), uint32_t(uintptr_t(context.outputAddress)),
+		uint32_t(outputBytes), uint32_t(arenaUsed));
+	printk("H1_CONTEXT_READY stage=%u context=%p model=%p interpreter=%p "
+	       "arena=%p arena_bytes=%u arena_used=%u input=%p output=%p "
+	       "copies=%u constructions=%u allocations=%u binds=%u\n",
+	       unsigned(stage), &context, model, context.interpreter, context.arena,
+	       unsigned(context.arenaBytes), unsigned(arenaUsed), context.inputAddress,
+	       context.outputAddress, lifecycle.copy_count,
+	       context.interpreterConstructionCount, lifecycle.allocate_tensors_count,
+	       context.modelBindCount);
+	return true;
+}
+
+bool preparePersistentContexts()
+{
+	for (unsigned stage = 0; stage < 2; ++stage) {
+		uint8_t *guard = arenaGuard(stage);
+		for (unsigned index = 0; index < H1_LIFECYCLE_GUARD_BYTES; ++index) {
+			guard[index] = arenaGuardPattern(stage, index);
+		}
+		SCB_CleanInvalidateDCache_by_Addr(
+			reinterpret_cast<uint32_t *>(guard), H1_LIFECYCLE_GUARD_BYTES);
+	}
+	if (!preparePersistentStage(H1NpuStage::Backbone) ||
+	    !preparePersistentStage(H1NpuStage::Classifier)) {
+		return false;
+	}
+	h1LifecycleInitializationComplete = 1;
+	return h1LifecycleReuseReady();
+}
+
+bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
+	       void *outputData, size_t outputBytes, FixtureId fixture, unsigned run,
+	       H1NpuProfile &profile)
+{
+	H1ModelLifecycleProfile &lifecycle = profile.lifecycle;
+	h1BaselineStageBegin(stage == H1NpuStage::Backbone ? 0u : 1u);
+	h1RunStateMark(stage == H1NpuStage::Backbone
+		? H1RunState::BackbonePrepareBegin
+		: H1RunState::ClassifierPrepareBegin);
+	lifecycle.lifecycle_start_cycles = h1ProfileNow();
+	H1PersistentStageContext &context = h1PersistentStages[unsigned(stage)];
+	const uintptr_t expectedArena = stage == H1NpuStage::Backbone ?
+		H1_ARENA_ADDRESS : H1_CLASSIFIER_ARENA_ADDRESS;
+	if (!h1LifecycleReuseReady() ||
+	    context.model != context.initialModelAddress ||
+	    context.resolver != reinterpret_cast<void *>(context.resolverStorage) ||
+	    context.interpreter != reinterpret_cast<void *>(context.interpreterStorage) ||
+	    uintptr_t(context.arena) != expectedArena ||
+	    context.inputTensor->data.uint8 != context.inputAddress ||
+	    context.outputTensor->data.uint8 != context.outputAddress ||
+	    context.inputTensor->bytes != inputBytes ||
+	    context.outputTensor->bytes != outputBytes || !arenaGuardsCheck()) {
+		++context.pointerDriftCount;
+		context.state = H1ContextState::Failed;
+		return false;
+	}
+	++context.invocationCount;
+	const H1ModelLifecycleProfile &initial = context.initialization;
+	lifecycle.model_source_address = initial.model_source_address;
+	lifecycle.model_destination_address = initial.model_destination_address;
+	lifecycle.model_bytes = initial.model_bytes;
+	lifecycle.model_source_crc32 = initial.model_source_crc32;
+	lifecycle.model_destination_crc32 = initial.model_destination_crc32;
+	lifecycle.model_memcmp_result = initial.model_memcmp_result;
+	lifecycle.arena_used_bytes = initial.arena_used_bytes;
+	lifecycle.input_bytes = uint32_t(inputBytes);
+	lifecycle.output_bytes = uint32_t(outputBytes);
+	const size_t arenaUsed = initial.arena_used_bytes;
+	TfLiteTensor *inputTensor = context.inputTensor;
+	TfLiteTensor *outputTensor = context.outputTensor;
+	tflite::MicroInterpreter &interpreter = *context.interpreter;
 
 	h1BaselineTensorBind(stage == H1NpuStage::Backbone ? 0u : 1u,
 		uint32_t(reinterpret_cast<uintptr_t>(inputTensor->data.uint8)), uint32_t(inputBytes),
@@ -486,7 +674,8 @@ bool invokeNpu(H1NpuStage stage, const void *inputData, size_t inputBytes,
 	const uint32_t irqAfter = h1IrqCount;
 	if (status != kTfLiteOk || irqAfter - irqBefore != 1 ||
 	    !fastGuardCheckQuiet() ||
-	    !h1ModelGuardCheck(stage, unsigned(fixture), run, false)) {
+	    !h1ModelGuardCheck(stage, unsigned(fixture), run, false) ||
+	    !arenaGuardsCheck()) {
 		return false;
 	}
 
@@ -2375,8 +2564,11 @@ void sendBaselineMap(const H1UsbFrame &request)
   {"compact_mel_weights", &h1M55CompactMel(), sizeof(H1M55CompactMel), "SRAM1", "boot_to_shutdown"},
   {"backbone_model_origin", reinterpret_cast<const void *>(H1_BACKBONE_FLASH_ADDRESS), H1_BACKBONE_MODEL_BYTES, "OSPI1", "persistent"},
   {"classifier_model_origin", reinterpret_cast<const void *>(H1_CLASSIFIER_FLASH_ADDRESS), H1_CLASSIFIER_MODEL_BYTES, "OSPI1", "persistent"},
-  {"shared_model_slot", reinterpret_cast<const void *>(H1_PSRAM_BASE), H1_MODEL_SLOT_BYTES, "PSRAM_MODEL", "stage_prepare_to_interpreter_destruction_then_overwrite"},
-  {"tensor_arena", h1TensorArena, H1_ARENA_RESERVATION_BYTES, "SRAM0", "stage_allocation_to_output_copy_then_reuse"},
+  {"backbone_persistent_model", reinterpret_cast<const void *>(H1_PSRAM_BASE), H1_BACKBONE_MODEL_BYTES, "PSRAM_MODEL", "boot_to_shutdown"},
+  {"classifier_persistent_model", reinterpret_cast<const void *>(H1_CLASSIFIER_PSRAM_ADDRESS), H1_CLASSIFIER_MODEL_BYTES, "PSRAM_MODEL", "boot_to_shutdown"},
+  {"backbone_arena", h1TensorArena, H1_BACKBONE_ARENA_BYTES, "SRAM0", "boot_to_shutdown"},
+  {"classifier_arena", reinterpret_cast<const void *>(H1_CLASSIFIER_ARENA_ADDRESS), H1_CLASSIFIER_ARENA_BYTES, "SRAM0", "boot_to_shutdown"},
+  {"persistent_contexts", h1PersistentStages, sizeof(h1PersistentStages), "DTCM", "boot_to_shutdown"},
   {"fast_memory", h1FastMemory, H1_FAST_RESERVATION_BYTES, "SRAM0", "NPU_stage"},
   {"diagnostic_RAM", &h1BaselineState, sizeof(h1BaselineState), "SRAM1", "campaign_to_next_campaign"},
   {"inactive_mel_raw", s.melRaw, sizeof(s.melRaw), "PSRAM_MODEL", "inactive_captureStages_false"},
@@ -2903,6 +3095,13 @@ void handleUartFallback(unsigned char command)
 }
 } // namespace
 
+extern "C" bool h1LifecycleReuseReady(void)
+{
+	return h1LifecycleInitializationComplete == 1 &&
+		h1PersistentStages[0].state == H1ContextState::Ready &&
+		h1PersistentStages[1].state == H1ContextState::Ready;
+}
+
 int main()
 {
 #if H1_FRAME_ACK_RETURN_DIAGNOSTIC
@@ -2990,8 +3189,11 @@ int main()
 	       unsigned(H1_MIC_BLOCK_BYTES), unsigned(H1_MIC_RING_SAMPLES),
 	       unsigned(H1_MIC_WINDOW_SAMPLES), unsigned(H1_MIC_STRIDE_SAMPLES),
 	       h1PcmRingStorage(), h1SelectedPcmWindow());
-	gComputeReady = frontendRuntimeReady && reportNpuIdentity() && h1FastGuardPrepare();
 	h1BaselineInit();
+	gComputeReady = frontendRuntimeReady && reportNpuIdentity() &&
+		h1FastGuardPrepare() && preparePersistentContexts();
+	printk("H1_LIFECYCLE_INIT complete_before_waveform_ready=%u\n",
+	       unsigned(h1LifecycleInitializationComplete));
 	printk("H1_READY compute_ready=%u mic_ready=%u usb_optional=1 uart4_fallback=1 "
 	       "uart_commands=C_compact,G_legacy_full sw4_normal=SE\n",
 	       unsigned(gComputeReady), unsigned(micInitStatus == 0));

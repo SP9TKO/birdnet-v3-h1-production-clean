@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "model_storage.hpp"
 #include "baseline_profile.h"
+#include "lifecycle_reuse.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -25,6 +26,9 @@ struct alignas(32) H1PsramStorage {
 	alignas(32) H1M55SpectralDiagnostics spectralDiagnostics;
 	alignas(32) uint8_t uploadPayload[H1_UPLOAD_PAYLOAD_BYTES];
 	alignas(32) float uploadedWaveform[H1_WAVEFORM_ELEMENTS];
+	/* Append lifetime storage without moving any production checkpoint. */
+	alignas(32) uint8_t classifierModel[H1_CLASSIFIER_MODEL_BYTES];
+	alignas(32) uint8_t classifierModelGuard[kGuardBytes];
 };
 
 __attribute__((section("SRAM1.protocol"), aligned(32)))
@@ -50,6 +54,8 @@ __attribute__((section("SRAM1.zz_mel_weights"), aligned(32)))
 H1M55CompactMel h1CompactMel;
 
 static_assert(offsetof(H1PsramStorage, model) == 0);
+static_assert(offsetof(H1PsramStorage, classifierModel) ==
+	      H1_CLASSIFIER_PSRAM_ADDRESS - H1_PSRAM_BASE);
 static_assert(sizeof(H1PsramStorage) < H1_PSRAM_END - H1_PSRAM_BASE);
 
 uint32_t crc32(const uint8_t *data, size_t bytes)
@@ -74,9 +80,22 @@ const char *stageName(H1NpuStage stage)
 	return stage == H1NpuStage::Backbone ? "backbone" : "classifier";
 }
 
-bool withinModel(const void *pointer, size_t bytes, size_t modelBytes)
+uint8_t *modelStorage(H1NpuStage stage)
 {
-	const uintptr_t base = reinterpret_cast<uintptr_t>(h1PsramStorage.model);
+	return stage == H1NpuStage::Backbone ? h1PsramStorage.model
+						  : h1PsramStorage.classifierModel;
+}
+
+uint8_t *modelGuard(H1NpuStage stage)
+{
+	return stage == H1NpuStage::Backbone ? h1PsramStorage.modelGuard
+						  : h1PsramStorage.classifierModelGuard;
+}
+
+bool withinModel(const void *pointer, size_t bytes, size_t modelBytes,
+		 const uint8_t *storage)
+{
+	const uintptr_t base = reinterpret_cast<uintptr_t>(storage);
 	const uintptr_t address = reinterpret_cast<uintptr_t>(pointer);
 	return address >= base && bytes <= modelBytes && address - base <= modelBytes - bytes;
 }
@@ -96,20 +115,24 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 						 ? H1_BACKBONE_MODEL_CRC32
 						 : H1_CLASSIFIER_MODEL_CRC32;
 	const auto *source = reinterpret_cast<const uint8_t *>(sourceAddress);
+	uint8_t *storage = modelStorage(stage);
+	uint8_t *guard = modelGuard(stage);
 	const device *ram = DEVICE_DT_GET(DT_NODELABEL(aps512xxn));
 	profile.lifecycle_start_cycles = h1ProfileNow();
 	profile.model_source_address = uint32_t(sourceAddress);
 	profile.model_destination_address =
-		uint32_t(reinterpret_cast<uintptr_t>(h1PsramStorage.model));
+		uint32_t(reinterpret_cast<uintptr_t>(storage));
 	profile.model_bytes = uint32_t(modelBytes);
 	if (diagnostics) {
 		printk("H1_MODEL_COPY_BEGIN stage=%s source=0x%08x destination=%p bytes=%u "
 		       "psram_ready=%u\n",
-		       stageName(stage), unsigned(sourceAddress), h1PsramStorage.model,
+		       stageName(stage), unsigned(sourceAddress), storage,
 		       unsigned(modelBytes), unsigned(device_is_ready(ram)));
 	}
 	if (!device_is_ready(ram) ||
 	    reinterpret_cast<uintptr_t>(h1PsramStorage.model) != H1_PSRAM_BASE ||
+	    reinterpret_cast<uintptr_t>(h1PsramStorage.classifierModel) !=
+		    H1_CLASSIFIER_PSRAM_ADDRESS ||
 	    H1_PSRAM_BASE + sizeof(h1PsramStorage) > H1_PSRAM_END) {
 		if (diagnostics) {
 			printk("H1_FAIL_MODEL_CAPACITY_ALIGNMENT_OR_DEVICE stage=%s\n",
@@ -133,18 +156,18 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 	}
 
 	for (unsigned index = 0; index < kGuardBytes; ++index) {
-		h1PsramStorage.modelGuard[index] = guardPattern(index);
+		guard[index] = guardPattern(index);
 	}
 	h1BaselineObserve(H1_EVENT_MODEL_COPY_BEGIN, 0);
 	const uint64_t copyStart = h1ProfileNow();
-	memcpy(h1PsramStorage.model, source, modelBytes);
+	memcpy(storage, source, modelBytes);
 	const uint64_t copyEnd = h1ProfileNow();
 	h1BaselineObserve(H1_EVENT_MODEL_COPY_END, 0);
 	profile.copy_cycles = copyEnd - copyStart;
 	profile.copy_count = 1;
 
 	const uint64_t destinationCrcStart = h1ProfileNow();
-	const uint32_t destinationCrc = crc32(h1PsramStorage.model, modelBytes);
+	const uint32_t destinationCrc = crc32(storage, modelBytes);
 	const uint64_t destinationCrcEnd = h1ProfileNow();
 	profile.destination_crc_cycles =
 		destinationCrcEnd - destinationCrcStart;
@@ -152,7 +175,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 	profile.model_destination_crc32 = destinationCrc;
 
 	const uint64_t memcmpStart = h1ProfileNow();
-	const int mismatch = memcmp(source, h1PsramStorage.model, modelBytes);
+	const int mismatch = memcmp(source, storage, modelBytes);
 	const uint64_t memcmpEnd = h1ProfileNow();
 	profile.memcmp_cycles = memcmpEnd - memcmpStart;
 	profile.memcmp_count = 1;
@@ -176,7 +199,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 		return nullptr;
 	}
 
-	flatbuffers::Verifier verifier(h1PsramStorage.model, modelBytes);
+	flatbuffers::Verifier verifier(storage, modelBytes);
 	if (!tflite::VerifyModelBuffer(verifier)) {
 		profile.validate_cycles += h1ProfileNow() - validateStart;
 		if (diagnostics) {
@@ -185,7 +208,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 		return nullptr;
 	}
 	h1BaselineObserve(H1_EVENT_MODEL_BIND_BEGIN, 0);
-	const tflite::Model *model = tflite::GetModel(h1PsramStorage.model);
+	const tflite::Model *model = tflite::GetModel(storage);
 	h1BaselineObserve(H1_EVENT_MODEL_BIND_END, 0);
 	if (model->version() != TFLITE_SCHEMA_VERSION) {
 		profile.validate_cycles += h1ProfileNow() - validateStart;
@@ -200,7 +223,8 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 		const auto *buffer = model->buffers()->Get(index);
 		if (buffer->offset() || buffer->size() ||
 		    (buffer->data() && buffer->data()->size() &&
-		     !withinModel(buffer->data()->data(), buffer->data()->size(), modelBytes))) {
+		     !withinModel(buffer->data()->data(), buffer->data()->size(), modelBytes,
+				  storage))) {
 			profile.validate_cycles += h1ProfileNow() - validateStart;
 			if (diagnostics) {
 				printk("H1_FAIL_MODEL_EXTERNAL_BUFFER stage=%s index=%u\n",
@@ -213,7 +237,7 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 	profile.validate_cycles += h1ProfileNow() - validateStart;
 	if (diagnostics) {
 		printk("H1_MODEL_READY stage=%s base=%p bytes=%u crc=%08x table=%p\n",
-		       stageName(stage), h1PsramStorage.model, unsigned(modelBytes),
+		       stageName(stage), storage, unsigned(modelBytes),
 		       destinationCrc, model);
 	}
 	return model;
@@ -222,20 +246,21 @@ const tflite::Model *h1PrepareNpuModel(H1NpuStage stage,
 bool h1ModelGuardCheck(H1NpuStage stage, unsigned fixture, unsigned run,
 		       bool diagnostics)
 {
+	const uint8_t *guard = modelGuard(stage);
 	for (unsigned index = 0; index < kGuardBytes; ++index) {
-		if (h1PsramStorage.modelGuard[index] != guardPattern(index)) {
+		if (guard[index] != guardPattern(index)) {
 			if (diagnostics) {
 				printk("H1_FAIL_MODEL_GUARD stage=%s fixture=%u run=%u offset=%u "
 				       "expected=%02x actual=%02x\n",
 				       stageName(stage), fixture, run, index, guardPattern(index),
-				       h1PsramStorage.modelGuard[index]);
+				       guard[index]);
 			}
 			return false;
 		}
 	}
 	if (diagnostics) {
 		printk("H1_MODEL_GUARD_PASS stage=%s fixture=%u run=%u address=%p bytes=%u\n",
-		       stageName(stage), fixture, run, h1PsramStorage.modelGuard,
+		       stageName(stage), fixture, run, guard,
 		       unsigned(kGuardBytes));
 	}
 	return true;

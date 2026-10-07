@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "baseline_profile.h"
+#include "lifecycle_reuse.h"
 #ifndef ETHOSU85
 #define ETHOSU85 1
 #endif
@@ -76,13 +77,13 @@ void h1BaselineEndRun(int32_t index, uint64_t start, uint64_t end,
  const struct H1RuntimeProfile *profile, uint32_t sequence, uint32_t status,
  const uint32_t crc[7], bool success)
 {
- if (!success || end <= start || !profile->valid || profile->clock_hz != 400000000 ||
+ if (!h1LifecycleReuseReady() || !success || end <= start || !profile->valid || profile->clock_hz != 400000000 ||
      profile->backbone.command_count != 1 || profile->backbone.irq_count != 1 ||
      profile->classifier.command_count != 1 || profile->classifier.irq_count != 1 ||
-     profile->backbone.lifecycle.copy_count != 1 ||
-     profile->classifier.lifecycle.copy_count != 1 ||
-     profile->backbone.lifecycle.runtime_init_count != 1 ||
-     profile->classifier.lifecycle.runtime_init_count != 1)
+     profile->backbone.lifecycle.copy_count != 0 ||
+     profile->classifier.lifecycle.copy_count != 0 ||
+     profile->backbone.lifecycle.runtime_init_count != 0 ||
+     profile->classifier.lifecycle.runtime_init_count != 0)
   h1BaselineState.error = 2;
  if (!h1BaselineState.first_run_sequence) h1BaselineState.first_run_sequence = sequence;
  h1BaselineState.last_run_sequence = sequence;

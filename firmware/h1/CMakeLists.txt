@@ -383,6 +383,7 @@ set(H1_IDENTITY_FILES
   src/baseline_profile.c
   src/baseline_profile.h
   src/baseline_cache_operations.h
+  src/lifecycle_reuse.h
   src/baseline_profile.ld
   src/usb_transport.cpp
   src/usb_transport.hpp
