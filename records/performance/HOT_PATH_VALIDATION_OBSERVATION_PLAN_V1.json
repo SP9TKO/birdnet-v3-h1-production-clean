@@ -1,0 +1,564 @@
+{
+  "schema": "birdnet-h1-hot-path-validation-observation-plan-v1",
+  "version": 1,
+  "status": "HOT_PATH_VALIDATION_OBSERVATION_PLAN_FROZEN",
+  "purpose": "HOT_PATH_VALIDATION_DECOMPOSITION_ONLY",
+  "instrumentation_class": "HOT_PATH_VALIDATION_OBSERVATION_ONLY",
+  "date": "2026-10-07",
+  "branch": "performance/h1-sub700ms",
+  "entry_commit": "88876bc661cb00c954f8072a369ee37421b8a5f8",
+  "published_master": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+  "definition_before_instrumentation": true,
+  "optimization_authorized": false,
+  "accepted_authorities": {
+    "lifecycle_commit": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+    "lifecycle_disposition": "LIFECYCLE_REUSE_ONLY_PASS",
+    "lifecycle_receipt_sha256": "5c9a5fb656aab9b323c0dce0ce9c4a2806317fdf284b2ae212a78dc22987283f",
+    "topk_commit": "88876bc661cb00c954f8072a369ee37421b8a5f8",
+    "topk_disposition": "POSTPROCESSING_OPTIMIZATION_PASS",
+    "topk_receipt_sha256": "67bbc7751906b3a0d9b34bbc433c476cd792b99032a8a68e7f88b4d7f9d1afc3"
+  },
+  "source_bindings": {
+    "firmware/h1/src/main.cpp": "1d285bfa08aa92f57e8389e523f6bf1a5374a699044e1a06346b76e24a387bb7",
+    "firmware/h1/src/runtime_profile.c": "f1f6f4d2ae0325d7da41d4bd4d4e41c0538ac64f22ead908c22ad2a573c49c2b",
+    "firmware/h1/src/baseline_profile.c": "17400428e5ca430c7108f26bc3930d6ca8d0c451f9d6f8c5606025fc626b00a9",
+    "firmware/h1/src/model_storage.hpp": "c93a516184b6a3d95e28229abbecdfd0419e36cd0ac9ec5a3f23745d29024976",
+    "firmware/h1/src/model_storage.cpp": "1814be8d4f67765515264d97b664ec7708c7c2e8642deaf518cf32969f3e9def",
+    "firmware/h1/src/h1_contract.h": "7da555edb4c40945d048c6bbc561de04c9061273d92ee93a0eee8ea6b463e9f4",
+    "firmware/h1/src/topk_heap.hpp": "0b35c41a31c6ccac199590fcd26bcc91b5fa06a6aa4af3524ab265f29c985d2e"
+  },
+  "static_audit_sha256": {
+    "PRIMARY_ROUTE_AUTHORITY.json": "05ffaa7368b0ef6eb9b70613682ca925d80e4fc6cca7de60404e85a85d4b301d",
+    "WAVEFORM_VALIDATION_CONSUMER_AUDIT.json": "d51137bb3df6f01b1fb5eea4690798ccc877ea199dbf34ccaa4f56db28261e55",
+    "RESULT_VALIDATION_CONSUMER_AUDIT.json": "4d7d2f1b22779320735eec90d88cefbaacae42c54e02451b02d3c851a628d5c2",
+    "VALIDATION_BUFFER_LIFETIME_MAP.json": "0c4fdecd406e07da28a8be312b6aa0a2ee0872a94a22dcab7bdefce01c201768",
+    "VALIDATION_SCAN_BYTE_LEDGER.json": "afa49dcdf843a83b98249c6c87e887d5837e7a66a75f680cf20ca9d7ca4c4dd2"
+  },
+  "accepted_artifacts": {
+    "zephyr/zephyr.elf": {
+      "bytes": 10206148,
+      "sha256": "4b8463ad799fd2e2332533a7c959a312df5775ed2bbf69127f01ff7e9e34c02c"
+    },
+    "zephyr/zephyr.bin": {
+      "bytes": 1708728,
+      "sha256": "8f585c33b14bbfba78a8f4cd059938283ac2dd095b02f3c82ed60e82c94bb5e7"
+    },
+    "zephyr/zephyr.map": {
+      "bytes": 2784611,
+      "sha256": "13b2d5d7fd0f9cd4178f501ac2e43266dfa9f0a7a96f4a49c9c0dab446a3d0f7"
+    },
+    "zephyr/.config": {
+      "bytes": 49649,
+      "sha256": "385328c12c15c3d65c6ff4b37d6a415d6825042c3004e2ac9a96a491501bb834"
+    },
+    "zephyr/zephyr.dts": {
+      "bytes": 83923,
+      "sha256": "4725c7baf5b1c97875c438050761e3e825c259ffe8ea4398281f940c75f2736a"
+    },
+    "generated/build_identity.h": {
+      "bytes": 221,
+      "sha256": "c7669add8b1c3149817e777570f35ed7baf0a1f75b891d17b22ce720229eabe3"
+    },
+    "compile_commands.json": {
+      "bytes": 3411898,
+      "sha256": "0d91cbbfcfaa525d887a397e8cc133c46d3d30c23e9f3c772d161151b7d29986"
+    },
+    "CMakeCache.txt": {
+      "bytes": 33237,
+      "sha256": "3b49a4ca09a27044b5916c562d01f131df36cabc49e00a531fa0cdc2c91c543c"
+    }
+  },
+  "primary": {
+    "start": "Existing runBaselineCampaign start timestamp before h1RunStateBegin",
+    "end": "Existing runBaselineCampaign end timestamp after saveResult and ResultReady trace",
+    "boundary_unchanged": true,
+    "narrow_total_compute_is_not_primary": true,
+    "USB_after_ResultReady_excluded": true
+  },
+  "timestamps": [
+    {
+      "index": 0,
+      "name": "PRIMARY_START"
+    },
+    {
+      "index": 1,
+      "name": "RUN_ENTER"
+    },
+    {
+      "index": 2,
+      "name": "WAVEFORM_CRC_BEGIN"
+    },
+    {
+      "index": 3,
+      "name": "WAVEFORM_CRC_END"
+    },
+    {
+      "index": 4,
+      "name": "IDENTITY_COPY_END"
+    },
+    {
+      "index": 5,
+      "name": "IDENTITY_CHECK_END"
+    },
+    {
+      "index": 6,
+      "name": "FRONTEND_WORK_BEGIN"
+    },
+    {
+      "index": 7,
+      "name": "P0_END"
+    },
+    {
+      "index": 8,
+      "name": "PROFILE_FINALIZE_END"
+    },
+    {
+      "index": 9,
+      "name": "BOUNDARY_0_BEGIN"
+    },
+    {
+      "index": 10,
+      "name": "BOUNDARY_0_END"
+    },
+    {
+      "index": 11,
+      "name": "BOUNDARY_1_BEGIN"
+    },
+    {
+      "index": 12,
+      "name": "BOUNDARY_1_END"
+    },
+    {
+      "index": 13,
+      "name": "BOUNDARY_2_BEGIN"
+    },
+    {
+      "index": 14,
+      "name": "BOUNDARY_2_END"
+    },
+    {
+      "index": 15,
+      "name": "BOUNDARY_3_BEGIN"
+    },
+    {
+      "index": 16,
+      "name": "BOUNDARY_3_END"
+    },
+    {
+      "index": 17,
+      "name": "BOUNDARY_4_BEGIN"
+    },
+    {
+      "index": 18,
+      "name": "BOUNDARY_4_END"
+    },
+    {
+      "index": 19,
+      "name": "BOUNDARY_5_BEGIN"
+    },
+    {
+      "index": 20,
+      "name": "BOUNDARY_5_END"
+    },
+    {
+      "index": 21,
+      "name": "BOUNDARY_6_BEGIN"
+    },
+    {
+      "index": 22,
+      "name": "BOUNDARY_6_END"
+    },
+    {
+      "index": 23,
+      "name": "SCORE_ALIAS_END"
+    },
+    {
+      "index": 24,
+      "name": "RESULT_STATE_BEGIN"
+    },
+    {
+      "index": 25,
+      "name": "RESULT_STATE_END"
+    },
+    {
+      "index": 26,
+      "name": "PUBLICATION_END"
+    },
+    {
+      "index": 27,
+      "name": "COMPARE_BEGIN"
+    },
+    {
+      "index": 28,
+      "name": "COMPARE_END"
+    },
+    {
+      "index": 29,
+      "name": "SAVE_COPY_END"
+    },
+    {
+      "index": 30,
+      "name": "RESULT_READY_BEGIN"
+    },
+    {
+      "index": 31,
+      "name": "RESULT_READY_END"
+    },
+    {
+      "index": 32,
+      "name": "PRIMARY_END"
+    }
+  ],
+  "group_W": {
+    "total_id": "W0",
+    "total_interval": [
+      0,
+      6
+    ],
+    "actual_frontend_start": "New observation mark immediately before the existing native/legacy frontend call, after baseline/run-state frontend marks and profile bookkeeping.",
+    "components": [
+      {
+        "id": "W1",
+        "name": "waveform full CRC",
+        "intervals": [
+          [
+            2,
+            3
+          ]
+        ],
+        "bytes": 384000
+      },
+      {
+        "id": "W2",
+        "name": "expected resident identity comparison",
+        "intervals": [
+          [
+            4,
+            5
+          ]
+        ],
+        "bytes": 0
+      },
+      {
+        "id": "W3",
+        "name": "retained SHA text/identity bookkeeping",
+        "intervals": [
+          [
+            3,
+            4
+          ]
+        ],
+        "bytes": 0
+      },
+      {
+        "id": "W4",
+        "name": "run/result/readiness and profile/frontend-call setup",
+        "intervals": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "bytes": 0
+      },
+      {
+        "id": "W5",
+        "name": "outer run-state/request setup",
+        "intervals": [
+          [
+            0,
+            1
+          ]
+        ],
+        "bytes": 0
+      }
+    ],
+    "residual": "W0 - sum(W1..W5); independently reconcile the interval union/gaps. The defined adjoining W intervals fully partition the source route, so successful complete observations have zero W residual. No residual is removed from the timer.",
+    "other_waveform_setup": "Report W2/W3/W4/W5 individually, plus aggregate W0-W1.",
+    "explicit_counters": [
+      "WAVEFORM_FULL_CRC_BYTES",
+      "WAVEFORM_FULL_CRC_CALLS"
+    ]
+  },
+  "group_R": {
+    "total_id": "R0",
+    "total_interval": [
+      7,
+      32
+    ],
+    "P0_end": "Existing postprocessEnd timestamp; not heapEnd/materialEnd",
+    "components": [
+      {
+        "id": "R1",
+        "name": "profile finalization",
+        "intervals": [
+          [
+            7,
+            8
+          ]
+        ],
+        "bytes": 0,
+        "scope": "Existing postprocess/total cycle assignments, accepted postprocess observer finalization and h1ProfileFinalize validity gate/conversions."
+      },
+      {
+        "id": "R2",
+        "name": "boundary CRC frontend",
+        "intervals": [
+          [
+            9,
+            10
+          ]
+        ],
+        "bytes": 755328,
+        "boundary_index": 0
+      },
+      {
+        "id": "R3",
+        "name": "boundary CRC backbone_input",
+        "intervals": [
+          [
+            11,
+            12
+          ]
+        ],
+        "bytes": 377664,
+        "boundary_index": 1
+      },
+      {
+        "id": "R4",
+        "name": "boundary CRC shared_feature",
+        "intervals": [
+          [
+            13,
+            14
+          ]
+        ],
+        "bytes": 161280,
+        "boundary_index": 2
+      },
+      {
+        "id": "R5",
+        "name": "boundary CRC embedding",
+        "intervals": [
+          [
+            15,
+            16
+          ]
+        ],
+        "bytes": 5120,
+        "boundary_index": 3
+      },
+      {
+        "id": "R6",
+        "name": "boundary CRC classifier_input",
+        "intervals": [
+          [
+            17,
+            18
+          ]
+        ],
+        "bytes": 2560,
+        "boundary_index": 4
+      },
+      {
+        "id": "R7",
+        "name": "boundary CRC logits",
+        "intervals": [
+          [
+            19,
+            20
+          ]
+        ],
+        "bytes": 23120,
+        "boundary_index": 5
+      },
+      {
+        "id": "R8",
+        "name": "boundary CRC scores",
+        "intervals": [
+          [
+            21,
+            22
+          ]
+        ],
+        "bytes": 46240,
+        "boundary_index": 6
+      },
+      {
+        "id": "R9",
+        "name": "result state/bookkeeping",
+        "intervals": [
+          [
+            22,
+            23
+          ],
+          [
+            24,
+            25
+          ]
+        ],
+        "bytes": 0,
+        "scope": "scoreCrc32 alias and Ok/valid fields"
+      },
+      {
+        "id": "R10",
+        "name": "previous-result comparison",
+        "intervals": [
+          [
+            27,
+            28
+          ]
+        ],
+        "bytes": 0,
+        "scope": "Entire existing eligibility condition plus numericallyEqual, bounded metadata/top100 comparison"
+      },
+      {
+        "id": "R11",
+        "name": "saveResult copy",
+        "intervals": [
+          [
+            28,
+            29
+          ]
+        ],
+        "bytes": 0,
+        "scope": "Existing memcpy into gLastResult; result memory publication happens here"
+      },
+      {
+        "id": "R12",
+        "name": "inference-data publication",
+        "intervals": [
+          [
+            25,
+            26
+          ]
+        ],
+        "bytes": 0,
+        "scope": "Existing gInferenceDataValid=true; no second result copy/publication invented"
+      },
+      {
+        "id": "R13",
+        "name": "ResultReady transition",
+        "intervals": [
+          [
+            30,
+            31
+          ]
+        ],
+        "bytes": 0,
+        "scope": "Existing memory-only h1RunStateMark(ResultReady)"
+      }
+    ],
+    "residual": "R0 - sum(R1..R13); independently equal sum of all uncovered timestamp gaps, including function entry/return and call bookkeeping. Any negative residual, ordering defect or unequal arithmetic is a hard failure.",
+    "publication_adjustment": "saveResult memcpy publishes the saved result once (R11); R12 measures the separate inference-data availability flag. No invented second publication interval."
+  },
+  "campaign": {
+    "mode": "Existing RunBaselineDiagnostic (145), same exact resident canonical input and ELF",
+    "warmups": 5,
+    "consecutive_measured": 20,
+    "outlier_removal": "NONE",
+    "same_inference_runs_for_W_and_R": true,
+    "acceptance_eligible": false,
+    "retain_every_raw_timestamp_counter_and_sample": true,
+    "stats": [
+      "min",
+      "mean",
+      "median",
+      "nearest-rank p95",
+      "max",
+      "population SD"
+    ],
+    "p95": "ceil(0.95*20)=19th sorted sample",
+    "conversion": "Unrounded integer cycles * 1000 / 400000000 ms; retain exact rational mean cycles."
+  },
+  "instrumentation": {
+    "new_option": "H1_HOT_PATH_VALIDATION_OBSERVATION",
+    "timestamp_count": 33,
+    "storage_base": "0x02511000",
+    "storage_budget_bytes": 8192,
+    "expected_state_bytes": 7240,
+    "storage": "Separate NOLOAD diagnostic SRAM allocation; all current production and existing observer addresses unchanged.",
+    "export": "New diagnostic GetHotPathValidationObservation (152), uint32 index 0..19; no existing command changed.",
+    "collection": "Prepare outside primary START; call-site monotonic timestamps and logical scan byte/call counters only while existing diagnostic campaign is active; finalize/capture after existing primary END.",
+    "scan_counter_scope": "Actual full waveform/boundary call sites, not algorithm or memory-bus traffic. Counter metadata increments precede the BEGIN timestamp; no CRC results are cached.",
+    "observer_overhead": "Diagnostic intervals include timestamp/call overhead assigned by the actual marker placement. No inferred correction or acceptance claim from these diagnostic measurements."
+  },
+  "logical_scan_ledger": {
+    "waveform": {
+      "source": "resident uploadedWaveform",
+      "bytes": 384000,
+      "calls_per_successful_inference": 1
+    },
+    "boundary_CRCs": [
+      {
+        "index": 0,
+        "source": "frontend",
+        "bytes": 755328,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 1,
+        "source": "backbone_input",
+        "bytes": 377664,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 2,
+        "source": "shared_feature",
+        "bytes": 161280,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 3,
+        "source": "embedding",
+        "bytes": 5120,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 4,
+        "source": "classifier_input",
+        "bytes": 2560,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 5,
+        "source": "logits",
+        "bytes": 23120,
+        "calls_per_successful_inference": 1
+      },
+      {
+        "index": 6,
+        "source": "scores",
+        "bytes": 46240,
+        "calls_per_successful_inference": 1
+      }
+    ],
+    "WAVEFORM_VALIDATION_BYTES_PER_INFERENCE": 384000,
+    "RESULT_CHECKPOINT_CRC_BYTES_PER_INFERENCE": 1371312,
+    "TOTAL_VALIDATION_SCAN_BYTES_PER_INFERENCE": 1755312,
+    "score_CRC_alias_additional_scans": 0
+  },
+  "noninterference": {
+    "static": "Erase only new observer calls/includes/export/build plumbing and reproduce exact accepted firmware semantics; inspect unchanged other sources and layout.",
+    "physical": "Exact waveform bytes/CRC, all seven checkpoint bytes/CRCs, score bits, all top100 indices/score bits/counts, valid/status/repeat fields, mandatory model verification, contexts/guards/faults/U85/cache routes and numerical boundaries; timing fields necessarily vary and are not literal timestamp equality.",
+    "required_disposition": "HOT_PATH_VALIDATION_OBSERVER_NONINTERFERENCE_PASS",
+    "no_removed_skipped_relocated_cached_or_algorithm_changed_validation": true
+  },
+  "decisive_consumer_gate": "A measured operation is removable only when proven not required by any ordinary product or runtime-safety consumer. Current audit binds score CRC and all boundary CRCs to ordinary responses/repeat_equal; measurements cannot override that contract.",
+  "future_candidate_policy": "Freeze HOT_PATH_VALIDATION_LIFECYCLE_ONLY only if both input-generation and on-demand evidence transformations independently satisfy unchanged ordinary result semantics and generation ownership. Otherwise report only the justified subcandidate; no combined candidate.",
+  "forbidden": [
+    "CRC removal/caching/skipping/movement/algorithm changes",
+    "waveform identity or validity shortcuts",
+    "ResultReady/primary-boundary changes",
+    "accepted lifecycle/top-k changes",
+    "frontend/GeM/NPU/regional/top3/cache/copy/clock/compiler/model/Vela changes",
+    "production required work shifted past ResultReady"
+  ],
+  "immutable": true,
+  "revision": "Never edit these frozen bytes after commit or observation; any necessary correction must be a separate prospectively versioned plan and an explicit stop."
+}
