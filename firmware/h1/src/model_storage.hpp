@@ -3,6 +3,7 @@
 #pragma once
 
 #include "audio_contract.hpp"
+#include "waveform_lifecycle.hpp"
 #include "h1_contract.h"
 #include "runtime_profile.h"
 #include "frontend_m55_spectral.hpp"
@@ -126,7 +127,8 @@ H1M55SpectralDiagnostics &h1M55SpectralDiagnostics();
 H1M55SpectralWorkspace &h1M55SpectralWorkspace();
 H1M55CompactMel &h1M55CompactMel();
 uint8_t *h1UploadPayload();
-float *h1UploadedWaveform();
+const float *h1UploadedWaveform();
+float *h1WaveformWrite(const H1WaveformToken &token);
 int16_t *h1PcmRingStorage();
 int16_t *h1SelectedPcmWindow();
 char *h1ProtocolResponse();

@@ -380,6 +380,9 @@ set(H1_IDENTITY_FILES
   src/main.cpp
   src/model_storage.cpp
   src/model_storage.hpp
+  src/waveform_lifecycle.hpp
+  src/waveform_lifecycle.cpp
+  src/waveform_lifecycle.ld
   src/runtime_profile.c
   src/runtime_profile.h
   src/baseline_profile.c
@@ -443,6 +446,8 @@ if(TARGET drivers__memc)
   endif()
 endif()
 
+zephyr_linker_sources(SECTIONS src/waveform_lifecycle.ld)
+
 target_sources(app PRIVATE
   src/pcm_ring.cpp
   src/run_state.cpp
@@ -454,6 +459,7 @@ target_sources(app PRIVATE
   src/classifier_bridge.cpp
   src/main.cpp
   src/model_storage.cpp
+  src/waveform_lifecycle.cpp
   src/runtime_profile.c
   src/baseline_profile.c
   src/usb_transport.cpp

@@ -94,8 +94,14 @@ uint32_t crc32(const uint8_t *data, size_t bytes)
 	return ~crc;
 }
 
-void resetParser()
+void resetParser(bool completedUpload = false)
 {
+	if (completedUpload) {
+		h1WaveformLifecycle.parserActive = 0;
+	} else {
+		h1WaveformUploadAttemptAbort();
+	}
+	h1WaveformLifecycle.parserDenied = 0;
 	gHeaderCount = 0;
 	gPayloadCount = 0;
 	gPayloadLength = 0;
@@ -179,12 +185,14 @@ void messageCallback(usbd_context *const context, const usbd_msg *const message)
 	case USBD_MSG_CONFIGURATION:
 		atomic_set(&gConfigured, message->status != 0);
 		if (message->status == 0) {
+			atomic_inc(&gGeneration);
 			atomic_set(&gDtr, 0);
 		}
 		break;
 	case USBD_MSG_CDC_ACM_CONTROL_LINE_STATE: {
 		uint32_t dtr = 0;
 		if (uart_line_ctrl_get(message->dev, UART_LINE_CTRL_DTR, &dtr) == 0) {
+			if (dtr == 0 && atomic_get(&gDtr) != 0) atomic_inc(&gGeneration);
 			atomic_set(&gDtr, dtr != 0);
 		}
 		break;
@@ -236,6 +244,7 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::RunBaselineAcceptance:
 	case H1MessageType::RunBaselineDiagnostic:
 	case H1MessageType::RunBaselinePmu:
+	case H1MessageType::GetWaveformLifecycle:
 	case H1MessageType::GetBaselineStatus:
 	case H1MessageType::GetBaselineMap:
 	case H1MessageType::Ping:
@@ -295,6 +304,12 @@ H1UsbPollResult headerComplete(H1UsbFrame &frame)
 	}
 	if (!validPayloadLength(gType, gPayloadLength)) {
 		frame.error = H1UsbProtocolError::InvalidLength;
+		resetParser();
+		return H1UsbPollResult::ProtocolError;
+	}
+	if (gType == uint16_t(H1MessageType::UploadWaveform) &&
+	    (!h1WaveformLifecycle.parserActive || h1WaveformLifecycle.parserDenied)) {
+		frame.error = H1UsbProtocolError::WaveformOwnershipDenied;
 		resetParser();
 		return H1UsbPollResult::ProtocolError;
 	}
@@ -377,6 +392,11 @@ H1UsbPollResult h1UsbPoll(H1UsbFrame &frame)
 		}
 		if (gHeaderCount < H1_CDC_HEADER_BYTES) {
 			gHeader[gHeaderCount++] = byte;
+			// Type is recognizable at byte 8, even for a bad version/length.
+			if (gHeaderCount == 8 &&
+			    readLe16(gHeader + 6) == uint16_t(H1MessageType::UploadWaveform)) {
+				h1WaveformLifecycle.parserDenied = !h1WaveformUploadAttemptBegin();
+			}
 			if (gHeaderCount == H1_CDC_HEADER_BYTES) {
 				const H1UsbPollResult result = headerComplete(frame);
 				if (result != H1UsbPollResult::None) {
@@ -399,7 +419,10 @@ H1UsbPollResult h1UsbPoll(H1UsbFrame &frame)
 			const H1UsbPollResult result = frame.error == H1UsbProtocolError::None
 				? H1UsbPollResult::Frame
 				: H1UsbPollResult::ProtocolError;
-			resetParser();
+			const bool uploadComplete = result == H1UsbPollResult::Frame &&
+				gType == uint16_t(H1MessageType::UploadWaveform);
+			if (uploadComplete) frame.waveformToken = h1WaveformLifecycle.parserToken;
+			resetParser(uploadComplete);
 			return result;
 		}
 	}

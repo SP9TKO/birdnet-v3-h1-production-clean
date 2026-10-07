@@ -1,5 +1,7 @@
 #pragma once
 
+#include "waveform_lifecycle.hpp"
+
 #include "audio_contract.hpp"
 
 #include <cstddef>
@@ -14,6 +16,7 @@ bool h1AudioPdmSelectWindow(uint64_t sequence, H1SelectedWindowInfo &info,
 bool h1AudioPdmCopySelectedBytes(uint32_t offsetBytes, void *destination,
 				 uint32_t bytes, H1MicError &error);
 bool h1AudioPdmPrepareSelectedWaveform(float *destination, size_t elements,
+				       const H1WaveformToken &token,
 				       uint32_t &floatCrc32,
 				       char floatSha256[65],
 				       H1SelectedWindowInfo &info,

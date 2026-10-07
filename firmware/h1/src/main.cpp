@@ -835,11 +835,38 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.status = RunStatus::NotReady;
 		return false;
 	}
-	H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_BEGIN);
-	result.inputCrc32 = crc32(reinterpret_cast<const uint8_t *>(waveform),
-				  H1_WAVEFORM_BYTES);
-	H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_END);
-	strncpy(result.inputSha256, inputSha256, sizeof(result.inputSha256) - 1);
+	H1WaveformInputLease inputLease;
+	const bool residentInput = fixture == FixtureId::Uploaded || fixture == FixtureId::Microphone;
+	if (residentInput) {
+		const uint64_t acquireStart = h1ProfileNow();
+		if (!inputLease.acquire(fixture == FixtureId::Uploaded ? H1WaveformProducer::Upload :
+			H1WaveformProducer::Pdm, waveform, H1_WAVEFORM_ELEMENTS, H1_WAVEFORM_BYTES)) {
+			result.status = RunStatus::InputIdentity;
+			return false;
+		}
+		h1WaveformLifecycle.lastInference.acquireCycles = h1ProfileNow() - acquireStart;
+	}
+	if (fixture == FixtureId::Uploaded) {
+		// Mark the absence of a scan without incrementing observer scan counters.
+		const uint64_t noScan = h1ProfileNow();
+		H1_VALIDATION_AT(H1V_WAVEFORM_CRC_BEGIN, noScan);
+		H1_VALIDATION_AT(H1V_WAVEFORM_CRC_END, noScan);
+		result.inputCrc32 = inputLease.snapshot.validatedCrc;
+		strncpy(result.inputSha256, inputLease.snapshot.declaredSha256,
+			sizeof(result.inputSha256) - 1);
+		if (canonicalSynthetic != bool(inputLease.snapshot.canonical) ||
+		    strcmp(inputSha256, inputLease.snapshot.declaredSha256) != 0) {
+			result.status = RunStatus::InputIdentity;
+			return false;
+		}
+	} else {
+		H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_BEGIN);
+		if (residentInput) h1WaveformLifecycle.noteResidentCrc(H1_WAVEFORM_BYTES, true);
+		result.inputCrc32 = crc32(reinterpret_cast<const uint8_t *>(waveform),
+					  H1_WAVEFORM_BYTES);
+		H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_END);
+		strncpy(result.inputSha256, inputSha256, sizeof(result.inputSha256) - 1);
+	}
 	H1_VALIDATION_MARK(H1V_IDENTITY_COPY_END);
 	if (result.inputCrc32 != expectedInputCrc) {
 		result.status = RunStatus::InputIdentity;
@@ -866,6 +893,15 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	const uint64_t frontendEnd = h1ProfileNow();
 	h1BaselineMark(1u, frontendEnd);
 	result.profile.frontend_cycles = frontendEnd - frontendStart;
+	if (inputLease.active) {
+		const uint64_t releaseStart = h1ProfileNow();
+		const bool ownershipValid = inputLease.release();
+		h1WaveformLifecycle.lastInference.releaseCycles = h1ProfileNow() - releaseStart;
+		if (!ownershipValid) {
+			result.status = RunStatus::InputIdentity;
+			return false;
+		}
+	}
 	if (frontendStatus != H1FrontendStatus::Ok || frontendEnd <= frontendStart) {
 		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
 		result.status = RunStatus::Frontend;
@@ -1491,8 +1527,32 @@ void saveResult(H1RunResult &result)
 	H1_VALIDATION_MARK(H1V_SAVE_COPY_END);
 }
 
+class WaveformMutationGuard {
+public:
+	H1WaveformToken token;
+	bool active = true;
+	explicit WaveformMutationGuard(const H1WaveformToken &value) : token(value) {}
+	~WaveformMutationGuard() { if (active) h1WaveformLifecycle.invalidate(token); }
+};
+
+H1WaveformReceipt waveformReceipt(const H1WaveformToken &token,
+	H1WaveformProducer producer, uint32_t crc, const char *sha)
+{
+	H1WaveformReceipt receipt{};
+	receipt.epoch = token.epoch; receipt.generation = token.generation;
+	receipt.producer = producer; receipt.base = h1UploadedWaveform();
+	receipt.samples = H1_WAVEFORM_ELEMENTS; receipt.bytes = H1_WAVEFORM_BYTES;
+	receipt.dtype = 1; receipt.sampleRate = 32000; receipt.channels = 1;
+	receipt.validatedCrc = receipt.rawCrc = crc;
+	strncpy(receipt.declaredSha256, sha, sizeof(receipt.declaredSha256) - 1);
+	return receipt;
+}
+
 bool validateUpload(const H1UsbFrame &frame)
 {
+	WaveformMutationGuard mutation(frame.waveformToken);
+	if (!h1WaveformLifecycle.quiesce(frame.waveformToken) ||
+	    h1WaveformLifecycle.producer != H1WaveformProducer::Upload) return false;
 	memset(&gUpload, 0, sizeof(gUpload));
 	gUpload.uploadSequence = frame.sequence;
 	gUpload.frameCrcVerified = frame.actualPayloadCrc == frame.expectedPayloadCrc;
@@ -1515,13 +1575,17 @@ bool validateUpload(const H1UsbFrame &frame)
 		return false;
 	}
 	const uint8_t *raw = metadata + H1_UPLOAD_METADATA_BYTES;
+	h1WaveformLifecycle.noteRawCrc(H1_WAVEFORM_BYTES);
 	gUpload.rawCrc32 = crc32(raw, H1_WAVEFORM_BYTES);
 	gUpload.rawCrcVerified = gUpload.rawCrc32 == declaredRawCrc;
 	if (!gUpload.rawCrcVerified) {
 		return false;
 	}
-	float *waveform = h1UploadedWaveform();
+	if (!h1WaveformLifecycle.resumeWrite(frame.waveformToken)) return false;
+	float *waveform = h1WaveformWrite(frame.waveformToken);
+	if (!waveform) return false;
 	memcpy(waveform, raw, H1_WAVEFORM_BYTES);
+	if (!h1WaveformLifecycle.quiesce(frame.waveformToken)) return false;
 	for (size_t index = 0; index < H1_WAVEFORM_ELEMENTS; ++index) {
 		gUpload.finiteCount += std::isfinite(waveform[index]);
 	}
@@ -1529,10 +1593,22 @@ bool validateUpload(const H1UsbFrame &frame)
 	if (!gUpload.finiteVerified) {
 		return false;
 	}
+	h1WaveformLifecycle.noteResidentCrc(H1_WAVEFORM_BYTES);
+	const uint32_t residentCrc = crc32(reinterpret_cast<const uint8_t *>(waveform),
+		H1_WAVEFORM_BYTES);
+	if (residentCrc != gUpload.rawCrc32) return false;
 	gUpload.canonicalByteMatch =
 		gUpload.rawCrc32 == H1_SYNTHETIC_WAVEFORM_CRC32 &&
 		strcmp(gUpload.declaredSha256, H1_SYNTHETIC_RAW_SHA256) == 0 &&
 		memcmp(waveform, h1SyntheticWaveformData, H1_WAVEFORM_BYTES) == 0;
+	H1WaveformReceipt receipt = waveformReceipt(frame.waveformToken,
+		H1WaveformProducer::Upload, residentCrc, gUpload.declaredSha256);
+	receipt.finiteCount = gUpload.finiteCount;
+	receipt.canonical = gUpload.canonicalByteMatch;
+	receipt.validationFlags = H1_WAVEFORM_UPLOAD_VALIDATION_FLAGS;
+	receipt.complete = 1;
+	if (!h1WaveformLifecycle.publish(frame.waveformToken, receipt)) return false;
+	mutation.active = false;
 	gUpload.valid = 1;
 	return true;
 }
@@ -2531,6 +2607,8 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
 #if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
   h1ValidationObserverCapture(index, end, result.runSequence, result.profile.clock_hz, success);
 #endif
+  if (mode == H1_BASELINE_DIAGNOSTIC && index >= 0 && index < 20)
+   h1WaveformLifecycle.diagnostic[index] = h1WaveformLifecycle.lastInference;
   h1BaselineEndRun(index, start, end, &result.profile, result.runSequence,
    uint32_t(result.status), result.boundaryCrc32, integrity);
 #if defined(H1_POSTPROCESSING_OBSERVATION)
@@ -2717,12 +2795,21 @@ void runMicUsbCommand(const H1UsbFrame &request)
 			  "NPU or memory identity check failed");
 		return;
 	}
+	H1WaveformToken token{};
+	if (!h1WaveformLifecycle.begin(H1WaveformProducer::Pdm, h1UploadedWaveform(),
+		H1_WAVEFORM_ELEMENTS, H1_WAVEFORM_BYTES, token)) {
+		if (!h1WaveformLifecycle.leaseActive) gUpload.valid = 0;
+		sendError(request, "WAVEFORM_OWNERSHIP", "Resident waveform mutation not admitted");
+		return;
+	}
+	memset(&gUpload, 0, sizeof(gUpload));
+	WaveformMutationGuard mutation(token);
 	uint32_t floatCrc32 = 0;
 	char floatSha256[65]{};
 	H1SelectedWindowInfo selected{};
 	H1MicError micError = H1MicError::None;
 	if (!h1AudioPdmPrepareSelectedWaveform(
-		    h1UploadedWaveform(), H1_WAVEFORM_ELEMENTS, floatCrc32,
+		    h1WaveformWrite(token), H1_WAVEFORM_ELEMENTS, token, floatCrc32,
 		    floatSha256, selected, micError)) {
 		char detail[128];
 		snprintf(detail, sizeof(detail),
@@ -2732,6 +2819,14 @@ void runMicUsbCommand(const H1UsbFrame &request)
 		return;
 	}
 
+	if (!h1WaveformLifecycle.quiesce(token)) return;
+	H1WaveformReceipt receipt = waveformReceipt(token, H1WaveformProducer::Pdm,
+		floatCrc32, floatSha256);
+	// PCM16 * 2^-15 always produces finite float values; conversion is unchanged.
+	receipt.finiteCount = H1_WAVEFORM_ELEMENTS;
+	receipt.complete = 1;
+	if (!h1WaveformLifecycle.publish(token, receipt)) return;
+	mutation.active = false;
 	h1AudioPdmSetInferenceState(H1MicInferenceState::Running);
 	H1RunResult result;
 	const bool success = runOnce(
@@ -2863,8 +2958,75 @@ void sendHotPathValidationObservation(const H1UsbFrame &request)
 }
 #endif
 
+void sendWaveformLifecycle(const H1UsbFrame &request)
+{
+	const auto &w = h1WaveformLifecycle;
+	const auto &r = w.receipt;
+	const auto &c = w.counters;
+	char *response = h1ProtocolResponse(); size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"epoch\":%llu,\"generation\":%llu,\"state\":%u,\"producer\":%u,"
+		"\"writer\":%u,\"mutation_owner\":%u,\"lease\":%u,\"parser\":%u,"
+		"\"receipt\":{\"epoch\":%llu,\"generation\":%llu,\"base\":%u,\"samples\":%u,"
+		"\"bytes\":%u,\"dtype\":%u,\"sample_rate\":%u,\"channels\":%u,\"crc\":%u,"
+		"\"raw_crc\":%u,\"finite_count\":%u,\"canonical\":%u,\"sha\":\"%s\","
+		"\"flags\":%u,\"complete\":%u,\"error\":%u},\"counters\":{",
+		(unsigned long long)w.epoch, (unsigned long long)w.counter, w.state, unsigned(w.producer),
+		w.writerActive, w.mutationOwned, w.leaseActive, w.parserActive,
+		(unsigned long long)r.epoch, (unsigned long long)r.generation,
+		unsigned(reinterpret_cast<uintptr_t>(r.base)), r.samples, r.bytes, r.dtype,
+		r.sampleRate, r.channels, r.validatedCrc, r.rawCrc, r.finiteCount, r.canonical,
+		r.declaredSha256, r.validationFlags, r.complete, r.error);
+	const char *names[] = {"UPLOAD_GENERATIONS_CREATED", "UPLOAD_GENERATIONS_VALIDATED",
+		"VALID_GENERATIONS", "INVALID_GENERATIONS", "FULL_RAW_WAVEFORM_CRC_SCANS",
+		"FULL_RAW_WAVEFORM_CRC_BYTES", "FULL_RESIDENT_WAVEFORM_CRC_SCANS",
+		"FULL_RESIDENT_WAVEFORM_CRC_BYTES", "MEASURED_INFERENCE_FULL_WAVEFORM_CRC_SCANS",
+		"MEASURED_INFERENCE_FULL_WAVEFORM_CRC_BYTES", "INFERENCE_LEASES",
+		"GENERATION_OWNERSHIP_FAILURES", "INVALID_GENERATION_INFERENCES", "STALE_WAVEFORM_REJECTIONS"};
+	const uint64_t values[] = {c.uploadGenerationsCreated, c.uploadGenerationsValidated,
+		c.validGenerations, c.invalidGenerations, c.rawCrcScans, c.rawCrcBytes,
+		c.residentCrcScans, c.residentCrcBytes, c.inferenceCrcScans, c.inferenceCrcBytes,
+		c.inferenceLeases, c.ownershipFailures, c.invalidGenerationInferences,
+		c.staleWaveformRejections};
+	for (unsigned i = 0; ok && i < 14; ++i) ok = append(response, H1_PROTOCOL_RESPONSE_BYTES,
+		used, "%s\"%s\":%llu", i ? "," : "", names[i], (unsigned long long)values[i]);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "},\"transitions\":[");
+	for (unsigned i = 0; ok && i < w.transitionCount; ++i)
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "%s%u", i ? "," : "", w.transitions[i]);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"inference\":[");
+	for (unsigned i = 0; ok && i < 21; ++i) {
+		const auto &p = i == 0 ? w.lastInference : w.diagnostic[i - 1];
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+			"%s{\"epoch\":%llu,\"generation\":%llu,\"acquire_cycles\":%llu,"
+			"\"release_cycles\":%llu,\"crc_scans\":%u,\"crc_bytes\":%u,\"sha_scans\":%u,"
+			"\"identity_scans\":%u,\"valid\":%u}", i ? "," : "",
+			(unsigned long long)p.epoch, (unsigned long long)p.generation,
+			(unsigned long long)p.acquireCycles, (unsigned long long)p.releaseCycles,
+			p.crcScans, p.crcBytes, p.shaScans, p.identityScans, p.valid);
+	}
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]}");
+	if (ok) sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "Waveform lifecycle proof did not fit");
+}
+
 void handleFrame(const H1UsbFrame &request)
 {
+	H1WaveformInputLease diagnosticLease;
+	switch (H1MessageType(request.type)) {
+	case H1MessageType::RunM55SpectralFrame:
+	case H1MessageType::RunM55SpectralLoop:
+	case H1MessageType::RunM55SpectralBoundedLoop:
+	case H1MessageType::RunM55CompleteFrontend:
+	case H1MessageType::CompareCompactScalarMel:
+	case H1MessageType::CompareMveCompactMel:
+		if (!diagnosticLease.acquire(H1WaveformProducer::Upload, h1UploadedWaveform(),
+			H1_WAVEFORM_ELEMENTS, H1_WAVEFORM_BYTES, false)) {
+			sendError(request, "NO_UPLOAD", "No valid uploaded waveform generation");
+			return;
+		}
+		break;
+	default: break;
+	}
 	// Commands that can overwrite shared inference scratch invalidate the reader.
 	switch (H1MessageType(request.type)) {
 	case H1MessageType::RunUploadedWaveform:
@@ -2894,6 +3056,8 @@ void handleFrame(const H1UsbFrame &request)
 		runBaselineCampaign(request, H1_BASELINE_PMU); break;
 	case H1MessageType::GetBaselineSample:
 		sendBaselineSample(request); break;
+	case H1MessageType::GetWaveformLifecycle:
+		sendWaveformLifecycle(request); break;
 	case H1MessageType::GetBaselineStatus:
 		sendBaselineStatus(request); break;
 	case H1MessageType::GetBaselineMap:
@@ -3260,8 +3424,33 @@ extern "C" bool h1LifecycleReuseReady(void)
 		h1PersistentStages[1].state == H1ContextState::Ready;
 }
 
+bool h1WaveformUploadAttemptBegin()
+{
+	H1WaveformToken token{};
+	const bool admitted = h1WaveformLifecycle.begin(H1WaveformProducer::Upload,
+		h1UploadedWaveform(), H1_WAVEFORM_ELEMENTS, H1_WAVEFORM_BYTES, token);
+	if (admitted || h1WaveformLifecycle.state == uint32_t(H1WaveformState::Invalid))
+		memset(&gUpload, 0, sizeof(gUpload));
+	h1WaveformLifecycle.parserActive = admitted;
+	h1WaveformLifecycle.parserToken = token;
+	return admitted;
+}
+
+void h1WaveformUploadAttemptAbort()
+{
+	if (h1WaveformLifecycle.parserActive) {
+		h1WaveformLifecycle.invalidate(h1WaveformLifecycle.parserToken);
+		h1WaveformLifecycle.parserActive = 0;
+		gUpload.valid = 0;
+	}
+}
+
 int main()
 {
+	const bool waveformRuntimeReady = h1WaveformLifecycle.initialize();
+	memset(&gUpload, 0, sizeof(gUpload));
+	printk("H1_WAVEFORM_BOOT state=EMPTY epoch=%llu generation=0 receipt=0 lease=0 ready=%u\n",
+		(unsigned long long)h1WaveformLifecycle.epoch, unsigned(waveformRuntimeReady));
 #if H1_FRAME_ACK_RETURN_DIAGNOSTIC
 	/* Keep the internal noinit record untouched in the pure ACK control. */
 	const bool retainedSpectralDiagnostic = false;
@@ -3354,7 +3543,7 @@ int main()
 #if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
 	h1ValidationObserverInit();
 #endif
-	gComputeReady = frontendRuntimeReady && reportNpuIdentity() &&
+	gComputeReady = waveformRuntimeReady && frontendRuntimeReady && reportNpuIdentity() &&
 		h1FastGuardPrepare() && preparePersistentContexts();
 	printk("H1_LIFECYCLE_INIT complete_before_waveform_ready=%u\n",
 	       unsigned(h1LifecycleInitializationComplete));

@@ -301,9 +301,15 @@ uint8_t *h1UploadPayload()
 	return h1PsramStorage.uploadPayload;
 }
 
-float *h1UploadedWaveform()
+const float *h1UploadedWaveform()
 {
 	return h1PsramStorage.uploadedWaveform;
+}
+
+float *h1WaveformWrite(const H1WaveformToken &token)
+{
+	return h1WaveformLifecycle.canWrite(token, h1PsramStorage.uploadedWaveform)
+		? h1PsramStorage.uploadedWaveform : nullptr;
 }
 
 int16_t *h1PcmRingStorage()

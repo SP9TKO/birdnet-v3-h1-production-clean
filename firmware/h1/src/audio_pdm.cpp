@@ -641,6 +641,7 @@ bool h1AudioPdmCopySelectedBytes(uint32_t offsetBytes, void *destination,
 }
 
 bool h1AudioPdmPrepareSelectedWaveform(float *destination, size_t elements,
+				       const H1WaveformToken &token,
 				       uint32_t &floatCrc32,
 				       char floatSha256[65],
 				       H1SelectedWindowInfo &info,
@@ -648,7 +649,9 @@ bool h1AudioPdmPrepareSelectedWaveform(float *destination, size_t elements,
 {
 	error = H1MicError::None;
 	h1RunStateMark(H1RunState::MicWindowResolveBegin);
-	if (!destination || !floatSha256 || elements != H1_MIC_WINDOW_SAMPLES) {
+	if (!destination || !floatSha256 || elements != H1_MIC_WINDOW_SAMPLES ||
+	    !h1WaveformLifecycle.canWrite(token, destination) ||
+	    h1WaveformLifecycle.producer != H1WaveformProducer::Pdm) {
 		error = H1MicError::InvalidBlockSize;
 		return false;
 	}
@@ -671,6 +674,7 @@ bool h1AudioPdmPrepareSelectedWaveform(float *destination, size_t elements,
 		destination[index] = float(source[index]) * (1.0f / 32768.0f);
 	}
 	const size_t bytes = elements * sizeof(float);
+	h1WaveformLifecycle.noteResidentCrc(uint32_t(bytes));
 	floatCrc32 = crc32(reinterpret_cast<const uint8_t *>(destination), bytes);
 	h1Sha256Hex(destination, bytes, floatSha256);
 	info = gSelectedWindow;

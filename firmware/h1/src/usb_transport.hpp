@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "waveform_lifecycle.hpp"
 
 constexpr uint16_t H1_CDC_PROTOCOL_VERSION = 1;
 constexpr size_t H1_CDC_HEADER_BYTES = 20;
@@ -65,6 +66,7 @@ enum class H1MessageType : uint16_t {
 	RunBaselineObserverQualification = 150,
 	GetPostprocessObservation = 151,
 	GetHotPathValidationObservation = 152,
+	GetWaveformLifecycle = 153,
 };
 
 enum class H1UsbPollResult : uint8_t {
@@ -78,6 +80,7 @@ enum class H1UsbProtocolError : uint32_t {
 	UnsupportedVersion = 1,
 	InvalidLength = 2,
 	PayloadCrcMismatch = 3,
+	WaveformOwnershipDenied = 4,
 };
 
 struct H1UsbFrame {
@@ -88,6 +91,7 @@ struct H1UsbFrame {
 	H1UsbProtocolError error;
 	uint32_t expectedPayloadCrc;
 	uint32_t actualPayloadCrc;
+	H1WaveformToken waveformToken;
 };
 
 struct H1UsbStatus {

@@ -75,8 +75,8 @@ void h1ValidationObserverCapture(int32_t index, uint64_t end,
 	o.timestamps[H1V_PRIMARY_END] = end;
 	o.runSequence = runSequence;
 	o.clockHz = clockHz;
-	if (!success || clockHz != 400000000u || o.waveformCalls != 1 ||
-	    o.waveformBytes != H1_WAVEFORM_BYTES) {
+	if (!success || clockHz != 400000000u || o.waveformCalls != 0 ||
+	    o.waveformBytes != 0) {
 		o.error = 1;
 	}
 	for (uint32_t i = 0; i < H1V_MARK_COUNT; ++i) {
