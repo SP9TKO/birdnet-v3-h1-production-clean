@@ -2321,7 +2321,7 @@ void sendBaselineSample(const H1UsbFrame &request)
    const H1BaselineCache &c = d.cache[i];
    ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
     "%s{\"stage\":%u,\"address\":%u,\"requested\":%u,\"rounded_address\":%u,\"rounded_bytes\":%u,"
-    "\"maintained\":%u,\"flags\":%u,\"mask\":%u,\"base_index\":%u,\"start\":%llu,\"end\":%llu}",
+    "\"maintained\":%u,\"operation_mask\":%u,\"mask\":%u,\"base_index\":%u,\"start\":%llu,\"end\":%llu}",
     i ? "," : "", c.stage, c.address, c.requested_bytes, c.rounded_address,
     c.rounded_bytes, c.maintained_bytes, c.flags, c.mask, c.base_index,
     (unsigned long long)c.start_cycles, (unsigned long long)c.end_cycles);
@@ -2341,8 +2341,15 @@ void sendBaselineSample(const H1UsbFrame &request)
   ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "\"");
  }
  ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "}");
- if (ok) sendJson(request, response, used);
- else sendError(request, "FORMAT_OVERFLOW", "Baseline sample did not fit");
+ if (!ok) {
+  sendError(request, "FORMAT_OVERFLOW", "Baseline sample did not fit");
+ } else if (h1BaselineState.last_mode == H1_BASELINE_ACCEPTANCE) {
+  if (!sendJson(request, response, used))
+   sendError(request, "DIAGNOSTIC_EXPORT", "Baseline sample transmission failed");
+ } else if (!h1UsbSendDiagnosticPages(request.type | H1_CDC_RESPONSE_BIT,
+              request.sequence, response, uint32_t(used))) {
+  sendError(request, "DIAGNOSTIC_EXPORT", "Diagnostic page transmission failed");
+ }
 }
 void sendBaselineMap(const H1UsbFrame &request)
 {

@@ -426,6 +426,56 @@ bool h1UsbSendFrame(uint16_t type, uint32_t sequence, const void *payload,
 	return true;
 }
 
+
+// Only the completed baseline diagnostic export calls this streaming sender.
+// Its two bounded stack headers avoid another persistent response/page buffer.
+bool h1UsbSendDiagnosticPages(uint16_t type, uint32_t sequence, const void *payload,
+                              uint32_t payloadLength)
+{
+ constexpr uint32_t pageHeaderBytes = 40;
+ constexpr uint32_t pageDataBytes = 6940;
+ static_assert(H1_CDC_HEADER_BYTES + pageHeaderBytes + pageDataBytes == 7000);
+ static_assert(pageHeaderBytes + pageDataBytes <= kMaximumResponseBytes);
+ if (!payload || payloadLength == 0 || payloadLength >= 16384 ||
+     type != (uint16_t(H1MessageType::GetBaselineSample) | H1_CDC_RESPONSE_BIT))
+  return false;
+ const auto *bytes = static_cast<const uint8_t *>(payload);
+ const uint32_t wholeCrc = crc32(bytes, payloadLength);
+ const uint32_t pages = (payloadLength + pageDataBytes - 1) / pageDataBytes;
+ for (uint32_t index = 0; index < pages; ++index) {
+  if (atomic_get(&gConfigured) == 0) return false;
+  const uint32_t offset = index * pageDataBytes;
+  const uint32_t count = payloadLength - offset < pageDataBytes ?
+   payloadLength - offset : pageDataBytes;
+  uint8_t page[pageHeaderBytes] = {'H', '1', 'D', 'P'};
+  writeLe16(page + 4, 1); writeLe16(page + 6, pageHeaderBytes);
+  writeLe32(page + 8, sequence); writeLe32(page + 12, index);
+  writeLe32(page + 16, pages); writeLe32(page + 20, offset);
+  writeLe32(page + 24, count); writeLe32(page + 28, payloadLength);
+  writeLe32(page + 32, crc32(bytes + offset, count));
+  writeLe32(page + 36, wholeCrc);
+  uint32_t frameCrc = UINT32_C(0xffffffff);
+  const auto accumulate = [&frameCrc](const uint8_t *data, uint32_t length) {
+   for (uint32_t i = 0; i < length; ++i) {
+    frameCrc ^= data[i];
+    for (unsigned bit = 0; bit < 8; ++bit)
+     frameCrc = (frameCrc >> 1) ^
+      (UINT32_C(0xedb88320) & (0u - (frameCrc & 1u)));
+   }
+  };
+  accumulate(page, pageHeaderBytes); accumulate(bytes + offset, count);
+  uint8_t header[H1_CDC_HEADER_BYTES] = {'H', '1', 'C', 'P'};
+  writeLe16(header + 4, H1_CDC_PROTOCOL_VERSION); writeLe16(header + 6, type);
+  writeLe32(header + 8, pageHeaderBytes + count); writeLe32(header + 12, sequence);
+  writeLe32(header + 16, ~frameCrc);
+  for (uint8_t byte : header) uart_poll_out(kCdc, byte);
+  for (uint8_t byte : page) uart_poll_out(kCdc, byte);
+  for (uint32_t i = 0; i < count; ++i) uart_poll_out(kCdc, bytes[offset + i]);
+  atomic_add(&gTransmittedBytes, H1_CDC_HEADER_BYTES + pageHeaderBytes + count);
+ }
+ return true;
+}
+
 H1UsbStatus h1UsbGetStatus()
 {
 	return {

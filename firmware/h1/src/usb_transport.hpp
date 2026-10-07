@@ -107,5 +107,8 @@ int h1UsbInit();
 H1UsbPollResult h1UsbPoll(H1UsbFrame &frame);
 bool h1UsbSendFrame(uint16_t type, uint32_t sequence, const void *payload,
 		    uint32_t payloadLength);
+// Diagnostic export only; ordinary H1CP framing and limits remain unchanged.
+bool h1UsbSendDiagnosticPages(uint16_t type, uint32_t sequence, const void *payload,
+                              uint32_t payloadLength);
 H1UsbStatus h1UsbGetStatus();
 const char *h1UsbSpeedName(uint32_t speed);

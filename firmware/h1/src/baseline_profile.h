@@ -56,6 +56,7 @@ struct H1BaselinePmu {
 struct H1BaselineCache {
  uint64_t start_cycles, end_cycles;
  uint32_t stage, address, requested_bytes, rounded_address, rounded_bytes;
+ /* flags stores the branch-observed diagnostic operation mask, metadata only. */
  uint32_t maintained_bytes, flags;
  uint32_t mask, base_index;
 };

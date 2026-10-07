@@ -21,6 +21,8 @@ from typing import Any
 import serial
 from serial.tools import list_ports
 
+from h1_diagnostic_export import DiagnosticPages
+
 
 MAGIC = b"H1CP"
 PROTOCOL_VERSION = 1
@@ -204,6 +206,29 @@ class H1Client:
             raise ProtocolError(
                 f"Reply CRC mismatch: actual={actual_crc:08x}, declared={declared_crc:08x}"
             )
+        # Only baseline sample exports use diagnostic paging. Ordinary replies
+        # continue through the original JSON path below.
+        if message_type == 147 and reply_payload.startswith(b"H1DP"):
+            pages = DiagnosticPages(sequence)
+            try:
+                if reply_type != (message_type | RESPONSE_BIT):
+                    raise ValueError("Unexpected diagnostic reply type")
+                pages.add(reply_payload)
+                while not pages.complete:
+                    page_header = self._read_header(deadline)
+                    m, v, t, n, seq, frame_crc = HEADER.unpack(page_header)
+                    if (m, v, t, seq) != (MAGIC, PROTOCOL_VERSION, reply_type, sequence):
+                        raise ValueError("Diagnostic frame identity changed")
+                    if n + HEADER.size > 7000:
+                        raise ValueError("Diagnostic frame exceeds transport limit")
+                    page_payload = self._read_exact(n, deadline)
+                    if crc32(page_payload) != frame_crc:
+                        raise ValueError("Diagnostic frame CRC mismatch")
+                    pages.add(page_payload)
+                reply_payload = pages.finish()
+                self.last_diagnostic_export = pages.evidence()
+            except (ValueError, TimeoutError) as error:
+                raise ProtocolError(f"Diagnostic export incomplete or invalid: {error}") from error
         try:
             value = json.loads(reply_payload.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:

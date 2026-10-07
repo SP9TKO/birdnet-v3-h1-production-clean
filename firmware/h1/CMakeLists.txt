@@ -382,6 +382,7 @@ set(H1_IDENTITY_FILES
   src/runtime_profile.h
   src/baseline_profile.c
   src/baseline_profile.h
+  src/baseline_cache_operations.h
   src/baseline_profile.ld
   src/usb_transport.cpp
   src/usb_transport.hpp
@@ -485,29 +486,29 @@ if(H1_BASELINE_V2_INSTRUMENTATION)
   string(SUBSTRING "${alif_cache_text}" ${flush_offset} ${flush_length} flush_body)
   string(SUBSTRING "${alif_cache_text}" ${invalidate_offset} -1 invalidate_body)
   foreach(callback flush invalidate)
-    set(operations "SCB_CleanDCache_by_Addr(p, bytes)|H1_BASELINE_CACHE_CLEAN | H1_BASELINE_CACHE_RANGE;SCB_CleanDCache()|H1_BASELINE_CACHE_CLEAN | H1_BASELINE_CACHE_WHOLE;__DSB()|H1_BASELINE_CACHE_BARRIER")
+    set(operations "SCB_CleanDCache_by_Addr(p, bytes)|h1BaselineCleanRange;SCB_CleanDCache()|h1BaselineCleanWhole;__DSB()|h1BaselineFlushBarrier")
     set(begin "H1_EVENT_PRE_SUBMIT_CACHE_BEGIN")
     set(end "H1_EVENT_PRE_SUBMIT_CACHE_END")
     if(callback STREQUAL "invalidate")
-      set(operations "SCB_InvalidateDCache_by_Addr(p, bytes)|H1_BASELINE_CACHE_INVALIDATE | H1_BASELINE_CACHE_RANGE;SCB_CleanInvalidateDCache()|H1_BASELINE_CACHE_CLEAN | H1_BASELINE_CACHE_INVALIDATE | H1_BASELINE_CACHE_WHOLE;__DSB()|H1_BASELINE_CACHE_BARRIER")
+      set(operations "SCB_InvalidateDCache_by_Addr(p, bytes)|h1BaselineInvalidateRange;SCB_CleanInvalidateDCache()|h1BaselineCleanInvalidateWhole;__DSB()|h1BaselineInvalidateBarrier")
       set(begin "H1_EVENT_WAIT_CACHE_BEGIN")
       set(end "H1_EVENT_WAIT_CACHE_END")
     endif()
     foreach(operation IN LISTS operations)
       string(REPLACE "|" ";" fields "${operation}")
       list(GET fields 0 call)
-      list(GET fields 1 flags)
+      list(GET fields 1 observer)
       string(FIND "${${callback}_body}" "${call};" call_offset)
       if(call_offset LESS 0)
         message(FATAL_ERROR "Pinned ${callback} cache operation missing: ${call}")
       endif()
       string(REPLACE "${call};"
-        "struct H1BaselineCache *observation = h1BaselineCacheBegin(p, (uint32_t)bytes, ${flags}, ${begin});\n\t\t\t${call};\n\t\t\th1BaselineCacheEnd(observation, ${end});"
+        "struct H1BaselineCache *observation = ${observer}(p, (uint32_t)bytes);\n\t\t\t${call};\n\t\t\th1BaselineCacheEnd(observation, ${end});"
         ${callback}_body "${${callback}_body}")
     endforeach()
   endforeach()
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/generated/ethosu_callback_profiled.c"
-    "#include \"baseline_profile.h\"\n${callback_prefix}${flush_body}${invalidate_body}")
+    "#include \"baseline_cache_operations.h\"\n${callback_prefix}${flush_body}${invalidate_body}")
   set(callback_target "..__modules__hal__alif__drivers__ethos_u")
   get_target_property(callback_sources ${callback_target} SOURCES)
   set(callback_replaced "")
