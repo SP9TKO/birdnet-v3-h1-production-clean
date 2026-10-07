@@ -1,0 +1,383 @@
+{
+  "schema": "birdnet-h1-baseline-v2-instrumentation-correction-v1",
+  "status": "V2_INSTRUMENTATION_CORRECTION_PLAN_FROZEN",
+  "created_date": "2026-10-07",
+  "reason": "V2_RUNTIME_INSTRUMENTATION_METADATA_AND_EXPORT_DEFECT",
+  "classification": "INSTRUMENTATION_ONLY",
+  "measurement_plan_change": false,
+  "entry_HEAD": "3d9223241a25d0b5a81b32beb4a194b6efc9ffda",
+  "branch": "performance/h1-sub700ms",
+  "published_master": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "criteria": {
+    "path": "records/performance/PROSPECTIVE_CRITERIA.json",
+    "sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "immutable": true,
+    "future_acceptance": {
+      "warmups": 5,
+      "measured_runs": 100,
+      "outlier_removal": false,
+      "every_unrounded_measured_sample_ms": "<700.000"
+    }
+  },
+  "plans": {
+    "V1_commit": "518367d9b3313ec199d00e09355ccf8f175f0ce4",
+    "active_future_V2_commit": "c650393e504200c4d1e637b32019978ed48846a2",
+    "V2_path": "records/performance/BASELINE_MEASUREMENT_PLAN_V2.json",
+    "V2_sha256": "4e87f589ed05557737b1abfda5a7888130fd2cdc50b393bb4bc84b2c78df8714",
+    "V2_instrumentation_commit": "3d9223241a25d0b5a81b32beb4a194b6efc9ffda",
+    "all_existing_bytes_immutable": true,
+    "V3_measurement_plan_forbidden": true
+  },
+  "preservation": {
+    "V1": "BASELINE_V1_CHARACTERIZED_BUT_INSTRUMENTATION_COVERAGE_FAILED",
+    "V2_exact_retained_disposition": "V2_RUNTIME_CACHE_OBSERVER_METADATA_COVERAGE_FAILED_STOP",
+    "failure_freeze_sha256": "4e62548784bd20687912922f94c0f216760d7dd1604d16668355b9f9cbfb20b0",
+    "defects": [
+      "CACHE_FLAG_METADATA_DEFECT",
+      "DIAGNOSTIC_EXPORT_EXCEEDS_TRANSPORT_LIMIT"
+    ],
+    "prior_evidence_rewrite_forbidden": true,
+    "retained_observation_scope": "One non-performance observer; 76 ordered events, six cache records, both U85 stages completed. Performance campaign counts 0/0/0.",
+    "observed_export_bytes": 8398,
+    "future_length_not_fixed_to_observed_bytes": true
+  },
+  "unchanged_authorities": [
+    "performance criteria",
+    "primary timing boundary",
+    "warmup/sample counts",
+    "PMU event plan",
+    "production cache semantics/API/arguments/order",
+    "model identities",
+    "production memory layout",
+    "production arithmetic",
+    "optimization policy",
+    "model/interpreter/AllocateTensors lifecycle",
+    "stage copies",
+    "NPU invocation",
+    "memory ownership",
+    "clocks/compiler optimization flags",
+    "Vela artifacts"
+  ],
+  "cache_operation_authority": {
+    "type": "BRANCH_OBSERVED_DIAGNOSTIC_OPERATION_MASK",
+    "callback_has_flag_parameter": false,
+    "prospective_revision": "Explicit user authorization before this freeze: production callbacks have only address/bytes; do not add a production flag parameter.",
+    "mechanism": "C-compiled operation-specific diagnostic helpers evaluate masks inside the same active real production callback branch immediately bracketing its unchanged CMSIS operation. CMake inserts only helper identities, never symbolic mask expressions. Existing guard call site remains separate.",
+    "field_name": "branch-observed diagnostic operation mask",
+    "authoritative_recorded_value": "Evaluated uint32 diagnostic operation mask from executing branch; metadata only; not an actual callback flag argument.",
+    "mask_bits": {
+      "CLEAN": 1,
+      "INVALIDATE": 2,
+      "WHOLE_CACHE": 4,
+      "RANGE": 8,
+      "BARRIER_ONLY": 16,
+      "FAST_GUARD_CALL_SITE": 32
+    },
+    "decoded_after_capture": true,
+    "separate_actual_runtime_values": [
+      "callback/call-site identity inferred unambiguously from frozen begin-event identity and linked branch proof",
+      "stage",
+      "address",
+      "requested byte count",
+      "line-rounded address/span",
+      "actual maintained span or whole-cache capacity",
+      "real driver mask and base-pointer index when applicable",
+      "operation sequence via cache index+1",
+      "begin/end event sequence and timestamps",
+      "relative submit/IRQ order"
+    ],
+    "expected_canonical_records": [
+      {
+        "record_id": 0,
+        "stage": 0,
+        "callback": "ethosu_flush_dcache",
+        "diagnostic_operation_mask": 5,
+        "semantic_operation": "CLEAN_WHOLE",
+        "driver_mask": 2,
+        "base_index": 1,
+        "requested_bytes": 3435264
+      },
+      {
+        "record_id": 1,
+        "stage": 0,
+        "callback": "ethosu_invalidate_dcache",
+        "diagnostic_operation_mask": 7,
+        "semantic_operation": "CLEAN_INVALIDATE_WHOLE",
+        "driver_mask": 2,
+        "base_index": 1,
+        "requested_bytes": 3435264
+      },
+      {
+        "record_id": 2,
+        "stage": 0,
+        "callback": "existing_fast_guard_invalidate",
+        "diagnostic_operation_mask": 42,
+        "semantic_operation": "INVALIDATE_GUARD_RANGE",
+        "driver_mask": null,
+        "base_index": null,
+        "requested_bytes": 64
+      },
+      {
+        "record_id": 3,
+        "stage": 1,
+        "callback": "ethosu_flush_dcache",
+        "diagnostic_operation_mask": 9,
+        "semantic_operation": "CLEAN_RANGE",
+        "driver_mask": 2,
+        "base_index": 1,
+        "requested_bytes": 23120
+      },
+      {
+        "record_id": 4,
+        "stage": 1,
+        "callback": "ethosu_invalidate_dcache",
+        "diagnostic_operation_mask": 10,
+        "semantic_operation": "INVALIDATE_RANGE",
+        "driver_mask": 2,
+        "base_index": 1,
+        "requested_bytes": 23120
+      },
+      {
+        "record_id": 5,
+        "stage": 1,
+        "callback": "existing_fast_guard_invalidate",
+        "diagnostic_operation_mask": 42,
+        "semantic_operation": "INVALIDATE_GUARD_RANGE",
+        "driver_mask": null,
+        "base_index": null,
+        "requested_bytes": 64
+      }
+    ],
+    "static_expectations": "Before hardware derive independent branch/mask/address/range expectations from actual pinned source, generated source, final ELF/map/disassembly and restored layout. Do not substitute expected values for capture.",
+    "hard_gates": {
+      "CACHE_RECORD_COUNT_EXPECTED": 6,
+      "CACHE_RECORD_COUNT_OBSERVED": 6,
+      "DIAGNOSTIC_OPERATION_MASK_MISMATCHES": 0,
+      "ADDRESS_RANGE_MISMATCHES": 0,
+      "DRIVER_MASK_MISMATCHES_where_real_mask_exists": 0,
+      "UNDECODABLE_MASKS": 0,
+      "each_record_mask_equals_executed_branch_operation": true,
+      "same_active_branch_source_and_binary_reachability": true
+    },
+    "branch_not_unique": "STOP"
+  },
+  "diagnostic_export": {
+    "scope": "GetBaselineSample diagnostic/PMU/observer export only; acceptance small JSON, production commands and upload framing unchanged. No performance mode is executed in this session.",
+    "existing_protocol": "H1CP version1, 20-byte header, payload CRC32",
+    "existing_payload_limit_bytes": 7000,
+    "limit_increase_forbidden": true,
+    "logical_formatter_buffer_bytes": 16384,
+    "new_large_buffer_forbidden": true,
+    "storage": "Reuse existing logical response buffer; stream page envelope and logical slice directly; bounded stack headers only; no new persistent transport state.",
+    "page_magic": "H1DP",
+    "page_version": 1,
+    "page_header_bytes": 40,
+    "page_header_format_little_endian": "<4sHH8I",
+    "fields": [
+      "magic",
+      "version",
+      "header_bytes",
+      "response_id(request sequence)",
+      "page_index(zero based)",
+      "page_count",
+      "payload_offset",
+      "payload_length",
+      "total_logical_length",
+      "page_payload_crc32",
+      "whole_logical_crc32"
+    ],
+    "max_logical_page_payload_bytes": 6940,
+    "max_encoded_page_wire_bytes": 7000,
+    "max_H1CP_payload_bytes": 6980,
+    "whole_identity": "Device CRC32 of exact logical bytes repeated in every envelope; host verifies it and retains SHA-256 of reconstruction. Existing frame CRC covers envelope+page.",
+    "export_failures": "Check send return and emit explicit diagnostic export error when possible; host stops with explicit missing/truncated-page error; no silent timeout accepted.",
+    "host_reconstruction_gates": [
+      "exact page count",
+      "page indices contiguous",
+      "no duplicates",
+      "no missing pages",
+      "offset/length exact",
+      "every H1CP frame CRC passes",
+      "every page payload CRC passes",
+      "consistent response/schema/length/whole CRC identity",
+      "exact reconstructed length",
+      "whole CRC equals device-declared whole identity",
+      "reconstructed SHA-256 retained",
+      "all frames within frozen limit"
+    ],
+    "response_length_binding": "Computed from exact formatted observer response for this built schema/run; not hard-coded to8398; current observer must require more than one page.",
+    "export_retry_or_new_inference": "Forbidden after a qualification defect; retain failure and STOP."
+  },
+  "memory": {
+    "authority_commit": "ad3a5d745c413ed360f4940807d00f62527937a3",
+    "comparison": "Exact equality, no approximate-equivalence acceptance",
+    "production_RAM_sections": 19,
+    "production_RAM_objects": 248,
+    "production_linker_symbols": 28,
+    "production_H1_structures": 29,
+    "SRAM1_input_sections": 5,
+    "SRAM1": {
+      "base": "0x02400000",
+      "bytes": 545568,
+      "end": "0x02485320"
+    },
+    "diagnostic": {
+      "base": "0x02500000",
+      "qualified_bytes": 60704,
+      "end": "0x0250ed20",
+      "max_region_bytes": 65536,
+      "NOLOAD": true,
+      "qualified_extent_exactly_preserved": true,
+      "separate_nonoverlapping": true
+    },
+    "gate": "PRODUCTION_MEMORY_LAYOUT_EXACTLY_PRESERVED"
+  },
+  "models": {
+    "backbone": {
+      "address": "0xc0000000",
+      "bytes": 20465840,
+      "sha256": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7"
+    },
+    "classifier": {
+      "address": "0xc2000000",
+      "bytes": 13008016,
+      "sha256": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93"
+    },
+    "writes_or_regeneration": false,
+    "physical_hashes_before_and_after": true
+  },
+  "build_and_source": {
+    "same_V2_toolchain_dependencies_configuration": true,
+    "fresh_private_build": true,
+    "source_gate": "INSTRUMENTATION_CORRECTION_ONLY_PASS",
+    "final_ELF_gate": "REAL_CACHE_OPERATION_MASK_OBSERVER_REACHABLE",
+    "unchanged_production_route": "waveform -> frontend -> backbone -> GeM -> bridge -> classifier -> reporting",
+    "one_exact_clean_committed_ELF_BIN": true,
+    "source_changes_after_programmed_identity_freeze": false
+  },
+  "observer_qualification": {
+    "command": 150,
+    "mode": 4,
+    "warmups": 0,
+    "runs": 1,
+    "fixed_transport_repeats": 0,
+    "no_inference_retries": true,
+    "expected_event_count": 76,
+    "expected_per_stage_event_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38
+    ],
+    "event_cardinality_change": false,
+    "sequence": "unique contiguous global1..76; strictly increasing timestamps",
+    "begin_end_pairs": "all complete; cache event value points to correct record",
+    "ordering": "per stage PRE_SUBMIT_CACHE_END < NPU_SUBMIT < NPU_COMPLETION_IRQ < POST_COMPLETION_CACHE_BEGIN; WAIT_CACHE position retained as actually observed, never moved/relabelled",
+    "runtime_gates": [
+      "both U85-256 stages complete",
+      "one submit/IRQ each stage",
+      "no CPU fallback",
+      "clear CFSR/HFSR and fault-address state before/after",
+      "guards clean",
+      "exact physical models before/after; persistent storage unchanged",
+      "production/runtime addresses exact",
+      "diagnostic extent exact",
+      "all six masks/address/ranges/real driver masks exact",
+      "all paged export/reconstruction gates pass"
+    ],
+    "raw_timestamps_scope": "Coverage and ordering only; never latency statistics or bottleneck conclusions",
+    "performance_campaigns": {
+      "diagnostic": 0,
+      "PMU": 0,
+      "acceptance": 0
+    },
+    "stop_immediately_after_qualification": true
+  },
+  "structural_findings_unchanged": {
+    "MODEL_PAYLOAD_COPY_BYTES_PER_INFERENCE": 33473856,
+    "INTERPRETER_RECONSTRUCTIONS_PER_INFERENCE": 2
+  },
+  "public_git": {
+    "plan_subject": "Freeze H1 V2 instrumentation correction plan",
+    "implementation_subject": "Fix H1 V2 instrumentation metadata and export",
+    "SSH_signing_fingerprint": "SHA256:vwwTKHP0Mce4nGalzVyoddmZWIHHdlQW2crs5hx05gs",
+    "loaded_agent_only_no_private_key_read": true,
+    "each_commit_local_GOOD_and_GitHub_Verified": true,
+    "max_new_commits": 2,
+    "push_only": "performance/h1-sub700ms",
+    "no_result_promotion_commit": true,
+    "no_PR_merge_master_tag_history_rewrite": true
+  },
+  "prohibited": [
+    "all performance campaigns",
+    "latency statistics from observer",
+    "PMU campaign",
+    "acceptance campaign",
+    "lifecycle candidate freeze",
+    "all optimization implementation",
+    "model/interpreter/allocation reuse",
+    "copy elimination",
+    "cache policy changes",
+    "memory placement optimization",
+    "arithmetic changes",
+    "model/Vela changes",
+    "clock/optimization changes",
+    "bottleneck ranking from new timing"
+  ],
+  "hard_stop": [
+    "any immutable authority byte changes",
+    "correction plan edited after implementation begins",
+    "production semantics/API/address/range/order changes",
+    "ambiguous actual cache branch",
+    "mask/address/range/real driver mismatch or undecodable mask",
+    "production or qualified diagnostic layout shifts",
+    "model mismatch/mutation",
+    "page/frame exceeds rules or reconstruction incomplete",
+    "event cardinality/order incomplete",
+    "fault/guard/CPU fallback",
+    "source optimization",
+    "missing expected loaded signing identity",
+    "signing/Verified gate fails"
+  ],
+  "final_qualification_dispositions": [
+    "V2_CACHE_FLAG_OBSERVATION_PASS (legacy disposition name; meaning is exact branch-observed diagnostic operation masks, not callback flag arguments)",
+    "V2_DIAGNOSTIC_EXPORT_COMPLETENESS_PASS",
+    "V2_RUNTIME_INSTRUMENTATION_QUALIFIED",
+    "PERFORMANCE_CAMPAIGNS_NOT_YET_STARTED",
+    "OPTIMIZATION_NOT_YET_STARTED"
+  ]
+}
