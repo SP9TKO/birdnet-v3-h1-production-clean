@@ -3,6 +3,9 @@
 #include "build_identity.h"
 #include "baseline_profile.h"
 #include "lifecycle_reuse.h"
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+#include "postprocessing_observer.hpp"
+#endif
 #if !defined(H1_DIAG_SKIP_PDM_INIT) || H1_DIAG_SKIP_PDM_INIT == 0
 #include "audio_pdm.hpp"
 #include "mic_usb.hpp"
@@ -722,6 +725,11 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 {
 	const float scale = floatFromBits(H1_LOGIT_SCALE_BITS);
 	const float threshold = floatFromBits(H1_REPORT_THRESHOLD_BITS);
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	h1PostprocessObserverPrepare();
+	auto &observation = h1PostprocessObserverState.last;
+	observation.scoreStart = h1ProfileNow();
+#endif
 	for (size_t index = 0; index < H1_LOGIT_ELEMENTS; ++index) {
 		const float logit = static_cast<float>(boundaries.logits[index]) * scale;
 		const float score = 1.0f / (1.0f + ::expf(-logit));
@@ -729,15 +737,27 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 		result.finiteCount += std::isfinite(score);
 		result.thresholdCount += score >= threshold;
 	}
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	observation.scoreEnd = h1ProfileNow();
+#endif
 	if (result.finiteCount != H1_LOGIT_ELEMENTS) {
 		return false;
 	}
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	uint32_t comparisons = 0, shifts = 0;
+	observation.topStart = h1ProfileNow();
+#endif
 	uint32_t top[kTopCount];
 	size_t count = 0;
 	for (uint32_t index = 0; index < H1_LOGIT_ELEMENTS; ++index) {
 		size_t position = 0;
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+		while (position < count &&
+		       (++comparisons, !betterScore(boundaries.scores, index, top[position]))) {
+#else
 		while (position < count &&
 		       !betterScore(boundaries.scores, index, top[position])) {
+#endif
 			++position;
 		}
 		if (position >= kTopCount) {
@@ -746,15 +766,27 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 		const size_t newCount = std::min(count + 1, kTopCount);
 		for (size_t move = newCount - 1; move > position; --move) {
 			top[move] = top[move - 1];
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+			++shifts;
+#endif
 		}
 		top[position] = index;
 		count = newCount;
 	}
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	observation.topEnd = h1ProfileNow();
+#endif
 	result.topCount = uint32_t(count);
 	for (size_t rank = 0; rank < count; ++rank) {
 		result.top[rank].index = top[rank];
 		result.top[rank].scoreBits = floatBits(boundaries.scores[top[rank]]);
 	}
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	observation.materialEnd = h1ProfileNow();
+	observation.comparisons = comparisons;
+	observation.shifts = shifts;
+	observation.selected = uint32_t(count);
+#endif
 	return true;
 }
 
@@ -921,6 +953,10 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	const uint64_t postprocessEnd = h1ProfileNow();
 	result.profile.postprocess_cycles = postprocessEnd - postprocessStart;
 	result.profile.total_compute_cycles = postprocessEnd - totalStart;
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	h1PostprocessObserverFinalize(postprocessStart, postprocessEnd,
+				      result.runSequence, result.profile.clock_hz);
+#endif
 
 	/* Evidence/checkpoint CRC serialization is intentionally outside timing. */
 	if (!h1ProfileFinalize(&result.profile)) {
@@ -2442,6 +2478,9 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
      !gUpload.canonicalByteMatch || strcmp(gUpload.declaredSha256, H1_SYNTHETIC_RAW_SHA256)) {
   sendError(request, "BASELINE_PREFLIGHT", "Verified canonical resident waveform and models required"); return;
  }
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+ if (mode == H1_BASELINE_DIAGNOSTIC) h1PostprocessObserverCampaignBegin(request.sequence);
+#endif
  h1BaselineBeginCampaign(mode, request.sequence);
  h1BaselineState.irq_before = h1IrqCount;
  const unsigned warmups = mode == H1_BASELINE_OBSERVER ? 0u : 5u;
@@ -2461,6 +2500,9 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
   const bool integrity = success && result.valid && (!result.repeatComparable || result.repeatEqual);
   h1BaselineEndRun(index, start, end, &result.profile, result.runSequence,
    uint32_t(result.status), result.boundaryCrc32, integrity);
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+  if (mode == H1_BASELINE_DIAGNOSTIC) h1PostprocessObserverCapture(index);
+#endif
  }
  h1BaselineState.irq_after = h1IrqCount;
  if (h1BaselineState.warmups_completed != warmups || h1BaselineState.measured_completed != measured ||
@@ -2714,6 +2756,38 @@ void sendInferenceData(const H1UsbFrame &request)
 	else sendError(request, "FORMAT_OVERFLOW", "Inference data chunk did not fit");
 }
 
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+void sendPostprocessObservation(const H1UsbFrame &request)
+{
+	const uint32_t index = readLe32(request.payload);
+	const auto &state = h1PostprocessObserverState;
+	if (index != UINT32_MAX && (index >= 20 || index >= state.measuredStored)) {
+		sendError(request, "NO_POSTPROCESS_SAMPLE", "Measured observer sample unavailable");
+		return;
+	}
+	const auto &o = index == UINT32_MAX ? state.last : state.measured[index];
+	char *response = h1ProtocolResponse();
+	const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":true,\"observer_version\":1,\"sample_index\":%u,\"campaign_sequence\":%u,"
+		"\"measured_stored\":%u,\"run_sequence\":%u,\"clock_hz\":%u,\"valid\":%u,\"error\":%u,"
+		"\"timestamps\":[%llu,%llu,%llu,%llu,%llu,%llu,%llu],"
+		"\"p0_cycles\":%llu,\"p1_cycles\":%llu,\"p2_cycles\":%llu,\"p3_cycles\":%llu,\"residual_cycles\":%llu,"
+		"\"logit_elements\":%u,\"expf_calls\":%u,\"score_stores\":%u,\"finite_checks\":%u,\"threshold_checks\":%u,"
+		"\"better_score_comparisons\":%u,\"top_insertion_shifts\":%u,\"top_results_materialized\":%u}",
+		index, state.campaignSequence, state.measuredStored, o.runSequence, o.clockHz, o.valid, o.error,
+		(unsigned long long)o.totalStart, (unsigned long long)o.scoreStart,
+		(unsigned long long)o.scoreEnd, (unsigned long long)o.topStart,
+		(unsigned long long)o.topEnd, (unsigned long long)o.materialEnd,
+		(unsigned long long)o.totalEnd, (unsigned long long)o.totalCycles,
+		(unsigned long long)o.scoreCycles, (unsigned long long)o.topCycles,
+		(unsigned long long)o.materialCycles, (unsigned long long)o.residualCycles,
+		unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS),
+		unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS), o.comparisons, o.shifts, o.selected);
+	if (n > 0 && size_t(n) < H1_PROTOCOL_RESPONSE_BYTES) sendJson(request, response, size_t(n));
+	else sendError(request, "FORMAT_OVERFLOW", "Postprocess observer response did not fit");
+}
+#endif
+
 void handleFrame(const H1UsbFrame &request)
 {
 	// Commands that can overwrite shared inference scratch invalidate the reader.
@@ -2851,6 +2925,11 @@ void handleFrame(const H1UsbFrame &request)
 	case H1MessageType::GetTopK:
 		sendTopK(request);
 		break;
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	case H1MessageType::GetPostprocessObservation:
+		sendPostprocessObservation(request);
+		break;
+#endif
 	case H1MessageType::GetProfile:
 		sendProfile(request);
 		break;
@@ -3190,6 +3269,9 @@ int main()
 	       unsigned(H1_MIC_WINDOW_SAMPLES), unsigned(H1_MIC_STRIDE_SAMPLES),
 	       h1PcmRingStorage(), h1SelectedPcmWindow());
 	h1BaselineInit();
+#if defined(H1_POSTPROCESSING_OBSERVATION)
+	h1PostprocessObserverInit();
+#endif
 	gComputeReady = frontendRuntimeReady && reportNpuIdentity() &&
 		h1FastGuardPrepare() && preparePersistentContexts();
 	printk("H1_LIFECYCLE_INIT complete_before_waveform_ready=%u\n",

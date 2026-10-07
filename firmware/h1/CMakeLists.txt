@@ -25,6 +25,7 @@ project(birdnet_v3_h1)
 
 option(H1_FRONTEND_DIAGNOSTICS "Build the optional H1 frontend diagnostics adapter" OFF)
 option(H1_BASELINE_V2_INSTRUMENTATION "Observe H1 baseline cache/lifecycle paths" OFF)
+option(H1_POSTPROCESSING_OBSERVATION "Observe H1 postprocessing decomposition only" OFF)
 
 if(NOT ETHOSU_TARGET_NPU_CONFIG STREQUAL "ethos-u85-256")
   message(FATAL_ERROR "H1 requires -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256")
@@ -385,6 +386,9 @@ set(H1_IDENTITY_FILES
   src/baseline_cache_operations.h
   src/lifecycle_reuse.h
   src/baseline_profile.ld
+  src/postprocessing_observer.hpp
+  src/postprocessing_observer.cpp
+  src/postprocessing_observer.ld
   src/usb_transport.cpp
   src/usb_transport.hpp
   src/build_identity.h.in
@@ -464,6 +468,14 @@ target_compile_options(app PRIVATE -fno-fast-math -ffp-contract=off)
 
 zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/h1_memory.ld")
 zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/baseline_profile.ld")
+if(H1_POSTPROCESSING_OBSERVATION)
+  if(NOT H1_BASELINE_V2_INSTRUMENTATION)
+    message(FATAL_ERROR "Postprocessing observation requires the frozen V2 diagnostic route")
+  endif()
+  target_compile_definitions(app PRIVATE H1_POSTPROCESSING_OBSERVATION=1)
+  target_sources(app PRIVATE src/postprocessing_observer.cpp)
+  zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/postprocessing_observer.ld")
+endif()
 zephyr_link_libraries(-Wl,--fatal-warnings -Wl,--check-sections)
 
 # Real Alif callback-body observation. Preserve every original operation and
