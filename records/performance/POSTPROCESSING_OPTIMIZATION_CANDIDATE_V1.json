@@ -1,0 +1,430 @@
+{
+  "schema": "birdnet-h1-postprocessing-optimization-candidate-v1",
+  "candidate_version": 1,
+  "status": "PROSPECTIVE_POSTPROCESSING_OPTIMIZATION_CANDIDATE_V1_FROZEN",
+  "candidate_class": "POSTPROCESSING_TOPK_ONLY",
+  "date": "2026-10-07",
+  "branch": "performance/h1-sub700ms",
+  "definition_before_implementation": true,
+  "implementation_started": false,
+  "candidate_numerical_or_performance_pass_issued": false,
+  "authority_for": "A separately authorized next implementation/requalification session only",
+  "evidence_bindings": {
+    "main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "lifecycle_implementation_commit": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+    "lifecycle_candidate_sha256": "cf960574ddc8903d2015678178e1d10377f195da225d0a9c5d6ae1306c2228ea",
+    "lifecycle_PASS_receipt_sha256": "5c9a5fb656aab9b323c0dce0ce9c4a2806317fdf284b2ae212a78dc22987283f",
+    "observation_plan": {
+      "path": "records/performance/POSTPROCESSING_OBSERVATION_PLAN_V1.json",
+      "sha256": "bb151c2298386e77627f496dd3c8e56f92d860d8c985b52e6daa9253d972b56a",
+      "commit": "8559eba7b8308bda2a57c705d23114a516f3cccc",
+      "GitHub_Verified": true
+    },
+    "observation_implementation_commit": "8713f4d0316cb53c0d8a39883fd30cfc6f940113",
+    "observer_GitHub_Verified": true,
+    "observer_source_bundle_sha256": "1c80877e78b38aaceea65969e55f57fcc029af798bc262d1268d03b14e611755",
+    "observer_ELF": {
+      "bytes": 10194596,
+      "sha256": "e9140a736d5bcd79cf5690d0e2ada598af9bb6c0f62dfc24b15ba2a982de5435"
+    },
+    "observer_BIN": {
+      "bytes": 1707780,
+      "sha256": "5597b076a29ada6427eea991dc3005479b74967396d3b6bad84b807e24db2bd2"
+    },
+    "private_reviewed_evidence_sha256": {
+      "POSTPROCESSING_RESULT_CONTRACT_AUDIT.json": "bfd75df090dd2360a2a7068ff675366c7f2745c2c95f4f278c0770abc174f27e",
+      "POSTPROCESSING_ALGORITHM_AUTHORITY.json": "2774fd33b7b42cfa8f26b64bd277e6eb65a0b5efe675464dfb299618e13ac42e",
+      "POSTPROCESSING_MATHEMATICAL_EQUIVALENCE_ANALYSIS.json": "56302ae4588968074e86c0b2b46ca35ad2b60e1b2fca221221059e9f36841217",
+      "POSTPROCESSING_TOPK_EQUIVALENCE_PROOF.json": "353730b0834b157296c6852a42fd780d49c83b9e3b39db9c875eeba9fa1e5dc0",
+      "POSTPROCESSING_EMULATOR_CONTROL_ENCODING_LIMITATION.json": "469e90329c841d3025cddcf34255658043ea297c9ec846e82dcf4fc42c381c81",
+      "POSTPROCESSING_OBSERVER_NONINTERFERENCE.json": "e8fe697e3fc29db8a927cd7545ae1f059bde04e2e00bc7a7420e7e19f80add27",
+      "POSTPROCESSING_PHYSICAL_PREFLIGHT.json": "33604b3efa5d11e8874d4e74f35c2ba57ec41120de58eee113d1c8be0cb4a3d2",
+      "POSTPROCESSING_DECOMPOSITION_RAW.json": "b3e73d7d41476af5767762ad11ca42b2d15745a3147e570e60c2c34e0d75ced3",
+      "POSTPROCESSING_DECOMPOSITION_STATS.json": "637dda8df777ecec626ae21bc2045629dc553e0cc10f44066cb0610c7a675f9e",
+      "POSTPROCESSING_OPERATION_COUNTS.json": "ed0b00020850331cd76f0002fc2147f8ba5c49c294520e580fbdc77a1a54b63c",
+      "POSTPROCESSING_TIMED_CRC_ADJUDICATION.json": "6b2d0f7e559a5ae4cdf5aa23fc0725cdc79e7c5fec7f7caba9671c48d137cecc",
+      "POSTPROCESSING_TIMED_CRC_ADJUDICATION_SUPPLEMENT_V1.json": "eb47ffe818d98809e602604ded7b37eb2898d5b212d47a392932c8e9c7e5b26f",
+      "POSTPROCESSING_OBSERVER_OVERHEAD_COMPARISON.json": "e0ce0819d1694b822af06d202f3ae692f8846e1cd80ec2105b44bb50947a659c",
+      "POSTPROCESSING_CANDIDATE_SELECTION.json": "10b4e4163d9c31f7d5cfbd112e93016682e4d49a86b49e4d729af97c4944b06b",
+      "campaign/CAMPAIGN_INTEGRITY.json": "956ff4b35252d1e3700406f40060979ffe43850786c273c79f20b3f337adf1d3"
+    }
+  },
+  "algorithm_authority": {
+    "logit_elements": 11560,
+    "logit_dtype": "int16",
+    "logit_scale_bits": "3a08d017",
+    "threshold_bits": "3e19999a",
+    "score_dtype": "FP32",
+    "selected_count": 100,
+    "USB_reported_top_count": 10,
+    "tie_rule": "Actual rounded score descending, equal score lower class index"
+  },
+  "observation": {
+    "purpose": "POSTPROCESSING_DECOMPOSITION_ONLY",
+    "warmups": 5,
+    "measured": 20,
+    "all_valid": true,
+    "outliers_removed": 0,
+    "clock_hz": 400000000,
+    "exact_P1_P2_P3_residual_equals_P0_each_run": true,
+    "metrics_ms": {
+      "P0_POSTPROCESS_TOTAL": {
+        "count": 20,
+        "minimum_ms": 574.8292625,
+        "mean_ms": 574.830711125,
+        "median_ms": 574.8308475,
+        "p95_ms": 574.83147,
+        "maximum_ms": 574.83182,
+        "population_standard_deviation_ms": 0.0007218983113119187,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 4598645689,
+          "denominator": 20
+        }
+      },
+      "P1_SCORE_TRANSFORM": {
+        "count": 20,
+        "minimum_ms": 10.041935,
+        "mean_ms": 10.04301675,
+        "median_ms": 10.0427475,
+        "p95_ms": 10.044595,
+        "maximum_ms": 10.044855,
+        "population_standard_deviation_ms": 0.0008951456236277984,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 40172067,
+          "denominator": 10
+        }
+      },
+      "P2_TOPK_SELECTION": {
+        "count": 20,
+        "minimum_ms": 564.7584225,
+        "mean_ms": 564.7598705,
+        "median_ms": 564.7599,
+        "p95_ms": 564.7610725,
+        "maximum_ms": 564.7612425,
+        "population_standard_deviation_ms": 0.0009563830299623682,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 1129519741,
+          "denominator": 5
+        }
+      },
+      "P3_TOP_RESULT_MATERIALIZATION": {
+        "count": 20,
+        "minimum_ms": 0.02533,
+        "mean_ms": 0.0254875,
+        "median_ms": 0.02546,
+        "p95_ms": 0.02558,
+        "maximum_ms": 0.02558,
+        "population_standard_deviation_ms": 7.873214083206426e-05,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 10195,
+          "denominator": 1
+        }
+      },
+      "P_UNCLASSIFIED_RESIDUAL": {
+        "count": 20,
+        "minimum_ms": 0.0021925,
+        "mean_ms": 0.002336375,
+        "median_ms": 0.002315,
+        "p95_ms": 0.0024375,
+        "maximum_ms": 0.0024425,
+        "population_standard_deviation_ms": 6.132635546810196e-05,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 18691,
+          "denominator": 20
+        }
+      },
+      "WHOLE_INFERENCE_TOTAL": {
+        "count": 20,
+        "minimum_ms": 2411.9183725,
+        "mean_ms": 2412.919482,
+        "median_ms": 2412.73912625,
+        "p95_ms": 2414.6092575,
+        "maximum_ms": 2414.6470425,
+        "population_standard_deviation_ms": 0.9059938118989141,
+        "count_lt_700": 0,
+        "count_ge_700": 20,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 4825838964,
+          "denominator": 5
+        }
+      },
+      "LEGACY_CLASSIFIER_IRQ_TO_PRIMARY_END_TAIL": {
+        "count": 20,
+        "minimum_ms": 1055.0721075,
+        "mean_ms": 1055.073560875,
+        "median_ms": 1055.073575,
+        "p95_ms": 1055.074255,
+        "maximum_ms": 1055.074785,
+        "population_standard_deviation_ms": 0.0006511831899511842,
+        "count_lt_700": 0,
+        "count_ge_700": 20,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 8440588487,
+          "denominator": 20
+        }
+      },
+      "CLASSIFIER_IRQ_TO_P0_START": {
+        "count": 20,
+        "minimum_ms": 0.25234,
+        "mean_ms": 0.253029,
+        "median_ms": 0.25308,
+        "p95_ms": 0.2536925,
+        "maximum_ms": 0.253755,
+        "population_standard_deviation_ms": 0.00042829268613881323,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 506058,
+          "denominator": 5
+        }
+      },
+      "P0_END_TO_PRIMARY_END": {
+        "count": 20,
+        "minimum_ms": 479.98899,
+        "mean_ms": 479.98982075,
+        "median_ms": 479.9898175,
+        "p95_ms": 479.990505,
+        "maximum_ms": 479.990515,
+        "population_standard_deviation_ms": 0.0005795650847834089,
+        "count_lt_700": 20,
+        "count_ge_700": 0,
+        "nearest_rank_p95_rank": 19,
+        "clock_hz": 400000000,
+        "outliers_removed": 0,
+        "raw_mean_cycles": {
+          "numerator": 1919959283,
+          "denominator": 10
+        }
+      }
+    },
+    "ranking": [
+      {
+        "component": "P2_TOPK_SELECTION",
+        "mean_ms": 564.7598705,
+        "percentage_of_postprocessing": 98.24803365058726,
+        "percentage_of_whole_inference": 23.405665821550198
+      },
+      {
+        "component": "P1_SCORE_TRANSFORM",
+        "mean_ms": 10.04301675,
+        "percentage_of_postprocessing": 1.7471259895534865,
+        "percentage_of_whole_inference": 0.41621847827577035
+      },
+      {
+        "component": "P3_TOP_RESULT_MATERIALIZATION",
+        "mean_ms": 0.0254875,
+        "percentage_of_postprocessing": 0.004433914108402188,
+        "percentage_of_whole_inference": 0.001056293017240432
+      },
+      {
+        "component": "P_UNCLASSIFIED_RESIDUAL",
+        "mean_ms": 0.002336375,
+        "percentage_of_postprocessing": 0.0004064457508589764,
+        "percentage_of_whole_inference": 9.682772332143656e-05
+      }
+    ],
+    "disposition": "POSTPROCESS_TOPK_DOMINANT",
+    "counts_per_inference": {
+      "logit_elements": [
+        11560
+      ],
+      "expf_calls": [
+        11560
+      ],
+      "score_stores": [
+        11560
+      ],
+      "finite_checks": [
+        11560
+      ],
+      "threshold_checks": [
+        11560
+      ],
+      "better_score_comparisons": [
+        1126336
+      ],
+      "top_insertion_shifts": [
+        24710
+      ],
+      "top_results_materialized": [
+        100
+      ]
+    },
+    "raw_cycles_logs_and_payloads_retained_privately": true,
+    "timing_not_eligible_for_main_acceptance": true
+  },
+  "CRC_adjudication": {
+    "P0_boundary_CRC_work": 0,
+    "P0_ordinary_result_CRC_work": 0,
+    "P0_other_checksum_work": 0,
+    "BOUNDARY_CRC_INSIDE_PRIMARY_TIMED_POSTPROCESSING_P0": false,
+    "legacy_IRQ_to_primary_end_tail_contains_seven_boundary_CRC_scans": true,
+    "post_P0_to_primary_end_mean_ms": 479.98982075,
+    "post_P0_gap_is_not_an_isolated_CRC_duration": true,
+    "source_order": "postprocessEnd -> profile finalization -> seven CRC scans -> valid result -> saveResult -> ResultReady -> outer primary end",
+    "supplied_no_CRC_in_approximately_1032ms_tail_expectation": "CONTRADICTED_BY_EXACT_SOURCE_AND_PHYSICAL_BOUNDARIES",
+    "CRC_optimization_removal_or_relocation_allowed": false
+  },
+  "full_score_buffer_gate": "FULL_SCORE_BUFFER_IS_ORDINARY_RESULT_REQUIRED",
+  "full_score_buffer_basis": "Current unguarded H1CP command 50 kind 1 exports all exact FP32 score bits after ordinary inference; ordinary RUN/GET_TOPK/summary expose score CRC; repeat equality consumes seven boundary CRCs. The physical observer exported and matched all 11560 scores.",
+  "one_allowed_transformation": {
+    "scope": "P2 top-k selection only",
+    "replace": "Current linear insertion scan/selection",
+    "with": "Bounded worst-root binary heap of at most 100 class indices using the exact existing betterScore score/index relation; grow to capacity, replace root only for a better entry, restore heap, then drain the worst into the highest remaining index position to yield the identical best-first ordering.",
+    "local_index_storage": "At most the existing 100-entry uint32 index capacity; no heap allocation or new production global buffers.",
+    "sort_completion": "Entire scan and heap drain finish inside P2 before unchanged top-result materialization and ResultReady.",
+    "score_array": "Preserve all 11560 exact generation/store operations; do not mutate/reorder scores during selection.",
+    "arithmetic_relation": "Use actual existing rounded FP32 score comparisons with class-index ties; raw or scaled logits cannot substitute.",
+    "finite_failure_gate": "Retain the current pre-selection failure guard exactly.",
+    "diagnostic_counts": "Observe actual comparisons; do not relabel heap swaps as insertion shifts or infer dynamic counts."
+  },
+  "complete_equivalence_proof": {
+    "scope": "Every finite FP32 score vector with distinct class indices, covering every successful frozen int16-logit postprocess output.",
+    "method": "Strict total score/index order; both current insertion and prospective heap retain the unique best min(100,visited) set by induction; deterministic drain yields the unique same ordered indices. Materialize unchanged stored score bits for those indices.",
+    "proof_sha256": "353730b0834b157296c6852a42fd780d49c83b9e3b39db9c875eeba9fa1e5dc0",
+    "strict_sigmoid_monotonicity_assumed": false,
+    "score_ties_from_unequal_logits_preserved": true,
+    "threshold_shortcut_or_finite_check_removal_proposed": false,
+    "FP_environment_emulator_extension_failure_affects_this_candidate": false
+  },
+  "hard_preservation_gates": {
+    "MODEL_IDENTITIES_EXACT": true,
+    "VELA_IDENTITIES_UNCHANGED": true,
+    "LIFECYCLE_REUSE_REMAINS_PASS": true,
+    "U85_ROUTES_UNCHANGED": true,
+    "FRONTEND_UNCHANGED": true,
+    "GEM_UNCHANGED": true,
+    "CLASSIFIER_OUTPUT_INTEGER_EXACT": true,
+    "ORDINARY_RESULT_TOP_INDICES_EXACT": true,
+    "ORDINARY_RESULT_TOP_SCORE_BITS_EXACT": true,
+    "ORDINARY_RESULT_TOP_COUNT_EXACT": true,
+    "ORDINARY_RESULT_THRESHOLD_COUNT_EXACT": true,
+    "ORDINARY_RESULT_FINITE_COUNT_EXACT": true,
+    "FULL_11560_SCORE_BITS_EXACT": true,
+    "ORDINARY_SCORE_CRC32_EXACT": true,
+    "SEVEN_BOUNDARY_CRC32_EXACT": true,
+    "ORDINARY_REPEAT_COMPARISON_SEMANTICS_UNCHANGED": true,
+    "RESULT_READY_SEMANTICS_UNCHANGED": true,
+    "LIFECYCLE_STORAGE_LAYOUT_UNCHANGED": true,
+    "MEMORY_OWNERSHIP_UNCHANGED": true,
+    "CACHE_POLICY_TYPES_COUNTS_RANGES_UNCHANGED": true,
+    "COMPILER_FLAGS_CLOCK_UNCHANGED": true,
+    "CPU_FALLBACK": 0,
+    "FAULTS": 0,
+    "GUARD_FAILURES": 0,
+    "PERSISTENT_MODEL_MUTATION": 0,
+    "UNEXPECTED_RESET": 0,
+    "MODEL_PAYLOAD_COPY_BYTES_PER_INFERENCE": 0,
+    "MODEL_COPY_OPERATIONS_PER_INFERENCE": 0,
+    "INTERPRETER_CONSTRUCTIONS_PER_INFERENCE": 0,
+    "ALLOCATE_TENSORS_CALLS_PER_INFERENCE": 0,
+    "MODEL_BIND_OPERATIONS_PER_INFERENCE": 0,
+    "FULL_SOURCE_MODEL_CRC_SCANS_PER_INFERENCE": 0,
+    "FULL_DESTINATION_MODEL_CRC_SCANS_PER_INFERENCE": 0,
+    "FULL_MODEL_BYTE_COMPARISONS_PER_INFERENCE": 0
+  },
+  "excluded": [
+    "Sigmoid/expf replacement",
+    "Score LUT or vectorized score arithmetic",
+    "Direct logit ranking",
+    "Threshold shortcut",
+    "Finite-check removal",
+    "Skipped score generation or stores",
+    "Reduced score-vector contract",
+    "Score-buffer mutation/reordering",
+    "Changed score/index comparison or ties",
+    "CRC changes",
+    "Lifecycle/storage changes",
+    "Model/Vela change",
+    "Frontend/GeM changes",
+    "Unrelated copies/cache operations/policies/ranges",
+    "Memory relocation for speed",
+    "Clock/compiler optimization-flag changes",
+    "U85 routes/fallback changes",
+    "Moving required work outside primary timing or past ResultReady"
+  ],
+  "no_timing_boundary_gaming": {
+    "same_main_primary_waveform_ready_to_result_ready_boundary": true,
+    "all_ordinary_required_work_including_score_generation_CRCs_selection_materialization_inside_primary": true,
+    "P0_and_outer_primary_distinguished": true,
+    "ordinary_work_moved_after_ResultReady": false,
+    "evidence_only_work_exclusion_requires_existing_exclusion_and_actual_consumer_proof": true
+  },
+  "future_numerical_qualification": {
+    "fixtures": [
+      "canonical",
+      "canonical immediate repeat",
+      "high_valid_two_tone",
+      "high_valid_two_tone immediate repeat"
+    ],
+    "upstream_integer_boundaries_exact": [
+      "backbone input",
+      "backbone output",
+      "classifier input",
+      "classifier output"
+    ],
+    "ordinary_top_100_indices_score_bits_counts_full_score_vector_and_CRCs": "EXACT equality, zero mismatches; no tolerance or approximation",
+    "complete_order_selection_proof_required": true,
+    "adversarial_order_validation": [
+      "all equal scores",
+      "ties spanning ranks 100 and 101",
+      "ascending/descending scores",
+      "duplicate groups",
+      "class indices 0 and 11559",
+      "finite failure behavior retained"
+    ],
+    "few_fixtures_substitute_for_complete_proof": false,
+    "lifecycle_addresses_counts_guards_models_routes_cache_qualification": "Retain every existing accepted preservation gate"
+  },
+  "future_performance_gate": {
+    "main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "warmups": 5,
+    "measured": 100,
+    "consecutive": true,
+    "outlier_removal": "NONE",
+    "every_unrounded_sample_ms": "<700.000",
+    "minimal_qualified_acceptance_timing_required": true,
+    "POSTPROCESSING_OPTIMIZATION_PASS_distinct_from_H1_REPEATABLE_SUB700MS_PERFORMANCE_PASS": true,
+    "correct_topk_candidate_may_pass_with_total_above_700ms": true,
+    "observer_overhead": "Diagnostic counters/markers are included; matched accepted/new diagnostic means differ by about 0.951% overall. No zero-overhead claim and no diagnostic substitution for acceptance."
+  },
+  "stop": "STOP BEFORE POSTPROCESSING OPTIMIZATION IMPLEMENTATION",
+  "public_commit_subject": "Freeze H1 postprocessing optimization candidate",
+  "SSH_signed_local_GOOD_GitHub_Verified_required": true,
+  "push_only": "performance/h1-sub700ms",
+  "PR_merge_master_history_rewrite_authorized": false
+}
