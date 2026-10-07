@@ -4,6 +4,7 @@
 #include "baseline_profile.h"
 #include "lifecycle_reuse.h"
 #include "topk_heap.hpp"
+#include "validation_observer.hpp"
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 #include "postprocessing_observer.hpp"
 #endif
@@ -780,30 +781,46 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 
 void recordBoundaryCrcs(H1RunResult &result, const H1Boundaries &boundaries)
 {
+	H1_VALIDATION_MARK(H1V_BOUNDARY_0_BEGIN);
 	result.boundaryCrc32[0] = crc32(reinterpret_cast<const uint8_t *>(boundaries.frontend),
 					H1_FRONTEND_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_0_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_1_BEGIN);
 	result.boundaryCrc32[1] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.backboneInput),
 		H1_BACKBONE_INPUT_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_1_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_2_BEGIN);
 	result.boundaryCrc32[2] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.sharedFeature),
 		H1_SHARED_FEATURE_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_2_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_3_BEGIN);
 	result.boundaryCrc32[3] = crc32(reinterpret_cast<const uint8_t *>(boundaries.embedding),
 					H1_EMBEDDING_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_3_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_4_BEGIN);
 	result.boundaryCrc32[4] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.classifierInput),
 		H1_CLASSIFIER_INPUT_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_4_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_5_BEGIN);
 	result.boundaryCrc32[5] = crc32(reinterpret_cast<const uint8_t *>(boundaries.logits),
 					H1_LOGIT_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_5_END);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_6_BEGIN);
 	result.boundaryCrc32[6] = crc32(reinterpret_cast<const uint8_t *>(boundaries.scores),
 					H1_SCORE_BYTES);
+	H1_VALIDATION_MARK(H1V_BOUNDARY_6_END);
 	result.scoreCrc32 = result.boundaryCrc32[6];
+	H1_VALIDATION_MARK(H1V_SCORE_ALIAS_END);
 }
 
 bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc,
 	     const char *inputSha256, bool canonicalSynthetic, H1RunResult &result,
 	     bool legacyReference = false)
 {
+	H1_VALIDATION_MARK(H1V_RUN_ENTER);
 	gInferenceDataValid = false;
 	gM55FrontendValid = false;
 	h1RunStateMark(H1RunState::RunOnceEnter);
@@ -818,14 +835,18 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.status = RunStatus::NotReady;
 		return false;
 	}
+	H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_BEGIN);
 	result.inputCrc32 = crc32(reinterpret_cast<const uint8_t *>(waveform),
 				  H1_WAVEFORM_BYTES);
+	H1_VALIDATION_MARK(H1V_WAVEFORM_CRC_END);
 	strncpy(result.inputSha256, inputSha256, sizeof(result.inputSha256) - 1);
+	H1_VALIDATION_MARK(H1V_IDENTITY_COPY_END);
 	if (result.inputCrc32 != expectedInputCrc) {
 		result.status = RunStatus::InputIdentity;
 		return false;
 	}
 
+	H1_VALIDATION_MARK(H1V_IDENTITY_CHECK_END);
 	H1Boundaries &boundaries = h1CurrentBoundaries();
 	H1FrontendScratch &scratch = h1FrontendScratch();
 	h1ProfileReset(&result.profile);
@@ -836,6 +857,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1RunStateMark(H1RunState::FrontendBegin);
 	result.profile.pre_frontend_overhead_cycles =
 		frontendStart - totalStart;
+	H1_VALIDATION_MARK(H1V_FRONTEND_WORK_BEGIN);
 	const H1FrontendStatus frontendStatus = legacyReference
 		? h1RunFrontendLegacy(waveform, H1_WAVEFORM_ELEMENTS, scratch,
 			boundaries.frontend, H1_FRONTEND_ELEMENTS)
@@ -939,6 +961,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	}
 	h1RunStateMark(H1RunState::PostprocessDone);
 	const uint64_t postprocessEnd = h1ProfileNow();
+	H1_VALIDATION_AT(H1V_P0_END, postprocessEnd);
 	result.profile.postprocess_cycles = postprocessEnd - postprocessStart;
 	result.profile.total_compute_cycles = postprocessEnd - totalStart;
 #if defined(H1_POSTPROCESSING_OBSERVATION)
@@ -951,10 +974,14 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.status = RunStatus::Profile;
 		return false;
 	}
+	H1_VALIDATION_MARK(H1V_PROFILE_FINALIZE_END);
 	recordBoundaryCrcs(result, boundaries);
+	H1_VALIDATION_MARK(H1V_RESULT_STATE_BEGIN);
 	result.status = RunStatus::Ok;
 	result.valid = 1;
+	H1_VALIDATION_MARK(H1V_RESULT_STATE_END);
 	gInferenceDataValid = true;
+	H1_VALIDATION_MARK(H1V_PUBLICATION_END);
 	return true;
 }
 
@@ -1451,6 +1478,7 @@ bool numericallyEqual(const H1RunResult &left, const H1RunResult &right)
 
 void saveResult(H1RunResult &result)
 {
+	H1_VALIDATION_MARK(H1V_COMPARE_BEGIN);
 	if (gLastResult.valid && result.valid &&
 	    gLastResult.frontendNative == result.frontendNative &&
 	    gLastResult.inputCrc32 == result.inputCrc32 &&
@@ -1458,7 +1486,9 @@ void saveResult(H1RunResult &result)
 		result.repeatComparable = 1;
 		result.repeatEqual = numericallyEqual(gLastResult, result);
 	}
+	H1_VALIDATION_MARK(H1V_COMPARE_END);
 	memcpy(&gLastResult, &result, sizeof(gLastResult));
+	H1_VALIDATION_MARK(H1V_SAVE_COPY_END);
 }
 
 bool validateUpload(const H1UsbFrame &frame)
@@ -2469,6 +2499,9 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
 #if defined(H1_POSTPROCESSING_OBSERVATION)
  if (mode == H1_BASELINE_DIAGNOSTIC) h1PostprocessObserverCampaignBegin(request.sequence);
 #endif
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+ if (mode == H1_BASELINE_DIAGNOSTIC) h1ValidationObserverCampaignBegin(request.sequence);
+#endif
  h1BaselineBeginCampaign(mode, request.sequence);
  h1BaselineState.irq_before = h1IrqCount;
  const unsigned warmups = mode == H1_BASELINE_OBSERVER ? 0u : 5u;
@@ -2478,14 +2511,26 @@ void runBaselineCampaign(const H1UsbFrame &request, uint32_t mode)
   const int32_t index = run < warmups ? -1 : int32_t(run - warmups);
   H1RunResult result;
   h1BaselineBeginRun(index);
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+  h1ValidationObserverPrepare(mode == H1_BASELINE_DIAGNOSTIC);
+#endif
   const uint64_t start = h1ProfileNow();
+  H1_VALIDATION_AT(H1V_PRIMARY_START, start);
   h1RunStateBegin(request.sequence + run, gUpload.rawCrc32);
   h1RunStateMark(H1RunState::RunCommandReceived);
   const bool success = runOnce(FixtureId::Uploaded, h1UploadedWaveform(),
    gUpload.rawCrc32, gUpload.declaredSha256, gUpload.canonicalByteMatch, result);
-  if (success) { saveResult(result); h1RunStateMark(H1RunState::ResultReady); }
+  if (success) {
+   saveResult(result);
+   H1_VALIDATION_MARK(H1V_RESULT_READY_BEGIN);
+   h1RunStateMark(H1RunState::ResultReady);
+   H1_VALIDATION_MARK(H1V_RESULT_READY_END);
+  }
   const uint64_t end = h1ProfileNow();
   const bool integrity = success && result.valid && (!result.repeatComparable || result.repeatEqual);
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+  h1ValidationObserverCapture(index, end, result.runSequence, result.profile.clock_hz, success);
+#endif
   h1BaselineEndRun(index, start, end, &result.profile, result.runSequence,
    uint32_t(result.status), result.boundaryCrc32, integrity);
 #if defined(H1_POSTPROCESSING_OBSERVATION)
@@ -2785,6 +2830,39 @@ void sendPostprocessObservation(const H1UsbFrame &request)
 }
 #endif
 
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+void sendHotPathValidationObservation(const H1UsbFrame &request)
+{
+	const uint32_t index = readLe32(request.payload);
+	const auto &state = h1ValidationObserverState;
+	if (h1BaselineState.running || index >= state.measuredStored || index >= 20) {
+		sendError(request, "VALIDATION_OBSERVER_RANGE", "Completed diagnostic sample required");
+		return;
+	}
+	const auto &o = state.measured[index];
+	char *response = h1ProtocolResponse(); size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"observer_version\":1,\"index\":%u,"
+		"\"campaign_sequence\":%u,\"stored\":%u,\"run_sequence\":%u,"
+		"\"clock_hz\":%u,\"valid\":%u,\"error\":%u,"
+		"\"waveform_bytes\":%u,\"waveform_calls\":%u,\"timestamps\":[",
+		index, state.campaignSequence, state.measuredStored, o.runSequence,
+		o.clockHz, o.valid, o.error, o.waveformBytes, o.waveformCalls);
+	for (uint32_t i = 0; ok && i < H1V_MARK_COUNT; ++i)
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "%s%llu",
+			i ? "," : "", (unsigned long long)o.timestamps[i]);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"boundary_bytes\":[");
+	for (uint32_t i = 0; ok && i < 7; ++i)
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "%s%u", i ? "," : "", o.boundaryBytes[i]);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "],\"boundary_calls\":[");
+	for (uint32_t i = 0; ok && i < 7; ++i)
+		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "%s%u", i ? "," : "", o.boundaryCalls[i]);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]}");
+	if (ok) sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "Validation observer response did not fit");
+}
+#endif
+
 void handleFrame(const H1UsbFrame &request)
 {
 	// Commands that can overwrite shared inference scratch invalidate the reader.
@@ -2926,6 +3004,10 @@ void handleFrame(const H1UsbFrame &request)
 	case H1MessageType::GetPostprocessObservation:
 		sendPostprocessObservation(request);
 		break;
+#endif
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+	case H1MessageType::GetHotPathValidationObservation:
+		sendHotPathValidationObservation(request); break;
 #endif
 	case H1MessageType::GetProfile:
 		sendProfile(request);
@@ -3268,6 +3350,9 @@ int main()
 	h1BaselineInit();
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 	h1PostprocessObserverInit();
+#endif
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+	h1ValidationObserverInit();
 #endif
 	gComputeReady = frontendRuntimeReady && reportNpuIdentity() &&
 		h1FastGuardPrepare() && preparePersistentContexts();

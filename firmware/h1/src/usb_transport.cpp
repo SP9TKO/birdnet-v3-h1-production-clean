@@ -208,6 +208,9 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::RunM55CompleteFrontend:
 		return length == sizeof(uint32_t) || length == 2 * sizeof(uint32_t);
 	case H1MessageType::GetBaselineSample:
+#if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
+	case H1MessageType::GetHotPathValidationObservation:
+#endif
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 	case H1MessageType::GetPostprocessObservation:
 #endif

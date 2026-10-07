@@ -64,6 +64,7 @@ enum class H1MessageType : uint16_t {
 	GetBaselineMap = 149,
 	RunBaselineObserverQualification = 150,
 	GetPostprocessObservation = 151,
+	GetHotPathValidationObservation = 152,
 };
 
 enum class H1UsbPollResult : uint8_t {
