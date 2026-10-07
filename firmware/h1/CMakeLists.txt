@@ -386,6 +386,7 @@ set(H1_IDENTITY_FILES
   src/baseline_cache_operations.h
   src/lifecycle_reuse.h
   src/baseline_profile.ld
+  src/topk_heap.hpp
   src/postprocessing_observer.hpp
   src/postprocessing_observer.cpp
   src/postprocessing_observer.ld

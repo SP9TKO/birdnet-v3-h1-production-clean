@@ -7,7 +7,7 @@ H1PostprocessObserverState h1PostprocessObserverState
 	__attribute__((section(".h1_postprocess_observer"), aligned(32)));
 
 static_assert(sizeof(H1PostprocessObservation) == 128, "observer sample ABI");
-static_assert(sizeof(H1PostprocessObserverState) <= 4096, "observer storage budget");
+static_assert(sizeof(H1PostprocessObserverState) == 2696, "observer storage budget");
 
 void h1PostprocessObserverInit()
 {
@@ -34,16 +34,15 @@ void h1PostprocessObserverFinalize(uint64_t start, uint64_t end,
 		o.error = 1;
 		return;
 	}
-	o.totalCycles = end - start;
-	o.scoreCycles = o.scoreEnd - o.scoreStart;
-	o.topCycles = o.topEnd - o.topStart;
-	o.materialCycles = o.materialEnd - o.topEnd;
-	const uint64_t classified = o.scoreCycles + o.topCycles + o.materialCycles;
-	if (classified > o.totalCycles || clockHz != 400000000u || o.selected != 100u) {
+	const uint64_t totalCycles = end - start;
+	const uint64_t scoreCycles = o.scoreEnd - o.scoreStart;
+	const uint64_t topCycles = o.topEnd - o.topStart;
+	const uint64_t materialCycles = o.materialEnd - o.topEnd;
+	const uint64_t classified = scoreCycles + topCycles + materialCycles;
+	if (classified > totalCycles || clockHz != 400000000u || o.selected != 100u) {
 		o.error = 2;
 		return;
 	}
-	o.residualCycles = o.totalCycles - classified;
 	o.valid = 1;
 }
 

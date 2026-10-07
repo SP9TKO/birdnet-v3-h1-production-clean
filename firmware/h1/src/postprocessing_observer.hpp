@@ -3,12 +3,16 @@
 #pragma once
 
 #include <cstdint>
+#include "topk_heap.hpp"
 
 // Diagnostic storage only. Existing runtime/result structures remain unchanged.
 struct H1PostprocessObservation {
 	uint64_t scoreStart, scoreEnd, topStart, topEnd, materialEnd;
 	uint64_t totalStart, totalEnd;
-	uint64_t totalCycles, scoreCycles, topCycles, materialCycles, residualCycles;
+	// Cycle deltas are derived from the unchanged timestamps by command 151.
+	// Reuse their 40-byte storage for heap counts without growing this ABI.
+	H1TopkHeapCounts heap;
+	uint64_t reserved;
 	uint32_t comparisons, shifts, selected;
 	uint32_t runSequence, clockHz, valid, error;
 };

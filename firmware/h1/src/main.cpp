@@ -3,6 +3,7 @@
 #include "build_identity.h"
 #include "baseline_profile.h"
 #include "lifecycle_reuse.h"
+#include "topk_heap.hpp"
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 #include "postprocessing_observer.hpp"
 #endif
@@ -744,35 +745,21 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 		return false;
 	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	uint32_t comparisons = 0, shifts = 0;
+	H1TopkHeapCounts heapCounts{};
 	observation.topStart = h1ProfileNow();
 #endif
 	uint32_t top[kTopCount];
-	size_t count = 0;
-	for (uint32_t index = 0; index < H1_LOGIT_ELEMENTS; ++index) {
-		size_t position = 0;
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-		while (position < count &&
-		       (++comparisons, !betterScore(boundaries.scores, index, top[position]))) {
+	const size_t count = h1BaselineState.mode == H1_BASELINE_ACCEPTANCE
+		? h1SelectTopkHeap<false>(boundaries.scores, H1_LOGIT_ELEMENTS,
+					 top, kTopCount, betterScore, heapCounts)
+		: h1SelectTopkHeap<true>(boundaries.scores, H1_LOGIT_ELEMENTS,
+					top, kTopCount, betterScore, heapCounts);
 #else
-		while (position < count &&
-		       !betterScore(boundaries.scores, index, top[position])) {
+	H1TopkHeapCounts heapCounts{};
+	const size_t count = h1SelectTopkHeap<false>(boundaries.scores, H1_LOGIT_ELEMENTS,
+						  top, kTopCount, betterScore, heapCounts);
 #endif
-			++position;
-		}
-		if (position >= kTopCount) {
-			continue;
-		}
-		const size_t newCount = std::min(count + 1, kTopCount);
-		for (size_t move = newCount - 1; move > position; --move) {
-			top[move] = top[move - 1];
-#if defined(H1_POSTPROCESSING_OBSERVATION)
-			++shifts;
-#endif
-		}
-		top[position] = index;
-		count = newCount;
-	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 	observation.topEnd = h1ProfileNow();
 #endif
@@ -783,8 +770,9 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 	observation.materialEnd = h1ProfileNow();
-	observation.comparisons = comparisons;
-	observation.shifts = shifts;
+	observation.heap = heapCounts;
+	observation.comparisons = heapCounts.betterScoreCalls;
+	observation.shifts = 0;
 	observation.selected = uint32_t(count);
 #endif
 	return true;
@@ -2768,21 +2756,30 @@ void sendPostprocessObservation(const H1UsbFrame &request)
 	const auto &o = index == UINT32_MAX ? state.last : state.measured[index];
 	char *response = h1ProtocolResponse();
 	const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
-		"{\"ok\":true,\"observer_version\":1,\"sample_index\":%u,\"campaign_sequence\":%u,"
+		"{\"ok\":true,\"observer_version\":2,\"sample_index\":%u,\"campaign_sequence\":%u,"
 		"\"measured_stored\":%u,\"run_sequence\":%u,\"clock_hz\":%u,\"valid\":%u,\"error\":%u,"
 		"\"timestamps\":[%llu,%llu,%llu,%llu,%llu,%llu,%llu],"
 		"\"p0_cycles\":%llu,\"p1_cycles\":%llu,\"p2_cycles\":%llu,\"p3_cycles\":%llu,\"residual_cycles\":%llu,"
 		"\"logit_elements\":%u,\"expf_calls\":%u,\"score_stores\":%u,\"finite_checks\":%u,\"threshold_checks\":%u,"
-		"\"better_score_comparisons\":%u,\"top_insertion_shifts\":%u,\"top_results_materialized\":%u}",
+		"\"better_score_comparisons\":%u,\"top_insertion_shifts\":%u,\"top_results_materialized\":%u,"
+		"\"heap_classes_visited\":%u,\"heap_root_comparisons\":%u,\"heap_better_score_calls\":%u,"
+		"\"heap_root_replacements\":%u,\"heap_sift_up_comparisons\":%u,\"heap_sift_down_comparisons\":%u,"
+		"\"heap_swaps\":%u,\"heap_drain_removals\":%u}",
 		index, state.campaignSequence, state.measuredStored, o.runSequence, o.clockHz, o.valid, o.error,
 		(unsigned long long)o.totalStart, (unsigned long long)o.scoreStart,
 		(unsigned long long)o.scoreEnd, (unsigned long long)o.topStart,
 		(unsigned long long)o.topEnd, (unsigned long long)o.materialEnd,
-		(unsigned long long)o.totalEnd, (unsigned long long)o.totalCycles,
-		(unsigned long long)o.scoreCycles, (unsigned long long)o.topCycles,
-		(unsigned long long)o.materialCycles, (unsigned long long)o.residualCycles,
+		(unsigned long long)o.totalEnd, (unsigned long long)(o.totalEnd - o.totalStart),
+		(unsigned long long)(o.scoreEnd - o.scoreStart),
+		(unsigned long long)(o.topEnd - o.topStart),
+		(unsigned long long)(o.materialEnd - o.topEnd),
+		(unsigned long long)((o.totalEnd - o.totalStart) - (o.scoreEnd - o.scoreStart) -
+			(o.topEnd - o.topStart) - (o.materialEnd - o.topEnd)),
 		unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS),
-		unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS), o.comparisons, o.shifts, o.selected);
+		unsigned(H1_LOGIT_ELEMENTS), unsigned(H1_LOGIT_ELEMENTS), o.comparisons, o.shifts, o.selected,
+		o.heap.classesVisited, o.heap.rootComparisons, o.heap.betterScoreCalls,
+		o.heap.rootReplacements, o.heap.siftUpComparisons, o.heap.siftDownComparisons,
+		o.heap.heapSwaps, o.heap.drainRemovals);
 	if (n > 0 && size_t(n) < H1_PROTOCOL_RESPONSE_BYTES) sendJson(request, response, size_t(n));
 	else sendError(request, "FORMAT_OVERFLOW", "Postprocess observer response did not fit");
 }
