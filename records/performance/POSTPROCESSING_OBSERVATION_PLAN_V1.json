@@ -1,0 +1,129 @@
+{
+  "schema": "birdnet-h1-postprocessing-observation-plan-v1",
+  "version": 1,
+  "status": "PROSPECTIVE_POSTPROCESSING_OBSERVATION_PLAN_V1_FROZEN",
+  "purpose": "POSTPROCESSING_DECOMPOSITION_ONLY",
+  "instrumentation_class": "POSTPROCESSING_OBSERVATION_ONLY",
+  "date": "2026-10-07",
+  "branch": "performance/h1-sub700ms",
+  "definition_before_instrumentation": true,
+  "optimization_authorized": false,
+  "entry_commit": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+  "main_criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+  "lifecycle_candidate_sha256": "cf960574ddc8903d2015678178e1d10377f195da225d0a9c5d6ae1306c2228ea",
+  "lifecycle_PASS_receipt_sha256": "5c9a5fb656aab9b323c0dce0ce9c4a2806317fdf284b2ae212a78dc22987283f",
+  "accepted_ELF_sha256": "f21455bce160301129b8c02aa2ed31683de3c8bceb1295640733b479c2c78c03",
+  "accepted_BIN_sha256": "6c72f08e59e56954573022eb8bbd00a777aa295547b978191c1b43f7c13e559e",
+  "static_audit_bindings": {
+    "result_contract_sha256": "bfd75df090dd2360a2a7068ff675366c7f2745c2c95f4f278c0770abc174f27e",
+    "algorithm_authority_sha256": "2774fd33b7b42cfa8f26b64bd277e6eb65a0b5efe675464dfb299618e13ac42e",
+    "mathematical_analysis_sha256": "56302ae4588968074e86c0b2b46ca35ad2b60e1b2fca221221059e9f36841217",
+    "timed_CRC_adjudication_sha256": "6b2d0f7e559a5ae4cdf5aa23fc0725cdc79e7c5fec7f7caba9671c48d137cecc"
+  },
+  "source_interval_authority": {
+    "path": "firmware/h1/src/main.cpp",
+    "sha256": "4bfbdf33f4df6ddf859a93f0a7e4b93d0eecf9276160d4a556181b2ffb10adf3",
+    "function": "postprocess",
+    "caller": "runOnce"
+  },
+  "subintervals": {
+    "P0_POSTPROCESS_TOTAL": "Existing postprocessStart through existing postprocessEnd; retain both markers and surrounding PostprocessBegin/Done state marks.",
+    "P1_SCORE_TRANSFORM": "New timestamp immediately before the existing complete score-generation loop through a timestamp immediately after it; includes int16 conversion, scale, exact expf sigmoid, score store, finite and threshold counts.",
+    "P2_TOPK_SELECTION": "Timestamp after the finite-count guard, immediately before top-array/count setup and existing top-k scan, through a timestamp immediately after that scan.",
+    "P3_TOP_RESULT_MATERIALIZATION": "Reuse P2 end as P3 start; end timestamp immediately after existing topCount and top index/scoreBits materialization loop.",
+    "P_UNCLASSIFIED_RESIDUAL": "P0 - P1 - P2 - P3, including wrapper state marks, entry/exit, finite guard, marker/counter-record costs not already bracketed and all other gaps."
+  },
+  "exact_cycle_accounting": "For each valid measured run, P1+P2+P3+explicit_residual == P0 exactly in uint64 cycles; ordered nonoverlapping intervals, residual>=0; no rounded-ms reconciliation.",
+  "timing": {
+    "clock_source": "Existing h1ProfileNow/k_cycle_get_64",
+    "clock_hz_required": 400000000,
+    "counter_bits": 64,
+    "new_timestamp_reads_per_successful_postprocess": 5,
+    "per_expf_timing_forbidden": true,
+    "clock_changes_allowed": false,
+    "acceptance_campaign": false
+  },
+  "operation_counts": {
+    "static_exact_from_unchanged_loop": [
+      "11560 classes",
+      "11560 expf calls",
+      "11560 score stores",
+      "11560 finite checks",
+      "11560 threshold checks"
+    ],
+    "dynamic_low_overhead_local_uint32": [
+      "betterScore evaluations",
+      "top insertion shifts",
+      "selected count"
+    ],
+    "counter_update_rule": "Count only actual comparison evaluation and shift execution, preserving short circuit, branch outcomes, tie arithmetic, scan order and writes; no branch depends on counters."
+  },
+  "storage": {
+    "isolated_NOLOAD_region": "SRAM1 free interval",
+    "start": "0x02510000",
+    "maximum_bytes": 4096,
+    "existing_baseline_region_start": "0x02500000",
+    "existing_baseline_reserved_bytes": 65536,
+    "last_observation_and_20_measured_slots": true,
+    "existing_profiles_structures_model_contexts_boundaries_layout_unchanged": true,
+    "fresh_linker_nonoverlap_and_all_qualified_RAM_object_checks_required": true,
+    "cache_policy_or_maintenance_changes_allowed": false
+  },
+  "diagnostic_export": "A new diagnostic-only H1CP reader may return latest or indexed measured raw observer data after inference; do not alter existing production result serialization or existing profile layouts.",
+  "retention": "Snapshot the latest observer into separate measured-slot storage only after existing primary end/h1BaselineEndRun. Diagnostic campaign slot association must bind campaign, sample index and run sequence.",
+  "physical_campaign": {
+    "input_sha256": "23cc7cdce4395c574314856d02fca819871f2809b8b6330ea430b471ed9533f8",
+    "route": "Existing RunBaselineDiagnostic(145), canonical uploaded/resident production input",
+    "warmups": 5,
+    "measured": 20,
+    "consecutive": true,
+    "outliers_removed": 0,
+    "required_valid_measured": 20,
+    "statistics": [
+      "count",
+      "minimum",
+      "mean",
+      "median",
+      "nearest-rank p95",
+      "maximum",
+      "population SD"
+    ],
+    "raw_cycles_private": true
+  },
+  "noninterference_gates": [
+    "Same FP arithmetic instructions/order modulo unavoidable markers/counters",
+    "Same loop counts, branches, result writes, exact score bits and ties",
+    "Exact full externally observable result and full score vector compared with lifecycle reference",
+    "Exact model/Vela, U85 routes, persistent lifecycle/storage, memory ownership and cache operations",
+    "Production qualified RAM regions/objects unchanged; observer storage separately bounded",
+    "No CPU fallback, faults, guard failures, context drift or persistent model mutation"
+  ],
+  "CRC": {
+    "BOUNDARY_CRC_INSIDE_PRIMARY_TIMED_POSTPROCESSING": false,
+    "TIMED_POSTPROCESS_CRC_WORK": 0,
+    "move_remove_or_optimize_CRC_allowed": false
+  },
+  "excluded": [
+    "Arithmetic/control-flow optimization",
+    "Extra production sigmoid passes",
+    "expf replacement",
+    "Firmware LUT",
+    "Logit ranking",
+    "Threshold shortcut",
+    "Finite-check removal",
+    "Skipped score writes",
+    "Changed top-k/ties",
+    "Result publication or timing-boundary change",
+    "Lifecycle/model/Vela/frontend/GeM/copy/cache optimization"
+  ],
+  "stop_on_failure": true,
+  "public_raw_logs_or_payloads": false,
+  "freeze": {
+    "commit_subject": "Freeze H1 postprocessing observation plan",
+    "SSH_signed": true,
+    "local_GOOD_and_GitHub_Verified_required_before_implementation": true,
+    "push_only": "performance/h1-sub700ms",
+    "plan_immutable_after_commit": true,
+    "PR_merge_master_history_rewrite": false
+  }
+}
