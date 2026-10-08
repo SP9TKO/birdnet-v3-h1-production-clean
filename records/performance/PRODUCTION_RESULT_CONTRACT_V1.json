@@ -1,0 +1,1907 @@
+{
+  "schema": "birdnet-h1-production-result-contract-v1",
+  "contract_version": 1,
+  "status": "PROSPECTIVE_PRODUCTION_RESULT_CONTRACT_V1_FROZEN",
+  "date": "2026-10-08",
+  "branch": "performance/h1-sub700ms",
+  "entry_HEAD": "dee32eeafc5d2c4b02549e264d24c081ea41973a",
+  "entry_tree": "6a4b8ef7ebfa9d6393cfe216630818d376e23d48",
+  "published_master": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "authority": "Prospective product/architecture contract only. Future implementation and physical qualification need separate explicit authorization.",
+  "implementation_started": false,
+  "hardware_actions_performed": false,
+  "main_criteria": {
+    "path": "records/performance/PROSPECTIVE_CRITERIA.json",
+    "sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "unchanged": true,
+    "warmups": 5,
+    "measured": 100,
+    "consecutive": true,
+    "outlier_removal": "NONE",
+    "every_unrounded_sample_ms": "<700.000",
+    "primary_boundary": "waveform-ready -> ResultReady, complete for the selected prospectively frozen production contract"
+  },
+  "accepted_authorities": {
+    "lifecycle_reuse": {
+      "implementation": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+      "disposition": "LIFECYCLE_REUSE_ONLY_PASS",
+      "receipt_sha256": "5c9a5fb656aab9b323c0dce0ce9c4a2806317fdf284b2ae212a78dc22987283f"
+    },
+    "topk": {
+      "implementation": "88876bc661cb00c954f8072a369ee37421b8a5f8",
+      "disposition": "POSTPROCESSING_OPTIMIZATION_PASS",
+      "receipt_sha256": "67bbc7751906b3a0d9b34bbc433c476cd792b99032a8a68e7f88b4d7f9d1afc3"
+    },
+    "waveform_validation": {
+      "candidate": "092ae308f24457f7852460c4f1227c1c8a3f3273",
+      "implementation": "dee32eeafc5d2c4b02549e264d24c081ea41973a",
+      "disposition": "WAVEFORM_VALIDATION_LIFECYCLE_ONLY_PASS",
+      "receipt_sha256": "14bb0c8e5cc93a87e7a9f21c5f344cb50e35a6664adf0a1f3b20c3e7f3659a05",
+      "preserve": "Four exact numerical slots, same input epoch 1/generation 15 over 130 diagnostic/acceptance runs, zero repeated waveform CRCs/drift/mutations/ownership failures, exact accepted input identity, unchanged lifecycle/top100/output validation."
+    }
+  },
+  "current_measured_state": {
+    "acceptance_statistics": {
+      "count": 100,
+      "minimum_ms": "1721.466155",
+      "mean_ms": "1724.3362868",
+      "median_ms": "1724.1813",
+      "nearest_rank_p95_ms": "1726.1007",
+      "nearest_rank_p95_rank": 95,
+      "maximum_ms": "1726.262335",
+      "population_SD_ms": "1.0531192581978833037164164165870170122800193306456",
+      "count_lt_700": 0,
+      "count_ge_700": 100,
+      "clock_hz": 400000000,
+      "outliers_removed": 0
+    },
+    "acceptance_evidence_sha256": "023fb8ba8171dfadb037b1ded3c48c98e3757bcadb2418122e7c5d64cb5f7be2",
+    "diagnostic_evidence_sha256": "1e56b120b0e881bb87026dacc362c149b7ac1c28ed1e393e7c771ba28773c046",
+    "accepted_warmups": 5,
+    "accepted_measured": 100,
+    "accepted_mean_ms": "1724.3362868",
+    "diagnostic_mean_ms": "1724.74707225",
+    "frontend_mean_ms": "697.48401125",
+    "tail_mean_ms": "479.849042875",
+    "waveform_saving_ms": "133.50051985",
+    "generation_lease_ms": "0.0041515",
+    "latency_disposition": "POST_WAVEFORM_VALIDATION_SUB700_TARGET_NOT_MET",
+    "performance_saving_from_this_freeze_claimed": false
+  },
+  "current_contract_fact": "All seven CRCs participate in ordinary repeat_equal, score CRC is consumed by RUN/GET_TOPK, and existing eligible output-validation saving was 0 ms. None is called redundant under that contract.",
+  "production_result_schema": {
+    "schema": "h1-production-result-v1-definition",
+    "status": "PRODUCTION_RESULT_V1_DEFINED",
+    "contract": "PRODUCTION_RESULT_V1",
+    "TOP_K": 3,
+    "class_count": 11560,
+    "field_classification": [
+      {
+        "field": "contractVersion",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Value 1 under an explicitly selected PRODUCTION_RESULT_V1 endpoint/envelope; never reinterpret current diagnostic resultVersion=1.",
+        "product_consumer": "request_controller",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "status",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Success or precise stage/admission failure; no stale prior result represented as current success.",
+        "product_consumer": "request_controller",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "valid",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "True only after all product-required computation, integrity/safety checks and immutable publication complete.",
+        "product_consumer": "classification_presenter and request_controller",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "resultGenerationId",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Owner-session-scoped {epoch:u64, inferenceSequence:u64}; equals admitted inference token, never the waveform generation.",
+        "product_consumer": "request_controller",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "inputGenerationId",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Captured immutable {waveformOwnerEpoch:u64, waveformGeneration:u64, producer:u32} from the admitted validated resident input receipt. Bound to its issuing owner session. Linked fixtures stay on the diagnostic/legacy route, not a fabricated resident receipt.",
+        "product_consumer": "waveform_window_router",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "topCount",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Exactly 3 on success; 0 on failed completion; no partial classification result.",
+        "product_consumer": "classification_presenter",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "top3[0..2].classIndex",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Three distinct indices in [0,11560), in accepted exact order.",
+        "product_consumer": "classification_presenter and label_resolver",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "top3[0..2].scoreBits",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Original exact FP32 score bits, never decimal round trips, logits, approximations or alternate sigmoid.",
+        "product_consumer": "classification_presenter",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "modelComponentIdentity",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "session descriptor",
+        "semantics": "Immutable exact H1 frontend/backbone/GeM/bridge/classifier component contract descriptor, bound before requests and fixed throughout an owner session; no new per-inference hashing.",
+        "product_consumer": "label_resolver",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "labelsIdentityAndClassCount",
+        "classification": "PRODUCT_REQUIRED",
+        "location": "session descriptor",
+        "semantics": "Labels SHA-256 8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0; class count 11560, zero-based index mapping.",
+        "product_consumer": "label_resolver",
+        "consumer_basis": "PROSPECTIVE_EXPLICIT_PRODUCT_DECISION"
+      },
+      {
+        "field": "inputCrc32",
+        "classification": "PRODUCT_OPTIONAL",
+        "location": "per-inference result",
+        "semantics": "May be included only as already validated producer/fixture receipt identity, with a declared optional schema selected before the run and completed before Ready. V1 minimum omits it. Accepted input validation and exact diagnostic semantics remain required.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "inputSha256",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Preserve exact applicable producer identity. Uploaded input SHA is retained host-declared metadata; do not relabel it a computed/verified resident SHA.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "finiteCount",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Numeric reporting field omitted from production. Checking every generated score is finite remains PRODUCT_REQUIRED internal validity work.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "thresholdCount",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Exact all-score count using score >= floatFromBits(0x3e19999a) in diagnostics. Production always returns ranked top3, including scores below this diagnostic threshold.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "thresholdBits",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Keep existing diagnostic 0x3e19999a identity; no production suppression/threshold field introduced.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[0]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "frontend output CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[1]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "backbone input CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[2]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "shared feature CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[3]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "embedding CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[4]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "classifier input CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[5]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "logits CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "boundaryCrc32[6]",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "scores CRC used for reproducibility/regression evidence; no ordinary classification consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "scoreCrc32",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Exact accepted score CRC capability retained; currently alias of boundaryCrc32[6], not an independent scan.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "repeat_equal",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Retain exact accepted numericallyEqual predicate and current saveResult comparability; never redefine as top3 equality.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "repeat_comparable",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Retain current valid/same-frontend/input-CRC/input-SHA comparability. Different inference generations may be compared only as two independently bound diagnostic results.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "numericallyEqual()",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Existing function meaning unchanged, including all seven CRCs, score CRC, input identity, counts and every top100 pair. It is a CRC/result predicate, not a replacement for independent full-score bit proof.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "saveResult()",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Existing diagnostic full-result save and repeat comparison retained. Small stable production snapshot publication is separately PRODUCT_REQUIRED and occurs before Ready.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "fullScoreVectorPublicationAndRetention",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "No ordinary API publication or separately retained 11560-score result. Internal exact score generation and score workspace remain; diagnostic mode can export all exact bits.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "top100",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "No intended embedded top3 consumer needs it. Accepted bounded top100 selector and exact reproduction retained in diagnostics.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "GET_TOPK_current_top10_view",
+        "classification": "LEGACY_COMPATIBILITY_ONLY",
+        "location": "per-inference result",
+        "semantics": "Existing command publishes first ten accepted top100 entries with score CRC; retain its exact development protocol semantics on the diagnostic route.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "current_RUN_GET_RESULT_SUMMARY_GET_PROFILE_envelopes",
+        "classification": "LEGACY_COMPATIBILITY_ONLY",
+        "location": "per-inference result",
+        "semantics": "Existing diagnostic/qualification commands remain available with exact meanings; separate explicitly versioned production route required.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "profileAndTimingFields",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Current full profile, PMU and stage timings retained for diagnostics/qualification, not product result. Minimal acceptance timestamps measure the same waveform-ready-to-production-Ready boundary.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "buildIdentity",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Exact source/build/toolchain identity remains mandatory for qualification; no ordinary class-result consumer requires it per run. May be served through diagnostic identity descriptor.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "backboneAndClassifierSaturationCounts",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Retain diagnostic counts and accepted quantization/saturation behavior; no ordinary top3 reporting consumer.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "fixtureCanonicalAndFrontendPathFlags",
+        "classification": "DIAGNOSTIC_ONLY",
+        "location": "per-inference result",
+        "semantics": "Diagnostic route identity and comparison metadata, not ordinary product result fields. Production input producer is separately required.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "top3_equal",
+        "classification": "NOT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "No new product repeat-equality feature requested. Do not invent one to retain repeat_equal name.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      },
+      {
+        "field": "inferenceGenerationId_duplicate_storage",
+        "classification": "NOT_REQUIRED",
+        "location": "per-inference result",
+        "semantics": "Conceptually defined admitted inference token; product resultGenerationId equals it, so no second physical duplicate is required.",
+        "product_consumer": null,
+        "consumer_basis": "No required ordinary top3 consumer; current exposure alone is insufficient."
+      }
+    ],
+    "minimum_schema": {
+      "contractVersion": "u32 = 1, on an explicit PRODUCTION_RESULT_V1 route",
+      "status": "u32 success/failure code preserving exact stage failure information",
+      "valid": "u32 0 or 1",
+      "resultGenerationId": {
+        "epoch": "u64",
+        "inferenceSequence": "u64"
+      },
+      "inputGenerationId": {
+        "waveformOwnerEpoch": "u64",
+        "waveformGeneration": "u64",
+        "producer": "u32"
+      },
+      "topCount": "u32 = 3 on valid success, otherwise 0",
+      "top3": "capacity 3; each {classIndex:u32, scoreBits:u32}; unused failed slots zeroed and not published as classifications"
+    },
+    "session_descriptor": {
+      "available_before_ordinary_inference": true,
+      "required": [
+        "explicit result contract",
+        "result owner session binding",
+        "exact H1 component/model contract identity",
+        "labels SHA-256 and class count"
+      ],
+      "frozen_labels_sha256": "8124b0ea2d187104c5e2cd95a0f937165647e20349c8fd34d4d5ef991821f8f0",
+      "identity_change_rule": "New descriptor and new owner session required; never change class mapping/model inside a bound session."
+    },
+    "input_admission": "Ordinary V1 uses the accepted validated resident-input route. Bind and capture its receipt token on admission before any stage execution. The qualified uploaded-waveform performance route is the current authority. Other resident producers require their own separately accepted acquisition/input qualification; this contract does not newly accept live audio. Linked synthetic/wren fixtures remain diagnostic/legacy inputs. If no valid required input identity can be captured, reject admission instead of publishing a result with invented or absent input identity.",
+    "input_producer_domain": "Preserve the accepted H1WaveformProducer domain from the bound source; only a non-None producer with separately qualified input authority is admissible. Do not introduce an ad hoc fixture producer or accept a producer solely because an enum value exists.",
+    "status_domain": {
+      "0": "NotRun: no completed result",
+      "1": "Ok: only valid complete success",
+      "2": "InputIdentity failure",
+      "3": "Frontend failure",
+      "4": "Backbone failure",
+      "5": "GeM/bridge failure",
+      "6": "Classifier failure",
+      "7": "Postprocess failure",
+      "8": "Profile failure: diagnostic only, not a product profile prerequisite",
+      "9": "NotReady failure"
+    },
+    "status_validity_invariants": "Completed success is status=1, valid=1, topCount=3. Completed failure uses a precise non-success stage status, valid=0, topCount=0, and the admitted input/result tokens. status=0 is uninitialized/no result and cannot be a completed publication. Missing/invalid identity or unavailable service before admission is a request rejection. A profile diagnostic cannot block ordinary product completion.",
+    "ordering": {
+      "comparator": "scores[left] > scores[right] || (scores[left] == scores[right] && left < right)",
+      "score_arithmetic": "logit = float(int16_logit) * floatFromBits(0x3a08d017); score = 1.0f / (1.0f + expf(-logit)), using exactly the accepted FP32 expression/toolchain behavior.",
+      "finite_requirement": "All 11560 generated scores must be finite before success; no partial or non-finite result.",
+      "ties": "Numerically equal exact FP32 score values use lower zero-based class index first. Preserve original score bits, including any equal-value bit representation.",
+      "prefix_requirement": "For identical accepted score bits, top3 equals entries 0..2 of the accepted top100 result in both indices and score bits.",
+      "threshold_semantics": "No implicit threshold filtering, score rescaling or renormalization; top3 always reports the three highest finite accepted scores.",
+      "rank_raw_logits": false,
+      "source": [
+        {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "betterScore",
+          "line_at_entry_HEAD": 720
+        },
+        {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess score expression",
+          "line_at_entry_HEAD": 736
+        },
+        {
+          "path": "firmware/h1/src/topk_heap.hpp",
+          "symbol": "h1SelectTopkHeap",
+          "line_at_entry_HEAD": 17
+        }
+      ]
+    },
+    "PRODUCTION_RESULT_READY": "The admitted inference has completed all product-required arithmetic, all-score finite validity, accepted input/model/ownership/cache/guard checks, exact sorted top3 and metadata, and a stable self-contained compact result snapshot is completely published with its token. All PRODUCT_REQUIRED fields and selected optional fields are final before this event. Diagnostic evidence is not a prerequisite. No product-required computation/publication/save may occur after Ready.",
+    "failed_completion": "Publish precise status with valid=0, topCount=0 and the admitted generation identity; never emit successful PRODUCTION_RESULT_READY for failure or relabel the last good result as this run. Rejected admission is a separate request error, not a completed inference.",
+    "retention": "Retain one compact completed result independently of mutable inference workspaces until explicit retirement or next atomic complete publication. Staging and read/publication synchronization may use a second small slot; no full-score or full-boundary snapshot permitted for ordinary result retention.",
+    "diagnostics_are_not_deferred_product_work": true,
+    "input_crc_optional_selected_for_minimum": false,
+    "internal_workspace_and_safety": "Generating all exact scores, frontend output validation, quantization, guard checks, model initialization identity and ownership/cache coherency remain required. Only product result/evidence retention semantics change prospectively.",
+    "generation": {
+      "INFERENCE_GENERATION_ID": "A fresh token allocated when inference is admitted: {result_owner_session, epoch:u64, inferenceSequence:u64}. Sequence advances for each admitted run, including failure; input generation reuse does not reuse inference token.",
+      "RESULT_GENERATION_ID": "The same admitted token copied/published with completion; valid only in its issuing result owner session.",
+      "BOUNDARY_BUFFER_GENERATION_ID": "Per-source {owner_session, epoch, inferenceSequence, state}; INVALID before any write, WRITING during writes, COMPLETE only after the entire relevant stage and ownership/cache checks succeed.",
+      "EVIDENCE_GENERATION_ID": "Explicit diagnostic transaction token equal to its inference/result token; COMPLETE only when every required diagnostic field and source is coherent.",
+      "input_generation_is_distinct": "Waveform epoch/generation/producer receipt captured on admission; many distinct inference generations may use the same validated waveform generation.",
+      "owner_session_scope": "IDs are not globally persistent boot UUIDs. Reset/reinitialization terminates the issuing owner session, clears result/evidence state and pins, and requires a fresh session binding. Never import/restore an old-session token, even if numeric epoch/sequence values repeat after cold boot.",
+      "epoch_and_sequence_exhaustion": "Fail closed before wrap; no reset to zero inside a live owner session.",
+      "existing_waveform_lifecycle": "Keep accepted mutation admission, validation, leases, receipt CRC and declared SHA semantics unchanged. Do not infer new output-buffer generation protection from the existing input-only lease.",
+      "binding_required_for_each_evidence_source": "requested inference generation == result generation == source-buffer generation == evidence generation, including owner_session and epoch, for every buffer read.",
+      "complete_state_and_pin_required": true,
+      "reject": [
+        "STALE_GENERATION",
+        "OVERWRITTEN_BUFFER",
+        "MIXED_GENERATION_EVIDENCE",
+        "PARTIALLY_UPDATED_BUFFER",
+        "RESULT_BUFFER_GENERATION_MISMATCH",
+        "OWNER_SESSION_MISMATCH",
+        "INCOMPLETE_EVIDENCE",
+        "EVIDENCE_NOT_RETAINED"
+      ],
+      "reader_writer_rule": "One serialized diagnostic owner; reject all source-buffer writer admission while its read/export pin is active. Check token, COMPLETE state and pin before every chunk and before final evidence completion; invalidate before releasing to a writer.",
+      "diagnostic_release": "Explicit release/cancel or defined bounded timeout retires evidence before any next writer. In-progress transfer cannot succeed after retirement; a multi-chunk result needs one coherent completion token.",
+      "old_production_result_evidence_request": "Reject EVIDENCE_NOT_RETAINED; never scan lingering bytes, silently rerun under the old token, or synthesize a diagnostic result for that production generation.",
+      "comparison_between_generations": "Numerical repeat comparison is allowed between independently completed/bound diagnostic generations; bind each side separately and preserve accepted comparison predicate."
+    },
+    "wire_command_numbers_and_Cpp_ABI": "Not implemented or assigned by this freeze. Future design must use an explicit production contract route and prove logical fields/widths; no silent diagnostic protocol reinterpretation."
+  },
+  "qualification_diagnostic_result_schema": {
+    "schema": "h1-qualification-diagnostic-result-v1-definition",
+    "status": "QUALIFICATION_DIAGNOSTIC_RESULT_V1_DEFINED",
+    "contract": "QUALIFICATION_DIAGNOSTIC_RESULT_V1",
+    "selected_evidence_mechanism": "EXPLICIT_DIAGNOSTIC_INFERENCE_MODE",
+    "ON_DEMAND_GENERATION_BOUND_EVIDENCE_authorized": false,
+    "schema_fields": [
+      "contract identity, status and validity",
+      "inference/result/evidence generation and issuing owner session",
+      "input waveform producer/geometry/epoch/generation/validated CRC/applicable exact SHA identity",
+      "all seven accepted numerical boundary byte streams with dtype, shape, size and per-buffer generation",
+      "all seven boundaryCrc32 values and scoreCrc32 alias capability",
+      "all 11560 original FP32 score bits",
+      "all top100 class indices and exact score bits",
+      "topCount, finiteCount, thresholdCount and threshold bits",
+      "exact accepted repeatComparable/repeatEqual and numericallyEqual semantics",
+      "profile, build/model/source/toolchain/configuration identities and qualification counters"
+    ],
+    "diagnostic_ready": "All selected complete diagnostic fields, CRCs, counts, top100 and source-generation metadata are complete before DIAGNOSTIC_RESULT_READY. Any requested raw numerical/score stream is already computed and protected by the diagnostic pin until export completion; byte serialization may follow diagnostic Ready, but evidence computation is not deferred from an ordinary production generation.",
+    "lifetime_architecture": "Admit an explicit diagnostic transaction before inference; serialize/fence every boundary and result writer, publish per-buffer COMPLETE tags after full stages, compute CRCs and exact accepted top100/diagnostic save while coherent, then retain an exclusive read/export pin until release. No new full-boundary snapshot to defer CRCs. Existing explicitly requested qualification first-run snapshot may remain diagnostic only.",
+    "partial_failure": "Retire all unpublished/current evidence and source tags; do not return a mixed success record. Completed previous diagnostic comparisons may remain only as independently bound records.",
+    "upload_SHA_semantics": "Preserve exact host-declared metadata vs computed hashes; qualification host compares exact uploaded payload authority. No new claim of board-computed uploaded waveform SHA.",
+    "existing_numericallyEqual": {
+      "both_valid": true,
+      "compare": [
+        "inputCrc32",
+        "inputSha256 string",
+        "finiteCount",
+        "thresholdCount",
+        "scoreCrc32",
+        "topCount",
+        "all seven boundaryCrc32",
+        "every top entry class index and scoreBits"
+      ],
+      "saveResult_comparability": "Both valid, same frontendNative, identical inputCrc32 and inputSha256 string.",
+      "do_not_add_or_remove_fields_in_existing_predicate": true,
+      "separate_full_score_bit_proof_required": true,
+      "generation_metadata": "Bind outside the legacy numerical predicate; different inference tokens do not imply numerically unequal."
+    },
+    "preserve_current_USB_commands": true,
+    "compatibility_route": "Existing RUN/GET_TOPK(first10)/GET_RESULT_SUMMARY/GET_PROFILE/GET_INFERENCE_DATA and baseline/UART qualification interfaces retain diagnostic/legacy meanings. Future implementation adds an explicitly distinguishable production route. Safety generation envelope/pin enforcement must be explicit; unsafe old-buffer requests fail closed. No commands, field meanings or opcodes changed this session.",
+    "latency": "Diagnostic latency may be slower and is never substituted for ordinary production latency.",
+    "generation": {
+      "INFERENCE_GENERATION_ID": "A fresh token allocated when inference is admitted: {result_owner_session, epoch:u64, inferenceSequence:u64}. Sequence advances for each admitted run, including failure; input generation reuse does not reuse inference token.",
+      "RESULT_GENERATION_ID": "The same admitted token copied/published with completion; valid only in its issuing result owner session.",
+      "BOUNDARY_BUFFER_GENERATION_ID": "Per-source {owner_session, epoch, inferenceSequence, state}; INVALID before any write, WRITING during writes, COMPLETE only after the entire relevant stage and ownership/cache checks succeed.",
+      "EVIDENCE_GENERATION_ID": "Explicit diagnostic transaction token equal to its inference/result token; COMPLETE only when every required diagnostic field and source is coherent.",
+      "input_generation_is_distinct": "Waveform epoch/generation/producer receipt captured on admission; many distinct inference generations may use the same validated waveform generation.",
+      "owner_session_scope": "IDs are not globally persistent boot UUIDs. Reset/reinitialization terminates the issuing owner session, clears result/evidence state and pins, and requires a fresh session binding. Never import/restore an old-session token, even if numeric epoch/sequence values repeat after cold boot.",
+      "epoch_and_sequence_exhaustion": "Fail closed before wrap; no reset to zero inside a live owner session.",
+      "existing_waveform_lifecycle": "Keep accepted mutation admission, validation, leases, receipt CRC and declared SHA semantics unchanged. Do not infer new output-buffer generation protection from the existing input-only lease.",
+      "binding_required_for_each_evidence_source": "requested inference generation == result generation == source-buffer generation == evidence generation, including owner_session and epoch, for every buffer read.",
+      "complete_state_and_pin_required": true,
+      "reject": [
+        "STALE_GENERATION",
+        "OVERWRITTEN_BUFFER",
+        "MIXED_GENERATION_EVIDENCE",
+        "PARTIALLY_UPDATED_BUFFER",
+        "RESULT_BUFFER_GENERATION_MISMATCH",
+        "OWNER_SESSION_MISMATCH",
+        "INCOMPLETE_EVIDENCE",
+        "EVIDENCE_NOT_RETAINED"
+      ],
+      "reader_writer_rule": "One serialized diagnostic owner; reject all source-buffer writer admission while its read/export pin is active. Check token, COMPLETE state and pin before every chunk and before final evidence completion; invalidate before releasing to a writer.",
+      "diagnostic_release": "Explicit release/cancel or defined bounded timeout retires evidence before any next writer. In-progress transfer cannot succeed after retirement; a multi-chunk result needs one coherent completion token.",
+      "old_production_result_evidence_request": "Reject EVIDENCE_NOT_RETAINED; never scan lingering bytes, silently rerun under the old token, or synthesize a diagnostic result for that production generation.",
+      "comparison_between_generations": "Numerical repeat comparison is allowed between independently completed/bound diagnostic generations; bind each side separately and preserve accepted comparison predicate."
+    },
+    "implementation_precondition": "Before releasing any diagnostic exporter, prove all writer admission sites, pin/error/timeout behavior and stale/mixed/partial rejection; absence of this proof blocks implementation qualification."
+  },
+  "consumer_classification": {
+    "full_scores_11560": [
+      {
+        "consumer": "postprocess",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess",
+          "line_at_entry_HEAD": 731
+        },
+        "role": "Computes every accepted sigmoid score; internal workspace remains necessary."
+      },
+      {
+        "consumer": "sendInferenceData",
+        "classification": "DIAGNOSTIC",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendInferenceData",
+          "line_at_entry_HEAD": 2856
+        },
+        "role": "Chunked exact FP32 score-bit export, also exposed by the development host interface."
+      },
+      {
+        "consumer": "reportAndCompareBoundaries",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportAndCompareBoundaries",
+          "line_at_entry_HEAD": 3310
+        },
+        "role": "Raw score dumps and whole-buffer repeat comparison."
+      },
+      {
+        "consumer": "validate_h1 / validate_serialized_h1 / h1_model",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/validate_h1.py",
+          "symbol": "validate_h1 / validate_serialized_h1 / h1_model",
+          "line_at_entry_HEAD": 316
+        },
+        "role": "Host construction and numerical oracles; no embedded full-score product publication requirement."
+      }
+    ],
+    "top100": [
+      {
+        "consumer": "postprocess",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess",
+          "line_at_entry_HEAD": 749
+        },
+        "role": "Current selector materializes 100 entries; present coupling is not a future product requirement."
+      },
+      {
+        "consumer": "sendTopK",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendTopK",
+          "line_at_entry_HEAD": 2314
+        },
+        "role": "Current GET_TOPK publishes the first 10 of 100 stored entries, not all 100."
+      },
+      {
+        "consumer": "reportResult",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportResult",
+          "line_at_entry_HEAD": 3226
+        },
+        "role": "UART emits all stored top100 index/score pairs."
+      },
+      {
+        "consumer": "numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual",
+          "line_at_entry_HEAD": 1495
+        },
+        "role": "Compares topCount and every stored index and exact scoreBits."
+      },
+      {
+        "consumer": "validate_endpoint / canonical validation",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint / canonical validation",
+          "line_at_entry_HEAD": 318
+        },
+        "role": "Validates top10 and repeatability through the unchanged development protocol."
+      }
+    ],
+    "topCount": [
+      {
+        "consumer": "numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual",
+          "line_at_entry_HEAD": 1501
+        },
+        "role": "Exact count participates in diagnostic equality."
+      },
+      {
+        "consumer": "reportResult",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportResult",
+          "line_at_entry_HEAD": 3233
+        },
+        "role": "Bounds UART reporting loop."
+      },
+      {
+        "consumer": "postprocess",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess",
+          "line_at_entry_HEAD": 767
+        },
+        "role": "Current materialized result length."
+      }
+    ],
+    "finiteCount": [
+      {
+        "consumer": "postprocess",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess",
+          "line_at_entry_HEAD": 739
+        },
+        "role": "All-score finite validation controls inference success; retain this safety operation."
+      },
+      {
+        "consumer": "sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendResultSummary",
+          "line_at_entry_HEAD": 2526
+        },
+        "role": "Exports count."
+      },
+      {
+        "consumer": "numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual",
+          "line_at_entry_HEAD": 1499
+        },
+        "role": "Exact diagnostic count comparison."
+      },
+      {
+        "consumer": "validate_endpoint",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint",
+          "line_at_entry_HEAD": 326
+        },
+        "role": "Requires 11560 finite scores."
+      }
+    ],
+    "thresholdCount": [
+      {
+        "consumer": "postprocess",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "postprocess",
+          "line_at_entry_HEAD": 740
+        },
+        "role": "Current count over all scores at threshold bits 0x3e19999a."
+      },
+      {
+        "consumer": "sendRunResult / sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendRunResult / sendResultSummary",
+          "line_at_entry_HEAD": 2305
+        },
+        "role": "Existing count publication."
+      },
+      {
+        "consumer": "numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual",
+          "line_at_entry_HEAD": 1500
+        },
+        "role": "Exact count comparison."
+      },
+      {
+        "consumer": "validate_endpoint",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint",
+          "line_at_entry_HEAD": 328
+        },
+        "role": "Accepted canonical count validation."
+      },
+      {
+        "consumer": "reportResult",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportResult",
+          "line_at_entry_HEAD": 3232
+        },
+        "role": "UART reporting."
+      }
+    ],
+    "boundaryCrc32[0..6]": [
+      {
+        "consumer": "recordBoundaryCrcs",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "recordBoundaryCrcs",
+          "line_at_entry_HEAD": 782
+        },
+        "role": "Seven current ordinary result-evidence scans."
+      },
+      {
+        "consumer": "numericallyEqual via saveResult",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual via saveResult",
+          "line_at_entry_HEAD": 1502
+        },
+        "role": "All seven participate in current ordinary repeat comparison."
+      },
+      {
+        "consumer": "sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendResultSummary",
+          "line_at_entry_HEAD": 2528
+        },
+        "role": "All seven exported."
+      },
+      {
+        "consumer": "h1BaselineEndRun",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/baseline_profile.c",
+          "symbol": "h1BaselineEndRun",
+          "line_at_entry_HEAD": 92
+        },
+        "role": "Saves all seven CRCs per measured sample."
+      },
+      {
+        "consumer": "validate_endpoint",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint",
+          "line_at_entry_HEAD": 330
+        },
+        "role": "Checks accepted boundary CRC authority."
+      },
+      {
+        "consumer": "checkpoint / compareBoundary",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "checkpoint / compareBoundary",
+          "line_at_entry_HEAD": 3250
+        },
+        "role": "Separate UART CRC and byte-repeat proof."
+      }
+    ],
+    "scoreCrc32": [
+      {
+        "consumer": "recordBoundaryCrcs",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "recordBoundaryCrcs",
+          "line_at_entry_HEAD": 815
+        },
+        "role": "Alias of boundary CRC 6; no independent eighth scan."
+      },
+      {
+        "consumer": "sendRunResult / sendTopK / sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendRunResult / sendTopK / sendResultSummary",
+          "line_at_entry_HEAD": 2304
+        },
+        "role": "Present ordinary development protocol requires it."
+      },
+      {
+        "consumer": "numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "numericallyEqual",
+          "line_at_entry_HEAD": 1501
+        },
+        "role": "Exact CRC comparison."
+      },
+      {
+        "consumer": "validate_endpoint / canonical validation",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint / canonical validation",
+          "line_at_entry_HEAD": 321
+        },
+        "role": "Checks accepted score CRC."
+      },
+      {
+        "consumer": "reportResult",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportResult",
+          "line_at_entry_HEAD": 3231
+        },
+        "role": "UART summary."
+      }
+    ],
+    "repeat_equal_and_repeat_comparable": [
+      {
+        "consumer": "saveResult",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "saveResult",
+          "line_at_entry_HEAD": 1515
+        },
+        "role": "Current ordinary repeatability coupling."
+      },
+      {
+        "consumer": "sendRunResult / sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendRunResult / sendResultSummary",
+          "line_at_entry_HEAD": 2300
+        },
+        "role": "Current booleans published."
+      },
+      {
+        "consumer": "runBaselineCampaign",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runBaselineCampaign",
+          "line_at_entry_HEAD": 2606
+        },
+        "role": "Repeat result participates in campaign integrity."
+      },
+      {
+        "consumer": "canonical validation",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "canonical validation",
+          "line_at_entry_HEAD": 774
+        },
+        "role": "Requires comparability and equality on second run."
+      }
+    ],
+    "numericallyEqual": [
+      {
+        "consumer": "saveResult",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "saveResult",
+          "line_at_entry_HEAD": 1523
+        },
+        "role": "Current ordinary result comparison; retain exact original function in diagnostics only."
+      }
+    ],
+    "saveResult": [
+      {
+        "consumer": "runUploaded / runCanonical / runMicWindow",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runUploaded / runCanonical / runMicWindow",
+          "line_at_entry_HEAD": 2780
+        },
+        "role": "Current ordinary full 1880-byte save and repeat comparison, before ResultReady."
+      },
+      {
+        "consumer": "runBaselineCampaign",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runBaselineCampaign",
+          "line_at_entry_HEAD": 2600
+        },
+        "role": "Current campaign integrity save."
+      },
+      {
+        "consumer": "runUartFixture",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runUartFixture",
+          "line_at_entry_HEAD": 3373
+        },
+        "role": "UART qualification."
+      },
+      {
+        "consumer": "handleUartFallback",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "handleUartFallback",
+          "line_at_entry_HEAD": 3401
+        },
+        "role": "Development console command."
+      }
+    ],
+    "inputCrc32": [
+      {
+        "consumer": "runOnce",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runOnce",
+          "line_at_entry_HEAD": 854
+        },
+        "role": "Upload uses validated receipt CRC; linked/PDM routes retain their accepted validation behavior."
+      },
+      {
+        "consumer": "saveResult / numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "saveResult / numericallyEqual",
+          "line_at_entry_HEAD": 1497
+        },
+        "role": "Current input identity and comparability."
+      },
+      {
+        "consumer": "sendRunResult / sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendRunResult / sendResultSummary",
+          "line_at_entry_HEAD": 2304
+        },
+        "role": "Published identity."
+      },
+      {
+        "consumer": "validate_endpoint",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint",
+          "line_at_entry_HEAD": 324
+        },
+        "role": "Exact input field authority."
+      }
+    ],
+    "inputSha256": [
+      {
+        "consumer": "runOnce",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runOnce",
+          "line_at_entry_HEAD": 855
+        },
+        "role": "Upload retains declared SHA metadata; not a board-computed uploaded waveform SHA."
+      },
+      {
+        "consumer": "saveResult / numericallyEqual",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "saveResult / numericallyEqual",
+          "line_at_entry_HEAD": 1498
+        },
+        "role": "Exact string identity comparison."
+      },
+      {
+        "consumer": "sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendResultSummary",
+          "line_at_entry_HEAD": 2525
+        },
+        "role": "Declared metadata export."
+      },
+      {
+        "consumer": "validate_endpoint",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_endpoint",
+          "line_at_entry_HEAD": 323
+        },
+        "role": "Checks canonical declared SHA."
+      }
+    ],
+    "timing_profile": [
+      {
+        "consumer": "runOnce / h1ProfileFinalize",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runOnce / h1ProfileFinalize",
+          "line_at_entry_HEAD": 882
+        },
+        "role": "Current instrumentation and profile validity are coupled to result validity."
+      },
+      {
+        "consumer": "sendProfile",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendProfile",
+          "line_at_entry_HEAD": 2408
+        },
+        "role": "Detailed profile export."
+      },
+      {
+        "consumer": "runBaselineCampaign / h1BaselineEndRun",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runBaselineCampaign / h1BaselineEndRun",
+          "line_at_entry_HEAD": 2612
+        },
+        "role": "Acceptance and diagnostic measurement."
+      },
+      {
+        "consumer": "reportResult / run_state",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "reportResult / run_state",
+          "line_at_entry_HEAD": 3240
+        },
+        "role": "UART and state tracing."
+      },
+      {
+        "consumer": "validate_profile / canonical validation",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_profile / canonical validation",
+          "line_at_entry_HEAD": 744
+        },
+        "role": "Validates accepted stage and lifecycle profile."
+      }
+    ],
+    "status_valid_result_ready": [
+      {
+        "consumer": "runOnce / sendError",
+        "classification": "PRODUCTION_RUNTIME",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runOnce / sendError",
+          "line_at_entry_HEAD": 829
+        },
+        "role": "Stage failure and success validity."
+      },
+      {
+        "consumer": "sendRunResult / sendTopK / sendResultSummary",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendRunResult / sendTopK / sendResultSummary",
+          "line_at_entry_HEAD": 2296
+        },
+        "role": "Ready and no-result checks."
+      },
+      {
+        "consumer": "runBaselineCampaign",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "runBaselineCampaign",
+          "line_at_entry_HEAD": 2606
+        },
+        "role": "Campaign success and validity."
+      },
+      {
+        "consumer": "run_state",
+        "classification": "DEBUG",
+        "source": {
+          "path": "firmware/h1/src/run_state.cpp",
+          "symbol": "run_state",
+          "line_at_entry_HEAD": 104
+        },
+        "role": "ResultReady trace point."
+      }
+    ],
+    "model_build_labels_identity": [
+      {
+        "consumer": "sendIdentity",
+        "classification": "HOST_COMPATIBILITY",
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "symbol": "sendIdentity",
+          "line_at_entry_HEAD": 2236
+        },
+        "role": "Component/model/build/label descriptor export."
+      },
+      {
+        "consumer": "validate_identity",
+        "classification": "QUALIFICATION",
+        "source": {
+          "path": "scripts/h1_usb_client.py",
+          "symbol": "validate_identity",
+          "line_at_entry_HEAD": 304
+        },
+        "role": "Exact source/model/toolchain checks."
+      }
+    ]
+  },
+  "buffer_lifetime_decision": {
+    "source_HEAD": "dee32eeafc5d2c4b02549e264d24c081ea41973a",
+    "source_buffers": [
+      {
+        "buffer": "frontend output",
+        "member": "frontend",
+        "bytes": 755328,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "h1RunFrontend or diagnostic h1RunFrontendM55",
+        "first_valid_point": "Successful full frontend completion",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next frontend writer admission; a failed next writer can leave partial new bytes.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce frontend",
+            "line_at_entry_HEAD": 889
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runCompleteFrontend diagnostic",
+            "line_at_entry_HEAD": 1295
+          }
+        ]
+      },
+      {
+        "buffer": "backbone input",
+        "member": "backboneInput",
+        "bytes": 377664,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "quantizeBackboneInput",
+        "first_valid_point": "All 188832 int16 input elements quantized",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next backbone-input quantization admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "quantizeBackboneInput",
+            "line_at_entry_HEAD": 694
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce quantize",
+            "line_at_entry_HEAD": 930
+          }
+        ]
+      },
+      {
+        "buffer": "shared feature",
+        "member": "sharedFeature",
+        "bytes": 161280,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "invokeNpu Backbone output memcpy",
+        "first_valid_point": "Successful U85 backbone completion, guard checks and full output copy",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next backbone output-copy admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "invokeNpu output copy",
+            "line_at_entry_HEAD": 687
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce Backbone",
+            "line_at_entry_HEAD": 937
+          }
+        ]
+      },
+      {
+        "buffer": "embedding",
+        "member": "embedding",
+        "bytes": 5120,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "birdnet::h1::runGem",
+        "first_valid_point": "Successful full GeM completion and consumer-release validation",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next runGem write admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce GeM",
+            "line_at_entry_HEAD": 966
+          }
+        ]
+      },
+      {
+        "buffer": "classifier input",
+        "member": "classifierInput",
+        "bytes": 2560,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "birdnet::h1::quantizeClassifierInput",
+        "first_valid_point": "Successful full exact bridge quantization",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next classifier bridge write admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce classifier bridge",
+            "line_at_entry_HEAD": 982
+          }
+        ]
+      },
+      {
+        "buffer": "logits",
+        "member": "logits",
+        "bytes": 23120,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "invokeNpu Classifier output memcpy",
+        "first_valid_point": "Successful U85 classifier completion, guard checks and full output copy",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next classifier output-copy admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "invokeNpu output copy",
+            "line_at_entry_HEAD": 687
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "runOnce Classifier",
+            "line_at_entry_HEAD": 993
+          }
+        ]
+      },
+      {
+        "buffer": "scores",
+        "member": "scores",
+        "bytes": 46240,
+        "owner": "h1PsramStorage.current in PSRAM_MODEL, returned by h1CurrentBoundaries()",
+        "writer": "postprocess accepted sigmoid loop",
+        "first_valid_point": "All 11560 accepted scores written and finite validation passed",
+        "last_valid_point": "After successful run through ResultReady, until the earliest next admitted writer to this buffer; no immutable lifetime is guaranteed after that admission.",
+        "next_overwrite_point": "Next score-loop write admission.",
+        "survives_successful_ResultReady_bytes": true,
+        "overwritten_by_another_inference": true,
+        "generation_tag_currently_present": false,
+        "whole_inference_boolean_only": "gInferenceDataValid; cleared at runOnce entry and listed diagnostic command admission.",
+        "safe_automatic_post_production_evidence_now": false,
+        "future_diagnostic_export_condition": "Explicit diagnostic transaction only: completed per-buffer generation tag, active exclusive diagnostic read pin, and all result/source/evidence tokens equal.",
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "postprocess",
+            "line_at_entry_HEAD": 731
+          }
+        ]
+      },
+      {
+        "buffer": "top-k selector workspace",
+        "owner": "postprocess local uint32_t top[kTopCount]",
+        "bytes": 400,
+        "writer": "h1SelectTopkHeap",
+        "first_valid_point": "Heap drain complete, sorted output materialized.",
+        "last_valid_point": "Before postprocess returns.",
+        "next_overwrite_point": "Stack-frame reuse.",
+        "survives_ResultReady": false,
+        "overwritten_by_another_inference": true,
+        "safe_post_ResultReady_evidence_from_workspace": false,
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "postprocess top array",
+            "line_at_entry_HEAD": 751
+          }
+        ]
+      },
+      {
+        "buffer": "top-k materialized result / local H1RunResult",
+        "owner": "runUploaded/runCanonical/runMicWindow/baseline/UART caller",
+        "result_bytes": 1880,
+        "top100_bytes": 800,
+        "writer": "runOnce memset and postprocess; saveResult updates repeat flags.",
+        "first_valid_point": "runOnce successful after CRCs and status/valid set; complete result including repeat flags after saveResult.",
+        "last_valid_point": "Caller returns or loop iteration reuses local result.",
+        "next_overwrite_point": "Next runOnce memset or stack reuse.",
+        "survives_ResultReady": "Only while caller frame is live; do not export from this address later.",
+        "safe_post_ResultReady_evidence_from_local_result": false,
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "H1RunResult",
+            "line_at_entry_HEAD": 101
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "saveResult",
+            "line_at_entry_HEAD": 1515
+          }
+        ]
+      },
+      {
+        "buffer": "saved result / saved repeat authority gLastResult",
+        "owner": "main.cpp global gLastResult in application RAM",
+        "bytes": 1880,
+        "writer": "saveResult memcpy after diagnostic comparison",
+        "first_valid_point": "Full saveResult copy complete.",
+        "last_valid_point": "Before any next saveResult begins.",
+        "next_overwrite_point": "Every next successful saved inference.",
+        "survives_ResultReady": true,
+        "overwritten_by_another_inference": true,
+        "generation_binding": "Only uint32 runSequence and validity, no per-buffer generation token or export pin.",
+        "safe_automatic_post_production_evidence_now": false,
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "gLastResult",
+            "line_at_entry_HEAD": 144
+          },
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "saveResult memcpy",
+            "line_at_entry_HEAD": 1526
+          }
+        ]
+      },
+      {
+        "buffer": "saved first full boundary result",
+        "owner": "h1PsramStorage.first / h1FirstBoundaries()",
+        "bytes": 1371328,
+        "writer": "reportAndCompareBoundaries run==1 memcpy only in UART fixture qualification",
+        "first_valid_point": "Full first-run H1Boundaries copy completes.",
+        "last_valid_point": "Until next qualification first-run copy.",
+        "next_overwrite_point": "Next run==1 of runUartFixture.",
+        "survives_ResultReady": true,
+        "overwritten_by_ordinary_inference": false,
+        "overwritten_by_another_qualification": true,
+        "generation_tag_currently_present": false,
+        "safe_deferred_evidence_without_new_binding": false,
+        "source": [
+          {
+            "path": "firmware/h1/src/main.cpp",
+            "symbol": "reportAndCompareBoundaries snapshot",
+            "line_at_entry_HEAD": 3342
+          }
+        ]
+      },
+      {
+        "buffer": "frontend scratch",
+        "owner": "h1PsramStorage.frontendScratch",
+        "bytes": 624384,
+        "writer": "Ordinary/legacy frontend and frontend/spectral/mel diagnostics",
+        "first_valid_point": "Varies by intermediate; no whole-scratch numerical generation publication.",
+        "last_valid_point": "Before next intermediate writer, often within the same frontend.",
+        "next_overwrite_point": "Next spectral/mel/layout operation or frontend diagnostic command.",
+        "survives_ResultReady": "Some bytes physically persist; no evidence generation can be inferred.",
+        "safe_deferred_evidence": false,
+        "production_workspace_removable_by_contract": false,
+        "source": [
+          {
+            "path": "firmware/h1/src/model_storage.hpp",
+            "symbol": "H1FrontendScratch",
+            "line_at_entry_HEAD": 106
+          }
+        ]
+      }
+    ],
+    "addresses": "Exact retained-artifact addresses and full audit retained privately; no new physical state claimed.",
+    "selected_evidence_mechanism": "EXPLICIT_DIAGNOSTIC_INFERENCE_MODE",
+    "ON_DEMAND_GENERATION_BOUND_EVIDENCE_authorized": false,
+    "current_per_buffer_generation_and_pin_proof_exists": false,
+    "no_new_large_snapshot": true
+  },
+  "memory_retention_policy": {
+    "authority": "Source plus DWARF/symtab of the exact retained qualified ELF; prospective values are logical storage objectives, not a new build memory report.",
+    "current_saved_H1RunResult_bytes": 1880,
+    "current_top100_payload_bytes": 800,
+    "proposed_top3_payload_bytes": 24,
+    "current_boundary_and_score_crc_metadata_bytes": 32,
+    "proposed_production_boundary_and_score_crc_metadata_bytes": 0,
+    "current_profile_bytes_in_saved_result": 912,
+    "proposed_production_profile_bytes": 0,
+    "current_input_crc_bytes_in_result": 4,
+    "proposed_minimum_input_crc_bytes_in_result": 0,
+    "current_input_SHA_chars_in_result": 65,
+    "proposed_production_input_SHA_chars_in_result": 0,
+    "current_full_scores": {
+      "current_internal_score_workspace_bytes": 46240,
+      "additional_full_score_array_in_H1RunResult_bytes": 0,
+      "existing_first_diagnostic_snapshot_score_bytes": 46240,
+      "ordinary_full_score_API_view": "GET_INFERENCE_DATA reads the current score workspace."
+    },
+    "proposed_full_scores": {
+      "internal_score_workspace_bytes": 46240,
+      "product_published_or_separately_retained_full_scores_bytes": 0,
+      "claimed_workspace_bytes_removed": 0
+    },
+    "saved_repeat": {
+      "current_global_gLastResult_bytes": 1880,
+      "separate_additional_saved_repeat_H1RunResult_bytes": 0,
+      "note": "gLastResult simultaneously serves publication and previous-result authority; do not double-count it.",
+      "proposed_production_diagnostic_repeat_storage_bytes": 0,
+      "diagnostic_previous_full_result_capacity_bytes": 1880
+    },
+    "proposed_minimum_compact_result": {
+      "logical_fixed_width_bytes": 76,
+      "illustrative_8byte_aligned_slot_bytes": 80,
+      "one_retained_slot_reduction_vs_current_bytes": 1800,
+      "two_small_slots_if_atomic_publication_requires_bytes": 160,
+      "two_slot_net_reduction_vs_current_bytes": 1720,
+      "transient_staging_slot_bytes": 80,
+      "optional_inputCRC_logical_extra_bytes": 4,
+      "session_descriptor_bytes": "Static immutable descriptor, separately accounted; do not duplicate models/labels per inference.",
+      "actual_future_ABI_size_must_be_verified": true
+    },
+    "topk_workspace": {
+      "current_index_workspace_bytes": 400,
+      "possible_future_top3_index_workspace_bytes": 12,
+      "possible_stack_payload_reduction_bytes": 388,
+      "algorithm_not_changed_here": true
+    },
+    "diagnostic_only_workspace": {
+      "existing_first_full_H1Boundaries_snapshot_bytes": 1371328,
+      "future_ordinary_requirement_bytes": 0,
+      "reclamation_condition": "Future explicit diagnostic build/storage policy only, with linker/lifecycle/layout qualification; no automatic reclamation or relocation authorized now.",
+      "diagnostic_top100_profile_crc_and_full_results": "Retain capacity on the diagnostic route; allocation policy must be proven in implementation.",
+      "new_deferred_evidence_snapshot_bytes": 0
+    },
+    "unchanged_current_compute_workspace": {
+      "H1Boundaries_bytes": 1371328,
+      "frontendScratch_bytes": 624384,
+      "classifier_internal_arena_output_bytes": 23120,
+      "removable_by_this_freeze": false
+    },
+    "no_large_copy_to_fake_latency": true,
+    "no_memory_reduction_implemented_or_physically_measured": true
+  },
+  "qualification_exactness_gates": {
+    "TOTAL_INTEGER_MISMATCHES": 0,
+    "MAXIMUM_LSB_ERROR": 0,
+    "FULL_SCORE_BIT_MISMATCHES": 0,
+    "TOP100_INDEX_MISMATCHES": 0,
+    "TOP100_SCORE_BIT_MISMATCHES": 0,
+    "BOUNDARY_CRC_MISMATCHES": 0,
+    "INPUT_IDENTITY_FIELD_MISMATCHES": 0,
+    "TOP3_INDEX_MISMATCHES": 0,
+    "TOP3_SCORE_BIT_MISMATCHES": 0,
+    "PRODUCTION_TOP3_INDEX_MISMATCHES": 0,
+    "PRODUCTION_TOP3_SCORE_BIT_MISMATCHES": 0
+  },
+  "future_implementation_gates": {
+    "separate_explicit_implementation_and_physical_qualification_authorization_required": true,
+    "production_top3_exactness": {
+      "TOTAL_INTEGER_MISMATCHES": 0,
+      "MAXIMUM_LSB_ERROR": 0,
+      "FULL_SCORE_BIT_MISMATCHES": 0,
+      "TOP100_INDEX_MISMATCHES": 0,
+      "TOP100_SCORE_BIT_MISMATCHES": 0,
+      "BOUNDARY_CRC_MISMATCHES": 0,
+      "INPUT_IDENTITY_FIELD_MISMATCHES": 0,
+      "TOP3_INDEX_MISMATCHES": 0,
+      "TOP3_SCORE_BIT_MISMATCHES": 0,
+      "PRODUCTION_TOP3_INDEX_MISMATCHES": 0,
+      "PRODUCTION_TOP3_SCORE_BIT_MISMATCHES": 0
+    },
+    "prospective_zero_operation_targets": {
+      "BOUNDARY_CRC_FULL_BUFFER_SCANS_PER_PRODUCTION_INFERENCE": 0,
+      "SCORE_CRC_FULL_BUFFER_SCANS_PER_PRODUCTION_INFERENCE": 0,
+      "DIAGNOSTIC_REPEAT_COMPARISON_PER_PRODUCTION_INFERENCE": 0,
+      "DIAGNOSTIC_FULL_RESULT_SAVE_PER_PRODUCTION_INFERENCE": 0
+    },
+    "zero_target_accounting": "Count actual executed operations; a source-local CRC cannot be ignored merely because its value is not published. Distinguish zero result-evidence scans from zero total boundary scans.",
+    "known_unresolved_stage_internal_frontend_CRC": {
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "symbol": "h1RunFrontendM55 outputCrc32",
+        "line_at_entry_HEAD": 639
+      },
+      "called_by_ordinary_frontend_wrapper": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "symbol": "h1RunFrontend",
+        "line_at_entry_HEAD": 662
+      },
+      "full_frontend_output_scan_calls_per_successful_run": 1,
+      "bytes_per_scan": 755328,
+      "included_in_strict_total_boundary_scan_target": true,
+      "removal_authorized_by_this_contract": false,
+      "meaning": "A result-only implementation can remove the seven recordBoundaryCrcs scans, but the unchanged frontend still performs this internal output CRC. It cannot claim the strict total zero-scan target passed. Record a specific ZERO_SCAN_TARGET_NOT_MET disposition; no frontend change or timing subtraction is authorized to make it pass.",
+      "gate_vs_semantic_qualification": "Result-contract numerical/physical qualification and strict zero-scan/performance target dispositions remain separate. Reprofile the qualified result implementation and retain this unresolved target before the mandatory frontend sequence."
+    },
+    "result_evidence_scan_subgates": {
+      "recordBoundaryCrcs_full_buffer_scans": 0,
+      "score_crc_scan_for_product_publication": 0,
+      "weaker_subgate_is_not_total_zero_target": true
+    },
+    "small_result_publication": "Required before PRODUCTION_RESULT_READY; never counted as a forbidden diagnostic full-result save.",
+    "keep_required_safety_work": [
+      "accepted waveform lifecycle and input validation",
+      "all-score finite verification",
+      "exact score arithmetic",
+      "model guards and initialized identities",
+      "ownership and required cache maintenance",
+      "both U85 stages, no CPU fallback"
+    ],
+    "evidence_generation_safety": "Every source writer and exporter must pass generation/pin/failure/partial-write/timeout tests before qualification.",
+    "memory_qualification": "Report actual retained/result/workspace/diagnostic and peak bytes from the exact future binary; qualify guards and every affected linker/lifetime boundary. No current workspace reclamation is implied.",
+    "unchanged_main_latency_gate": {
+      "criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+      "warmups": 5,
+      "measured": 100,
+      "consecutive": true,
+      "outliers_removed": 0,
+      "every_unrounded_sample_ms": "<700.000",
+      "boundary": "waveform-ready -> complete PRODUCTION_RESULT_READY"
+    },
+    "diagnostic_latency_substitution_allowed": false,
+    "future_build_and_target_identity": "Bind exact commit/tree/source bundle/build/config/toolchain/ELF/BIN/model identities and physical programmed readback before physical claims.",
+    "no_performance_or_memory_saving_claim_from_this_freeze": true
+  },
+  "mandatory_future_frontend_ordering": {
+    "schema": "h1-future-frontend-ordering-rule-v1",
+    "status": "FRONTEND_TINY_BIRDNET_RECOMPARISON_GATE_FROZEN",
+    "FRONTEND_OPTIMIZATION_REQUIRES_TINY_BIRDNET_RECOMPARISON": true,
+    "sequence": [
+      {
+        "step": 1,
+        "required": "Separately authorize and implement PRODUCTION_RESULT_V1 and physically qualify exact production/diagnostic semantics with separate performance dispositions."
+      },
+      {
+        "step": 2,
+        "required": "Reprofile the exact physically qualified production binary; bind binary and measurement identity."
+      },
+      {
+        "step": 3,
+        "required": "Prospectively freeze FRONTEND_DECOMPOSITION observation plan before adding instrumentation."
+      },
+      {
+        "step": 4,
+        "required": "Instrument/decompose CURRENT H1 M55 frontend without optimizing arithmetic, layout, copies or any other frontend operation."
+      },
+      {
+        "step": 5,
+        "required": "Physically qualify decomposition for noninterference, exact numerical preservation, identities and measurement boundaries."
+      },
+      {
+        "step": 6,
+        "required": "Immediately afterward perform independent TINY_BIRDNET_M55_RECOMPARISON_V1; bind a uniquely authoritative reference state and complete timing/memory/numerical/provenance matrices."
+      },
+      {
+        "step": 7,
+        "required": "Only after successful completed re-comparison disposition may an H1 frontend candidate be selected/frozen; implementation/reuse requires separate later authorization."
+      }
+    ],
+    "no_frontend_candidate_before_step6_complete": true,
+    "required_tiny_comparison_dispositions": [
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_FRONTEND_CANDIDATE_JUSTIFIED",
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_NO_DIRECT_FRONTEND_CANDIDATE"
+    ],
+    "blocked_comparison_permits_frontend_freeze": false,
+    "independent_comparison": "Comparison is a distinct evidence/decision task after physically qualified H1 observation, not an assumed port or a conclusion inherited from historical timing.",
+    "sequence_is_mandatory_not_a_recommendation": true
+  },
+  "FRONTEND_OPTIMIZATION_REQUIRES_TINY_BIRDNET_RECOMPARISON": true,
+  "mandatory_tiny_birdnet_recomparison": {
+    "schema": "tiny-birdnet-m55-recomparison-requirements-v1",
+    "comparison": "TINY_BIRDNET_M55_RECOMPARISON_V1",
+    "status": "FRONTEND_TINY_BIRDNET_RECOMPARISON_GATE_FROZEN",
+    "performed_this_session": false,
+    "reference_source_inspected_or_copied_this_session": false,
+    "private_locator_identified": true,
+    "unique_authoritative_state_selected_now": false,
+    "future_identity_required_before_conclusions": [
+      "repository identifier and private path locator",
+      "remote URL if applicable",
+      "branch",
+      "commit SHA",
+      "Git tree SHA",
+      "dirty and untracked state including content identities",
+      "source files and hashes",
+      "build system",
+      "compiler/toolchain identity",
+      "compile flags",
+      "target MCU/core",
+      "clock configuration",
+      "FPU/MVE configuration",
+      "cache configuration",
+      "memory placement",
+      "CMSIS/CMSIS-DSP versions if used",
+      "all relevant libraries",
+      "measurement methodology",
+      "timing boundary",
+      "sample/window dimensions",
+      "frontend input/output contract",
+      "memory report",
+      "existing benchmark evidence"
+    ],
+    "reference_ambiguity_policy": "STOP and identify the authoritative state if multiple repositories/worktrees/branches/artifacts could be the intended reference, or if its identity/evidence cannot be bound. A known directory alone is not comparison authority.",
+    "H1_identity_required": "Bind exact qualified production and decomposition source/build/target/model/toolchain/configuration and measurement state at comparison time, not this entry binary by assumption.",
+    "dimensions": {
+      "algorithm": [
+        "window generation/application",
+        "FFT type and length",
+        "RFFT vs CFFT strategy",
+        "FFT library/kernel",
+        "magnitude/power computation",
+        "mel-bank representation",
+        "mel accumulation",
+        "log/compression",
+        "normalization",
+        "layout/transposition",
+        "quantization",
+        "copy behavior",
+        "scratch reuse",
+        "loop structure",
+        "vectorization"
+      ],
+      "numerical_contract": [
+        "input samples",
+        "window size",
+        "hop size",
+        "FFT bins",
+        "mel bins",
+        "frequency bounds",
+        "power/magnitude semantics",
+        "epsilon/clamp rules",
+        "log base/function",
+        "normalization constants",
+        "tensor layout",
+        "quantization scale/zero point",
+        "rounding/saturation",
+        "frontend output dimensions"
+      ],
+      "M55_implementation": [
+        "scalar vs MVE",
+        "CMSIS-DSP use",
+        "custom kernels",
+        "compiler auto-vectorization",
+        "SIMD width",
+        "alignment",
+        "loop unrolling",
+        "memory access pattern",
+        "cache locality",
+        "PSRAM/SRAM traffic",
+        "constant placement",
+        "precomputation",
+        "table layout",
+        "DMA if any"
+      ],
+      "timing": [
+        "exact measurement boundary",
+        "total frontend cycles",
+        "spectral/STFT cycles",
+        "mel cycles",
+        "normalization/log cycles",
+        "layout/copy cycles",
+        "quantization cycles",
+        "setup overhead",
+        "clock frequency",
+        "cycles preferred over milliseconds",
+        "separate internal validation/CRC scans and omitted work from actual acceleration"
+      ],
+      "memory": [
+        "static code",
+        "flash/RO data",
+        "SRAM",
+        "PSRAM",
+        "stack",
+        "scratch",
+        "persistent frontend buffers",
+        "FFT buffers",
+        "mel tables",
+        "temporary tensors",
+        "peak live memory",
+        "buffer reuse",
+        "allocator behavior",
+        "matching measurement categories on both implementations where possible"
+      ]
+    },
+    "applicability_classes": [
+      "DIRECTLY_APPLICABLE_TO_H1_EXACT_SEMANTICS",
+      "APPLICABLE_WITH_EXACTNESS_PROOF",
+      "ARCHITECTURALLY_INFORMATIVE_ONLY",
+      "NOT_COMPARABLE_DIFFERENT_SEMANTICS",
+      "MEASUREMENT_BOUNDARY_DIFFERENCE",
+      "HARDWARE/TOOLCHAIN_DIFFERENCE"
+    ],
+    "provenance_license_gate": {
+      "required_before_reuse": true,
+      "objects": [
+        "implementation code",
+        "tables",
+        "kernels",
+        "generated constants",
+        "external dependencies"
+      ],
+      "classes": [
+        "algorithmic idea",
+        "independently reimplemented idea",
+        "reusable licensed source",
+        "generated artifact",
+        "external dependency"
+      ],
+      "requirements": [
+        "Exact source provenance and license/version/artifact identity",
+        "Compatibility with clean H1 production lineage and redistribution terms",
+        "Later explicit implementation/reuse authorization and provenance record"
+      ],
+      "inspection_does_not_authorize_reuse": true
+    },
+    "future_deliverables": [
+      "TINY_BIRDNET_REFERENCE_IDENTITY.json",
+      "H1_M55_FRONTEND_DECOMPOSITION.json",
+      "TINY_BIRDNET_FRONTEND_DECOMPOSITION.json",
+      "H1_VS_TINY_BIRDNET_ALGORITHM_MATRIX.json",
+      "H1_VS_TINY_BIRDNET_TIMING_MATRIX.json",
+      "H1_VS_TINY_BIRDNET_MEMORY_MATRIX.json",
+      "H1_VS_TINY_BIRDNET_NUMERICAL_CONTRACT_MATRIX.json",
+      "H1_VS_TINY_BIRDNET_TOOLCHAIN_MATRIX.json",
+      "H1_VS_TINY_BIRDNET_APPLICABILITY_DECISION.json",
+      "TINY_BIRDNET_PROVENANCE_LICENSE_REVIEW.json"
+    ],
+    "final_disposition": [
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_FRONTEND_CANDIDATE_JUSTIFIED",
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_NO_DIRECT_FRONTEND_CANDIDATE",
+      "A specific BLOCKED disposition; no frontend candidate may freeze."
+    ],
+    "principle": "Do not assume exact H1 is optimal or faster tiny-birdnet directly reusable. Quantify the causes in cycles and bytes; do not infer equivalence from timing."
+  },
+  "scope_exclusions": [
+    "frontend arithmetic optimization",
+    "frontend fusion",
+    "frontend copy elimination",
+    "frontend internal CRC removal",
+    "CMSIS-DSP substitution",
+    "MVE optimization",
+    "FFT replacement",
+    "mel algorithm change",
+    "quantization change",
+    "GeM optimization",
+    "NPU changes",
+    "cache changes",
+    "regional classifier projection",
+    "model/Vela change",
+    "clock/compiler optimization",
+    "waveform-validation changes",
+    "hardware CRC acceleration",
+    "DMA CRC acceleration",
+    "tiny-birdnet code/table/kernel reuse",
+    "USB protocol or result structure implementation",
+    "hardware access/programming/reset/run",
+    "PR creation",
+    "master update",
+    "history rewrite"
+  ],
+  "safety_checks": {
+    "PRODUCT_RESULT_SEMANTICS_COMPLETE": true,
+    "DIAGNOSTIC_EVIDENCE_SEMANTICS_COMPLETE": true,
+    "NO_PRODUCT_REQUIRED_WORK_MOVED_AFTER_RESULTREADY": true,
+    "NO_STALE_EVIDENCE_ROUTE": true,
+    "NO_MIXED_GENERATION_EVIDENCE_ROUTE": true,
+    "NO_UNJUSTIFIED_LARGE_EVIDENCE_COPY": true,
+    "NO_NUMERICAL_SEMANTIC_WEAKENING": true
+  },
+  "audit_bindings": {
+    "PRODUCTION_RESULT_CONSUMER_AUDIT.json": {
+      "bytes": 23737,
+      "sha256": "74899a08a4453a6ef3388dd89982bc5d83af55e5d2e058f0a3303562deed8c76"
+    },
+    "PRODUCTION_RESULT_BUFFER_LIFETIME_AUDIT.json": {
+      "bytes": 16270,
+      "sha256": "b7d1c23b104faf5f65fbc806734c4824be78a5ccb0b6dd2759157ca76dee23ce"
+    },
+    "PRODUCTION_RESULT_V1_DEFINITION.json": {
+      "bytes": 24908,
+      "sha256": "98a1e717e0880a2d64ef0458b33aff53e4b73f35b0b2029d15eabc8b36fed2db"
+    },
+    "QUALIFICATION_DIAGNOSTIC_RESULT_V1_DEFINITION.json": {
+      "bytes": 6962,
+      "sha256": "70e4ea95627d55551555afa9da68ed8a4212dd4f7294b1fbc395bb1904f1da09"
+    },
+    "PRODUCTION_RESULT_CONTRACT_SAFETY_REVIEW.json": {
+      "bytes": 5575,
+      "sha256": "ed402af5e4cffda1911a81b3ba99ddbfcd83f239e10c4efe275eb02a257b99fd"
+    },
+    "FUTURE_FRONTEND_ORDERING_RULE.json": {
+      "bytes": 2042,
+      "sha256": "d45366ff36bd3451f7d6ad0e3ccf41d13a1392239af35a617f983cd8c10770a1"
+    },
+    "TINY_BIRDNET_RECOMPARISON_REQUIREMENTS.json": {
+      "bytes": 5547,
+      "sha256": "2e4dca04cbc778e5e10e3b158ebbc0251716e5007960149b4431ec9df2e16b50"
+    },
+    "PRODUCTION_RESULT_CONTRACT_SCOPE_REVIEW.json": {
+      "bytes": 1665,
+      "sha256": "fbd87b21b2484ac0238e412c2b717c5fc441518fecca5d794b0c42131bc36be2"
+    }
+  },
+  "scope_disposition": "PRODUCTION_RESULT_CONTRACT_SCOPE_PASS",
+  "formal_claim": "Architecture freeze, not implementation/performance qualification, formal M4/M5 acceptance or a numerical tolerance change.",
+  "stop": "IMPLEMENTATION_NOT_STARTED. No hardware run/program/reset, frontend instrumentation/comparison/port, protocol or firmware implementation in this session.",
+  "exact_next_action": "Separately authorize production-result implementation and physical qualification against this contract, including exact top3/diagnostic preservation, generation safety and truthful zero-scan dispositions; then reprofile before the mandatory frontend observation/comparison sequence."
+}
