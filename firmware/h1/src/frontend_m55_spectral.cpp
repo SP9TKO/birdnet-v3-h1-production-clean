@@ -1,4 +1,5 @@
 #include "frontend_m55_spectral.hpp"
+#include "frontend_observer.hpp"
 
 #include "h1_contract.h"
 
@@ -293,6 +294,7 @@ bool h1M55SpectralProcessFrame(H1M55SpectralContext *context,
 		workspace[sample] = reflectedSample(waveform, paddedStart + sample);
 	}
 	const uint64_t frameEnd = k_cycle_get_64();
+	h1FFramePair(frameIndex, H1FFrame::frameStart, frameStart, frameEnd, H1FCounter::FRAME_PREPARATIONS);
 	if (capture && capture->reflectedFrame) {
 		std::memcpy(capture->reflectedFrame, workspace, sizeof(float) * kFftLength);
 	}
@@ -309,6 +311,7 @@ bool h1M55SpectralProcessFrame(H1M55SpectralContext *context,
 	const uint64_t hannStart = k_cycle_get_64();
 	arm_mult_f32(workspace, hann, workspace, kFftLength);
 	const uint64_t hannEnd = k_cycle_get_64();
+	h1FFramePair(frameIndex, H1FFrame::hannStart, hannStart, hannEnd, H1FCounter::HANN_OPERATIONS);
 	if (capture && capture->windowedFrame) {
 		std::memcpy(capture->windowedFrame, workspace, sizeof(float) * kFftLength);
 	}
@@ -325,6 +328,7 @@ bool h1M55SpectralProcessFrame(H1M55SpectralContext *context,
 	const uint64_t cfftStart = k_cycle_get_64();
 	arm_cfft_f32(&context->cfft, workspace, 0, 1);
 	const uint64_t cfftEnd = k_cycle_get_64();
+	h1FFramePair(frameIndex, H1FFrame::cfftStart, cfftStart, cfftEnd, H1FCounter::CFFT_OPERATIONS);
 	if (timing) {
 		timing->cfftCycles = cfftEnd - cfftStart;
 		timing->totalCycles = completedKernelCycles(*timing);
@@ -340,6 +344,7 @@ bool h1M55SpectralProcessFrame(H1M55SpectralContext *context,
 		return false;
 	}
 	const uint64_t splitEnd = k_cycle_get_64();
+	h1FFramePair(frameIndex, H1FFrame::splitStart, splitStart, splitEnd, H1FCounter::REAL_SPLIT_OPERATIONS);
 	if (timing) {
 		timing->realSplitCycles = splitEnd - splitStart;
 		timing->transformCycles = timing->cfftCycles + timing->realSplitCycles;
@@ -388,6 +393,7 @@ bool h1M55SpectralProcessFrame(H1M55SpectralContext *context,
 			}
 		}
 		const uint64_t squaresEnd = k_cycle_get_64();
+		h1FFramePair(frameIndex, H1FFrame::squaresStart, squaresStart, squaresEnd, H1FCounter::SCALAR_POWER_OPERATIONS);
 		if (timing) {
 			timing->powerSquaresCycles = squaresEnd - squaresStart;
 			timing->totalCycles = completedKernelCycles(*timing);

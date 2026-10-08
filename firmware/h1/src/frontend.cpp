@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Taras Kuchynskyy
 // SPDX-License-Identifier: Apache-2.0
 #include "frontend.hpp"
+#include "frontend_observer.hpp"
 #include "baseline_profile.h"
 #include "frontend_m55_spectral.hpp"
 
@@ -450,6 +451,7 @@ bool h1M55CompactMelFourFrames(const float *powerGroup,
 	}
 
 #if H1_M55_HAS_MVE_FLOAT
+	const uint64_t observerMelMathBegin = h1FRead();
 	static constexpr uint32_t frameOffsets[kMelFramesPerMveGroup] = {
 		0u, kSpectrumBins, 2u * kSpectrumBins, 3u * kSpectrumBins};
 	const uint32x4_t laneOffsets = vld1q_u32(frameOffsets);
@@ -470,6 +472,8 @@ bool h1M55CompactMelFourFrames(const float *powerGroup,
 		output[(firstFrame + 2u) * kMelBins + band] = vgetq_lane_f32(sum, 2);
 		output[(firstFrame + 3u) * kMelBins + band] = vgetq_lane_f32(sum, 3);
 	}
+	const uint64_t observerMelMathEnd = h1FRead();
+	h1FGroupPair(firstFrame / 4, H1FGroup::M_MATH_BEGIN, observerMelMathBegin, observerMelMathEnd);
 	usedMve = true;
 #else
 	for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
@@ -526,8 +530,11 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 	static_assert(kFrames % kMelFramesPerMveGroup == 0);
 	static_assert(kMelFramesPerMveGroup * kSpectrumBins <= 224 * 281);
 	float *const groupPower = scratch.gray;
+	h1FBackend(useCmsisPower, captureStages, compactMel.weightCount);
+	h1FFixedAt(H1FFixed::READY_DONE, h1FRead(), 1);
 	for (int firstFrame = 0; firstFrame < kFrames;
 	     firstFrame += kMelFramesPerMveGroup) {
+		const uint64_t observerSpectralBegin = h1FRead();
 		mark(H1M55FrontendStage::SpectralEnter);
 		h1BaselineSpectralGroupBegin();
 		for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
@@ -539,9 +546,13 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 			const uint32_t powerStage = useCmsisPower
 				? H1_M55_STAGE_POWER_CMSIS_MAG_SQUARED
 				: H1_M55_STAGE_POWER_SQUARES;
-			if (!h1M55SpectralProcessFrame(&runtime.spectral, waveform,
+			const uint64_t observerCallBegin = h1FRead();
+			const bool observerFrameCompleted = h1M55SpectralProcessFrame(&runtime.spectral, waveform,
 						       waveformElements, hann, frame, &capture,
-						       powerStage, !useCmsisPower))
+						       powerStage, !useCmsisPower);
+			const uint64_t observerCallEnd = h1FRead();
+			h1FCallPair(frame, observerCallBegin, observerCallEnd, observerFrameCompleted);
+			if (!observerFrameCompleted)
 				return fail(H1FrontendStatus::InvalidInput);
 			timing.frameCycles += frameTiming.framePreparationCycles;
 			timing.hannCycles += frameTiming.hannCycles;
@@ -553,20 +564,34 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 		}
 		h1BaselineSpectralGroupEnd();
 		mark(H1M55FrontendStage::SpectralDone);
+		const uint64_t observerSpectralEnd = h1FRead();
+		h1FGroupPair(firstFrame / 4, H1FGroup::G_SPEC_BEGIN, observerSpectralBegin, observerSpectralEnd);
+		h1FCount(H1FCounter::SPECTRAL_GROUPS);
+		const uint64_t observerMelBegin = h1FRead();
 		mark(H1M55FrontendStage::MelEnter);
 		const uint64_t melStart = k_cycle_get_64();
 		bool usedMve = false;
-		if (!h1M55CompactMelFourFrames(groupPower, compactMel,
-					       scratch.melDb, firstFrame, usedMve))
+		const uint64_t observerMelCallBegin = h1FRead();
+		const bool observerMelCompleted = h1M55CompactMelFourFrames(groupPower, compactMel,
+					       scratch.melDb, firstFrame, usedMve);
+		const uint64_t observerMelCallEnd = h1FRead();
+		h1FGroupPair(firstFrame / 4, H1FGroup::M_CALL_BEGIN, observerMelCallBegin, observerMelCallEnd);
+		if (!observerMelCompleted)
 			return fail(H1FrontendStatus::InvalidConstants);
+		h1FMelCompleted(usedMve);
 		(void)usedMve;
 		for (uint32_t lane = 0; lane < kMelFramesPerMveGroup; ++lane) {
+			const uint64_t observerFiniteBegin = h1FRead();
 			const size_t offset =
 				(firstFrame + lane) * kMelBins;
 			for (int band = 0; band < kMelBins; ++band) {
 				if (!std::isfinite(scratch.melDb[offset + band]))
 					return fail(H1FrontendStatus::NonFinite);
 			}
+			const uint64_t observerFiniteEnd = h1FRead();
+			h1FGroupPair(firstFrame / 4, static_cast<H1FGroup>(uint32_t(H1FGroup::M_FINITE_0_BEGIN) + lane * 2), observerFiniteBegin, observerFiniteEnd);
+			h1FCount(H1FCounter::MEL_FINITE_CALLS);
+			h1FCount(H1FCounter::MEL_FINITE_ELEMENTS, kMelBins);
 			if (captureStages) {
 				std::memcpy(scratch.melRaw + offset,
 					    scratch.melDb + offset,
@@ -575,9 +600,12 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 		}
 		timing.melCycles += k_cycle_get_64() - melStart;
 		mark(H1M55FrontendStage::MelDone);
+		const uint64_t observerMelEnd = h1FRead();
+		h1FGroupPair(firstFrame / 4, H1FGroup::G_MEL_BEGIN, observerMelBegin, observerMelEnd);
 	}
 	mark(H1M55FrontendStage::SpectralDone);
 
+	const uint64_t observerDbBegin = h1FRead();
 	h1BaselineMelCycles(timing.melCycles);
 	mark(H1M55FrontendStage::DbEnter);
 	float globalMaximum = -INFINITY;
@@ -590,11 +618,18 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 		globalMaximum = db > globalMaximum ? db : globalMaximum;
 	}
 	const float floorValue = globalMaximum - kDbRange;
-	timing.dbLogCycles = k_cycle_get_64() - dbStart;
+	const uint64_t observerDbMathEnd = k_cycle_get_64();
+	timing.dbLogCycles = observerDbMathEnd - dbStart;
+	h1FFixedPair(H1FFixed::dbStart, H1FFixed::dbEnd, dbStart, observerDbMathEnd, 0);
+	h1FCount(H1FCounter::LOG_CALLS, kFrames * kMelBins);
 	mark(H1M55FrontendStage::DbDone);
+	const uint64_t observerDbEnd = h1FRead();
+	h1FFixedPair(H1FFixed::DB_PARENT_BEGIN, H1FFixed::DB_PARENT_END, observerDbBegin, observerDbEnd);
 
+	const uint64_t observerCropBegin = h1FRead();
 	mark(H1M55FrontendStage::CropNormEnter);
 	const uint64_t cropStart = k_cycle_get_64();
+	const uint64_t observerCropMathBegin = h1FRead();
 	float imageMinimum = INFINITY;
 	float imageMaximum = -INFINITY;
 	for (int row = 0; row < kImageRows; ++row) {
@@ -607,18 +642,35 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 			imageMaximum = clamped > imageMaximum ? clamped : imageMaximum;
 		}
 	}
+	const uint64_t observerCropMathEnd = h1FRead();
+	h1FFixedPair(H1FFixed::CROP_MATH_BEGIN, H1FFixed::CROP_MATH_END, observerCropMathBegin, observerCropMathEnd);
+	h1FCount(H1FCounter::CROP_ELEMENTS, kImageRows * kInputWidth);
+	const uint64_t observerNormalizeBegin = h1FRead();
 	const float denominator = (imageMaximum - imageMinimum) + kEpsilon;
 	for (float &value : scratch.image)
 		value = kOne - ((value - imageMinimum) / denominator);
-	timing.cropNormalizeCycles = k_cycle_get_64() - cropStart;
+	const uint64_t observerNormalizeEnd = h1FRead();
+	const uint64_t observerCropTimerEnd = k_cycle_get_64();
+	timing.cropNormalizeCycles = observerCropTimerEnd - cropStart;
+	h1FFixedPair(H1FFixed::NORMALIZE_BEGIN, H1FFixed::NORMALIZE_END, observerNormalizeBegin, observerNormalizeEnd);
+	h1FCount(H1FCounter::NORMALIZE_ELEMENTS, kImageRows * kInputWidth);
 	mark(H1M55FrontendStage::CropNormDone);
+	const uint64_t observerCropEnd = h1FRead();
+	h1FFixedPair(H1FFixed::CROP_PARENT_BEGIN, H1FFixed::CROP_PARENT_END, observerCropBegin, observerCropEnd);
 
+	const uint64_t observerResizeBegin = h1FRead();
 	mark(H1M55FrontendStage::ResizeEnter);
 	const uint64_t resizeStart = k_cycle_get_64();
 	resizeHalfPixel(scratch.image, scratch.gray);
-	timing.resizeCycles = k_cycle_get_64() - resizeStart;
+	const uint64_t observerResizeMathEnd = k_cycle_get_64();
+	timing.resizeCycles = observerResizeMathEnd - resizeStart;
+	h1FFixedPair(H1FFixed::resizeStart, H1FFixed::resizeEnd, resizeStart, observerResizeMathEnd, 0);
+	h1FCount(H1FCounter::RESIZE_PIXELS, kOutputHeight * kOutputWidth);
 	mark(H1M55FrontendStage::ResizeDone);
+	const uint64_t observerResizeEnd = h1FRead();
+	h1FFixedPair(H1FFixed::RESIZE_PARENT_BEGIN, H1FFixed::RESIZE_PARENT_END, observerResizeBegin, observerResizeEnd);
 
+	const uint64_t observerLayoutBegin = h1FRead();
 	mark(H1M55FrontendStage::LayoutEnter);
 	const uint64_t layoutStart = k_cycle_get_64();
 	constexpr float means[3] = {0.5f, 0.4000000059604645f, 0.30000001192092896f};
@@ -629,15 +681,33 @@ H1FrontendStatus h1RunFrontendM55(const float *waveform, size_t waveformElements
 				(scratch.gray[pixel] - means[channel]) * inverseStd[channel];
 		}
 	}
-	timing.finalLayoutCycles = k_cycle_get_64() - layoutStart;
+	const uint64_t observerLayoutMathEnd = k_cycle_get_64();
+	timing.finalLayoutCycles = observerLayoutMathEnd - layoutStart;
+	h1FFixedPair(H1FFixed::layoutStart, H1FFixed::layoutEnd, layoutStart, observerLayoutMathEnd, 0);
+	h1FCount(H1FCounter::LAYOUT_ELEMENTS, kOutputHeight * kOutputWidth * 3);
 	mark(H1M55FrontendStage::LayoutDone);
-	timing.totalCycles = k_cycle_get_64() - totalStart;
+	const uint64_t observerLayoutEnd = h1FRead();
+	h1FFixedPair(H1FFixed::LAYOUT_PARENT_BEGIN, H1FFixed::LAYOUT_PARENT_END, observerLayoutBegin, observerLayoutEnd);
+	const uint64_t observerComputeEnd = k_cycle_get_64();
+	timing.totalCycles = observerComputeEnd - totalStart;
+	h1FFixedPair(H1FFixed::COMPUTE_BEGIN, H1FFixed::COMPUTE_END, totalStart, observerComputeEnd, 0);
 
+	const uint64_t observerOutputFiniteBegin = h1FRead();
 	timing.finiteCount = 0;
 	for (size_t i = 0; i < outputElements; ++i)
 		timing.finiteCount += std::isfinite(output[i]);
+	const uint64_t observerOutputFiniteEnd = h1FRead();
+	h1FFixedPair(H1FFixed::FINITE_BEGIN, H1FFixed::FINITE_END, observerOutputFiniteBegin, observerOutputFiniteEnd);
+	h1FCount(H1FCounter::FRONTEND_OUTPUT_FINITE_CALLS);
+	h1FCount(H1FCounter::FRONTEND_OUTPUT_FINITE_ELEMENTS, outputElements);
+	const uint64_t observerCrcBegin = h1FRead();
 	timing.outputCrc32 = crc32(reinterpret_cast<const uint8_t *>(output),
 				   outputElements * sizeof(float));
+	const uint64_t observerCrcEnd = h1FRead();
+	h1FFixedPair(H1FFixed::CRC_BEGIN, H1FFixed::CRC_END, observerCrcBegin, observerCrcEnd);
+	h1FCount(H1FCounter::FRONTEND_INTERNAL_CRC_CALLS);
+	h1FCount(H1FCounter::FRONTEND_INTERNAL_CRC_BYTES, outputElements * sizeof(float));
+	h1FNativeResult(timing.totalCycles, timing.finiteCount, timing.outputCrc32);
 	if (timing.finiteCount != outputElements)
 		return fail(H1FrontendStatus::NonFinite);
 	mark(H1M55FrontendStage::FrontendSuccess);

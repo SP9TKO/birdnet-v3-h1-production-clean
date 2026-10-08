@@ -17,6 +17,7 @@
 #include "audio_i2s.hpp"
 #endif
 #include "frontend.hpp"
+#include "frontend_observer.hpp"
 #if defined(H1_FRONTEND_DIAGNOSTICS)
 #include "frontend_diagnostics.hpp"
 #endif
@@ -201,7 +202,7 @@ void syncResultOwner()
 bool resultWriterAllowed()
 {
 	syncResultOwner();
-	return h1ProductionRuntime.service.writerAllowed(h1ProfileNow());
+	return h1ProductionRuntime.service.writerAllowed(h1ProfileNow()) && h1FWriterAllowed();
 }
 
 uint64_t resultPinDuration()
@@ -955,12 +956,16 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	result.profile.pre_frontend_overhead_cycles =
 		frontendStart - totalStart;
 	H1_VALIDATION_MARK(H1V_FRONTEND_WORK_BEGIN);
+	const uint64_t observerFrontendBegin = h1FRead();
 	const H1FrontendStatus frontendStatus = legacyReference
 		? h1RunFrontendLegacy(waveform, H1_WAVEFORM_ELEMENTS, scratch,
 			boundaries.frontend, H1_FRONTEND_ELEMENTS)
 		: h1RunFrontend(waveform, H1_WAVEFORM_ELEMENTS, scratch,
 			gM55FrontendRuntime, boundaries.frontend, H1_FRONTEND_ELEMENTS);
+	const uint64_t observerFrontendEnd = h1FRead();
 	const uint64_t frontendEnd = h1ProfileNow();
+	h1FFixedPair(H1FFixed::F0_BEGIN, H1FFixed::F0_END, observerFrontendBegin, observerFrontendEnd);
+	h1FCount(H1FCounter::FRONTEND_CALLS);
 	if (production && proof.observed) proof.frontendEnd = frontendEnd;
 	if (!legacyReference && frontendStatus == H1FrontendStatus::Ok) {
 		// The exact unchanged successful wrapper returns only after its one CRC.
@@ -994,6 +999,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	quantizeBackboneInput(boundaries.frontend, boundaries.backboneInput,
 			      H1_BACKBONE_INPUT_ELEMENTS, saturatedLow, saturatedHigh);
 	const uint64_t backboneQuantizeEnd = h1ProfileNow();
+	h1FFixedPair(H1FFixed::backboneQuantizeStart, H1FFixed::backboneQuantizeEnd, backboneQuantizeStart, backboneQuantizeEnd, 0);
 	h1BaselineMark(3u, backboneQuantizeEnd);
 	result.profile.frontend_to_backbone_quantize_cycles =
 		backboneQuantizeEnd - backboneQuantizeStart;
@@ -1060,6 +1066,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		return false;
 	}
 	const uint64_t classifierQuantizeEnd = h1ProfileNow();
+	h1FFixedPair(H1FFixed::classifierQuantizeStart, H1FFixed::classifierQuantizeEnd, classifierQuantizeStart, classifierQuantizeEnd, 0);
 	h1BaselineMark(7u, classifierQuantizeEnd);
 	result.profile.embedding_to_classifier_quantize_cycles =
 		classifierQuantizeEnd - classifierQuantizeStart;
@@ -1092,6 +1099,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	}
 	h1RunStateMark(H1RunState::PostprocessDone);
 	const uint64_t postprocessEnd = h1ProfileNow();
+	h1FFixedPair(H1FFixed::postprocessStart, H1FFixed::postprocessEnd, postprocessStart, postprocessEnd, 0);
 	H1_VALIDATION_AT(H1V_P0_END, postprocessEnd);
 	result.profile.postprocess_cycles = postprocessEnd - postprocessStart;
 	result.profile.total_compute_cycles = postprocessEnd - totalStart;
@@ -3161,6 +3169,7 @@ void sendProductionResult(const H1UsbFrame &request, H1ResultGenerationId token)
 
 void openResultSession(const H1UsbFrame &request)
 {
+	if (!h1FWriterAllowed()) { sendError(request, "FRONTEND_RECORDS_HELD", "Collect the retained observer records before rebinding"); return; }
 	if (!gComputeReady || !gModelStorageVerified) { sendError(request, "COMPUTE_NOT_READY", "Verified initialized H1 component identities required"); return; }
 	auto &service = h1ProductionRuntime.service;
 	const auto error = service.open(h1ResultReadLe64(request.payload), h1ResultReadLe64(request.payload+8), h1ProfileNow());
@@ -3189,8 +3198,164 @@ void openResultSession(const H1UsbFrame &request)
 	else sendError(request, "FORMAT_OVERFLOW", "Session descriptor did not fit");
 }
 
+
+struct H1ProductionCoreError { const char *code; const char *detail; };
+
+// One accepted production admission/compute/publication core for 161 and 168.
+// Diagnostic semantics below remain on their existing separate branch.
+bool productionAdmission(const H1UsbFrame &request, bool campaign, H1ProductionCoreError &failure)
+{
+ if (!request.payload || request.payloadLength != 48) { failure={"INVALID_REQUEST","Invalid production request length"};return false; }
+ const auto authentication=h1ProductionRuntime.service.authenticate(h1ResultReadLe64(request.payload),
+  h1ResultReadLe64(request.payload+8),h1ResultReadLe64(request.payload+16));
+ if (authentication!=H1ResultError::None) { failure={h1ResultErrorName(authentication),"A fresh result session binding is required"};return false; }
+ const uint32_t observed=readLe32(request.payload+40);
+ if (readLe32(request.payload+44) || observed>(campaign?0u:1u)) { failure={"INVALID_REQUEST","Invalid observation or reserved field"};return false; }
+ if (!resultWriterAllowed()) { failure={"DIAGNOSTIC_PIN_ACTIVE","Release pinned evidence before admitting inference"};return false; }
+ if (!gComputeReady || !gModelStorageVerified) { failure={"COMPUTE_NOT_READY","Initialized verified H1 required"};return false; }
+ const auto &receipt=h1WaveformLifecycle.receipt;
+ if (!gUpload.valid || h1WaveformLifecycle.state!=uint32_t(H1WaveformState::Valid) || receipt.producer!=H1WaveformProducer::Upload || !receipt.complete ||
+  receipt.epoch!=h1ResultReadLe64(request.payload+24) || receipt.generation!=h1ResultReadLe64(request.payload+32)) {
+  failure={"NO_UPLOAD","The exact qualified validated uploaded generation is required"};return false;
+ }
+ if (h1ProductionRuntime.service.sequence==UINT64_MAX) { failure={"GENERATION_EXHAUSTED","Inference counter exhausted"};return false; }
+ return true;
+}
+
+bool productionCore(const H1UsbFrame &request, bool campaign, H1RunResult &result, H1ProductionCoreError &failure)
+{
+ if (!productionAdmission(request,campaign,failure)) return false;
+ const uint32_t observed=campaign?1u:readLe32(request.payload+40);
+ if (observed && !campaign) {
+  const auto &receipt=h1WaveformLifecycle.receipt;
+  const auto error=h1FBeginSet(H1FKind::IsolatedProduction,h1ResultReadLe64(request.payload),h1ResultReadLe64(request.payload+8),
+   h1ResultReadLe64(request.payload+16),receipt.epoch,receipt.generation);
+  if (error!=H1FError::None || !h1FBeginRecord(0)) { failure={"FRONTEND_OBSERVER_PREFLIGHT","Isolated observer storage could not be admitted"};return false; }
+ }
+ auto &proof=h1ProductionRuntime.proof;
+ memset(&proof,0,sizeof(proof));
+ proof.observed=observed;
+ proof.clockHz=sys_clock_hw_cycles_per_sec();
+ proof.primaryStart=h1ProfileNow();
+ h1RunStateBegin(request.sequence,gUpload.rawCrc32);
+ h1RunStateMark(H1RunState::RunCommandReceived);
+ const bool success=runOnce(FixtureId::Uploaded,h1UploadedWaveform(),gUpload.rawCrc32,
+  gUpload.declaredSha256,gUpload.canonicalByteMatch,result,false,H1ResultMode::Production);
+ auto &service=h1ProductionRuntime.service;
+ if (!proof.admitted) { failure={"INFERENCE_ADMISSION_REJECTED",runStatusName(result.status)};return false; }
+ H1ProductionTopEntry top[H1_PRODUCTION_TOP_COUNT]{};
+ if (success) for (unsigned i=0;i<H1_PRODUCTION_TOP_COUNT;++i) top[i]={result.top[i].index,result.top[i].scoreBits};
+ proof.publicationStart=h1ProfileNow();
+ const auto error=service.publish(uint32_t(result.status),success?top:nullptr,result.finiteCount);
+ proof.publicationEnd=h1ProfileNow();
+ proof.ready=proof.publicationEnd;
+ proof.status=uint32_t(result.status);
+ if (error!=H1ResultError::None) {
+  service.abort();service.productionReady=false;
+  failure={h1ResultErrorName(error),"Compact publication integrity failed"};return false;
+ }
+ return true;
+}
+
+void finishFrontendRecord(const H1RunResult &result)
+{
+ const auto &input=h1WaveformLifecycle.lastInference;
+ h1FFinishRecord(h1ProductionRuntime.proof,result.profile,result.topCount,h1ProductionRuntime.service.retained.topCount,result.runSequence,
+  uint32_t(SCB->CFSR|SCB->HFSR),input.valid,input.crcScans,input.shaScans,input.identityScans);
+}
+
+void runProductionCommand(const H1UsbFrame &request)
+{
+ H1RunResult result;
+ H1ProductionCoreError failure{};
+ const bool completed=productionCore(request,false,result,failure);
+ if (h1FActive()) {
+  if (completed) finishFrontendRecord(result);else h1FStopRecord(H1FError::IncompleteProduction);
+  h1FEndSet(h1IrqCount);
+ }
+ if (!completed) { sendError(request,failure.code,failure.detail);return; }
+ // Same compact wire result and post-publication response as ordinary 161.
+ sendProductionResult(request,h1ProductionRuntime.service.admitted);
+}
+
+bool frontendRequestOwner(const H1UsbFrame &request,bool discover)
+{
+ if (!resultRequestAuthenticated(request))return false;
+ const auto error=h1FCheckOwner(h1ResultReadLe64(request.payload),h1ResultReadLe64(request.payload+8),
+  h1ResultReadLe64(request.payload+16),h1ResultReadLe64(request.payload+24),discover);
+ if (error==H1FError::None)return true;
+ sendError(request,"FRONTEND_OBSERVATION_TOKEN","Wrong owner, stale campaign, or observation still running");return false;
+}
+
+void sendFrontendStatus(const H1UsbFrame &request,bool authenticate=true)
+{
+ if (authenticate && !frontendRequestOwner(request,true))return;
+ const auto &c=h1FrontendObserverStorage.header.control;
+ char *response=h1ProtocolResponse();size_t used=0;
+ bool ok=append(response,H1_PROTOCOL_RESPONSE_BYTES,used,
+  "{\"ok\":true,\"schema\":1,\"campaign_id\":%llu,\"kind\":%u,\"running\":%u,\"held\":%u,\"error\":%u,"
+  "\"requested\":%u,\"stored\":%u,\"warmups\":%u,\"measured\":%u,\"clock_hz\":%u,\"record_bytes\":32768,\"payload_bytes\":25472,"
+  "\"irq_before\":%u,\"irq_after\":%u,\"input_epoch\":%llu,\"input_generation\":%llu,\"owner_epoch\":%llu,"
+  "\"source_bundle_sha256\":\"%s\",\"plan_sha256\":\"%s\",\"calibration_count\":%u,\"calibration_stores\":%u,\"calibration_bytes\":%u,"
+  "\"calibration_irq_before\":%u,\"calibration_irq_after\":%u,\"cache_selector\":%u,\"cache_control\":%u,\"calibration\":[",
+  (unsigned long long)c.campaignId,c.kind,c.running,c.held,c.error,c.requested,c.stored,c.warmups,c.measured,c.clockHz,
+  c.irqBefore,c.irqAfter,(unsigned long long)c.inputEpoch,(unsigned long long)c.inputGeneration,(unsigned long long)c.ownerEpoch,
+  c.sourceBundle,c.planSha256,c.calibrationCount,c.calibrationStores,c.calibrationBytes,c.calibrationIrqBefore,c.calibrationIrqAfter,c.cacheSelector,c.cacheControl);
+ for (uint32_t i=0;ok && i<c.calibrationCount && i<20;++i) {
+  const auto &v=c.calibration[i];
+  ok=append(response,H1_PROTOCOL_RESPONSE_BYTES,used,"%s[%llu,%llu,%llu]",i?",":"",
+   (unsigned long long)v.begin,(unsigned long long)v.captured,(unsigned long long)v.end);
+ }
+ ok=ok && append(response,H1_PROTOCOL_RESPONSE_BYTES,used,"]}");
+ if (ok && !sendJson(request,response,used))sendError(request,"FRONTEND_STATUS_TRANSPORT","Bounded status response could not be sent");
+ else if (!ok)sendError(request,"FORMAT_OVERFLOW","Frontend observation status did not fit");
+}
+
+void sendFrontendRecord(const H1UsbFrame &request)
+{
+ if (!frontendRequestOwner(request,false))return;
+ const uint32_t ordinal=readLe32(request.payload+32),offset=readLe32(request.payload+36),count=readLe32(request.payload+40);
+ const uint8_t *bytes=nullptr;
+ if (readLe32(request.payload+44) || h1FReadRange(ordinal,offset,count,bytes)!=H1FError::None) {
+  sendError(request,"FRONTEND_RECORD_RANGE","Invalid or premature bounded record range");return;
+ }
+ const bool sent=h1UsbSendFrame(request.type|H1_CDC_RESPONSE_BIT,request.sequence,bytes,count);
+ h1FExported(ordinal,offset,count,sent);
+}
+
+void runFrontendCampaign(const H1UsbFrame &request)
+{
+ H1ProductionCoreError failure{};
+ if (!productionAdmission(request,true,failure)) { sendError(request,failure.code,failure.detail);return; }
+ if (h1ProductionRuntime.service.sequence > UINT64_MAX-25u) {
+  sendError(request,"GENERATION_EXHAUSTED","Twenty-five admissions must fit without counter wrap");return;
+ }
+ if (!gUpload.canonicalByteMatch || strcmp(gUpload.declaredSha256,H1_SYNTHETIC_RAW_SHA256) || !h1LifecycleReuseReady() ||
+     h1BaselineState.current || h1BaselineState.mode || h1BaselineState.running || h1ValidationObserverState.active) {
+  sendError(request,"FRONTEND_CAMPAIGN_PREFLIGHT","Qualified canonical upload and inactive unrelated observers required");return;
+ }
+ const auto &input=h1WaveformLifecycle.receipt;
+ const auto error=h1FBeginSet(H1FKind::Campaign,h1ResultReadLe64(request.payload),h1ResultReadLe64(request.payload+8),
+  h1ResultReadLe64(request.payload+16),input.epoch,input.generation);
+ if (error!=H1FError::None) { sendError(request,"FRONTEND_CAMPAIGN_OWNERSHIP","Guard, held records, or one-shot campaign gate failed");return; }
+ auto &c=h1FrontendObserverStorage.header.control;c.irqBefore=h1IrqCount;
+ h1FCalibrate(h1IrqCount,SCB->CSSELR,SCB->CCR);c.calibrationIrqAfter=h1IrqCount;
+ for (uint32_t ordinal=0;ordinal<25 && !c.error;++ordinal) {
+  if (!h1FBeginRecord(ordinal))break;
+  H1RunResult result;
+  if (!productionCore(request,true,result,failure)) { h1FStopRecord(H1FError::IncompleteProduction);break; }
+  finishFrontendRecord(result);
+ }
+ h1FEndSet(h1IrqCount);
+ if (!c.error && (c.stored!=25 || c.warmups!=5 || c.measured!=20 || c.irqAfter-c.irqBefore!=50 || !h1FGuards() || SCB->CFSR || SCB->HFSR))
+  c.error=uint32_t(H1FError::Runtime);
+ // Exactly one terminal response. No poll, USB output, or debug access in the loop.
+ sendFrontendStatus(request,false);
+}
+
 void runResultCommand(const H1UsbFrame &request, bool diagnostic)
 {
+	if (!diagnostic) { runProductionCommand(request);return; }
 	if (!resultRequestAuthenticated(request)) return;
 	const uint32_t observed = readLe32(request.payload+40);
 	if (readLe32(request.payload+44) || observed > (diagnostic ? 0u : 1u)) {
@@ -3426,6 +3591,12 @@ void handleFrame(const H1UsbFrame &request)
 		break;
 	case H1MessageType::GetProductionProof:
 		sendProductionProof(request); break;
+	case H1MessageType::RunFrontendDecompositionCampaign:
+		runFrontendCampaign(request); break;
+	case H1MessageType::GetFrontendDecompositionStatus:
+		sendFrontendStatus(request); break;
+	case H1MessageType::GetFrontendDecompositionRecord:
+		sendFrontendRecord(request); break;
 	case H1MessageType::RunBaselineObserverQualification:
 		runBaselineCampaign(request, H1_BASELINE_OBSERVER); break;
 	case H1MessageType::RunBaselineAcceptance:
@@ -3831,6 +4002,7 @@ int main()
 {
 	const bool resultRuntimeReady = h1ProductionRuntime.service.initialize();
 	memset(&h1ProductionRuntime.proof, 0, sizeof(h1ProductionRuntime.proof));
+	const bool observerRuntimeReady = h1FInit();
 	const bool waveformRuntimeReady = h1WaveformLifecycle.initialize();
 	memset(&gUpload, 0, sizeof(gUpload));
 	printk("H1_WAVEFORM_BOOT state=EMPTY epoch=%llu generation=0 receipt=0 lease=0 ready=%u\n",
@@ -3927,7 +4099,7 @@ int main()
 #if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
 	h1ValidationObserverInit();
 #endif
-	gComputeReady = resultRuntimeReady && waveformRuntimeReady && frontendRuntimeReady && reportNpuIdentity() &&
+	gComputeReady = resultRuntimeReady && observerRuntimeReady && waveformRuntimeReady && frontendRuntimeReady && reportNpuIdentity() &&
 		h1FastGuardPrepare() && preparePersistentContexts();
 	printk("H1_LIFECYCLE_INIT complete_before_waveform_ready=%u\n",
 	       unsigned(h1LifecycleInitializationComplete));

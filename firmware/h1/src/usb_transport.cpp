@@ -214,11 +214,14 @@ bool validPayloadLength(uint16_t type, uint32_t length)
 	case H1MessageType::RunProductionResult:
 	case H1MessageType::RunDiagnosticResult:
 	case H1MessageType::GetDiagnosticEvidence:
+	case H1MessageType::RunFrontendDecompositionCampaign:
+	case H1MessageType::GetFrontendDecompositionRecord:
 		return length == 48;
 	case H1MessageType::GetProductionResult:
 	case H1MessageType::ReleaseDiagnosticEvidence:
 	case H1MessageType::GetProductionEvidence:
 	case H1MessageType::GetProductionProof:
+	case H1MessageType::GetFrontendDecompositionStatus:
 		return length == 32;
 	case H1MessageType::UploadWaveform:
 		return length == H1_UPLOAD_PAYLOAD_BYTES;

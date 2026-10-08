@@ -75,6 +75,9 @@ enum class H1MessageType : uint16_t {
 	ReleaseDiagnosticEvidence = 165,
 	GetProductionEvidence = 166,
 	GetProductionProof = 167,
+	RunFrontendDecompositionCampaign = 168,
+	GetFrontendDecompositionStatus = 169,
+	GetFrontendDecompositionRecord = 170,
 };
 
 enum class H1UsbPollResult : uint8_t {

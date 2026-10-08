@@ -368,6 +368,9 @@ set(H1_IDENTITY_FILES
   src/frontend_spectral_core.hpp
   src/frontend_m55_spectral.cpp
   src/frontend_m55_spectral.hpp
+  src/frontend_observer.hpp
+  src/frontend_observer.cpp
+  src/frontend_observer.ld
   src/frontend_diagnostics.cpp
   src/frontend_diagnostics.hpp
   src/numeric_error_metrics.cpp
@@ -458,6 +461,7 @@ target_sources(app PRIVATE
   src/sliding_window.cpp
   src/frontend.cpp
   src/frontend_m55_spectral.cpp
+  src/frontend_observer.cpp
   src/numeric_error_metrics.cpp
   src/classifier_bridge.cpp
   src/main.cpp
@@ -498,6 +502,7 @@ if(H1_HOT_PATH_VALIDATION_OBSERVATION)
   target_sources(app PRIVATE src/validation_observer.cpp)
   zephyr_linker_sources(SECTIONS "${H1_SOURCE_DIR}/validation_observer.ld")
 endif()
+zephyr_linker_sources(SECTIONS "${CMAKE_CURRENT_SOURCE_DIR}/src/frontend_observer.ld")
 zephyr_link_libraries(-Wl,--fatal-warnings -Wl,--check-sections)
 
 # Real Alif callback-body observation. Preserve every original operation and
