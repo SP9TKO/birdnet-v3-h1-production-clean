@@ -209,6 +209,17 @@ void messageCallback(usbd_context *const context, const usbd_msg *const message)
 bool validPayloadLength(uint16_t type, uint32_t length)
 {
 	switch (H1MessageType(type)) {
+	case H1MessageType::OpenResultSession:
+		return length == 16;
+	case H1MessageType::RunProductionResult:
+	case H1MessageType::RunDiagnosticResult:
+	case H1MessageType::GetDiagnosticEvidence:
+		return length == 48;
+	case H1MessageType::GetProductionResult:
+	case H1MessageType::ReleaseDiagnosticEvidence:
+	case H1MessageType::GetProductionEvidence:
+	case H1MessageType::GetProductionProof:
+		return length == 32;
 	case H1MessageType::UploadWaveform:
 		return length == H1_UPLOAD_PAYLOAD_BYTES;
 	case H1MessageType::MicStart:

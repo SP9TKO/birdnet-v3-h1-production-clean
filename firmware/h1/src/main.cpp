@@ -7,6 +7,7 @@
 #include "validation_observer.hpp"
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 #include "postprocessing_observer.hpp"
+#include "production_result.hpp"
 #endif
 #if !defined(H1_DIAG_SKIP_PDM_INIT) || H1_DIAG_SKIP_PDM_INIT == 0
 #include "audio_pdm.hpp"
@@ -137,6 +138,11 @@ struct H1UploadState {
 };
 
 H1RunResult gLastResult;
+extern "C" {
+H1ProductionRuntime h1ProductionRuntime
+	__attribute__((section(".h1_production_result"), aligned(32)));
+}
+
 H1M55SpectralDiagnostics &gM55Spectral = h1M55SpectralDiagnostics();
 H1M55FrontendRuntime gM55FrontendRuntime{};
 uint32_t gM55ReflectedCrc;
@@ -182,6 +188,26 @@ H1UploadState gUpload;
 uint32_t gRunSequence;
 bool gComputeReady;
 bool gModelStorageVerified;
+
+void syncResultOwner()
+{
+	auto &service = h1ProductionRuntime.service;
+	if (service.syncConnection(h1UsbGetStatus().connectionGeneration)) gInferenceDataValid = false;
+	const bool complete = service.evidenceComplete;
+	service.expire(h1ProfileNow());
+	if (complete && !service.evidenceComplete) gInferenceDataValid = false;
+}
+
+bool resultWriterAllowed()
+{
+	syncResultOwner();
+	return h1ProductionRuntime.service.writerAllowed(h1ProfileNow());
+}
+
+uint64_t resultPinDuration()
+{
+	return uint64_t(sys_clock_hw_cycles_per_sec()) * 120u;
+}
 
 enum class H1ContextState : uint32_t { Empty, Preparing, Ready, Failed };
 
@@ -723,35 +749,43 @@ bool betterScore(const float *scores, uint32_t left, uint32_t right)
 	       (scores[left] == scores[right] && left < right);
 }
 
-bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
+bool postprocess(H1Boundaries &boundaries, H1RunResult &result, bool production)
 {
+	auto &proof = h1ProductionRuntime.proof;
+	if (production && proof.observed) proof.scoreStart = h1ProfileNow();
 	const float scale = floatFromBits(H1_LOGIT_SCALE_BITS);
 	const float threshold = floatFromBits(H1_REPORT_THRESHOLD_BITS);
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	h1PostprocessObserverPrepare();
 	auto &observation = h1PostprocessObserverState.last;
-	observation.scoreStart = h1ProfileNow();
+	if (!production) {
+		h1PostprocessObserverPrepare();
+		observation.scoreStart = h1ProfileNow();
+	}
 #endif
 	for (size_t index = 0; index < H1_LOGIT_ELEMENTS; ++index) {
 		const float logit = static_cast<float>(boundaries.logits[index]) * scale;
 		const float score = 1.0f / (1.0f + ::expf(-logit));
 		boundaries.scores[index] = score;
 		result.finiteCount += std::isfinite(score);
-		result.thresholdCount += score >= threshold;
+		if (!production) result.thresholdCount += score >= threshold;
 	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	observation.scoreEnd = h1ProfileNow();
+	if (!production) observation.scoreEnd = h1ProfileNow();
 #endif
+	proof.operations.generatedScores += H1_LOGIT_ELEMENTS;
+	proof.operations.finiteChecks += H1_LOGIT_ELEMENTS;
+	if (production && proof.observed) proof.scoreEnd = h1ProfileNow();
 	if (result.finiteCount != H1_LOGIT_ELEMENTS) {
 		return false;
 	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
 	H1TopkHeapCounts heapCounts{};
-	observation.topStart = h1ProfileNow();
+	if (!production) observation.topStart = h1ProfileNow();
 #endif
 	uint32_t top[kTopCount];
+	if (production && proof.observed) proof.topStart = h1ProfileNow();
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	const size_t count = h1BaselineState.mode == H1_BASELINE_ACCEPTANCE
+	const size_t count = production || h1BaselineState.mode == H1_BASELINE_ACCEPTANCE
 		? h1SelectTopkHeap<false>(boundaries.scores, H1_LOGIT_ELEMENTS,
 					 top, kTopCount, betterScore, heapCounts)
 		: h1SelectTopkHeap<true>(boundaries.scores, H1_LOGIT_ELEMENTS,
@@ -762,19 +796,24 @@ bool postprocess(H1Boundaries &boundaries, H1RunResult &result)
 						  top, kTopCount, betterScore, heapCounts);
 #endif
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	observation.topEnd = h1ProfileNow();
+	if (!production) observation.topEnd = h1ProfileNow();
 #endif
+	if (production && proof.observed) proof.topEnd = h1ProfileNow();
 	result.topCount = uint32_t(count);
-	for (size_t rank = 0; rank < count; ++rank) {
+	const size_t materialCount = production ? H1_PRODUCTION_TOP_COUNT : count;
+	if (count < materialCount) return false;
+	for (size_t rank = 0; rank < materialCount; ++rank) {
 		result.top[rank].index = top[rank];
 		result.top[rank].scoreBits = floatBits(boundaries.scores[top[rank]]);
 	}
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	observation.materialEnd = h1ProfileNow();
-	observation.heap = heapCounts;
-	observation.comparisons = heapCounts.betterScoreCalls;
-	observation.shifts = 0;
-	observation.selected = uint32_t(count);
+	if (!production) {
+		observation.materialEnd = h1ProfileNow();
+		observation.heap = heapCounts;
+		observation.comparisons = heapCounts.betterScoreCalls;
+		observation.shifts = 0;
+		observation.selected = uint32_t(count);
+	}
 #endif
 	return true;
 }
@@ -784,33 +823,41 @@ void recordBoundaryCrcs(H1RunResult &result, const H1Boundaries &boundaries)
 	H1_VALIDATION_MARK(H1V_BOUNDARY_0_BEGIN);
 	result.boundaryCrc32[0] = crc32(reinterpret_cast<const uint8_t *>(boundaries.frontend),
 					H1_FRONTEND_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_0_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_1_BEGIN);
 	result.boundaryCrc32[1] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.backboneInput),
 		H1_BACKBONE_INPUT_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_1_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_2_BEGIN);
 	result.boundaryCrc32[2] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.sharedFeature),
 		H1_SHARED_FEATURE_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_2_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_3_BEGIN);
 	result.boundaryCrc32[3] = crc32(reinterpret_cast<const uint8_t *>(boundaries.embedding),
 					H1_EMBEDDING_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_3_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_4_BEGIN);
 	result.boundaryCrc32[4] = crc32(
 		reinterpret_cast<const uint8_t *>(boundaries.classifierInput),
 		H1_CLASSIFIER_INPUT_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_4_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_5_BEGIN);
 	result.boundaryCrc32[5] = crc32(reinterpret_cast<const uint8_t *>(boundaries.logits),
 					H1_LOGIT_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_5_END);
 	H1_VALIDATION_MARK(H1V_BOUNDARY_6_BEGIN);
 	result.boundaryCrc32[6] = crc32(reinterpret_cast<const uint8_t *>(boundaries.scores),
 					H1_SCORE_BYTES);
+	++h1ProductionRuntime.proof.operations.resultEvidenceScans;
+	++h1ProductionRuntime.proof.operations.scoreEvidenceScans;
 	H1_VALIDATION_MARK(H1V_BOUNDARY_6_END);
 	result.scoreCrc32 = result.boundaryCrc32[6];
 	H1_VALIDATION_MARK(H1V_SCORE_ALIAS_END);
@@ -818,8 +865,9 @@ void recordBoundaryCrcs(H1RunResult &result, const H1Boundaries &boundaries)
 
 bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc,
 	     const char *inputSha256, bool canonicalSynthetic, H1RunResult &result,
-	     bool legacyReference = false)
+	     bool legacyReference = false, H1ResultMode mode = H1ResultMode::LegacyDiagnostic)
 {
+	const bool production = mode == H1ResultMode::Production;
 	H1_VALIDATION_MARK(H1V_RUN_ENTER);
 	gInferenceDataValid = false;
 	gM55FrontendValid = false;
@@ -831,7 +879,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	result.status = RunStatus::NotRun;
 	result.canonicalSynthetic = canonicalSynthetic;
 	result.frontendNative = !legacyReference;
-	if (!gComputeReady || !gModelStorageVerified) {
+	if (!resultWriterAllowed() || !gComputeReady || !gModelStorageVerified) {
 		result.status = RunStatus::NotReady;
 		return false;
 	}
@@ -846,6 +894,26 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		}
 		h1WaveformLifecycle.lastInference.acquireCycles = h1ProfileNow() - acquireStart;
 	}
+	auto &service = h1ProductionRuntime.service;
+	auto &proof = h1ProductionRuntime.proof;
+	const H1ResultInputGenerationId captured = residentInput
+		? H1ResultInputGenerationId{inputLease.snapshot.epoch, inputLease.snapshot.generation,
+			uint32_t(inputLease.snapshot.producer)} : H1ResultInputGenerationId{};
+	if (service.begin(mode, captured, h1ProfileNow()) != H1ResultError::None) {
+		result.status = RunStatus::NotReady;
+		return false;
+	}
+	proof.operations = {};
+	proof.generation = service.admitted;
+	proof.input = captured;
+	proof.admitted = 1;
+	struct RetireFailedDiagnostic {
+		H1RunResult &result;
+		bool production;
+		~RetireFailedDiagnostic() {
+			if (!production && !result.valid) h1ProductionRuntime.service.abort();
+		}
+	} retire{result, production};
 	if (fixture == FixtureId::Uploaded) {
 		// Mark the absence of a scan without incrementing observer scan counters.
 		const uint64_t noScan = h1ProfileNow();
@@ -879,7 +947,9 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1ProfileReset(&result.profile);
 	const uint64_t totalStart = h1ProfileNow();
 
+	if (!service.sourceBegin(0)) { result.status = RunStatus::Frontend; return false; }
 	const uint64_t frontendStart = h1ProfileNow();
+	if (production && proof.observed) proof.frontendStart = frontendStart;
 	h1BaselineMark(0u, frontendStart);
 	h1RunStateMark(H1RunState::FrontendBegin);
 	result.profile.pre_frontend_overhead_cycles =
@@ -891,6 +961,12 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		: h1RunFrontend(waveform, H1_WAVEFORM_ELEMENTS, scratch,
 			gM55FrontendRuntime, boundaries.frontend, H1_FRONTEND_ELEMENTS);
 	const uint64_t frontendEnd = h1ProfileNow();
+	if (production && proof.observed) proof.frontendEnd = frontendEnd;
+	if (!legacyReference && frontendStatus == H1FrontendStatus::Ok) {
+		// The exact unchanged successful wrapper returns only after its one CRC.
+		++proof.operations.frontendInternalScans;
+		proof.operations.frontendInternalBytes += H1_FRONTEND_BYTES;
+	}
 	h1BaselineMark(1u, frontendEnd);
 	result.profile.frontend_cycles = frontendEnd - frontendStart;
 	if (inputLease.active) {
@@ -907,10 +983,12 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.status = RunStatus::Frontend;
 		return false;
 	}
+	if (!service.sourceComplete(0)) { result.status = RunStatus::Frontend; return false; }
 	h1RunStateMark(H1RunState::FrontendDone);
 
 	size_t saturatedLow = 0;
 	size_t saturatedHigh = 0;
+	if (!service.sourceBegin(1)) { result.status = RunStatus::Backbone; return false; }
 	const uint64_t backboneQuantizeStart = h1ProfileNow();
 	h1BaselineMark(2u, backboneQuantizeStart);
 	quantizeBackboneInput(boundaries.frontend, boundaries.backboneInput,
@@ -921,6 +999,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		backboneQuantizeEnd - backboneQuantizeStart;
 	result.backboneSaturatedLow = uint32_t(saturatedLow);
 	result.backboneSaturatedHigh = uint32_t(saturatedHigh);
+	if (!service.sourceComplete(1) || !service.sourceBegin(2)) { result.status = RunStatus::Backbone; return false; }
 	if (!invokeNpu(H1NpuStage::Backbone, boundaries.backboneInput,
 		       H1_BACKBONE_INPUT_BYTES, boundaries.sharedFeature,
 		       H1_SHARED_FEATURE_BYTES, fixture, result.runSequence,
@@ -928,6 +1007,11 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
 		result.status = RunStatus::Backbone;
 		return false;
+	}
+	if (!service.sourceComplete(2)) { result.status = RunStatus::Backbone; return false; }
+	if (production && proof.observed) {
+		proof.backboneStart = result.profile.backbone.invoke_start_cycles;
+		proof.backboneEnd = result.profile.backbone.invoke_end_cycles;
 	}
 	result.profile.frontend_to_backbone_invoke_cycles =
 		result.profile.backbone.invoke_start_cycles - frontendEnd;
@@ -942,7 +1026,9 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		ExecutionMode::H1_ONLY,
 		0,
 	};
+	if (!service.sourceBegin(3)) { result.status = RunStatus::Gem; return false; }
 	const uint64_t gemStart = h1ProfileNow();
+	if (production && proof.observed) proof.gemStart = gemStart;
 	h1BaselineMark(4u, gemStart);
 	h1RunStateMark(H1RunState::GemBegin);
 	result.profile.backbone_to_gem_handoff_cycles =
@@ -950,6 +1036,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	const GemStatus gemStatus = birdnet::h1::runGem(
 		lease.feature, boundaries.embedding, H1_EMBEDDING_ELEMENTS);
 	const uint64_t gemEnd = h1ProfileNow();
+	if (production && proof.observed) proof.gemEnd = gemEnd;
 	h1BaselineMark(5u, gemEnd);
 	result.profile.gem_cycles = gemEnd - gemStart;
 	if (gemStatus != GemStatus::Ok ||
@@ -959,8 +1046,10 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		result.status = RunStatus::Gem;
 		return false;
 	}
+	if (!service.sourceComplete(3)) { result.status = RunStatus::Gem; return false; }
 	h1RunStateMark(H1RunState::GemDone);
 
+	if (!service.sourceBegin(4)) { result.status = RunStatus::Gem; return false; }
 	const uint64_t classifierQuantizeStart = h1ProfileNow();
 	h1BaselineMark(6u, classifierQuantizeStart);
 	if (!birdnet::h1::quantizeClassifierInput(
@@ -976,12 +1065,18 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 		classifierQuantizeEnd - classifierQuantizeStart;
 	result.classifierSaturatedLow = uint32_t(saturatedLow);
 	result.classifierSaturatedHigh = uint32_t(saturatedHigh);
+	if (!service.sourceComplete(4) || !service.sourceBegin(5)) { result.status = RunStatus::Classifier; return false; }
 	if (!invokeNpu(H1NpuStage::Classifier, boundaries.classifierInput,
 		       H1_CLASSIFIER_INPUT_BYTES, boundaries.logits, H1_LOGIT_BYTES,
 		       fixture, result.runSequence, result.profile.classifier)) {
 		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
 		result.status = RunStatus::Classifier;
 		return false;
+	}
+	if (!service.sourceComplete(5)) { result.status = RunStatus::Classifier; return false; }
+	if (production && proof.observed) {
+		proof.classifierStart = result.profile.classifier.invoke_start_cycles;
+		proof.classifierEnd = result.profile.classifier.invoke_end_cycles;
 	}
 	result.profile.gem_to_classifier_handoff_cycles =
 		result.profile.classifier.invoke_start_cycles - gemEnd;
@@ -990,7 +1085,7 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	h1RunStateMark(H1RunState::PostprocessBegin);
 	result.profile.classifier_to_postprocess_handoff_cycles =
 		postprocessStart - result.profile.classifier.invoke_end_cycles;
-	if (!postprocess(boundaries, result)) {
+	if (!service.sourceBegin(6) || !postprocess(boundaries, result, production) || !service.sourceComplete(6)) {
 		result.profile.total_compute_cycles = h1ProfileNow() - totalStart;
 		result.status = RunStatus::Postprocess;
 		return false;
@@ -1001,10 +1096,18 @@ bool runOnce(FixtureId fixture, const float *waveform, uint32_t expectedInputCrc
 	result.profile.postprocess_cycles = postprocessEnd - postprocessStart;
 	result.profile.total_compute_cycles = postprocessEnd - totalStart;
 #if defined(H1_POSTPROCESSING_OBSERVATION)
-	h1PostprocessObserverFinalize(postprocessStart, postprocessEnd,
+	if (!production) h1PostprocessObserverFinalize(postprocessStart, postprocessEnd,
 				      result.runSequence, result.profile.clock_hz);
 #endif
 
+	if (production) {
+		const uint32_t safetyStatus = h1ProfileSafetyStatus(&result.profile);
+		if (safetyStatus != 0) { result.status = RunStatus(safetyStatus); return false; }
+		result.status = RunStatus::Ok;
+		result.valid = 1;
+		return true;
+	}
+	if (!service.coherent()) { result.status = RunStatus::Postprocess; return false; }
 	/* Evidence/checkpoint CRC serialization is intentionally outside timing. */
 	if (!h1ProfileFinalize(&result.profile)) {
 		result.status = RunStatus::Profile;
@@ -1494,6 +1597,7 @@ void sendM55SpectralData(const H1UsbFrame &request)
 
 bool numericallyEqual(const H1RunResult &left, const H1RunResult &right)
 {
+	++h1ProductionRuntime.proof.operations.repeatComparisons;
 	if (!left.valid || !right.valid || left.inputCrc32 != right.inputCrc32 ||
 	    strcmp(left.inputSha256, right.inputSha256) != 0 ||
 	    left.finiteCount != right.finiteCount ||
@@ -1524,6 +1628,11 @@ void saveResult(H1RunResult &result)
 	}
 	H1_VALIDATION_MARK(H1V_COMPARE_END);
 	memcpy(&gLastResult, &result, sizeof(gLastResult));
+	++h1ProductionRuntime.proof.operations.diagnosticSaves;
+	if (h1ProductionRuntime.service.diagnosticComplete() != H1ResultError::None) {
+		gInferenceDataValid = false;
+		h1ProductionRuntime.service.abort();
+	}
 	H1_VALIDATION_MARK(H1V_SAVE_COPY_END);
 }
 
@@ -2855,6 +2964,11 @@ void runMicUsbCommand(const H1UsbFrame &request)
 
 void sendInferenceData(const H1UsbFrame &request)
 {
+	auto &service = h1ProductionRuntime.service;
+	if (service.mode == H1ResultMode::Production && service.sequence != 0) {
+		sendError(request, "EVIDENCE_NOT_RETAINED", "Production generations retain no diagnostic source evidence");
+		return;
+	}
 	if (!gInferenceDataValid || !gLastResult.valid) {
 		sendError(request, "NO_INFERENCE_DATA", "Complete an inference first");
 		return;
@@ -2869,6 +2983,10 @@ void sendInferenceData(const H1UsbFrame &request)
 		sendError(request, "INVALID_INFERENCE_RANGE", "kind 0 frontend or 1 scores; count 1..256, in-range offset required");
 		return;
 	}
+	const bool alreadyPinned = service.pinned;
+	const auto token = service.evidence;
+	const auto error = service.pin(token, h1ProfileNow(), resultPinDuration());
+	if (error != H1ResultError::None) { sendError(request, h1ResultErrorName(error), "Current coherent diagnostic sources required"); return; }
 	const float *data = kind == 0 ? h1CurrentBoundaries().frontend :
 		h1CurrentBoundaries().scores;
 	char *response = h1ProtocolResponse();
@@ -2880,8 +2998,14 @@ void sendInferenceData(const H1UsbFrame &request)
 		ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
 			"%s\"%08x\"", i ? "," : "", floatBits(data[offset + i]));
 	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "]}");
-	if (ok) sendJson(request, response, used);
-	else sendError(request, "FORMAT_OVERFLOW", "Inference data chunk did not fit");
+	const bool sent = ok && sendJson(request, response, used);
+	syncResultOwner();
+	if (!sent || service.checkEvidence(token, h1ProfileNow()) != H1ResultError::None) {
+		service.retireEvidence(); gInferenceDataValid = false;
+	} else if (!alreadyPinned) {
+		service.pinned = false; service.pinDeadline = 0;
+	}
+	if (!ok) sendError(request, "FORMAT_OVERFLOW", "Inference data chunk did not fit");
 }
 
 #if defined(H1_POSTPROCESSING_OBSERVATION)
@@ -3009,8 +3133,235 @@ void sendWaveformLifecycle(const H1UsbFrame &request)
 	else sendError(request, "FORMAT_OVERFLOW", "Waveform lifecycle proof did not fit");
 }
 
+bool resultRequestAuthenticated(const H1UsbFrame &request)
+{
+	const H1ResultError error = h1ProductionRuntime.service.authenticate(
+		h1ResultReadLe64(request.payload), h1ResultReadLe64(request.payload+8),
+		h1ResultReadLe64(request.payload+16));
+	if (error == H1ResultError::None) return true;
+	sendError(request, h1ResultErrorName(error), "A fresh result session binding is required");
+	return false;
+}
+
+H1ResultGenerationId requestedResultToken(const H1UsbFrame &request)
+{
+	return {h1ResultReadLe64(request.payload+16), h1ResultReadLe64(request.payload+24)};
+}
+
+void sendProductionResult(const H1UsbFrame &request, H1ResultGenerationId token)
+{
+	const auto &service = h1ProductionRuntime.service;
+	const auto error = service.checkResult(token);
+	if (error != H1ResultError::None) { sendError(request, h1ResultErrorName(error), "The requested compact result is no longer current"); return; }
+	uint8_t payload[H1_PRODUCTION_WIRE_BYTES];
+	__atomic_thread_fence(__ATOMIC_ACQUIRE);
+	h1ResultEncode(service.retained, payload);
+	(void)h1UsbSendFrame(request.type | H1_CDC_RESPONSE_BIT, request.sequence, payload, sizeof(payload));
+}
+
+void openResultSession(const H1UsbFrame &request)
+{
+	if (!gComputeReady || !gModelStorageVerified) { sendError(request, "COMPUTE_NOT_READY", "Verified initialized H1 component identities required"); return; }
+	auto &service = h1ProductionRuntime.service;
+	const auto error = service.open(h1ResultReadLe64(request.payload), h1ResultReadLe64(request.payload+8), h1ProfileNow());
+	if (error != H1ResultError::None) { sendError(request, h1ResultErrorName(error), "Fresh nonzero owner binding and no active diagnostic pin required"); return; }
+	gInferenceDataValid = false;
+	char *response = h1ProtocolResponse();
+	const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
+		"{\"ok\":true,\"contract\":\"PRODUCTION_RESULT_V1\",\"contract_version\":1,"
+		"\"session_nonce\":[\"%016llx\",\"%016llx\"],\"owner_epoch\":%llu,\"connection_generation\":%u,"
+		"\"owner_scope\":\"current_CDC_connection_and_fresh_handshake\",\"class_count\":11560,\"top_k\":3,"
+		"\"labels_sha256\":\"%s\",\"source_bundle_sha256\":\"%s\","
+		"\"frontend_sha256\":\"%s\",\"source_backbone_sha256\":\"%s\",\"compiled_backbone_sha256\":\"%s\","
+		"\"gem_sha256\":\"%s\",\"bridge_implementation_sha256\":\"%s\","
+		"\"source_classifier_sha256\":\"%s\",\"compiled_classifier_sha256\":\"%s\","
+		"\"scale_bits\":[\"%08x\",\"%08x\",\"%08x\",\"%08x\"],"
+		"\"compact_sizeof\":%u,\"compact_alignment\":%u,\"retained_slots\":1,\"wire_bytes\":76}",
+		(unsigned long long)service.nonce[0], (unsigned long long)service.nonce[1],
+		(unsigned long long)service.epoch, service.connection,
+		H1_LABELS_SHA256, H1_SOURCE_BUNDLE_SHA256, H1_FRONTEND_SHA256,
+		H1_SOURCE_BACKBONE_SHA256, H1_COMPILED_BACKBONE_SHA256, H1_GEM_SHA256,
+		H1_BRIDGE_IMPLEMENTATION_SHA256, H1_SOURCE_CLASSIFIER_SHA256, H1_COMPILED_CLASSIFIER_SHA256,
+		unsigned(H1_BACKBONE_INPUT_SCALE_BITS), unsigned(H1_SHARED_FEATURE_SCALE_BITS),
+		unsigned(H1_CLASSIFIER_INPUT_SCALE_BITS), unsigned(H1_LOGIT_SCALE_BITS),
+		unsigned(sizeof(H1ProductionResult)), unsigned(alignof(H1ProductionResult)));
+	if (n > 0 && size_t(n) < H1_PROTOCOL_RESPONSE_BYTES) (void)sendJson(request, response, size_t(n));
+	else sendError(request, "FORMAT_OVERFLOW", "Session descriptor did not fit");
+}
+
+void runResultCommand(const H1UsbFrame &request, bool diagnostic)
+{
+	if (!resultRequestAuthenticated(request)) return;
+	const uint32_t observed = readLe32(request.payload+40);
+	if (readLe32(request.payload+44) || observed > (diagnostic ? 0u : 1u)) {
+		sendError(request, "INVALID_REQUEST", "Invalid observation or reserved field"); return;
+	}
+	if (!resultWriterAllowed()) { sendError(request, "DIAGNOSTIC_PIN_ACTIVE", "Release pinned evidence before admitting inference"); return; }
+	if (!gComputeReady || !gModelStorageVerified) { sendError(request, "COMPUTE_NOT_READY", "Initialized verified H1 required"); return; }
+	const auto &receipt = h1WaveformLifecycle.receipt;
+	if (!gUpload.valid || h1WaveformLifecycle.state != uint32_t(H1WaveformState::Valid) ||
+	    receipt.producer != H1WaveformProducer::Upload || !receipt.complete ||
+	    receipt.epoch != h1ResultReadLe64(request.payload+24) ||
+	    receipt.generation != h1ResultReadLe64(request.payload+32)) {
+		sendError(request, "NO_UPLOAD", "The exact qualified validated uploaded generation is required"); return;
+	}
+	if (h1ProductionRuntime.service.sequence == UINT64_MAX) { sendError(request, "GENERATION_EXHAUSTED", "Inference counter exhausted"); return; }
+	auto &proof = h1ProductionRuntime.proof;
+	memset(&proof, 0, sizeof(proof));
+	proof.observed = observed;
+	proof.clockHz = sys_clock_hw_cycles_per_sec();
+	proof.primaryStart = h1ProfileNow();
+	h1RunStateBegin(request.sequence, gUpload.rawCrc32);
+	h1RunStateMark(H1RunState::RunCommandReceived);
+	H1RunResult result;
+	const bool success = runOnce(FixtureId::Uploaded, h1UploadedWaveform(), gUpload.rawCrc32,
+		gUpload.declaredSha256, gUpload.canonicalByteMatch, result, false,
+		diagnostic ? H1ResultMode::PinnedDiagnostic : H1ResultMode::Production);
+	auto &service = h1ProductionRuntime.service;
+	if (!proof.admitted) { sendError(request, "INFERENCE_ADMISSION_REJECTED", runStatusName(result.status)); return; }
+	if (diagnostic) {
+		if (!success) { sendError(request, "COMPUTE_FAILED", runStatusName(result.status)); return; }
+		saveResult(result);
+		const auto error = service.pin(service.admitted, h1ProfileNow(), resultPinDuration());
+		if (error != H1ResultError::None) { service.abort(); gInferenceDataValid = false; sendError(request, h1ResultErrorName(error), "Diagnostic generation could not be pinned"); return; }
+		// All diagnostic fields/save and the coherent export pin precede Ready.
+		h1RunStateMark(H1RunState::ResultReady);
+		char *response = h1ProtocolResponse();
+		const int n = snprintf(response, H1_PROTOCOL_RESPONSE_BYTES,
+			"{\"ok\":true,\"contract\":\"QUALIFICATION_DIAGNOSTIC_RESULT_V1\",\"owner_epoch\":%llu,"
+			"\"inference_sequence\":%llu,\"run_sequence\":%u,\"valid\":1,\"status\":1,\"pinned\":true,"
+			"\"input_epoch\":%llu,\"input_generation\":%llu,\"producer\":%u,\"input_crc32\":\"%08x\","
+			"\"input_sha256\":\"%s\",\"finite_count\":%u,\"threshold_count\":%u,\"top_count\":%u,"
+			"\"score_crc32\":\"%08x\",\"boundary_crc32\":[\"%08x\",\"%08x\",\"%08x\",\"%08x\",\"%08x\",\"%08x\",\"%08x\"],"
+			"\"repeat_comparable\":%s,\"repeat_equal\":%s}",
+			(unsigned long long)service.admitted.epoch, (unsigned long long)service.admitted.inferenceSequence,
+			result.runSequence, (unsigned long long)service.input.waveformOwnerEpoch,
+			(unsigned long long)service.input.waveformGeneration, service.input.producer, result.inputCrc32,
+			result.inputSha256, result.finiteCount, result.thresholdCount, result.topCount, result.scoreCrc32,
+			result.boundaryCrc32[0], result.boundaryCrc32[1], result.boundaryCrc32[2], result.boundaryCrc32[3],
+			result.boundaryCrc32[4], result.boundaryCrc32[5], result.boundaryCrc32[6],
+			result.repeatComparable ? "true" : "false", result.repeatEqual ? "true" : "false");
+		if (n <= 0 || size_t(n) >= H1_PROTOCOL_RESPONSE_BYTES || !sendJson(request, response, size_t(n))) {
+			service.retireEvidence(); gInferenceDataValid = false;
+		}
+		return;
+	}
+	H1ProductionTopEntry top[H1_PRODUCTION_TOP_COUNT]{};
+	if (success) for (unsigned i = 0; i < H1_PRODUCTION_TOP_COUNT; ++i)
+		top[i] = {result.top[i].index, result.top[i].scoreBits};
+	proof.publicationStart = h1ProfileNow();
+	const auto error = service.publish(uint32_t(result.status), success ? top : nullptr, result.finiteCount);
+	proof.publicationEnd = h1ProfileNow();
+	proof.ready = proof.publicationEnd;
+	proof.status = uint32_t(result.status);
+	if (error != H1ResultError::None) {
+		// Never expose any prior/partial success if publication validation fails.
+		service.abort(); service.productionReady = false;
+		sendError(request, h1ResultErrorName(error), "Compact publication integrity failed"); return;
+	}
+	// PRODUCTION_RESULT_READY is service.productionReady after complete compact
+	// publication. All following work is explicit observation or transport.
+	sendProductionResult(request, service.admitted);
+}
+
+void sendDiagnosticEvidence(const H1UsbFrame &request)
+{
+	if (!resultRequestAuthenticated(request)) return;
+	auto &service = h1ProductionRuntime.service;
+	const auto token = requestedResultToken(request);
+	const auto error = service.checkEvidence(token, h1ProfileNow());
+	if (error != H1ResultError::None) { sendError(request, h1ResultErrorName(error), "A complete current pinned diagnostic generation is required"); return; }
+	const unsigned kind = readLe32(request.payload+32), offset = readLe32(request.payload+36);
+	const unsigned count = readLe32(request.payload+40);
+	H1Boundaries &b = h1CurrentBoundaries();
+	const void *data[] = {b.frontend, b.backboneInput, b.sharedFeature, b.embedding,
+		b.classifierInput, b.logits, b.scores, gLastResult.top};
+	const uint32_t lengths[] = {H1_FRONTEND_ELEMENTS, H1_BACKBONE_INPUT_ELEMENTS,
+		H1_SHARED_FEATURE_ELEMENTS, H1_EMBEDDING_ELEMENTS, H1_CLASSIFIER_INPUT_ELEMENTS,
+		H1_LOGIT_ELEMENTS, H1_LOGIT_ELEMENTS, uint32_t(kTopCount)};
+	const uint32_t widths[] = {4,2,2,4,2,2,4,8};
+	if (readLe32(request.payload+44) || kind > 7 || count == 0 || count > 256 ||
+	    offset > lengths[kind] || count > lengths[kind]-offset || !gLastResult.valid ||
+	    !gInferenceDataValid) { sendError(request, "INVALID_EVIDENCE_RANGE", "Exact source/range required"); return; }
+	uint8_t payload[40+256*8] = {'H','1','E','V'};
+	h1ResultWriteLe(payload+4, 1, 4);
+	h1ResultWriteLe(payload+8, token.epoch, 8);
+	h1ResultWriteLe(payload+16, token.inferenceSequence, 8);
+	h1ResultWriteLe(payload+24, kind, 4);
+	h1ResultWriteLe(payload+28, offset, 4);
+	h1ResultWriteLe(payload+32, count, 4);
+	h1ResultWriteLe(payload+36, widths[kind], 4);
+	// Target buffers are little endian; copy original bits without conversion.
+	memcpy(payload+40, static_cast<const uint8_t *>(data[kind])+offset*widths[kind], count*widths[kind]);
+	const bool sent = h1UsbSendFrame(request.type | H1_CDC_RESPONSE_BIT, request.sequence,
+		payload, 40+count*widths[kind]);
+	syncResultOwner();
+	if (!sent || service.checkEvidence(token, h1ProfileNow()) != H1ResultError::None ||
+	    service.pin(token, h1ProfileNow(), resultPinDuration()) != H1ResultError::None) {
+		service.retireEvidence(); gInferenceDataValid = false;
+	}
+}
+
+void releaseDiagnosticEvidence(const H1UsbFrame &request)
+{
+	if (!resultRequestAuthenticated(request)) return;
+	auto &service = h1ProductionRuntime.service;
+	const auto token = requestedResultToken(request);
+	const auto error = service.checkEvidence(token, h1ProfileNow());
+	if (error != H1ResultError::None) { sendError(request, h1ResultErrorName(error), "No coherent pinned transfer to complete"); return; }
+	service.retireEvidence();
+	gInferenceDataValid = false;
+	char response[192];
+	const int n = snprintf(response, sizeof(response), "{\"ok\":true,\"complete\":true,\"retired\":true,\"owner_epoch\":%llu,\"inference_sequence\":%llu}",
+		(unsigned long long)token.epoch, (unsigned long long)token.inferenceSequence);
+	if (n > 0 && size_t(n) < sizeof(response)) (void)sendJson(request, response, size_t(n));
+}
+
+void sendProductionProof(const H1UsbFrame &request)
+{
+	if (!resultRequestAuthenticated(request)) return;
+	const auto &service = h1ProductionRuntime.service;
+	const auto token = requestedResultToken(request);
+	if (service.checkResult(token) != H1ResultError::None ||
+	    !h1ResultSame(token, h1ProductionRuntime.proof.generation)) {
+		sendError(request, "STALE_GENERATION", "No current production proof for that result"); return;
+	}
+	const auto &p = h1ProductionRuntime.proof;
+	const auto &o = p.operations;
+	char *response = h1ProtocolResponse();
+	size_t used = 0;
+	bool ok = append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		"{\"ok\":true,\"contract\":\"PRODUCTION_RESULT_V1\",\"owner_epoch\":%llu,\"inference_sequence\":%llu,"
+		"\"input_epoch\":%llu,\"input_generation\":%llu,\"producer\":%u,\"clock_hz\":%u,\"observed\":%u,\"status\":%u,"
+		"\"primary_start\":%llu,\"production_result_ready\":%llu,\"whole_cycles\":%llu,\"compact_publication_cycles\":%llu,"
+		"\"result_evidence_scans\":%u,\"score_evidence_scans\":%u,\"repeat_comparisons\":%u,\"diagnostic_saves\":%u,"
+		"\"frontend_internal_scans\":%u,\"frontend_internal_bytes\":%u,\"generated_scores\":%u,\"finite_checks\":%u,"
+		"\"u85_irq_count\":%u,\"CFSR\":%u,\"HFSR\":%u,\"lifecycle_ready\":%u,\"model_verified\":%u,\"metadata_bytes\":%u",
+		(unsigned long long)token.epoch, (unsigned long long)token.inferenceSequence,
+		(unsigned long long)p.input.waveformOwnerEpoch, (unsigned long long)p.input.waveformGeneration,
+		p.input.producer, p.clockHz, p.observed, p.status,
+		(unsigned long long)p.primaryStart, (unsigned long long)p.ready,
+		(unsigned long long)(p.ready-p.primaryStart), (unsigned long long)(p.publicationEnd-p.publicationStart),
+		o.resultEvidenceScans, o.scoreEvidenceScans, o.repeatComparisons, o.diagnosticSaves,
+		o.frontendInternalScans, o.frontendInternalBytes, o.generatedScores, o.finiteChecks,
+		h1IrqCount, unsigned(SCB->CFSR), unsigned(SCB->HFSR), unsigned(h1LifecycleReuseReady()),
+		unsigned(gModelStorageVerified), unsigned(sizeof(h1ProductionRuntime)));
+	if (p.observed) ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used,
+		",\"stage_timestamps\":[%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu]",
+		(unsigned long long)p.frontendStart, (unsigned long long)p.frontendEnd,
+		(unsigned long long)p.backboneStart, (unsigned long long)p.backboneEnd,
+		(unsigned long long)p.gemStart, (unsigned long long)p.gemEnd,
+		(unsigned long long)p.classifierStart, (unsigned long long)p.classifierEnd,
+		(unsigned long long)p.scoreStart, (unsigned long long)p.scoreEnd,
+		(unsigned long long)p.topStart, (unsigned long long)p.topEnd);
+	ok = ok && append(response, H1_PROTOCOL_RESPONSE_BYTES, used, "}");
+	if (ok) (void)sendJson(request, response, used);
+	else sendError(request, "FORMAT_OVERFLOW", "Production proof did not fit");
+}
+
 void handleFrame(const H1UsbFrame &request)
 {
+	syncResultOwner();
 	H1WaveformInputLease diagnosticLease;
 	switch (H1MessageType(request.type)) {
 	case H1MessageType::RunM55SpectralFrame:
@@ -3029,6 +3380,10 @@ void handleFrame(const H1UsbFrame &request)
 	}
 	// Commands that can overwrite shared inference scratch invalidate the reader.
 	switch (H1MessageType(request.type)) {
+	case H1MessageType::RunBaselineObserverQualification:
+	case H1MessageType::RunBaselineAcceptance:
+	case H1MessageType::RunBaselineDiagnostic:
+	case H1MessageType::RunBaselinePmu:
 	case H1MessageType::RunUploadedWaveform:
 	case H1MessageType::RunLegacyUploadedWaveform:
 	case H1MessageType::RunCanonical:
@@ -3040,12 +3395,37 @@ void handleFrame(const H1UsbFrame &request)
 	case H1MessageType::CompareNativeSpectral:
 	case H1MessageType::CompareCompactScalarMel:
 	case H1MessageType::CompareMveCompactMel:
+		if (!resultWriterAllowed()) { sendError(request, "DIAGNOSTIC_PIN_ACTIVE", "Release the pinned diagnostic generation before a writer"); return; }
+		h1ProductionRuntime.service.retireEvidence();
 		gInferenceDataValid = false;
 		break;
 	default:
 		break;
 	}
 	switch (H1MessageType(request.type)) {
+	case H1MessageType::OpenResultSession:
+		openResultSession(request); break;
+	case H1MessageType::RunProductionResult:
+		runResultCommand(request, false); break;
+	case H1MessageType::RunDiagnosticResult:
+		runResultCommand(request, true); break;
+	case H1MessageType::GetProductionResult:
+		if (resultRequestAuthenticated(request)) sendProductionResult(request, requestedResultToken(request));
+		break;
+	case H1MessageType::GetDiagnosticEvidence:
+		sendDiagnosticEvidence(request); break;
+	case H1MessageType::ReleaseDiagnosticEvidence:
+		releaseDiagnosticEvidence(request); break;
+	case H1MessageType::GetProductionEvidence:
+		if (resultRequestAuthenticated(request)) {
+			const auto token = requestedResultToken(request);
+			if (!token.inferenceSequence || token.inferenceSequence > h1ProductionRuntime.service.sequence)
+				sendError(request, "STALE_GENERATION", "No admitted generation for that token");
+			else sendError(request, "EVIDENCE_NOT_RETAINED", "Production evidence is never retained or deferred");
+		}
+		break;
+	case H1MessageType::GetProductionProof:
+		sendProductionProof(request); break;
 	case H1MessageType::RunBaselineObserverQualification:
 		runBaselineCampaign(request, H1_BASELINE_OBSERVER); break;
 	case H1MessageType::RunBaselineAcceptance:
@@ -3388,6 +3768,7 @@ void handleUartFallback(unsigned char command)
 	if (command != 'C' && command != 'G') {
 		return;
 	}
+	if (!resultWriterAllowed()) { printk("H1_UART_FAIL diagnostic_pin_active=1\n"); return; }
 	printk("H1_UART_TRIGGER command=%c transport_excluded_from_compute=1\n", command);
 	if (!gComputeReady) {
 		printk("H1_UART_FAIL compute_not_ready=1\n");
@@ -3426,6 +3807,7 @@ extern "C" bool h1LifecycleReuseReady(void)
 
 bool h1WaveformUploadAttemptBegin()
 {
+	if (!resultWriterAllowed()) return false;
 	H1WaveformToken token{};
 	const bool admitted = h1WaveformLifecycle.begin(H1WaveformProducer::Upload,
 		h1UploadedWaveform(), H1_WAVEFORM_ELEMENTS, H1_WAVEFORM_BYTES, token);
@@ -3447,6 +3829,8 @@ void h1WaveformUploadAttemptAbort()
 
 int main()
 {
+	const bool resultRuntimeReady = h1ProductionRuntime.service.initialize();
+	memset(&h1ProductionRuntime.proof, 0, sizeof(h1ProductionRuntime.proof));
 	const bool waveformRuntimeReady = h1WaveformLifecycle.initialize();
 	memset(&gUpload, 0, sizeof(gUpload));
 	printk("H1_WAVEFORM_BOOT state=EMPTY epoch=%llu generation=0 receipt=0 lease=0 ready=%u\n",
@@ -3543,7 +3927,7 @@ int main()
 #if defined(H1_HOT_PATH_VALIDATION_OBSERVATION)
 	h1ValidationObserverInit();
 #endif
-	gComputeReady = waveformRuntimeReady && frontendRuntimeReady && reportNpuIdentity() &&
+	gComputeReady = resultRuntimeReady && waveformRuntimeReady && frontendRuntimeReady && reportNpuIdentity() &&
 		h1FastGuardPrepare() && preparePersistentContexts();
 	printk("H1_LIFECYCLE_INIT complete_before_waveform_ready=%u\n",
 	       unsigned(h1LifecycleInitializationComplete));

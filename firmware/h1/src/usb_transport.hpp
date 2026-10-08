@@ -67,6 +67,14 @@ enum class H1MessageType : uint16_t {
 	GetPostprocessObservation = 151,
 	GetHotPathValidationObservation = 152,
 	GetWaveformLifecycle = 153,
+	OpenResultSession = 160,
+	RunProductionResult = 161,
+	GetProductionResult = 162,
+	RunDiagnosticResult = 163,
+	GetDiagnosticEvidence = 164,
+	ReleaseDiagnosticEvidence = 165,
+	GetProductionEvidence = 166,
+	GetProductionProof = 167,
 };
 
 enum class H1UsbPollResult : uint8_t {

@@ -15,8 +15,7 @@ static volatile uint32_t unassociated_command_count;
 static volatile uint32_t unassociated_irq_count;
 static volatile uint32_t unassociated_cache_prepare_count;
 
-static bool finalize_lifecycle(struct H1ModelLifecycleProfile *profile,
-			       uint32_t clock_hz)
+static bool lifecycle_safe(const struct H1ModelLifecycleProfile *profile)
 {
 	if (!h1LifecycleReuseReady() || profile->model_source_address == 0 ||
 	    profile->model_destination_address == 0 || profile->model_bytes == 0 ||
@@ -41,6 +40,13 @@ static bool finalize_lifecycle(struct H1ModelLifecycleProfile *profile,
 	    profile->output_copy_cycles == 0) {
 		return false;
 	}
+
+	return true;
+}
+static bool finalize_lifecycle(struct H1ModelLifecycleProfile *profile,
+			       uint32_t clock_hz)
+{
+	if (!lifecycle_safe(profile)) return false;
 
 	profile->lifecycle_cycles =
 		profile->lifecycle_end_cycles - profile->lifecycle_start_cycles;
@@ -88,6 +94,26 @@ static bool finalize_npu(struct H1NpuProfile *profile, uint32_t clock_hz)
 		h1ProfileCyclesToUs(profile->submit_to_irq_cycles, clock_hz);
 	profile->valid = 1;
 	return true;
+}
+
+// Integrity validation without diagnostic cycle conversion/publication.
+static bool npu_safe(const struct H1NpuProfile *profile)
+{
+	return lifecycle_safe(&profile->lifecycle) && profile->invoke_status == 0 &&
+		profile->command_count == 1 && profile->irq_count == 1 &&
+		profile->invoke_start_cycles < profile->command_start_cycles &&
+		profile->command_start_cycles < profile->irq_entry_cycles &&
+		profile->irq_entry_cycles < profile->invoke_end_cycles;
+}
+
+uint32_t h1ProfileSafetyStatus(const struct H1RuntimeProfile *profile)
+{
+	if (profile->clock_hz == 0 || profile->transport_excluded != 1 ||
+	    unassociated_command_count != 0 || unassociated_irq_count != 0 ||
+	    unassociated_cache_prepare_count != 0) return 9;
+	if (!npu_safe(&profile->backbone)) return 4;
+	if (!npu_safe(&profile->classifier)) return 6;
+	return 0;
 }
 
 void h1ProfileReset(struct H1RuntimeProfile *profile)

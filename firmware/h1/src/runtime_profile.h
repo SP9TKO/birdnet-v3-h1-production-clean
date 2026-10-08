@@ -137,6 +137,7 @@ void h1ProfileInvokeEnd(struct H1NpuProfile *profile, int32_t invoke_status);
 void h1ProfileCommandStart(void);
 void h1ProfileIrqEntry(void);
 bool h1ProfileFinalize(struct H1RuntimeProfile *profile);
+uint32_t h1ProfileSafetyStatus(const struct H1RuntimeProfile *profile);
 
 void h1ProfileCachePrepareBegin(uint32_t address, uint32_t bytes);
 void h1ProfileCachePrepareEnd(void);

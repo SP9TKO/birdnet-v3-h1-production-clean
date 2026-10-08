@@ -383,6 +383,8 @@ set(H1_IDENTITY_FILES
   src/waveform_lifecycle.hpp
   src/waveform_lifecycle.cpp
   src/waveform_lifecycle.ld
+  src/production_result.hpp
+  src/production_result.ld
   src/runtime_profile.c
   src/runtime_profile.h
   src/baseline_profile.c
@@ -447,6 +449,7 @@ if(TARGET drivers__memc)
 endif()
 
 zephyr_linker_sources(SECTIONS src/waveform_lifecycle.ld)
+zephyr_linker_sources(SECTIONS src/production_result.ld)
 
 target_sources(app PRIVATE
   src/pcm_ring.cpp
