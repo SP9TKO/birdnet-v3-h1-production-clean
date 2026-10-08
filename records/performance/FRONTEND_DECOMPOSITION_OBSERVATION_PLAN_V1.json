@@ -1,0 +1,2866 @@
+{
+  "schema": "birdnet-h1-frontend-decomposition-observation-plan-v1",
+  "version": 1,
+  "status": "PROSPECTIVE_FRONTEND_DECOMPOSITION_OBSERVATION_V1_FROZEN",
+  "date": "2026-10-08",
+  "branch": "performance/h1-sub700ms",
+  "entry_HEAD": "8038ca200ff9af85e824e0978689aa3784a79a56",
+  "entry_tree": "89c3f466c2f849faf73d994a75ac4cb9d054b789",
+  "published_master": "c52270fca3f6b7fe2ccece57388bb4040590dd91",
+  "authority": "Prospective measurement specification only. Separate authorization required for instrumentation, build and physical qualification. No observation or optimization result issued.",
+  "implementation_started": false,
+  "new_builds": 0,
+  "hardware_actions": 0,
+  "tiny_birdnet_comparison_started": false,
+  "immutable_acceptance": {
+    "path": "records/performance/PROSPECTIVE_CRITERIA.json",
+    "sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "warmups": 5,
+    "measured": 100,
+    "outliers_removed": 0,
+    "every_unrounded_sample_ms": "<700.000",
+    "boundary": "waveform-ready -> complete PRODUCTION_RESULT_READY"
+  },
+  "existing_qualification": {
+    "authority": "Retained physically qualified measurements; no new timing collected.",
+    "criteria_sha256": "b7aa2b1f9ee762b575631be337c66b9f4c4e92bad83f080d7674d20defa6b24b",
+    "production_result_contract_sha256": "fcfab23826b80e96525693ae6819a0f396dc6c101b9b5aa58963203ad1815b73",
+    "source_bundle_sha256": "8e386e6e18b89540413f969249d9dd8da578cec514ff166101c24706951e8289",
+    "ELF_sha256": "d56a9f1c6f1e905556d3e84bff5dfa5d40a1a07c1e119b533d86f58d8dcfabf7",
+    "BIN_sha256": "feea14194370539ab7adacc61ca28ebf09bdc3385d5bd3bed846216323a16373",
+    "physical_receipt_sha256": "3dc37857e7210f9db489519808d0b87de856e7675c44f6d677b6788ad93d8f1c",
+    "production_route": "PRODUCTION_RESULT_V1 / opcode 161",
+    "production_result_PASS_authority": "8038ca200ff9af85e824e0978689aa3784a79a56",
+    "accepted_lineage": {
+      "LIFECYCLE_REUSE_ONLY_PASS": "4cced1f81517bef0e7dcc556f4dedb9d3c8cfb2f",
+      "POSTPROCESSING_OPTIMIZATION_PASS": "88876bc661cb00c954f8072a369ee37421b8a5f8",
+      "WAVEFORM_VALIDATION_LIFECYCLE_ONLY_PASS": "dee32eeafc5d2c4b02549e264d24c081ea41973a",
+      "PRODUCTION_RESULT_CONTRACT_V1_IMPLEMENTATION_PASS": "8038ca200ff9af85e824e0978689aa3784a79a56"
+    },
+    "acceptance_5_plus_100": {
+      "count": 100,
+      "minimum_ms": "1241.622555",
+      "mean_ms": "1242.221984275",
+      "median_ms": "1241.8894225",
+      "nearest_rank_p95_ms": "1243.77543",
+      "nearest_rank_p95_rank": 95,
+      "maximum_ms": "1244.145825",
+      "population_SD_ms": "0.779687946461298627532715233381608069155896467723323421030810",
+      "count_lt_700": 0,
+      "count_ge_700": 100,
+      "raw_unrounded_cycles": [
+        496684018,
+        496690126,
+        496764597,
+        496707481,
+        497511262,
+        496786783,
+        497497453,
+        496686660,
+        496649022,
+        496696396,
+        496792237,
+        496720707,
+        497471762,
+        496791692,
+        497504151,
+        496688287,
+        497492875,
+        496683234,
+        497518827,
+        496712737,
+        496723891,
+        496686319,
+        496681622,
+        496729798,
+        496702486,
+        497473077,
+        496809820,
+        496682379,
+        496711357,
+        496672788,
+        496784188,
+        496776283,
+        496670274,
+        496759819,
+        497465284,
+        496787908,
+        496767915,
+        496686465,
+        496685145,
+        496674187,
+        497658330,
+        496703271,
+        496714509,
+        496821427,
+        497505559,
+        496791646,
+        497472781,
+        496689813,
+        496712803,
+        496681453,
+        496790581,
+        496691953,
+        496725142,
+        496691097,
+        496814332,
+        496729264,
+        496672987,
+        496731225,
+        496715373,
+        496747183,
+        496704763,
+        496705819,
+        497510172,
+        496809542,
+        497458012,
+        496714750,
+        496765101,
+        496794876,
+        496771917,
+        496697012,
+        496763639,
+        496767916,
+        496721949,
+        497506306,
+        496773522,
+        496721771,
+        496801714,
+        496772086,
+        497545249,
+        497523476,
+        497500039,
+        497497548,
+        496795669,
+        496808410,
+        496934298,
+        497509594,
+        496748617,
+        496764088,
+        496686508,
+        496751719,
+        496698559,
+        496768830,
+        496696933,
+        496727800,
+        496685205,
+        496775852,
+        496724614,
+        496769146,
+        497480362,
+        496683947
+      ],
+      "raw_unrounded_ms": [
+        "1241.710045",
+        "1241.725315",
+        "1241.9114925",
+        "1241.7687025",
+        "1243.778155",
+        "1241.9669575",
+        "1243.7436325",
+        "1241.71665",
+        "1241.622555",
+        "1241.74099",
+        "1241.9805925",
+        "1241.8017675",
+        "1243.679405",
+        "1241.97923",
+        "1243.7603775",
+        "1241.7207175",
+        "1243.7321875",
+        "1241.708085",
+        "1243.7970675",
+        "1241.7818425",
+        "1241.8097275",
+        "1241.7157975",
+        "1241.704055",
+        "1241.824495",
+        "1241.756215",
+        "1243.6826925",
+        "1242.02455",
+        "1241.7059475",
+        "1241.7783925",
+        "1241.68197",
+        "1241.96047",
+        "1241.9407075",
+        "1241.675685",
+        "1241.8995475",
+        "1243.66321",
+        "1241.96977",
+        "1241.9197875",
+        "1241.7161625",
+        "1241.7128625",
+        "1241.6854675",
+        "1244.145825",
+        "1241.7581775",
+        "1241.7862725",
+        "1242.0535675",
+        "1243.7638975",
+        "1241.979115",
+        "1243.6819525",
+        "1241.7245325",
+        "1241.7820075",
+        "1241.7036325",
+        "1241.9764525",
+        "1241.7298825",
+        "1241.812855",
+        "1241.7277425",
+        "1242.03583",
+        "1241.82316",
+        "1241.6824675",
+        "1241.8280625",
+        "1241.7884325",
+        "1241.8679575",
+        "1241.7619075",
+        "1241.7645475",
+        "1243.77543",
+        "1242.023855",
+        "1243.64503",
+        "1241.786875",
+        "1241.9127525",
+        "1241.98719",
+        "1241.9297925",
+        "1241.74253",
+        "1241.9090975",
+        "1241.91979",
+        "1241.8048725",
+        "1243.765765",
+        "1241.933805",
+        "1241.8044275",
+        "1242.004285",
+        "1241.930215",
+        "1243.8631225",
+        "1243.80869",
+        "1243.7500975",
+        "1243.74387",
+        "1241.9891725",
+        "1242.021025",
+        "1242.335745",
+        "1243.773985",
+        "1241.8715425",
+        "1241.91022",
+        "1241.71627",
+        "1241.8792975",
+        "1241.7463975",
+        "1241.922075",
+        "1241.7423325",
+        "1241.8195",
+        "1241.7130125",
+        "1241.93963",
+        "1241.811535",
+        "1241.922865",
+        "1243.700905",
+        "1241.7098675"
+      ],
+      "clock_hz": 400000000,
+      "outliers_removed": 0
+    },
+    "observed_production_5_plus_20": {
+      "count": 20,
+      "minimum_ms": "1241.670075",
+      "mean_ms": "1242.623005125",
+      "median_ms": "1241.96882375",
+      "nearest_rank_p95_ms": "1243.7912275",
+      "nearest_rank_p95_rank": 19,
+      "maximum_ms": "1244.1581775",
+      "population_SD_ms": "0.959860450399391065045177544903573618150279975656147875636579",
+      "count_lt_700": 0,
+      "count_ge_700": 20,
+      "raw_unrounded_cycles": [
+        497516491,
+        496868809,
+        497504898,
+        497498659,
+        497466199,
+        496778611,
+        496668030,
+        496705657,
+        497663271,
+        496750117,
+        497509711,
+        496703257,
+        497491097,
+        496682977,
+        496763305,
+        497461452,
+        496786746,
+        496788313,
+        496674979,
+        496701462
+      ],
+      "raw_unrounded_ms": [
+        "1243.7912275",
+        "1242.1720225",
+        "1243.762245",
+        "1243.7466475",
+        "1243.6654975",
+        "1241.9465275",
+        "1241.670075",
+        "1241.7641425",
+        "1244.1581775",
+        "1241.8752925",
+        "1243.7742775",
+        "1241.7581425",
+        "1243.7277425",
+        "1241.7074425",
+        "1241.9082625",
+        "1243.65363",
+        "1241.966865",
+        "1241.9707825",
+        "1241.6874475",
+        "1241.753655"
+      ],
+      "clock_hz": 400000000,
+      "outliers_removed": 0
+    },
+    "disjoint_existing_profile_mean_ms": {
+      "frontend_total": "697.5501925",
+      "U85_backbone_invoke": "221.065402375",
+      "GeM": "118.008296375",
+      "U85_classifier_invoke": "91.6310530",
+      "score_generation_and_finite_validation": "10.091248875",
+      "accepted_top100_selector": "9.683755625",
+      "compact_publication": "0.002505875",
+      "other_production_residual": "94.5905505"
+    },
+    "exact_acceptance_aggregate_cycles": 49688879371,
+    "exact_profile_aggregate_cycles": 9940984041,
+    "realized_saving_ms": "482.114302525",
+    "frontend_substage_costs_not_yet_measured": true,
+    "dispositions_preserved": [
+      "POST_PRODUCTION_RESULT_SUB700_TARGET_NOT_MET",
+      "RESULT_EVIDENCE_ZERO_SCAN_SUBGATE_PASS",
+      "ZERO_SCAN_TARGET_NOT_MET"
+    ]
+  },
+  "geometry": {
+    "waveform_elements": 96000,
+    "waveform_type": "float32",
+    "waveform_bytes": 384000,
+    "sample_rate_hz": 32000,
+    "FFT_real_length": 2048,
+    "packed_complex_FFT_length": 1024,
+    "hop": 512,
+    "frames": 188,
+    "spectrum_bins": 1025,
+    "mel_bins": 128,
+    "mel_frames_per_group": 4,
+    "mel_groups": 47,
+    "compact_coefficients": 1885,
+    "compact_capacity": 2048,
+    "cropped_shape": [
+      125,
+      188
+    ],
+    "gray_shape": [
+      224,
+      281
+    ],
+    "output_shape": [
+      224,
+      281,
+      3
+    ],
+    "output_elements": 188832,
+    "output_bytes": 755328
+  },
+  "execution_path": {
+    "geometry": {
+      "waveform_elements": 96000,
+      "waveform_type": "float32",
+      "waveform_bytes": 384000,
+      "sample_rate_hz": 32000,
+      "FFT_real_length": 2048,
+      "packed_complex_FFT_length": 1024,
+      "hop": 512,
+      "frames": 188,
+      "spectrum_bins": 1025,
+      "mel_bins": 128,
+      "mel_frames_per_group": 4,
+      "mel_groups": 47,
+      "compact_coefficients": 1885,
+      "compact_capacity": 2048,
+      "cropped_shape": [
+        125,
+        188
+      ],
+      "gray_shape": [
+        224,
+        281
+      ],
+      "output_shape": [
+        224,
+        281,
+        3
+      ],
+      "output_elements": 188832,
+      "output_bytes": 755328
+    },
+    "configuration": {
+      "CPU": "Cortex-M55 HP",
+      "clock_hz": 400000000,
+      "ticks_per_second": 10000,
+      "timebase": "k_cycle_get_64 / h1ProfileNow; qualified Zephyr 64-bit SysTick extension",
+      "timer_driver_sha256": "8232521918a652ad9a44035b1c2ac5c25dfbceaff6b38461b5a29dc325459558",
+      "timer_read_source": "zephyr/drivers/timer/cortex_m_systick.c:437-444",
+      "timer_read_semantics": "Existing spinlock; cycle_count + elapsed(); unlock. Bounded O(1) observer capture; not a guarantee of identical hardware read latency.",
+      "toolchain": "Zephyr SDK 0.17.0 / arm-zephyr-eabi GCC 12.2.0",
+      "compiler_sha256": "42e96e38c3d24e74ec0f5752b0a644362c84f2dd473461158f6ab3816f7fa4f7",
+      "accepted_flags": [
+        "-Os",
+        "-mcpu=cortex-m55",
+        "-mthumb",
+        "-mfpu=auto",
+        "-mfloat-abi=hard",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-fno-strict-aliasing"
+      ],
+      "MVE_integer": true,
+      "MVE_float": true,
+      "FPU": true,
+      "ICACHE": true,
+      "DCACHE": true,
+      "cache_line_bytes": 32,
+      "CMSIS_DSP_commit": "d80a49b2bb186317dc1db4ac88da49c0ab77e6e7",
+      "CMSIS_commit": "85f6b92af0f6ac72594d391f895c45cc30847e41",
+      "Zephyr_commit": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+      "selected_compile_time_guard": "__ARM_FEATURE_MVE & 2 -> H1_M55_HAS_MVE_FLOAT=1",
+      "compiled_mel_proof": "Exact ELF compact-mel function has four-lane vector multiply and vector add, and sets usedMve=true; scalar fallback is compiled out.",
+      "model_identities": {
+        "frontend": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0",
+        "source_backbone": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70",
+        "compiled_backbone": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7",
+        "GeM": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353",
+        "bridge_implementation": "86c81c9fc84af93c2ea881f5baebd3299c0a99f56b75c063b28ee0cd6428386f",
+        "source_classifier": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81",
+        "compiled_classifier": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93",
+        "source_and_resident_models_exact_before_after": true,
+        "models_not_written": true,
+        "Vela": "5.0.0 unchanged"
+      },
+      "selected_library_units": [
+        {
+          "path": "CMSIS-DSP/Source/BasicMathFunctions/arm_mult_f32.c",
+          "sha256": "8de8f511c799280ab7f02fb19f267c2e39cb0a05fbda7a52dbac3c820585ac19",
+          "production_execution": true,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        },
+        {
+          "path": "CMSIS-DSP/Source/ComplexMathFunctions/arm_cmplx_mag_squared_f32.c",
+          "sha256": "3f51eb69e965b59a7042ceaed2d05115209fa3fe5a3b9f73524ca781627618ba",
+          "production_execution": false,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        },
+        {
+          "path": "CMSIS-DSP/Source/TransformFunctions/arm_cfft_f32.c",
+          "sha256": "11dc285044287d7ffdf92c73ba73eb4f460f35f0c476f1b5a291f86fa13eade9",
+          "production_execution": true,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        }
+      ]
+    },
+    "artifact_model_shapes": {
+      "input": [
+        [
+          1,
+          96000
+        ]
+      ],
+      "output": [
+        [
+          1,
+          224,
+          281,
+          3
+        ]
+      ]
+    },
+    "path": [
+      "runResultCommand(diagnostic=false)",
+      "runOnce(mode=Production, legacyReference=false)",
+      "h1RunFrontend()",
+      "h1RunFrontendM55(useCmsisPower=false,captureStages=false)",
+      "47 interleaved groups: 4 spectral frames then compact mel + 4 finite verifications",
+      "post-mel log/crop/resize/layout",
+      "final output finite scan",
+      "one full-output CRC",
+      "status/return",
+      "unchanged remaining H1 compute",
+      "compact service.publish() / productionReady"
+    ],
+    "spectral": {
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "h1M55SpectralProcessFrame",
+        "lines": [
+          268,
+          419
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "stopAfterStage": 7,
+      "stage": "H1_M55_STAGE_POWER_SQUARES",
+      "computeScalarPower": true,
+      "useCmsisPower": false,
+      "power_algorithm": "real*real + imag*imag; DC/Nyquist imaginary values are zero",
+      "hann_kernel": "CMSIS-DSP arm_mult_f32",
+      "fft_kernel": "CMSIS-DSP arm_cfft_f32, length=1024, forward, bitReverse=1",
+      "real_split": "project rfftRealSplitForward / cfftSplitOneBin; in-place paired reconstruction",
+      "capture": {
+        "reflectedFrame": null,
+        "windowedFrame": null,
+        "powerHypotSquared": null,
+        "diagnostic": null,
+        "powerRealSquaredPlusImag": "scratch.gray + lane*1025",
+        "timing": "local frameTiming"
+      },
+      "unexecuted": [
+        "hypotf power branch",
+        "CMSIS magnitude-squared power branch",
+        "reflected/windowed copies",
+        "diagnostic record checksum"
+      ]
+    },
+    "mel": {
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1M55CompactMelFourFrames",
+        "lines": [
+          440,
+          490
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "usedMve": true,
+      "captureStages": false,
+      "representation": "128 contiguous spans {u16 startBin,length,weightOffset}; 1885 exact FP32 weights in 2048 capacity",
+      "weight_sha256": "1a7aed4ae2d42c3b1b3b2e4ea42286e70be142ffb443f35d6b1dcb472884e6e0",
+      "layout": "power: four frame-major rows of 1025 FP32; result: frame-major 188x128 FP32",
+      "arithmetic": "MVE gather 4 frame lanes, broadcast one weight, vmulq_f32 then vaddq_f32 in increasing weight order; no fused MAC",
+      "finite_verification": "128 values per lane, 4 lanes per group, 47 groups",
+      "capture_copy_calls": 0,
+      "capture_copy_bytes": 0
+    },
+    "initialization_excluded": "Constants/model CRC resolution, sparse-table construction and CMSIS instance initialization happen once before the ready steady-state route; per-run readiness checks remain.",
+    "no_tiny_birdnet_inspection": true
+  },
+  "timer_audit": {
+    "fields": [
+      {
+        "field": "H1M55SpectralTiming.{framePreparation,hann,cfft,realSplit,powerSquares}Cycles",
+        "coverage": "S1..S5 executed kernels only; raw endpoints currently local",
+        "production_executed": true
+      },
+      {
+        "field": "H1M55SpectralTiming.transformCycles",
+        "coverage": "Nested cfftCycles+realSplitCycles; never add to these children"
+      },
+      {
+        "field": "H1M55SpectralTiming.totalCycles",
+        "coverage": "completedKernelCycles() sum, not complete frame call; setup/gaps/copies/return excluded",
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "completedKernelCycles",
+          "lines": [
+            142,
+            148
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        }
+      },
+      {
+        "field": "H1M55FrontendTiming.{frame,hann,cfft,realSplit,power}Cycles",
+        "coverage": "188 kernel sums; no complete frame/group wall envelope"
+      },
+      {
+        "field": "H1M55FrontendTiming.melCycles",
+        "coverage": "47 function + finite-check + conditional-copy branch intervals at 557-576; production copy false; math not isolated"
+      },
+      {
+        "field": "H1M55FrontendTiming.{dbLog,cropNormalize,resize,finalLayout}Cycles",
+        "coverage": "Existing local pairs; preserve boundaries, expose raw values plus new parents"
+      },
+      {
+        "field": "H1M55FrontendTiming.totalCycles",
+        "coverage": "524->634; excludes entry/checks before 524, finite loop 636-638, CRC639-640 and exit641-646",
+        "complete_frontend": false
+      },
+      {
+        "field": "H1M55FrontendTiming.finiteCount/outputCrc32",
+        "coverage": "Values only; no separate durations currently"
+      },
+      {
+        "field": "result.profile.frontend_cycles / production proof frontendStart/End",
+        "coverage": "Caller 951->963 includes prelude plus complete wrapper, finite and CRC; F_PROFILE, not pure wrapper F0"
+      },
+      {
+        "field": "result.profile.total_compute_cycles",
+        "coverage": "948->1094; excludes earlier lease/identity admission and later safety/compact publish; not authoritative primary"
+      },
+      {
+        "field": "H1ProductionProof.primaryStart/ready",
+        "coverage": "3213 through stored publicationEnd3254/ready3255 after complete service.publish; authoritative production primary"
+      },
+      {
+        "field": "H1ProductionProof observed stage timestamps",
+        "coverage": "frontend, NPU invoke, GeM, classifier, score/finite, selector pairs; production-safe when observed=1; no diagnostic scans"
+      },
+      {
+        "field": "baseline spectral/mel/current/stage event profiles",
+        "coverage": "Requires baseline diagnostic/current state, unavailable/inactive on ordinary production 161; diagnostic campaign uses legacy result route and cannot be substituted"
+      },
+      {
+        "field": "h1ProfileFinalize / hot-path / postprocess diagnostic finalizers",
+        "coverage": "Production branch bypasses these computations; keep bypass intact"
+      }
+    ],
+    "ordinary_wrapper": "Local timing/execution values discarded on return; instrumentation may retain timestamps without copying tensors or changing CRC execution.",
+    "no_new_time_claim": true
+  },
+  "operation_byte_ledger": [
+    {
+      "id": "S1",
+      "name": "Reflected frames",
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "h1M55SpectralProcessFrame / reflectedSample",
+        "lines": [
+          27,
+          35
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "input_buffers": [
+        "uploadedWaveform[96000]"
+      ],
+      "output_buffers": [
+        "h1SpectralWorkspace.samples[2048]"
+      ],
+      "element_count": 2048,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": 1540096,
+      "logical_write_bytes_per_inference": 1540096,
+      "algorithm": "existing left/right reflection; paddedStart=(frame+1)*512",
+      "marker": "frameStart/frameEnd; processing loop 291-294"
+    },
+    {
+      "id": "S2",
+      "name": "Hann window",
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "h1M55SpectralProcessFrame",
+        "lines": [
+          309,
+          311
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "input_buffers": [
+        "workspace[2048]",
+        "hann[2048]"
+      ],
+      "output_buffers": [
+        "workspace[2048]"
+      ],
+      "element_count": 2048,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": 3080192,
+      "logical_write_bytes_per_inference": 1540096,
+      "algorithm": "CMSIS arm_mult_f32 in place",
+      "marker": "hannStart/hannEnd"
+    },
+    {
+      "id": "S3",
+      "name": "CFFT",
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "h1M55SpectralProcessFrame",
+        "lines": [
+          325,
+          327
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "input_buffers": [
+        "workspace[2048]",
+        "CMSIS twiddles"
+      ],
+      "output_buffers": [
+        "workspace[2048]"
+      ],
+      "element_count": 1024,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": null,
+      "logical_write_bytes_per_inference": null,
+      "algorithm": "CMSIS packed 1024 complex forward CFFT; bitReverse=1",
+      "marker": "cfftStart/cfftEnd",
+      "unknown_bytes_reason": "Multi-pass library accesses/twiddle traffic are not one buffer scan; 8192-byte workspace extent known, exact traffic requires separate evidenced accounting."
+    },
+    {
+      "id": "S4",
+      "name": "Real reconstruction",
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "rfftRealSplitForward / cfftSplitOneBin",
+        "lines": [
+          38,
+          109
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "input_buffers": [
+        "workspace[2048]",
+        "RFFT twiddles"
+      ],
+      "output_buffers": [
+        "workspace[2048]"
+      ],
+      "element_count": 1025,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": 3080192,
+      "logical_write_bytes_per_inference": 1540096,
+      "algorithm": "DC/Nyquist + 511 mirror pairs + center bin, preserving all expressions",
+      "marker": "splitStart/splitEnd",
+      "logical_read_basis": "Source expression loads: DC 8 + 511*(source16+twiddle16) + center24 bytes; compiler may coalesce center aliases."
+    },
+    {
+      "id": "S5",
+      "name": "Selected power",
+      "source": {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "function": "h1M55SpectralProcessFrame",
+        "lines": [
+          377,
+          398
+        ],
+        "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+      },
+      "input_buffers": [
+        "workspace real[1025], imag[1023]"
+      ],
+      "output_buffers": [
+        "scratch.gray[lane*1025:...]"
+      ],
+      "element_count": 1025,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": 1540096,
+      "logical_write_bytes_per_inference": 770800,
+      "algorithm": "scalar real*real+imag*imag; no hypot/CMSIS power",
+      "marker": "squaresStart/squaresEnd"
+    },
+    {
+      "id": "M_MATH",
+      "name": "Compact MVE mel",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1M55CompactMelFourFrames",
+        "lines": [
+          452,
+          473
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.gray[4,1025]",
+        "compactMel.weights[1885]",
+        "spans[128]"
+      ],
+      "output_buffers": [
+        "scratch.melDb[188,128]"
+      ],
+      "element_count": 512,
+      "dtype": "FP32",
+      "calls": 47,
+      "logical_read_bytes_per_inference": 1771900,
+      "logical_write_bytes_per_inference": 96256,
+      "algorithm": "Four-frame MVE gather/broadcast multiply then add, increasing weight order",
+      "marker": "M_MATH_BEGIN/END",
+      "logical_read_basis": "4*1885 power values + 1885 coefficient values per group; metadata access traffic separate/not estimated; span unique extent 768 bytes."
+    },
+    {
+      "id": "M_FINITE",
+      "name": "Mel finite verification",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          563,
+          569
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.melDb[lane,128]"
+      ],
+      "output_buffers": [],
+      "element_count": 128,
+      "dtype": "FP32",
+      "calls": 188,
+      "logical_read_bytes_per_inference": 96256,
+      "logical_write_bytes_per_inference": 0,
+      "algorithm": "isfinite, no copied tensor",
+      "marker": "M_FINITE pairs"
+    },
+    {
+      "id": "M_CAPTURE",
+      "name": "Conditional mel capture",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          570,
+          574
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.melDb"
+      ],
+      "output_buffers": [
+        "scratch.melRaw"
+      ],
+      "element_count": 128,
+      "dtype": "FP32",
+      "calls": 0,
+      "logical_read_bytes_per_inference": 0,
+      "logical_write_bytes_per_inference": 0,
+      "algorithm": "captureStages=false; no memcpy executes",
+      "marker": "no executed markers"
+    },
+    {
+      "id": "DB_MATH",
+      "name": "Log/dB and maximum",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          583,
+          593
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.melDb[24064]"
+      ],
+      "output_buffers": [
+        "scratch.melDb[24064]",
+        "scalar globalMaximum/floorValue"
+      ],
+      "element_count": 24064,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 96256,
+      "logical_write_bytes_per_inference": 96256,
+      "algorithm": "strict > epsilon, logf and accepted FP32 multipliers, fused maximum",
+      "marker": "dbStart/dbEnd"
+    },
+    {
+      "id": "CROP_CLAMP_MINMAX",
+      "name": "Crop/clamp and extrema",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          598,
+          609
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.melDb[188,128]"
+      ],
+      "output_buffers": [
+        "scratch.image[125,188]",
+        "scalar min/max"
+      ],
+      "element_count": 23500,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 94000,
+      "logical_write_bytes_per_inference": 94000,
+      "algorithm": "bands 125..1, clamp and min/max in same loop; no additional extrema scans",
+      "marker": "CROP_MATH_BEGIN/END"
+    },
+    {
+      "id": "GLOBAL_NORMALIZE",
+      "name": "Global normalization",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          610,
+          612
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.image[23500]"
+      ],
+      "output_buffers": [
+        "scratch.image[23500]"
+      ],
+      "element_count": 23500,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 94000,
+      "logical_write_bytes_per_inference": 94000,
+      "algorithm": "1.0f-((value-min)/((max-min)+epsilon))",
+      "marker": "NORMALIZE_BEGIN/END"
+    },
+    {
+      "id": "RESIZE_MATH",
+      "name": "Half-pixel interpolation",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "resizeHalfPixel",
+        "lines": [
+          256,
+          279
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.image[125,188]"
+      ],
+      "output_buffers": [
+        "scratch.gray[224,281]"
+      ],
+      "element_count": 62944,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 1007104,
+      "logical_write_bytes_per_inference": 251776,
+      "algorithm": "four existing product terms and accepted coordinate clamps",
+      "marker": "resizeStart/resizeEnd",
+      "logical_read_basis": "Four input expressions per output; repeated/aliased reads are logical, not bus traffic."
+    },
+    {
+      "id": "LAYOUT_MATH",
+      "name": "Three channels and normalization",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          624,
+          631
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "scratch.gray[62944]"
+      ],
+      "output_buffers": [
+        "current.frontend[188832]"
+      ],
+      "element_count": 188832,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 755328,
+      "logical_write_bytes_per_inference": 755328,
+      "algorithm": "pixel-major repeated gray with channel mean/std",
+      "marker": "layoutStart/layoutEnd",
+      "logical_read_basis": "Three source expressions per gray pixel; compiler may hoist to 251776 physical source bytes; no measured traffic claim."
+    },
+    {
+      "id": "F8",
+      "name": "Final output finite scan",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          636,
+          638
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "current.frontend[188832]"
+      ],
+      "output_buffers": [
+        "scalar finiteCount"
+      ],
+      "element_count": 188832,
+      "dtype": "FP32",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 755328,
+      "logical_write_bytes_per_inference": 0,
+      "algorithm": "188832 isfinite calls; existing finiteCount update",
+      "marker": "FINITE_BEGIN/END"
+    },
+    {
+      "id": "F9",
+      "name": "Frontend output CRC",
+      "source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "crc32 / h1RunFrontendM55",
+        "lines": [
+          59,
+          69
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "call_source": {
+        "path": "firmware/h1/src/frontend.cpp",
+        "function": "h1RunFrontendM55",
+        "lines": [
+          639,
+          640
+        ],
+        "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+      },
+      "input_buffers": [
+        "current.frontend: 755328 bytes"
+      ],
+      "output_buffers": [
+        "timing.outputCrc32:u32"
+      ],
+      "element_count": 755328,
+      "dtype": "uint8 scan over unchanged FP32 bits",
+      "calls": 1,
+      "logical_read_bytes_per_inference": 755328,
+      "logical_write_bytes_per_inference": 4,
+      "algorithm": "Reflected CRC32 polynomial 0xedb88320, initial 0xffffffff, 8 bit steps per byte, final complement",
+      "marker": "CRC_BEGIN/END"
+    }
+  ],
+  "timestamp_schema": {
+    "clock": {
+      "CPU": "Cortex-M55 HP",
+      "clock_hz": 400000000,
+      "ticks_per_second": 10000,
+      "timebase": "k_cycle_get_64 / h1ProfileNow; qualified Zephyr 64-bit SysTick extension",
+      "timer_driver_sha256": "8232521918a652ad9a44035b1c2ac5c25dfbceaff6b38461b5a29dc325459558",
+      "timer_read_source": "zephyr/drivers/timer/cortex_m_systick.c:437-444",
+      "timer_read_semantics": "Existing spinlock; cycle_count + elapsed(); unlock. Bounded O(1) observer capture; not a guarantee of identical hardware read latency.",
+      "toolchain": "Zephyr SDK 0.17.0 / arm-zephyr-eabi GCC 12.2.0",
+      "compiler_sha256": "42e96e38c3d24e74ec0f5752b0a644362c84f2dd473461158f6ab3816f7fa4f7",
+      "accepted_flags": [
+        "-Os",
+        "-mcpu=cortex-m55",
+        "-mthumb",
+        "-mfpu=auto",
+        "-mfloat-abi=hard",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-fno-strict-aliasing"
+      ],
+      "MVE_integer": true,
+      "MVE_float": true,
+      "FPU": true,
+      "ICACHE": true,
+      "DCACHE": true,
+      "cache_line_bytes": 32,
+      "CMSIS_DSP_commit": "d80a49b2bb186317dc1db4ac88da49c0ab77e6e7",
+      "CMSIS_commit": "85f6b92af0f6ac72594d391f895c45cc30847e41",
+      "Zephyr_commit": "3a2b84d96961b53431a78685c6ec0f0df4ddf347",
+      "selected_compile_time_guard": "__ARM_FEATURE_MVE & 2 -> H1_M55_HAS_MVE_FLOAT=1",
+      "compiled_mel_proof": "Exact ELF compact-mel function has four-lane vector multiply and vector add, and sets usedMve=true; scalar fallback is compiled out.",
+      "model_identities": {
+        "frontend": "71bd258230cd7897a278132d973e0c9c5ea40a3d0be3ed3a3702175d387732d0",
+        "source_backbone": "59ec20eaeaf748d0c87aee7ef792fd272f931f463407b99c94356807e6cbba70",
+        "compiled_backbone": "f3328db0aa2d7befc13d0f3dd7aa20906ba2164d15f589ddb1f746de398fc2e7",
+        "GeM": "ab45d405a4c0baca356acffd49e08bd3d4b5ec4d5daca48ce947455850d67353",
+        "bridge_implementation": "86c81c9fc84af93c2ea881f5baebd3299c0a99f56b75c063b28ee0cd6428386f",
+        "source_classifier": "7f862ab3db2cd5b72307d5c461de0ab8ed6fa3ce97ca93b335718e594e30ce81",
+        "compiled_classifier": "2ff002cb4bf95b33384d70023a34e377b1d34bb2786e39efc5d358c3f80a6e93",
+        "source_and_resident_models_exact_before_after": true,
+        "models_not_written": true,
+        "Vela": "5.0.0 unchanged"
+      },
+      "selected_library_units": [
+        {
+          "path": "CMSIS-DSP/Source/BasicMathFunctions/arm_mult_f32.c",
+          "sha256": "8de8f511c799280ab7f02fb19f267c2e39cb0a05fbda7a52dbac3c820585ac19",
+          "production_execution": true,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        },
+        {
+          "path": "CMSIS-DSP/Source/ComplexMathFunctions/arm_cmplx_mag_squared_f32.c",
+          "sha256": "3f51eb69e965b59a7042ceaed2d05115209fa3fe5a3b9f73524ca781627618ba",
+          "production_execution": false,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        },
+        {
+          "path": "CMSIS-DSP/Source/TransformFunctions/arm_cfft_f32.c",
+          "sha256": "11dc285044287d7ffdf92c73ba73eb4f460f35f0c476f1b5a291f86fa13eade9",
+          "production_execution": true,
+          "flags": [
+            "-Os",
+            "-mcpu=cortex-m55",
+            "-mfpu=auto",
+            "-mfloat-abi=hard"
+          ]
+        }
+      ]
+    },
+    "units": "Raw uint64 absolute cycles, little endian; separate presence bits; never infer presence from value 0.",
+    "interval_convention": "Half-open [begin,end); successful work intervals positive; shared endpoints/equal gap endpoints permitted. Never subtract using unsigned wrap to hide reversal.",
+    "indexing": "g=0..46; lane=0..3; f=4*g+lane=0..187; no circular overwrite.",
+    "top_components": [
+      {
+        "id": "F0",
+        "name": "Complete selected frontend wrapper call",
+        "begin": "F0_BEGIN",
+        "end": "F0_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/main.cpp",
+          "function": "runOnce",
+          "lines": [
+            958,
+            963
+          ],
+          "sha256": "2179b9afebc059ab809c184fb8d115d4eb878581e84b0213909a1fb885f73431"
+        },
+        "measured_now": false,
+        "placement": "Immediately before selected h1RunFrontend expression and immediately after it returns, before the existing frontendEnd read. No existing timer moves.",
+        "parent": "F_PROFILE",
+        "additive": false
+      },
+      {
+        "id": "F1",
+        "name": "Wrapper entry, native argument/readiness checks and setup",
+        "begin": "F0_BEGIN",
+        "end": "READY_DONE",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontend / h1RunFrontendM55",
+          "lines": [
+            492,
+            528
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "READY_DONE after groupPower alias setup at 528, before first for-loop group. Includes wrapper local timing/execution initialization, execution state, checks, timing reset/clock/totalStart."
+      },
+      {
+        "id": "F2",
+        "name": "All spectral group envelopes",
+        "begin": "G_SPEC_BEGIN[g]",
+        "end": "G_SPEC_END[g]",
+        "calls_per_successful_inference": 47,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            531,
+            555
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before SpectralEnter at 531 through after SpectralDone at 555; each contains four frame calls. Aggregate exactly 188 frames."
+      },
+      {
+        "id": "F3",
+        "name": "All mel group envelopes",
+        "begin": "G_MEL_BEGIN[g]",
+        "end": "G_MEL_END[g]",
+        "calls_per_successful_inference": 47,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            556,
+            577
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before MelEnter at 556 through after MelDone at 577; math, four finite checks, false capture branch tests and existing mel timer bookkeeping included."
+      },
+      {
+        "id": "F4",
+        "name": "Log/dB, global maximum and floor bookkeeping",
+        "begin": "DB_PARENT_BEGIN",
+        "end": "DB_PARENT_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            581,
+            594
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before h1BaselineMelCycles at 581 through after DbDone at 594.",
+        "algorithm": "max(sum, epsilon) via existing strict > comparison; logf(positive)*0.4342944622039795f*10.0f; fused global maximum; floor=globalMaximum-100.0f"
+      },
+      {
+        "id": "F5",
+        "name": "Crop, clamp, fused min/max and normalization",
+        "begin": "CROP_PARENT_BEGIN",
+        "end": "CROP_PARENT_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            596,
+            614
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before CropNormEnter at 596 through after CropNormDone at 614.",
+        "algorithm": "Reverse/select band=125-row (bands 125..1); clamp to floor; min/max in same crop loop; denominator=(max-min)+1.000000013351432e-10f; value=1.0f-((value-min)/denominator)"
+      },
+      {
+        "id": "F6",
+        "name": "Half-pixel resize envelope",
+        "begin": "RESIZE_PARENT_BEGIN",
+        "end": "RESIZE_PARENT_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55 / resizeHalfPixel",
+          "lines": [
+            616,
+            620
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "helper_source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "resizeHalfPixel",
+          "lines": [
+            256,
+            279
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "placement": "Before ResizeEnter through after ResizeDone.",
+        "algorithm": "Existing (coordinate+0.5)*scale-0.5, floor/ceil and boundary clamps; identical four-product interpolation expression/order."
+      },
+      {
+        "id": "F7",
+        "name": "Three-channel FP32 layout and normalization",
+        "begin": "LAYOUT_PARENT_BEGIN",
+        "end": "LAYOUT_PARENT_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            622,
+            633
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before LayoutEnter through after LayoutDone.",
+        "algorithm": "pixel-major three channels; existing means [0.5f,0.4000000059604645f,0.30000001192092896f] and inverseStd [2.0f,3.3333332538604736f,10.0f]"
+      },
+      {
+        "id": "F8",
+        "name": "Full frontend output finite scan",
+        "begin": "FINITE_BEGIN",
+        "end": "FINITE_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            636,
+            638
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Immediately before finiteCount=0 at 636; end immediately after the loop at 638; preserve all 188832 isfinite tests."
+      },
+      {
+        "id": "F9",
+        "name": "Frontend internal full-output CRC",
+        "begin": "CRC_BEGIN",
+        "end": "CRC_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            639,
+            640
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "helper_source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "crc32",
+          "lines": [
+            59,
+            69
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "placement": "Before existing outputCrc32=crc32(...) statement; after completion and assignment. No removal, bypass, relocation or substitute estimate."
+      },
+      {
+        "id": "F10",
+        "name": "Native status/exit and wrapper return",
+        "begin": "CRC_END",
+        "end": "F0_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55 / h1RunFrontend",
+          "lines": [
+            641,
+            672
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Reuse CRC_END; through unchanged finite-count decision, success/execution status and wrapper return. Includes post-CRC observer recording."
+      },
+      {
+        "id": "F_RESIDUAL",
+        "name": "Uncovered frontend gaps and observer bookkeeping",
+        "definition": "Sum ordered complement gaps within [F0_BEGIN,F0_END) after the union of F1..F10 instances; independently compute from adjacent retained endpoints.",
+        "includes": [
+          "group-loop transitions",
+          "extra SpectralDone at 579",
+          "legacy totalCycles capture at 634",
+          "timestamp/counter/store costs located in uncovered gaps"
+        ],
+        "not_an_exclusively_observer_cost": true,
+        "measured_now": false
+      }
+    ],
+    "spectral": [
+      {
+        "id": "S1",
+        "name": "Reflected frame preparation",
+        "begin": "frameStart[f]",
+        "end": "frameEnd[f]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "h1M55SpectralProcessFrame",
+          "lines": [
+            290,
+            295
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "S2",
+        "name": "Hann multiplication",
+        "begin": "hannStart[f]",
+        "end": "hannEnd[f]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "h1M55SpectralProcessFrame",
+          "lines": [
+            309,
+            311
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "S3",
+        "name": "1024-point packed CFFT",
+        "begin": "cfftStart[f]",
+        "end": "cfftEnd[f]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "h1M55SpectralProcessFrame",
+          "lines": [
+            325,
+            327
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "S4",
+        "name": "Real-spectrum split/reconstruction",
+        "begin": "splitStart[f]",
+        "end": "splitEnd[f]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "h1M55SpectralProcessFrame",
+          "lines": [
+            338,
+            342
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        },
+        "measured_now": false,
+        "helper_source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "rfftRealSplitForward / cfftSplitOneBin",
+          "lines": [
+            38,
+            109
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        }
+      },
+      {
+        "id": "S5",
+        "name": "Selected scalar power stage",
+        "begin": "squaresStart[f]",
+        "end": "squaresEnd[f]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+          "function": "h1M55SpectralProcessFrame",
+          "lines": [
+            379,
+            390
+          ],
+          "sha256": "bc55e355072735e14682df783566473f5c7c34145faa86c125ac4021ec322b0d"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "S6_FRAME",
+        "name": "Per-frame setup/dispatch/completion and gaps",
+        "calls": 188,
+        "definition": "For each call pair C_BEGIN/C_END, independently sum gaps before S1, between S1..S5 and after S5; includes existing timing bookkeeping, null diagnostic branches, checks and return."
+      },
+      {
+        "id": "S6_GROUP",
+        "name": "Group caller setup/accumulation/dispatch and gaps",
+        "calls": 47,
+        "definition": "Within each G_SPEC pair, independently sum gaps outside four C_BEGIN/C_END pairs; includes frameTiming/capture construction, group/lane loop, existing timing accumulation, stage marks and inactive baseline hooks."
+      },
+      {
+        "id": "S6",
+        "name": "All uncovered spectral overhead",
+        "definition": "S6_FRAME + S6_GROUP",
+        "additive": false
+      }
+    ],
+    "mel": [
+      {
+        "id": "M_CALL",
+        "name": "Complete compact mel function call",
+        "begin": "M_CALL_BEGIN[g]",
+        "end": "M_CALL_END[g]",
+        "calls_per_successful_inference": 47,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            559,
+            562
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "additive": false
+      },
+      {
+        "id": "M_MATH",
+        "name": "Actual four-frame compact MVE mathematics",
+        "begin": "M_MATH_BEGIN[g]",
+        "end": "M_MATH_END[g]",
+        "calls_per_successful_inference": 47,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1M55CompactMelFourFrames",
+          "lines": [
+            452,
+            472
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Begin after argument/table checks at 450, before MVE path initialization; end after all output lane stores at 472, before usedMve=true."
+      },
+      {
+        "id": "M_FINITE",
+        "name": "Per-lane mel finite verification",
+        "begin": "M_FINITE_BEGIN[g,lane]",
+        "end": "M_FINITE_END[g,lane]",
+        "calls_per_successful_inference": 188,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            564,
+            569
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "placement": "Before offset computation at 564; after the 128-band finite loop at 569, before captureStages test."
+      },
+      {
+        "id": "M_CAPTURE",
+        "name": "Conditional stage capture",
+        "calls": 0,
+        "bytes": 0,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            570,
+            574
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "selected_branch": "captureStages=false; no executed copy interval or fabricated zero-duration timestamp. Presence bits for this branch are absent by contract."
+      },
+      {
+        "id": "M_CALL_RESIDUAL",
+        "definition": "Independent gaps of M_CALL outside M_MATH; argument checks, usedMve publication and function return."
+      },
+      {
+        "id": "M_GROUP_RESIDUAL",
+        "definition": "Independent gaps of G_MEL outside M_CALL and four M_FINITE intervals; loop/capture branch checks, existing timer/mark/store overhead."
+      },
+      {
+        "id": "M_RESIDUAL",
+        "definition": "M_CALL_RESIDUAL + M_GROUP_RESIDUAL",
+        "additive": false
+      }
+    ],
+    "post_mel_children": [
+      {
+        "id": "DB_MATH",
+        "name": "Log/dB with maximum and floor",
+        "begin": "dbStart",
+        "end": "dbEnd",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            584,
+            593
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "reuse_existing_reads": true
+      },
+      {
+        "id": "CROP_CLAMP_MINMAX",
+        "name": "Crop, clamp and fused image extrema",
+        "begin": "CROP_MATH_BEGIN",
+        "end": "CROP_MATH_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            598,
+            609
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "GLOBAL_NORMALIZE",
+        "name": "Denominator and accepted normalization",
+        "begin": "NORMALIZE_BEGIN",
+        "end": "NORMALIZE_END",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            610,
+            612
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false
+      },
+      {
+        "id": "RESIZE_MATH",
+        "name": "Existing resize call",
+        "begin": "resizeStart",
+        "end": "resizeEnd",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            617,
+            619
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "reuse_existing_reads": true
+      },
+      {
+        "id": "LAYOUT_MATH",
+        "name": "Existing final layout loop",
+        "begin": "layoutStart",
+        "end": "layoutEnd",
+        "calls_per_successful_inference": 1,
+        "source": {
+          "path": "firmware/h1/src/frontend.cpp",
+          "function": "h1RunFrontendM55",
+          "lines": [
+            623,
+            632
+          ],
+          "sha256": "c711879793e7a185057ea671214f306c708a522bd61042371154ac3d78cb9ad7"
+        },
+        "measured_now": false,
+        "reuse_existing_reads": true
+      }
+    ],
+    "parent_policy": "F0, F_PROFILE, F2, F3, M_CALL and kernel sum fields are parents; add only one hierarchy level in any partition.",
+    "frame_call_markers": "C_BEGIN immediately before the actual h1M55SpectralProcessFrame call at frontend.cpp:542; C_END on returned bool before success/failure handling and accumulation. Evaluate once; preserve original false return.",
+    "legacy_compute_markers": {
+      "COMPUTE_BEGIN": "Reuse totalStart read at frontend.cpp:524",
+      "COMPUTE_END": "Reuse read in existing totalCycles assignment at 634; retain same capture point and expression"
+    },
+    "compute_distinctions": [
+      "legacy compute interval COMPUTE_END-COMPUTE_BEGIN (excludes entry, final scan, CRC and exit)",
+      "pre-validation call envelope FINITE_BEGIN-F0_BEGIN (includes entry and all intervening work/gaps)",
+      "full wrapper F0_END-F0_BEGIN",
+      "existing production frontend envelope frontendEnd-frontendStart"
+    ],
+    "envelope_relation": "F_PROFILE = (F0_BEGIN-frontendStart) + F0 + (frontendEnd-F0_END); preserve caller markers 951/963 and disclose caller prelude and observer stores.",
+    "kernel_capture_policy": "Reuse existing ten absolute kernel timestamps per frame; record both after the corresponding end read. No additional reads inside kernel arithmetic. New pairs use same clock; write pair/counters after end.",
+    "bounded_capture_policy": "O(1) read and fixed indexed store; no allocator, dispatch search, tensor scans, USB or printf. Existing timer locking is unchanged.",
+    "maximum_additional_clock_reads_per_run": 1192,
+    "raw_frame_fields": [
+      "C_BEGIN",
+      "C_END",
+      "frameStart",
+      "frameEnd",
+      "hannStart",
+      "hannEnd",
+      "cfftStart",
+      "cfftEnd",
+      "splitStart",
+      "splitEnd",
+      "squaresStart",
+      "squaresEnd"
+    ],
+    "raw_group_fields": [
+      "G_SPEC_BEGIN",
+      "G_SPEC_END",
+      "G_MEL_BEGIN",
+      "G_MEL_END",
+      "M_CALL_BEGIN",
+      "M_CALL_END",
+      "M_MATH_BEGIN",
+      "M_MATH_END",
+      "M_FINITE_0_BEGIN",
+      "M_FINITE_0_END",
+      "M_FINITE_1_BEGIN",
+      "M_FINITE_1_END",
+      "M_FINITE_2_BEGIN",
+      "M_FINITE_2_END",
+      "M_FINITE_3_BEGIN",
+      "M_FINITE_3_END"
+    ],
+    "raw_fixed_fields": [
+      "F0_BEGIN",
+      "F0_END",
+      "READY_DONE",
+      "COMPUTE_BEGIN",
+      "COMPUTE_END",
+      "DB_PARENT_BEGIN",
+      "DB_PARENT_END",
+      "dbStart",
+      "dbEnd",
+      "CROP_PARENT_BEGIN",
+      "CROP_PARENT_END",
+      "CROP_MATH_BEGIN",
+      "CROP_MATH_END",
+      "NORMALIZE_BEGIN",
+      "NORMALIZE_END",
+      "RESIZE_PARENT_BEGIN",
+      "RESIZE_PARENT_END",
+      "resizeStart",
+      "resizeEnd",
+      "LAYOUT_PARENT_BEGIN",
+      "LAYOUT_PARENT_END",
+      "layoutStart",
+      "layoutEnd",
+      "FINITE_BEGIN",
+      "FINITE_END",
+      "CRC_BEGIN",
+      "CRC_END",
+      "P0",
+      "P1",
+      "frontendStart",
+      "frontendEnd",
+      "backboneStart",
+      "backboneEnd",
+      "gemStart",
+      "gemEnd",
+      "classifierStart",
+      "classifierEnd",
+      "scoreStart",
+      "scoreEnd",
+      "topStart",
+      "topEnd",
+      "publicationStart",
+      "publicationEnd",
+      "backboneQuantizeStart",
+      "backboneQuantizeEnd",
+      "classifierQuantizeStart",
+      "classifierQuantizeEnd",
+      "postprocessStart",
+      "postprocessEnd"
+    ]
+  },
+  "counter_schema": {
+    "storage": "48 u32 per record; checked overflow; immutable success expectations; increment at actual completion/call sites outside kernel pairs.",
+    "success_expected": {
+      "FRONTEND_CALLS": 1,
+      "SPECTRAL_GROUPS": 47,
+      "SPECTRAL_FRAMES": 188,
+      "FRAME_PREPARATIONS": 188,
+      "HANN_OPERATIONS": 188,
+      "CFFT_OPERATIONS": 188,
+      "REAL_SPLIT_OPERATIONS": 188,
+      "SCALAR_POWER_OPERATIONS": 188,
+      "CMSIS_POWER_OPERATIONS": 0,
+      "HYPOT_POWER_OPERATIONS": 0,
+      "MEL_GROUPS": 47,
+      "MEL_MVE_GROUPS": 47,
+      "MEL_SCALAR_GROUPS": 0,
+      "MEL_FINITE_CALLS": 188,
+      "MEL_FINITE_ELEMENTS": 24064,
+      "MEL_CAPTURE_CALLS": 0,
+      "MEL_CAPTURE_BYTES": 0,
+      "LOG_CALLS": 24064,
+      "CROP_ELEMENTS": 23500,
+      "NORMALIZE_ELEMENTS": 23500,
+      "RESIZE_PIXELS": 62944,
+      "LAYOUT_ELEMENTS": 188832,
+      "FRONTEND_OUTPUT_FINITE_CALLS": 1,
+      "FRONTEND_OUTPUT_FINITE_ELEMENTS": 188832,
+      "FRONTEND_INTERNAL_CRC_CALLS": 1,
+      "FRONTEND_INTERNAL_CRC_BYTES": 755328,
+      "RESULT_EVIDENCE_SCANS": 0,
+      "SCORE_EVIDENCE_SCANS": 0,
+      "DIAGNOSTIC_REPEAT_COMPARISONS": 0,
+      "DIAGNOSTIC_SAVES": 0,
+      "GENERATED_SCORES": 11560,
+      "SCORE_FINITE_CHECKS": 11560,
+      "PRODUCTION_TOP_COUNT": 3,
+      "ACCEPTED_SELECTOR_COUNT": 100,
+      "U85_BACKBONE_COMMANDS": 1,
+      "U85_CLASSIFIER_COMMANDS": 1,
+      "U85_BACKBONE_COMPLETIONS": 1,
+      "U85_CLASSIFIER_COMPLETIONS": 1
+    },
+    "observed_fields": [
+      "clock_read_count",
+      "timestamp_store_count",
+      "duplicate_marker_count",
+      "missing_marker_count",
+      "observer_bytes_written",
+      "counter_overflow",
+      "record_overflow",
+      "unexpected_backend_count",
+      "fault_count",
+      "guard_failure_count"
+    ],
+    "no_extra_element_loops": "Derive operation element counts from actual completed loop bounds and existing counters; no new per-element arithmetic/counter operations.",
+    "CRC": {
+      "FRONTEND_INTERNAL_CRC_CYCLES": "CRC_END-CRC_BEGIN",
+      "FRONTEND_INTERNAL_CRC_MS": "1000*(CRC_END-CRC_BEGIN)/qualified clock_hz",
+      "calls": 1,
+      "bytes": 755328,
+      "direct_measurement_required": true,
+      "note": "CRC executes after the complete finite loop and before finite-count failure check; preserve that order even on failure. No estimate from seven removed evidence scans."
+    },
+    "campaign_counters": "5 warmups completed; 20 consecutive measured completed; all 25 per-run structural records retained; zero drift/mutation/reset/fallback/guard/fault/unintended scans."
+  },
+  "reconciliation": {
+    "units": "Integer cycles only; convert after reconciliation; exact Python/unbounded or checked u64 sums; no rounding.",
+    "frontend": "F0 = F1 + sum47(F2[g]) + sum47(F3[g]) + F4+F5+F6+F7+F8+F9+F10 + F_RESIDUAL",
+    "independent_residual_algorithm": [
+      "Validate required presence bitmap, bounds, actual counts, monotonic endpoints and hierarchy containment.",
+      "Sort expected top-level instances by source execution order (F1, [F2,F3] repeated47, F4..F10). Reject overlap/reversal/missing or unexpected instances.",
+      "Independently retain each [container.begin,first.begin), [previous.end,next.begin), [last.end,container.end) gap, including zero gaps.",
+      "Sum gap durations independently; require equal to container duration minus sum of component durations. Never define residual only by subtraction."
+    ],
+    "spectral": "F2[g] = sum4(S1+S2+S3+S4+S5+S6_FRAME) + S6_GROUP[g]; aggregate all47. Do not add transformCycles or kernel-total to children.",
+    "mel": "F3[g] = M_MATH[g] + sum4(M_FINITE[g,lane]) + M_CALL_RESIDUAL[g] + M_GROUP_RESIDUAL[g]; M_CAPTURE has no interval in selected route.",
+    "post_mel": "Each F4..F7 parent = sum of its named child intervals + independently summed complement gaps. F8 and F9 are distinct direct pairs.",
+    "production": {
+      "P0_source": {
+        "path": "firmware/h1/src/main.cpp",
+        "function": "runResultCommand",
+        "lines": [
+          3209,
+          3219
+        ],
+        "sha256": "2179b9afebc059ab809c184fb8d115d4eb878581e84b0213909a1fb885f73431"
+      },
+      "P1_source": {
+        "path": "firmware/h1/src/main.cpp",
+        "function": "runResultCommand / H1ResultService.publish",
+        "lines": [
+          3252,
+          3264
+        ],
+        "sha256": "2179b9afebc059ab809c184fb8d115d4eb878581e84b0213909a1fb885f73431"
+      },
+      "P0": "Reuse proof.primaryStart at 3213 after ordinary auth/readiness/input-generation request checks; waveform already resident.",
+      "P1": "Reuse proof.ready=proof.publicationEnd from 3254/3255; service.publish has completed compact copy/release fence/productionReady=true. No new earlier/later Ready definition.",
+      "endpoint_alias": "P1 == publicationEnd exactly; service productionReady is the semantic publication endpoint. Preserve existing post-return timestamp endpoint.",
+      "ordered_markers": [
+        "P0",
+        "frontendStart",
+        "frontendEnd",
+        "backboneStart",
+        "backboneEnd",
+        "gemStart",
+        "gemEnd",
+        "classifierStart",
+        "classifierEnd",
+        "scoreStart",
+        "scoreEnd",
+        "topStart",
+        "topEnd",
+        "publicationStart",
+        "publicationEnd"
+      ],
+      "disjoint_leaves": [
+        {
+          "id": "P_ENTRY_RESIDUAL",
+          "begin": "P0",
+          "end": "frontendStart"
+        },
+        {
+          "id": "P_FRONTEND",
+          "begin": "frontendStart",
+          "end": "frontendEnd"
+        },
+        {
+          "id": "P_FE_BB_HANDOFF",
+          "begin": "frontendEnd",
+          "end": "backboneStart"
+        },
+        {
+          "id": "P_BACKBONE",
+          "begin": "backboneStart",
+          "end": "backboneEnd"
+        },
+        {
+          "id": "P_BB_GEM_HANDOFF",
+          "begin": "backboneEnd",
+          "end": "gemStart"
+        },
+        {
+          "id": "P_GEM",
+          "begin": "gemStart",
+          "end": "gemEnd"
+        },
+        {
+          "id": "P_GEM_CLS_HANDOFF",
+          "begin": "gemEnd",
+          "end": "classifierStart"
+        },
+        {
+          "id": "P_CLASSIFIER",
+          "begin": "classifierStart",
+          "end": "classifierEnd"
+        },
+        {
+          "id": "P_CLS_SCORE_HANDOFF",
+          "begin": "classifierEnd",
+          "end": "scoreStart"
+        },
+        {
+          "id": "P_SCORE_FINITE",
+          "begin": "scoreStart",
+          "end": "scoreEnd"
+        },
+        {
+          "id": "P_SCORE_TOP_GAP",
+          "begin": "scoreEnd",
+          "end": "topStart"
+        },
+        {
+          "id": "P_TOP100",
+          "begin": "topStart",
+          "end": "topEnd"
+        },
+        {
+          "id": "P_TOP_PUBLISH_GAP",
+          "begin": "topEnd",
+          "end": "publicationStart"
+        },
+        {
+          "id": "P_PUBLICATION",
+          "begin": "publicationStart",
+          "end": "publicationEnd"
+        }
+      ],
+      "formula": "P1-P0 = P_FRONTEND + P_BACKBONE + P_GEM + P_CLASSIFIER + P_SCORE_FINITE + P_TOP100 + P_PUBLICATION + all listed handoffs/gaps/residual.",
+      "nested_handoff_work": "Retain existing raw backboneQuantizeStart/End and classifierQuantizeStart/End. They are children of their handoffs, never additional primary terms. NPU cache/submit/IRQ intervals remain children of invoke wall time.",
+      "frontend_envelope": "P_FRONTEND = caller_pre_gap + F0 + caller_post_gap; previous 697.5501925 ms is this envelope, not a newly measured pure F0."
+    },
+    "failures": [
+      "negative/reversed interval",
+      "required timestamp absent",
+      "duplicate marker",
+      "wrong clock/source/artifact identity",
+      "overlap counted as disjoint",
+      "unexpected call/frame/group/backend count",
+      "counter/storage overflow",
+      "gap sum unequal to subtraction residual",
+      "non-reconciling total",
+      "changed primary endpoint"
+    ]
+  },
+  "memory_lifetime_audit": {
+    "map_sha256": "5662917b08517adb047165c3fb8f487fe650ce986ac53b74960a241fe282d8eb",
+    "full_layout_sha256": "13233c8c75c9ec409140199571e3549bf391a880812224d1b26c608dda3ef658",
+    "objects": [
+      {
+        "name": "PSRAM.model",
+        "address": "0xa0000000",
+        "bytes": 20465840,
+        "lifetime": "boot to shutdown"
+      },
+      {
+        "name": "PSRAM.modelGuard",
+        "address": "0xa13848c0",
+        "bytes": 64,
+        "lifetime": "existing reserved lifetime; unchanged"
+      },
+      {
+        "name": "PSRAM.current",
+        "address": "0xa1384900",
+        "bytes": 1371328,
+        "lifetime": "per inference; outputs live until next permitted writer"
+      },
+      {
+        "name": "PSRAM.first",
+        "address": "0xa14d35c0",
+        "bytes": 1371328,
+        "lifetime": "first diagnostic snapshot retained for repeat; never observer storage"
+      },
+      {
+        "name": "PSRAM.frontendScratch",
+        "address": "0xa1622280",
+        "bytes": 624384,
+        "lifetime": "boot-reserved; per-run native intermediates; legacy/diagnostic ownership retained"
+      },
+      {
+        "name": "PSRAM.spectralDiagnostics",
+        "address": "0xa16ba980",
+        "bytes": 24768,
+        "lifetime": "diagnostic reserved; not reclaimed"
+      },
+      {
+        "name": "PSRAM.uploadPayload",
+        "address": "0xa16c0a40",
+        "bytes": 384060,
+        "lifetime": "existing reserved lifetime; unchanged"
+      },
+      {
+        "name": "PSRAM.uploadedWaveform",
+        "address": "0xa171e680",
+        "bytes": 384000,
+        "lifetime": "validated generation through all runs; sole input lease; cannot mutate"
+      },
+      {
+        "name": "PSRAM.classifierModel",
+        "address": "0xa177c280",
+        "bytes": 13008016,
+        "lifetime": "boot to shutdown"
+      },
+      {
+        "name": "PSRAM.classifierModelGuard",
+        "address": "0xa23e3f20",
+        "bytes": 64,
+        "lifetime": "existing reserved lifetime; unchanged"
+      },
+      {
+        "name": "_ZN12_GLOBAL__N_111gLastResultE",
+        "address": "0x20001a20",
+        "bytes": 1880,
+        "section": "bss",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "_ZN12_GLOBAL__N_112h1CompactMelE",
+        "address": "0x2400000",
+        "bytes": 8968,
+        "section": "SRAM1",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "_ZN12_GLOBAL__N_119gM55FrontendRuntimeE",
+        "address": "0x20002798",
+        "bytes": 108,
+        "section": "bss",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "_ZN12_GLOBAL__N_119h1SpectralWorkspaceE",
+        "address": "0x2402320",
+        "bytes": 8192,
+        "section": "SRAM1",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1BaselineState",
+        "address": "0x2500000",
+        "bytes": 60704,
+        "section": ".h1_baseline",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1FastMemory",
+        "address": "0x2356b00",
+        "bytes": 524288,
+        "section": ".h1_fast_memory",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1PersistentStages",
+        "address": "0x200010c0",
+        "bytes": 1216,
+        "section": "bss",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1PostprocessObserverState",
+        "address": "0x2510000",
+        "bytes": 2696,
+        "section": ".h1_postprocess_observer",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1ProductionRuntime",
+        "address": "0x2514000",
+        "bytes": 592,
+        "section": ".h1_production_result",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1TensorArena",
+        "address": "0x2000000",
+        "bytes": 3500800,
+        "section": ".alif_sram0",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1ValidationObserverState",
+        "address": "0x2511000",
+        "bytes": 7240,
+        "section": ".h1_validation_observer",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "h1WaveformLifecycle",
+        "address": "0x2513000",
+        "bytes": 1568,
+        "section": ".h1_waveform_lifecycle",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "z_interrupt_stacks",
+        "address": "0x20003fb8",
+        "bytes": 2048,
+        "section": "noinit",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "z_main_stack",
+        "address": "0x200048f8",
+        "bytes": 32768,
+        "section": "noinit",
+        "lifetime": "Existing reservation/ownership unchanged; not observer capacity."
+      },
+      {
+        "name": "backbone_arena",
+        "address": "0x02000000",
+        "bytes": 3444832
+      },
+      {
+        "name": "backbone_arena_guard",
+        "address": "0x2349060",
+        "bytes": 64
+      },
+      {
+        "name": "classifier_arena",
+        "address": "0x023490a0",
+        "bytes": 55840
+      },
+      {
+        "name": "classifier_arena_guard",
+        "address": "0x2356ac0",
+        "bytes": 64
+      },
+      {
+        "name": "fast_guard",
+        "address": "0x23d50e0",
+        "bytes": 64
+      }
+    ],
+    "scratch_members": {
+      "bytes": 624384,
+      "members": [
+        {
+          "name": "melRaw",
+          "offset": 0,
+          "bytes": 96256
+        },
+        {
+          "name": "melDb",
+          "offset": 96256,
+          "bytes": 96256
+        },
+        {
+          "name": "image",
+          "offset": 192512,
+          "bytes": 94000
+        },
+        {
+          "name": "gray",
+          "offset": 286528,
+          "bytes": 251776
+        },
+        {
+          "name": "frame",
+          "offset": 538304,
+          "bytes": 8192
+        },
+        {
+          "name": "spectrum",
+          "offset": 546496,
+          "bytes": 8200
+        },
+        {
+          "name": "power",
+          "offset": 554720,
+          "bytes": 4100
+        },
+        {
+          "name": "fftState",
+          "offset": 558848,
+          "bytes": 65536
+        }
+      ]
+    },
+    "live_aliases": [
+      "scratch.gray first 4100 floats is four-frame groupPower until all 47 mel groups finish; resize subsequently overwrites gray. Preserve lifetime/order.",
+      "melDb holds raw mel then in-place dB; image is cropped then normalized in place.",
+      "melRaw/frame/spectrum/power/fftState legacy/diagnostic reservations persist despite ordinary native route not writing them."
+    ],
+    "stack": "Main 32768 bytes at 0x200048f8; ISR 2048 at 0x20003fb8 plus other qualified RTOS/USB stacks; full layout inventory bound. Peak stack/live memory not measured.",
+    "diagnostic_reuse_rejected": "Existing baseline 60704 of 65536 bytes and all hot-path/result metadata are owned ABI regions. No ownership/lifetime proof allows observer overlay."
+  },
+  "observer_memory_plan": {
+    "status": "PROSPECTIVE_ONLY_NO_LINKER_EDIT",
+    "region": "SRAM1",
+    "section": ".h1_frontend_observer",
+    "start": "0x2520000",
+    "end_exclusive": "0x25f0000",
+    "reservation_bytes": 851968,
+    "alignment": 32,
+    "NOLOAD": true,
+    "SRAM1_physical_bounds": [
+      "0x02400000",
+      "0x02800000"
+    ],
+    "previous_last_reserved_end": "0x02515000",
+    "gap_before_observer_bytes": 45056,
+    "guards": {
+      "prefix_bytes": 32,
+      "suffix_bytes": 32,
+      "validation": "pre/post campaign outside primary; report any failure and retain all records"
+    },
+    "header_bytes": 4096,
+    "record_count": 25,
+    "record_stride_bytes": 32768,
+    "record_payload": {
+      "metadata_and_48_u32_counters": 512,
+      "fixed_64_u64_timestamps": 512,
+      "frame_188_by_12_u64": 18048,
+      "group_47_by_16_u64": 6016,
+      "presence_bitmap_3072_bits": 384,
+      "total_bytes": 25472,
+      "padding_per_record_bytes": 7296
+    },
+    "required_storage_bytes": 823360,
+    "reserved_slack_bytes": 28608,
+    "offsets": {
+      "prefix_guard": 0,
+      "header": 32,
+      "records": 4128,
+      "suffix_guard": 823328
+    },
+    "ownership": "Dedicated CPU observer allocation; one campaign writer, immutable retained records until explicit release/new campaign; no ring overwrite; retrieval only when stopped.",
+    "initialization": "Initialize header/presence/guard state once before warmups; direct indexed slot writes. No whole sample memset/copy inside primary and no intermediate tensor copies.",
+    "stack_observer_increment_max_bytes": 256,
+    "heap_allocation_bytes": 0,
+    "production_buffer_relocations": 0,
+    "future_linker_gates": [
+      "Assert exact origin/end/32-byte alignment and size <= reservation.",
+      "Assert SRAM1 containment and disjointness from every existing reserved MEMORY region and all retained sections/objects/stacks/guards.",
+      "Compare all accepted production/diagnostic RAM addresses, sizes and lifetimes against qualified entry ELF; no movement allowed.",
+      "Verify future compiled record offsets/size and stack increment <=256; no record array on stack.",
+      "Verify target accessibility and guards after programming; map proof is prospective, not physical qualification."
+    ]
+  },
+  "campaign": {
+    "status": "PROSPECTIVE_CAMPAIGN_NOT_STARTED",
+    "warmups": 5,
+    "measured": 20,
+    "consecutive": true,
+    "outlier_removal": "NONE",
+    "same_programmed_observer_binary": true,
+    "clock_hz": 400000000,
+    "one_validated_uploaded_waveform_generation": true,
+    "no_upload_between_runs": true,
+    "no_host_commands_interrupt_campaign": true,
+    "no_diagnostic_inference_interleaved": true,
+    "retain_all_20_raw_samples": true,
+    "retain_all_25_structural_records": true,
+    "allocated_opcodes": {
+      "Ping": 1,
+      "Status": 2,
+      "GetIdentity": 3,
+      "UploadWaveform": 4,
+      "RunUploadedWaveform": 5,
+      "RunCanonical": 6,
+      "GetTopK": 7,
+      "GetProfile": 8,
+      "GetResultSummary": 9,
+      "MicStatus": 10,
+      "MicStart": 11,
+      "MicStop": 12,
+      "MicCaptureInfo": 13,
+      "MicGetWindowInfo": 14,
+      "MicGetWindowPcm": 15,
+      "MicRunWindow": 16,
+      "GetRunState": 17,
+      "RunM55SpectralFrame": 18,
+      "GetM55SpectralData": 19,
+      "GetM55SpectralDiagnostic": 20,
+      "GetM55SpectralTiming": 21,
+      "MarkOnly": 22,
+      "ArmRead": 23,
+      "ExecuteRead": 24,
+      "PsramReady": 25,
+      "I2sStatus": 26,
+      "I2sStart": 27,
+      "I2sSelectChannel": 28,
+      "I2sRawRead": 29,
+      "I2sWindowInfo": 30,
+      "I2sWindowRead": 31,
+      "I2sStop": 32,
+      "I2sConfigure": 33,
+      "I2sStartSingle": 34,
+      "I2sWindowHistory": 35,
+      "RunM55SpectralLoop": 36,
+      "RunM55CompleteFrontend": 37,
+      "RunM55SpectralBoundedLoop": 38,
+      "GetM55FrontendData": 39,
+      "GetM55FrontendExecution": 40,
+      "VerifyModelStorage": 41,
+      "CompareNumericErrorSelfTest": 45,
+      "CompareNativeSpectral": 46,
+      "CompareCompactScalarMel": 47,
+      "CompareMveCompactMel": 48,
+      "RunLegacyUploadedWaveform": 49,
+      "GetInferenceData": 50,
+      "RunBaselineAcceptance": 144,
+      "RunBaselineDiagnostic": 145,
+      "RunBaselinePmu": 146,
+      "GetBaselineSample": 147,
+      "GetBaselineStatus": 148,
+      "GetBaselineMap": 149,
+      "RunBaselineObserverQualification": 150,
+      "GetPostprocessObservation": 151,
+      "GetHotPathValidationObservation": 152,
+      "GetWaveformLifecycle": 153,
+      "OpenResultSession": 160,
+      "RunProductionResult": 161,
+      "GetProductionResult": 162,
+      "RunDiagnosticResult": 163,
+      "GetDiagnosticEvidence": 164,
+      "ReleaseDiagnosticEvidence": 165,
+      "GetProductionEvidence": 166,
+      "GetProductionProof": 167
+    },
+    "proposed_opcodes": {
+      "RunFrontendDecompositionCampaign": 168,
+      "GetFrontendDecompositionStatus": 169,
+      "GetFrontendDecompositionRecord": 170
+    },
+    "allocation_status": "COLLISION_FREE_AT_ENTRY_PROSPECTIVE_ONLY_REAUDIT_BEFORE_IMPLEMENTATION",
+    "authentication": "Same result-owner nonce/epoch and validated upload receipt binding as ordinary production; fail before counter wrap; one monotonic campaign id and per-run admitted result token.",
+    "request_layouts": {
+      "RunFrontendDecompositionCampaign": "48 bytes: existing owner nonce[16], ownerEpoch:u64, inputEpoch:u64, inputGeneration:u64, two reserved:u32=0. Fixed5/20; no variable run count.",
+      "GetFrontendDecompositionStatus": "32 bytes: nonce[16], ownerEpoch:u64, campaignId:u64.",
+      "GetFrontendDecompositionRecord": "48 bytes: nonce[16], ownerEpoch:u64, campaignId:u64, ordinal:u32, byteOffset:u32, byteCount:u32<=1024, reserved:u32=0."
+    },
+    "framing": "Existing H1CP v1, 20-byte little-endian header; existing response bit and error envelope; transport CRC only over bounded record payload after campaign, never inference tensors.",
+    "mechanism": [
+      "Require exact source/build/target/models, qualified waveform, lifecycle READY, no active diagnostic pin/campaign, baseline current=null/mode=0/running=0 and hot-path observer inactive.",
+      "Factor only unchanged production admission/primaryStart/runOnce(Production)/top3 staging/service.publish/ready core from 161 into shared internal function. Ordinary161 still sends its same result afterward.",
+      "New168 calls that same production core 25 times autonomously without per-run USB output. No runBaselineCampaign, diagnostic ResultReady, saveResult or profile finalize.",
+      "Observation active only in explicit production qualification/campaign mode; diagnostic commands retain original semantics and observer stays inactive there.",
+      "Initialize dedicated records before warmups; preserve 5 warmup records and 20 measured records, actual result/input tokens, all timestamps/counters/errors.",
+      "After each unchanged primary endpoint, bounded record finalization/structural checks only; no new full-output evidence scan. Stop at first failure, preserve completed and partial records; no retry or replacement.",
+      "Finish with retained immutable record set and bounded status. Fetch 169/170 only after stopped; block writes/new campaign until collected/released.",
+      "Immediately after collecting the full set, host qualifies every record together, hashes retained bytes and seals source/build/target/clock/input/sequence identities. Do not qualify nonexistent records before capture."
+    ],
+    "rejected_routes": [
+      "144/145/146/150 runBaselineCampaign: legacy diagnostic result/save/profile/CRCs",
+      "163 diagnostic route: pinned diagnostic contract, not production Ready",
+      "37 complete-frontend diagnostic command, not full production inference"
+    ],
+    "failure_policy": "Preserve every available record, including partial failed record; STOP. No selective retry, exclusion, sample removal, auto campaign repeat or silent overwrite.",
+    "result": "Observation evidence only; not H1_SUB700 acceptance; formal M4/M5 scope unchanged."
+  },
+  "noninterference": {
+    "classification": "MEASUREMENT_ONLY; future implementation requires separate authorization.",
+    "constant_time": "Bounded O(1) timestamp/counter/store with existing clock API. No tensor-dependent observer loop; actual lock/read latency must be qualified.",
+    "no_heap": true,
+    "no_per_frame_USB": true,
+    "no_serial_printf_in_primary": true,
+    "no_additional_CRC_of_measured_buffers": true,
+    "no_materialized_intermediate_copies": true,
+    "unchanged": [
+      "frontend operations/accumulation order",
+      "dataflow/tensor layout",
+      "compiler and math flags",
+      "clock",
+      "cache policy",
+      "buffer placement",
+      "production readiness/diagnostic meanings"
+    ],
+    "forbidden": [
+      "CRC removal",
+      "CRC bypass",
+      "CRC relocation outside primary",
+      "FFT replacement",
+      "CMSIS-DSP substitution",
+      "mel arithmetic/accumulation-order change",
+      "MVE optimization",
+      "normalization change",
+      "layout change",
+      "copy elimination",
+      "scratch reuse optimization",
+      "cache-policy/maintenance change",
+      "production buffer relocation",
+      "clock change",
+      "compiler optimization/toolchain change",
+      "new DMA",
+      "GeM change",
+      "U85 change",
+      "model/Vela change",
+      "regional classifier",
+      "top3 arithmetic change",
+      "waveform lifecycle change",
+      "production-result schema change",
+      "tiny-birdnet implementation reuse",
+      "seven result-evidence scans on production",
+      "diagnostic repeat/save/top100 publication/profile-finalization on production"
+    ],
+    "future_source_classifications": [
+      {
+        "path": "firmware/h1/src/frontend.cpp",
+        "classification": "INSTRUMENTATION_ONLY",
+        "purpose": "Raw markers/counters; preserve all arithmetic, scan and CRC semantics."
+      },
+      {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "classification": "INSTRUMENTATION_ONLY",
+        "purpose": "Retain existing raw kernel endpoints; bounded hooks after ends; no backend change."
+      },
+      {
+        "path": "firmware/h1/src/main.cpp",
+        "classification": "MEASUREMENT_CONTROL_ADAPTATION",
+        "purpose": "Share unchanged actual production core and add autonomous observer campaign/readout; preserve161 and all primary endpoints."
+      },
+      {
+        "path": "firmware/h1/src/usb_transport.hpp",
+        "classification": "OBSERVATION_PROTOCOL_ONLY",
+        "purpose": "Prospectively allocated168-170; existing allocations unchanged."
+      },
+      {
+        "path": "firmware/h1/src/usb_transport.cpp",
+        "classification": "OBSERVATION_PROTOCOL_ONLY",
+        "purpose": "Bounded observer request length/admission checks; legacy layouts unchanged."
+      },
+      {
+        "path": "firmware/h1/CMakeLists.txt",
+        "classification": "OBSERVER_LINKAGE_IDENTITY_ONLY",
+        "purpose": "Add observer compilation/linker section and source hashing; same compiler/clock/cache/arithmetic flags."
+      },
+      {
+        "path": "firmware/h1/src/frontend_observer.hpp/.cpp/.ld (new)",
+        "classification": "BOUNDED_OBSERVER_STORAGE_ONLY",
+        "purpose": "Typed records, ownership/guards and dedicated region; no production relocation."
+      },
+      {
+        "path": "private host collection/qualification scripts",
+        "classification": "HOST_EVIDENCE_ONLY",
+        "purpose": "Readout, exact record qualification/statistics; no on-target full scans."
+      }
+    ],
+    "overhead_policy": [
+      "Keep all observer overhead in recorded intervals/gaps; never subtract guessed/calibrated constants.",
+      "Retain actual additional clock-read count, raw-store count/bytes and compiled hook identity. Bound new reads <=1192/run; no added loop-level instrumentation inside arithmetic.",
+      "Pair stores/counter updates follow their end reads; original kernel timer pairs unchanged. Parent totals include child observation overhead in gaps.",
+      "Residual contains original uncovered work plus observer overhead; do not label it pure observer cost.",
+      "In separately authorized physical qualification, perform a bounded read/store calibration on the same binary/clock outside primary and before the five warmups. Retain all calibration cycles and cache/IRQ conditions; disclose their limited applicability.",
+      "No claimed corrected latency or negligible-overhead PASS without physical evidence. Calibration never modifies/subtracts sample values or replaces decomposition."
+    ],
+    "instruction_audit": "Review future source diff and disassembly for semantic kernel/configuration changes and instrumentation placement; preserve exact original operation and scan counts.",
+    "sample_zeroing": "Outside primary before warmups only; disclose observer memory/cache occupancy; no cache flush or policy change."
+  },
+  "numerical_gates": {
+    "slots": [
+      "canonical",
+      "canonical immediate repeat",
+      "high_valid_two_tone",
+      "high_valid_two_tone immediate repeat"
+    ],
+    "reference": "Accepted four slots of exact entry qualified binary; preserve all current identities and proof scope.",
+    "exact_objects": [
+      "waveform bytes",
+      "frontend FP32 output bits",
+      "quantized backbone input",
+      "backbone output/shared feature",
+      "GeM embedding",
+      "classifier input",
+      "classifier output",
+      "all11560 score bits",
+      "accepted top100 index/score bits",
+      "production top3 index/score bits",
+      "counts",
+      "diagnostic boundary CRCs",
+      "input identities"
+    ],
+    "zero_gates": {
+      "TOTAL_INTEGER_MISMATCHES": 0,
+      "MAXIMUM_LSB_ERROR": 0,
+      "FRONTEND_OUTPUT_BIT_MISMATCHES": 0,
+      "FULL_SCORE_BIT_MISMATCHES": 0,
+      "TOP100_INDEX_MISMATCHES": 0,
+      "TOP100_SCORE_BIT_MISMATCHES": 0,
+      "PRODUCTION_TOP3_INDEX_MISMATCHES": 0,
+      "PRODUCTION_TOP3_SCORE_BIT_MISMATCHES": 0,
+      "BOUNDARY_CRC_MISMATCHES": 0
+    },
+    "method": [
+      "Bind same exact programmed observer ELF/BIN/readback and all model/input identities.",
+      "Separately run the four isolated actual production slots with observer enabled; after complete Ready, capture original boundary buffers read-only with exact ELF addresses and sole-writer stability proven. No firmware result-evidence export/copy/scan is added.",
+      "Use read-only target capture outside primary/campaign for exact full frontend/score/boundary bits; production evidence opcodes continue EVIDENCE_NOT_RETAINED. Never loosen164/166.",
+      "Separately exercise unchanged qualification diagnostic four-slot route, including immediate repeat, pinned complete same-generation exports/CRCs/top100; observer inactive on diagnostic route.",
+      "Host compares exact bytes/bits/CRCs, counts and top3; all gates zero. No diagnostic inference is interleaved in5+20 observation.",
+      "Fail/STOP on capture instability, missing exact reference, identity drift or any mismatch; no numerical tolerance change."
+    ],
+    "physical_required": true,
+    "host_only_PASS_forbidden": true
+  },
+  "physical_gates": {
+    "exact_source_build_target_required": true,
+    "physical_evidence_mandatory": true,
+    "artifact": "New observer artifact must have its own exact source/bundle/ELF/BIN/application/readback identity; do not reuse entry ELF identity as observer identity.",
+    "preserve": [
+      "same frontend operation/frame188/group47 counts",
+      "same native selected spectral and MVE mel backend",
+      "same tensor dimensions",
+      "same model/Vela5.0.0 identities",
+      "same U85 execution",
+      "same lifecycle reuse",
+      "same waveform generation semantics",
+      "same complete production ResultReady",
+      "same diagnostic result semantics",
+      "same memory ownership/cache policy",
+      "same production result schema/80-byte slot/76-byte wire"
+    ],
+    "zero_requirements": [
+      "CPU fallback",
+      "faults",
+      "guard failures",
+      "unexpected resets",
+      "generation drift",
+      "waveform mutations during inference",
+      "unintended output-evidence scans"
+    ],
+    "U85_counts": "Exactly1 command+1 completion per stage per run,2 total;50 completions for25 successful runs.",
+    "qualification_dispositions": [
+      "FRONTEND_OBSERVER_STRUCTURAL_PASS",
+      "FRONTEND_OBSERVER_NUMERICAL_PASS",
+      "FRONTEND_OBSERVER_PHYSICAL_RUNTIME_PASS",
+      "FRONTEND_DECOMPOSITION_MEASUREMENT_QUALIFIED"
+    ],
+    "separated_from": [
+      "FRONTEND_OPTIMIZATION_PASS",
+      "H1_REPEATABLE_SUB700MS_PERFORMANCE_PASS",
+      "formal M4/M5 acceptance"
+    ],
+    "physical_preconditions": "In the separately authorized session, establish switches/cables/reset/power explicitly; preserve useful live state before destructive action; prepare capture before requested physical boot.",
+    "current_session_builds": 0,
+    "current_session_hardware_actions": 0
+  },
+  "statistics": {
+    "raw_integer_cycles": 20,
+    "clock_hz": "actual qualified frequency; must equal unchanged400000000Hz configuration",
+    "aggregate_cycle_sums_exact": true,
+    "fields": [
+      "minimum",
+      "arithmetic mean",
+      "median of10th/11th sorted values",
+      "nearest-rank p95",
+      "maximum",
+      "population standard deviation",
+      "call count",
+      "logical read/write bytes where measurable"
+    ],
+    "p95": "ceil(0.95*20)=19;19th sorted sample,zero-based index18",
+    "population_SD": "sqrt(sum((x-mean)^2)/20)",
+    "ms_conversion": "cycles*1000/clock_hz; retain exact cycles and rational sums; no pre-reconciliation rounding",
+    "component_scope": "All F parents/children/residuals, S1..S6 and M math/validation/residuals, primary leaves, CRC direct pair; keep hierarchy explicit.",
+    "no_outlier_removal": true,
+    "no_sample_exclusion": true,
+    "warmups_excluded_from_measured_statistics": true,
+    "missing_metric": "null plus specific reason for unknown logical traffic; no guessed bus bytes or kernel time"
+  },
+  "mandatory_tiny_birdnet_ordering": {
+    "FRONTEND_OPTIMIZATION_REQUIRES_TINY_BIRDNET_RECOMPARISON": true,
+    "contract_sha256": "fcfab23826b80e96525693ae6819a0f396dc6c101b9b5aa58963203ad1815b73",
+    "gate": "TINY_BIRDNET_M55_RECOMPARISON_V1",
+    "next_task_after_qualified_decomposition": true,
+    "mandatory_order": [
+      "Freeze observation",
+      "Separately authorize/implement instrumentation",
+      "Physically qualify exact observer and5+20 decomposition",
+      "Immediately complete independent TINY_BIRDNET_M55_RECOMPARISON_V1",
+      "Independently review quantified opportunities",
+      "Freeze one prospective H1 frontend candidate",
+      "Separately authorize implementation"
+    ],
+    "comparison_identity_required": [
+      "repository identifier and private path locator",
+      "remote URL if applicable",
+      "branch",
+      "commit SHA",
+      "Git tree SHA",
+      "dirty and untracked state including content identities",
+      "source files and hashes",
+      "build system",
+      "compiler/toolchain identity",
+      "compile flags",
+      "target MCU/core",
+      "clock configuration",
+      "FPU/MVE configuration",
+      "cache configuration",
+      "memory placement",
+      "CMSIS/CMSIS-DSP versions if used",
+      "all relevant libraries",
+      "measurement methodology",
+      "timing boundary",
+      "sample/window dimensions",
+      "frontend input/output contract",
+      "memory report",
+      "existing benchmark evidence"
+    ],
+    "matrix_dimensions": {
+      "algorithm": [
+        "window generation/application",
+        "FFT type and length",
+        "RFFT vs CFFT strategy",
+        "FFT library/kernel",
+        "magnitude/power computation",
+        "mel-bank representation",
+        "mel accumulation",
+        "log/compression",
+        "normalization",
+        "layout/transposition",
+        "quantization",
+        "copy behavior",
+        "scratch reuse",
+        "loop structure",
+        "vectorization"
+      ],
+      "numerical_contract": [
+        "input samples",
+        "window size",
+        "hop size",
+        "FFT bins",
+        "mel bins",
+        "frequency bounds",
+        "power/magnitude semantics",
+        "epsilon/clamp rules",
+        "log base/function",
+        "normalization constants",
+        "tensor layout",
+        "quantization scale/zero point",
+        "rounding/saturation",
+        "frontend output dimensions"
+      ],
+      "M55_implementation": [
+        "scalar vs MVE",
+        "CMSIS-DSP use",
+        "custom kernels",
+        "compiler auto-vectorization",
+        "SIMD width",
+        "alignment",
+        "loop unrolling",
+        "memory access pattern",
+        "cache locality",
+        "PSRAM/SRAM traffic",
+        "constant placement",
+        "precomputation",
+        "table layout",
+        "DMA if any"
+      ],
+      "timing": [
+        "exact measurement boundary",
+        "total frontend cycles",
+        "spectral/STFT cycles",
+        "mel cycles",
+        "normalization/log cycles",
+        "layout/copy cycles",
+        "quantization cycles",
+        "setup overhead",
+        "clock frequency",
+        "cycles preferred over milliseconds",
+        "separate internal validation/CRC scans and omitted work from actual acceleration"
+      ],
+      "memory": [
+        "static code",
+        "flash/RO data",
+        "SRAM",
+        "PSRAM",
+        "stack",
+        "scratch",
+        "persistent frontend buffers",
+        "FFT buffers",
+        "mel tables",
+        "temporary tensors",
+        "peak live memory",
+        "buffer reuse",
+        "allocator behavior",
+        "matching measurement categories on both implementations where possible"
+      ]
+    },
+    "required_causes": [
+      "true kernel acceleration",
+      "memory layout/reuse",
+      "algorithm",
+      "dimensions",
+      "numerical semantics",
+      "measurement boundary",
+      "omitted work",
+      "clock/toolchain/hardware",
+      "another evidenced cause"
+    ],
+    "multiple_reference_states": "STOP and identify a uniquely authoritative state; never choose fastest state.",
+    "comparison_BLOCKED_prevents_candidate_freeze": true,
+    "no_equivalence_inferred_from_performance": true,
+    "no_interchangeability_assumed": true,
+    "license_and_provenance_review_before_any_reuse": true,
+    "separate_reuse_authorization_required": true,
+    "no_tiny_source_inspected_modified_copied_this_session": true,
+    "no_frontend_candidate_selected_or_frozen": true,
+    "required_complete_dispositions": [
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_FRONTEND_CANDIDATE_JUSTIFIED",
+      "TINY_BIRDNET_RECOMPARISON_COMPLETE_NO_DIRECT_FRONTEND_CANDIDATE"
+    ]
+  },
+  "scope_review": {
+    "classification": "PROSPECTIVE_MEASUREMENT_ONLY",
+    "authorized_now": [
+      "Private/static evidence audit",
+      "Two reviewed sanitized prospective documentation artifacts",
+      "Signed commit of those two files",
+      "Push performance/h1-sub700ms only",
+      "Verify locally GOOD and GitHub Verified"
+    ],
+    "not_started": [
+      "firmware edits",
+      "instrumentation implementation",
+      "build",
+      "hardware access/programming/serial/reset/inference",
+      "CRC optimization",
+      "FFT/mel optimization",
+      "tiny-birdnet source inspection/recomparison",
+      "frontend candidate selection"
+    ],
+    "future_measurement_only_changes": [
+      {
+        "path": "firmware/h1/src/frontend.cpp",
+        "classification": "INSTRUMENTATION_ONLY",
+        "purpose": "Raw markers/counters; preserve all arithmetic, scan and CRC semantics."
+      },
+      {
+        "path": "firmware/h1/src/frontend_m55_spectral.cpp",
+        "classification": "INSTRUMENTATION_ONLY",
+        "purpose": "Retain existing raw kernel endpoints; bounded hooks after ends; no backend change."
+      },
+      {
+        "path": "firmware/h1/src/main.cpp",
+        "classification": "MEASUREMENT_CONTROL_ADAPTATION",
+        "purpose": "Share unchanged actual production core and add autonomous observer campaign/readout; preserve161 and all primary endpoints."
+      },
+      {
+        "path": "firmware/h1/src/usb_transport.hpp",
+        "classification": "OBSERVATION_PROTOCOL_ONLY",
+        "purpose": "Prospectively allocated168-170; existing allocations unchanged."
+      },
+      {
+        "path": "firmware/h1/src/usb_transport.cpp",
+        "classification": "OBSERVATION_PROTOCOL_ONLY",
+        "purpose": "Bounded observer request length/admission checks; legacy layouts unchanged."
+      },
+      {
+        "path": "firmware/h1/CMakeLists.txt",
+        "classification": "OBSERVER_LINKAGE_IDENTITY_ONLY",
+        "purpose": "Add observer compilation/linker section and source hashing; same compiler/clock/cache/arithmetic flags."
+      },
+      {
+        "path": "firmware/h1/src/frontend_observer.hpp/.cpp/.ld (new)",
+        "classification": "BOUNDED_OBSERVER_STORAGE_ONLY",
+        "purpose": "Typed records, ownership/guards and dedicated region; no production relocation."
+      },
+      {
+        "path": "private host collection/qualification scripts",
+        "classification": "HOST_EVIDENCE_ONLY",
+        "purpose": "Readout, exact record qualification/statistics; no on-target full scans."
+      }
+    ],
+    "forbidden": [
+      "CRC removal",
+      "CRC bypass",
+      "CRC relocation outside primary",
+      "FFT replacement",
+      "CMSIS-DSP substitution",
+      "mel arithmetic/accumulation-order change",
+      "MVE optimization",
+      "normalization change",
+      "layout change",
+      "copy elimination",
+      "scratch reuse optimization",
+      "cache-policy/maintenance change",
+      "production buffer relocation",
+      "clock change",
+      "compiler optimization/toolchain change",
+      "new DMA",
+      "GeM change",
+      "U85 change",
+      "model/Vela change",
+      "regional classifier",
+      "top3 arithmetic change",
+      "waveform lifecycle change",
+      "production-result schema change",
+      "tiny-birdnet implementation reuse",
+      "seven result-evidence scans on production",
+      "diagnostic repeat/save/top100 publication/profile-finalization on production"
+    ],
+    "hard_stops": [
+      "entry or remote authority mismatch",
+      "qualified physical/artifact evidence unbound",
+      "copied geometry differs from exact source/artifact",
+      "ambiguous production/frontend route",
+      "non-reconcilable timestamp schema",
+      "CRC cannot be independently measured without functional change",
+      "observer overlaps accepted/reserved storage",
+      "requires production timing-boundary/numerical/algorithm/cache/clock/compiler change",
+      "5+20 uses diagnostic evidence instead of production",
+      "plan permits tiny reuse before comparison/provenance review",
+      "mandatory tiny comparison ordering weakened"
+    ],
+    "primary_boundary_unchanged": true,
+    "numerical_semantics_unchanged": true,
+    "immutable_criteria_unchanged": true,
+    "no_PR": true,
+    "no_master_change": true,
+    "no_history_rewrite": true,
+    "unrelated_worktrees_preserved": true,
+    "qualification_is_not_performance_acceptance": true
+  },
+  "private_design_evidence_sha256": {
+    "CURRENT_PRODUCTION_TIMING_BINDING.json": "e79a8c3ff2a6ad0d5899f91a97b8c5fcd906f130ad888873d8efc4fa573b328f",
+    "ENTRY_VERIFICATION.json": "6c6d8c10170bf70bcef2e87fb572334c1063122648c80a7d2e6269b5c67aac6c",
+    "FRONTEND_DECOMPOSITION_CAMPAIGN_PLAN.json": "e6c5fa7b815e5fc61f1cd46b5730a2d2ec72e2c448f1f4b3fcb9bf35b37a11ee",
+    "FRONTEND_DECOMPOSITION_COUNTER_SCHEMA.json": "bd561b8ad502e4b5cc1ba081004872b9f280e6b4a572467f40156ad94d9d3f23",
+    "FRONTEND_DECOMPOSITION_MEMORY_PLAN.json": "7b9bfee81c708d3918d863e5536b950ad12052f97c5ce0ac318ca80b83b2b56a",
+    "FRONTEND_DECOMPOSITION_RECONCILIATION_RULES.json": "a9d49763e3dc3bde21b8d6fd10678f06519792f6792da08b8f4bb1601a033501",
+    "FRONTEND_DECOMPOSITION_TIMESTAMP_SCHEMA.json": "df5830b9fa61ed5ed0915c6b56b8e8f8af04e9998934e371420725117074aa9d",
+    "FRONTEND_EXECUTION_PATH_AUDIT.json": "fc9d78e0630c798ab8053a720fd15ac90ac00308b09fd4aa30af6c2bde31ef31",
+    "FRONTEND_EXISTING_TIMER_AUDIT.json": "77bca3fe02e715bcf7f267ae52a00c7ccb10c31ddb7d22be36dcfb60b215b285",
+    "FRONTEND_MEMORY_LIFETIME_AUDIT.json": "41ea957c467dfe56afe3b3af6e44fcfa5efb6ef4951928b0c940085aa8d479ad",
+    "FRONTEND_OBSERVATION_SCOPE_REVIEW.json": "276315148fdf724bf44c88a5dd5a9dbec7e48363c5135a124d22db8d2c05707c",
+    "FRONTEND_OBSERVER_NONINTERFERENCE_PLAN.json": "1e0648d728949db5b823aa5beb8859b6534c48d77b8a528426cae147d203fba1",
+    "FRONTEND_OBSERVER_NUMERICAL_GATES.json": "35d2176031f5cda092965938d35ef8f1f6e0eb02e78e61308fc381d08932b799",
+    "FRONTEND_OBSERVER_PHYSICAL_GATES.json": "1ad58870fe141f554be034b28762ecee4efbc2f0e50de104bdbd59edc370ec4e",
+    "FRONTEND_OBSERVER_STATISTICS_PLAN.json": "5c07649be541cabb95f6900565ced96d209bf8956218ccbfcdc67881ee5da7b5",
+    "FRONTEND_OPERATION_BYTE_LEDGER.json": "7106229fe1c869a4bf66b367de1c8023aad3447e489e00ff363682f86e735b95",
+    "FRONTEND_TINY_BIRDNET_ORDERING_BINDING.json": "b73e4edd4b7fdb418fdd31832a1ab65d05280d397b11897745fb27d893f1cc69",
+    "QUALIFIED_CONFIGURATION_BINDING.json": "f6ccc93eea5a83b9a1616c2a6168a2e49b7b7c15fe19042a0a85561e225ed579",
+    "STATIC_CONSTANT_BINDING.json": "d89bf8054414eb22ebeb6c510149cc8c8d5b3601c7eb009b4a32d42d0682d8cf"
+  },
+  "integrity": "Hash exact final plan bytes in companion and private receipt; do not self-hash or include later mutable commit receipt in this prospective seal.",
+  "dispositions": [
+    "FRONTEND_EXECUTION_PATH_AUDIT_COMPLETE",
+    "FRONTEND_EXISTING_TIMER_AUDIT_COMPLETE",
+    "FRONTEND_OPERATION_BYTE_LEDGER_COMPLETE",
+    "FRONTEND_MEMORY_LIFETIME_AUDIT_COMPLETE",
+    "FRONTEND_DECOMPOSITION_SCHEMA_DEFINED",
+    "FRONTEND_CRC_SEPARATE_MEASUREMENT_DEFINED",
+    "FRONTEND_OBSERVER_NONINTERFERENCE_GATES_DEFINED",
+    "FRONTEND_OBSERVATION_SCOPE_PASS",
+    "FRONTEND_TINY_BIRDNET_ORDERING_GATE_PRESERVED",
+    "FRONTEND_DECOMPOSITION_OBSERVATION_V1_FROZEN",
+    "OBSERVER_IMPLEMENTATION_NOT_STARTED",
+    "TINY_BIRDNET_RECOMPARISON_NOT_STARTED"
+  ],
+  "exact_next_action": "Stop. In a separately authorized session implement only this observer, bind its exact artifact, physically qualify noninterference and its autonomous5+20 production decomposition. Immediately afterward TINY_BIRDNET_M55_RECOMPARISON_V1 is mandatory before any frontend candidate selection/freeze."
+}
